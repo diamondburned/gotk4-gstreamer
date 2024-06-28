@@ -12,8 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gst/gst.h>
-// extern void _gotk4_gst1_ChildProxy_ConnectChildRemoved(gpointer, GObject, gchar*, guintptr);
-// extern void _gotk4_gst1_ChildProxy_ConnectChildAdded(gpointer, GObject, gchar*, guintptr);
+// extern void _gotk4_gst1_ChildProxy_ConnectChildRemoved(gpointer, GObject*, gchar*, guintptr);
+// extern void _gotk4_gst1_ChildProxy_ConnectChildAdded(gpointer, GObject*, gchar*, guintptr);
 // GObject* _gotk4_gst1_ChildProxy_virtual_get_child_by_index(void* fnptr, GstChildProxy* arg0, guint arg1) {
 //   return ((GObject* (*)(GstChildProxy*, guint))(fnptr))(arg0, arg1);
 // };
@@ -43,10 +43,10 @@ func init() {
 }
 
 // ChildProxy: this interface abstracts handling of property sets for elements
-// with children. Imagine elements such as mixers or polyphonic generators. They
-// all have multiple Pad or some kind of voice objects. Another use case are
-// container elements like Bin. The element implementing the interface acts as a
-// parent for those child objects.
+// with children. Imagine elements such as mixers or polyphonic generators.
+// They all have multiple Pad or some kind of voice objects. Another use case
+// are container elements like Bin. The element implementing the interface acts
+// as a parent for those child objects.
 //
 // By implementing this interface the child properties can be accessed from the
 // parent element by using gst_child_proxy_get() and gst_child_proxy_set().
@@ -78,6 +78,8 @@ type ChildProxier interface {
 	ChildByIndex(index uint) *coreglib.Object
 	// ChildByName looks up a child element by the given name.
 	ChildByName(name string) *coreglib.Object
+	// ChildByNameRecurse looks up a child element by the given full-path name.
+	ChildByNameRecurse(name string) *coreglib.Object
 	// ChildrenCount gets the number of child objects this parent contains.
 	ChildrenCount() uint
 	// Property gets a single property using the GstChildProxy mechanism.
@@ -121,8 +123,8 @@ func (parent *ChildProxy) ConnectChildRemoved(f func(object *coreglib.Object, na
 //
 // The function takes the following parameters:
 //
-//    - child: newly added child.
-//    - name of the new child.
+//   - child: newly added child.
+//   - name of the new child.
 //
 func (parent *ChildProxy) ChildAdded(child *coreglib.Object, name string) {
 	var _arg0 *C.GstChildProxy // out
@@ -144,8 +146,8 @@ func (parent *ChildProxy) ChildAdded(child *coreglib.Object, name string) {
 //
 // The function takes the following parameters:
 //
-//    - child: removed child.
-//    - name of the old child.
+//   - child: removed child.
+//   - name of the old child.
 //
 func (parent *ChildProxy) ChildRemoved(child *coreglib.Object, name string) {
 	var _arg0 *C.GstChildProxy // out
@@ -167,11 +169,11 @@ func (parent *ChildProxy) ChildRemoved(child *coreglib.Object, name string) {
 //
 // The function takes the following parameters:
 //
-//    - index child's position in the child list.
+//   - index child's position in the child list.
 //
 // The function returns the following values:
 //
-//    - object (optional): child object or NULL if not found (index too high).
+//   - object (optional): child object or NULL if not found (index too high).
 //
 func (parent *ChildProxy) ChildByIndex(index uint) *coreglib.Object {
 	var _arg0 *C.GstChildProxy // out
@@ -202,11 +204,11 @@ func (parent *ChildProxy) ChildByIndex(index uint) *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - name child's name.
+//   - name child's name.
 //
 // The function returns the following values:
 //
-//    - object (optional): child object or NULL if not found.
+//   - object (optional): child object or NULL if not found.
 //
 func (parent *ChildProxy) ChildByName(name string) *coreglib.Object {
 	var _arg0 *C.GstChildProxy // out
@@ -230,11 +232,49 @@ func (parent *ChildProxy) ChildByName(name string) *coreglib.Object {
 	return _object
 }
 
+// ChildByNameRecurse looks up a child element by the given full-path name.
+//
+// Similar to gst_child_proxy_get_child_by_name(), this method searches and
+// returns a child given a name. The difference is that this method allows a
+// hierarchical path in the form of child1::child2::child3. In the later example
+// this method would return a reference to child3, if found. The name should be
+// made of element names only and should not contain any property names.
+//
+// The function takes the following parameters:
+//
+//   - name: full-path child's name.
+//
+// The function returns the following values:
+//
+//   - object (optional): child object or NULL if not found.
+//
+func (childProxy *ChildProxy) ChildByNameRecurse(name string) *coreglib.Object {
+	var _arg0 *C.GstChildProxy // out
+	var _arg1 *C.gchar         // out
+	var _cret *C.GObject       // in
+
+	_arg0 = (*C.GstChildProxy)(unsafe.Pointer(coreglib.InternObject(childProxy).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_child_proxy_get_child_by_name_recurse(_arg0, _arg1)
+	runtime.KeepAlive(childProxy)
+	runtime.KeepAlive(name)
+
+	var _object *coreglib.Object // out
+
+	if _cret != nil {
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+	}
+
+	return _object
+}
+
 // ChildrenCount gets the number of child objects this parent contains.
 //
 // The function returns the following values:
 //
-//    - guint: number of child objects.
+//   - guint: number of child objects.
 //
 func (parent *ChildProxy) ChildrenCount() uint {
 	var _arg0 *C.GstChildProxy // out
@@ -257,11 +297,11 @@ func (parent *ChildProxy) ChildrenCount() uint {
 //
 // The function takes the following parameters:
 //
-//    - name of the property.
+//   - name of the property.
 //
 // The function returns the following values:
 //
-//    - value that should take the result.
+//   - value that should take the result.
 //
 func (object *ChildProxy) Property(name string) coreglib.Value {
 	var _arg0 *C.GstChildProxy // out
@@ -287,8 +327,8 @@ func (object *ChildProxy) Property(name string) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - name of the property to set.
-//    - value: new #GValue for the property.
+//   - name of the property to set.
+//   - value: new #GValue for the property.
 //
 func (object *ChildProxy) SetProperty(name string, value *coreglib.Value) {
 	var _arg0 *C.GstChildProxy // out
@@ -310,8 +350,8 @@ func (object *ChildProxy) SetProperty(name string, value *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - child: newly added child.
-//    - name of the new child.
+//   - child: newly added child.
+//   - name of the new child.
 //
 func (parent *ChildProxy) childAdded(child *coreglib.Object, name string) {
 	gclass := (*C.GstChildProxyInterface)(coreglib.PeekParentClass(parent))
@@ -336,8 +376,8 @@ func (parent *ChildProxy) childAdded(child *coreglib.Object, name string) {
 //
 // The function takes the following parameters:
 //
-//    - child: removed child.
-//    - name of the old child.
+//   - child: removed child.
+//   - name of the old child.
 //
 func (parent *ChildProxy) childRemoved(child *coreglib.Object, name string) {
 	gclass := (*C.GstChildProxyInterface)(coreglib.PeekParentClass(parent))
@@ -362,11 +402,11 @@ func (parent *ChildProxy) childRemoved(child *coreglib.Object, name string) {
 //
 // The function takes the following parameters:
 //
-//    - index child's position in the child list.
+//   - index child's position in the child list.
 //
 // The function returns the following values:
 //
-//    - object (optional): child object or NULL if not found (index too high).
+//   - object (optional): child object or NULL if not found (index too high).
 //
 func (parent *ChildProxy) childByIndex(index uint) *coreglib.Object {
 	gclass := (*C.GstChildProxyInterface)(coreglib.PeekParentClass(parent))
@@ -400,11 +440,11 @@ func (parent *ChildProxy) childByIndex(index uint) *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - name child's name.
+//   - name child's name.
 //
 // The function returns the following values:
 //
-//    - object (optional): child object or NULL if not found.
+//   - object (optional): child object or NULL if not found.
 //
 func (parent *ChildProxy) childByName(name string) *coreglib.Object {
 	gclass := (*C.GstChildProxyInterface)(coreglib.PeekParentClass(parent))
@@ -435,7 +475,7 @@ func (parent *ChildProxy) childByName(name string) *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - guint: number of child objects.
+//   - guint: number of child objects.
 //
 func (parent *ChildProxy) childrenCount() uint {
 	gclass := (*C.GstChildProxyInterface)(coreglib.PeekParentClass(parent))

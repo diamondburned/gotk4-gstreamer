@@ -86,7 +86,7 @@ func marshalGLDisplayEGL(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - glDisplayEGL: new GLDisplayEGL or NULL.
+//   - glDisplayEGL (optional): new GLDisplayEGL or NULL.
 //
 func NewGLDisplayEGL() *GLDisplayEGL {
 	var _cret *C.GstGLDisplayEGL // in
@@ -95,7 +95,9 @@ func NewGLDisplayEGL() *GLDisplayEGL {
 
 	var _glDisplayEGL *GLDisplayEGL // out
 
-	_glDisplayEGL = wrapGLDisplayEGL(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_glDisplayEGL = wrapGLDisplayEGL(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _glDisplayEGL
 }

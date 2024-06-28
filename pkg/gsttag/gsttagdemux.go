@@ -16,6 +16,10 @@ import (
 // #include <glib-object.h>
 // #include <gst/tag/tag.h>
 // extern gboolean _gotk4_gsttag1_TagDemuxClass_identify_tag(GstTagDemux*, GstBuffer*, gboolean, guint*);
+// extern GstTagList* _gotk4_gsttag1_TagDemuxClass_merge_tags(GstTagDemux*, GstTagList*, GstTagList*);
+// GstTagList* _gotk4_gsttag1_TagDemux_virtual_merge_tags(void* fnptr, GstTagDemux* arg0, GstTagList* arg1, GstTagList* arg2) {
+//   return ((GstTagList* (*)(GstTagDemux*, GstTagList*, GstTagList*))(fnptr))(arg0, arg1, arg2);
+// };
 // gboolean _gotk4_gsttag1_TagDemux_virtual_identify_tag(void* fnptr, GstTagDemux* arg0, GstBuffer* arg1, gboolean arg2, guint* arg3) {
 //   return ((gboolean (*)(GstTagDemux*, GstBuffer*, gboolean, guint*))(fnptr))(arg0, arg1, arg2, arg3);
 // };
@@ -68,18 +72,27 @@ func (t TagDemuxResult) String() string {
 type TagDemuxOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - buffer
-	//    - startTag
-	//    - tagSize
+	//   - buffer
+	//   - startTag
+	//   - tagSize
 	//
 	// The function returns the following values:
 	//
 	IdentifyTag func(buffer *gst.Buffer, startTag bool, tagSize *uint) bool
+	// The function takes the following parameters:
+	//
+	//   - startTags
+	//   - endTags
+	//
+	// The function returns the following values:
+	//
+	MergeTags func(startTags, endTags *gst.TagList) *gst.TagList
 }
 
 func defaultTagDemuxOverrides(v *TagDemux) TagDemuxOverrides {
 	return TagDemuxOverrides{
 		IdentifyTag: v.identifyTag,
+		MergeTags:   v.mergeTags,
 	}
 }
 
@@ -93,26 +106,25 @@ func defaultTagDemuxOverrides(v *TagDemux) TagDemuxOverrides {
 // media type of the resulting stream and add a source pad with the appropriate
 // caps in order to facilitate auto-plugging.
 //
-//
-// Deriving from GstTagDemux
+// # Deriving from GstTagDemux
 //
 // Subclasses have to do four things:
 //
-//    * In their base init function, they must add a pad template for the sink
-//      pad to the element class, describing the media type they can parse in
-//      the caps of the pad template.
-//    * In their class init function, they must override
-//      GST_TAG_DEMUX_CLASS(demux_klass)->identify_tag with their own identify
-//      function.
-//    * In their class init function, they must override
-//    GST_TAG_DEMUX_CLASS(demux_klass)->parse_tag with their own parse
-//    function.
-//    * In their class init function, they must also set
-//      GST_TAG_DEMUX_CLASS(demux_klass)->min_start_size and/or
-//    GST_TAG_DEMUX_CLASS(demux_klass)->min_end_size to the minimum size required
-//    for the identify function to decide whether the stream has a supported tag
-//    or not. A class parsing ID3v1 tags, for example, would set min_end_size to
-//    128 bytes.
+//   - In their base init function, they must add a pad template for the sink
+//     pad to the element class, describing the media type they can parse in the
+//     caps of the pad template.
+//   - In their class init function, they must override
+//     GST_TAG_DEMUX_CLASS(demux_klass)->identify_tag with their own identify
+//     function.
+//   - In their class init function, they must override
+//     GST_TAG_DEMUX_CLASS(demux_klass)->parse_tag with their own parse
+//     function.
+//   - In their class init function, they must also set
+//     GST_TAG_DEMUX_CLASS(demux_klass)->min_start_size and/or
+//     GST_TAG_DEMUX_CLASS(demux_klass)->min_end_size to the minimum size
+//     required for the identify function to decide whether the stream has a
+//     supported tag or not. A class parsing ID3v1 tags, for example, would set
+//     min_end_size to 128 bytes.
 type TagDemux struct {
 	_ [0]func() // equal guard
 	gst.Element
@@ -149,6 +161,10 @@ func initTagDemuxClass(gclass unsafe.Pointer, overrides TagDemuxOverrides, class
 		pclass.identify_tag = (*[0]byte)(C._gotk4_gsttag1_TagDemuxClass_identify_tag)
 	}
 
+	if overrides.MergeTags != nil {
+		pclass.merge_tags = (*[0]byte)(C._gotk4_gsttag1_TagDemuxClass_merge_tags)
+	}
+
 	if classInitFunc != nil {
 		class := (*TagDemuxClass)(gextras.NewStructNative(gclass))
 		classInitFunc(class)
@@ -182,9 +198,9 @@ func BaseTagDemux(obj TagDemuxer) *TagDemux {
 
 // The function takes the following parameters:
 //
-//    - buffer
-//    - startTag
-//    - tagSize
+//   - buffer
+//   - startTag
+//   - tagSize
 //
 // The function returns the following values:
 //
@@ -218,6 +234,44 @@ func (demux *TagDemux) identifyTag(buffer *gst.Buffer, startTag bool, tagSize *u
 	}
 
 	return _ok
+}
+
+// The function takes the following parameters:
+//
+//   - startTags
+//   - endTags
+//
+// The function returns the following values:
+//
+func (demux *TagDemux) mergeTags(startTags, endTags *gst.TagList) *gst.TagList {
+	gclass := (*C.GstTagDemuxClass)(coreglib.PeekParentClass(demux))
+	fnarg := gclass.merge_tags
+
+	var _arg0 *C.GstTagDemux // out
+	var _arg1 *C.GstTagList  // out
+	var _arg2 *C.GstTagList  // out
+	var _cret *C.GstTagList  // in
+
+	_arg0 = (*C.GstTagDemux)(unsafe.Pointer(coreglib.InternObject(demux).Native()))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(startTags)))
+	_arg2 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(endTags)))
+
+	_cret = C._gotk4_gsttag1_TagDemux_virtual_merge_tags(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(demux)
+	runtime.KeepAlive(startTags)
+	runtime.KeepAlive(endTags)
+
+	var _tagList *gst.TagList // out
+
+	_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tagList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _tagList
 }
 
 // TagDemuxClass structure. See documentation at beginning of section for

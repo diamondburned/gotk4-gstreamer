@@ -17,12 +17,12 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - buffer: Buffer.
+//   - context: GLContext.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - glSyncMeta added to Buffer.
+//   - glSyncMeta added to Buffer.
 //
 func BufferAddGLSyncMeta(context GLContexter, buffer *gst.Buffer) *GLSyncMeta {
 	var _arg1 *C.GstGLContext  // out

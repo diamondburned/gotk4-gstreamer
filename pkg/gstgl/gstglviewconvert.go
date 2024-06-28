@@ -126,7 +126,7 @@ func marshalGLViewConvert(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - glViewConvert: new GLViewConvert.
+//   - glViewConvert: new GLViewConvert.
 //
 func NewGLViewConvert() *GLViewConvert {
 	var _cret *C.GstGLViewConvert // in
@@ -144,13 +144,13 @@ func NewGLViewConvert() *GLViewConvert {
 //
 // The function takes the following parameters:
 //
-//    - direction: PadDirection.
-//    - caps of direction.
-//    - othercaps to fixate.
+//   - direction: PadDirection.
+//   - caps of direction.
+//   - othercaps to fixate.
 //
 // The function returns the following values:
 //
-//    - ret: fixated Caps.
+//   - ret: fixated Caps.
 //
 func (viewconvert *GLViewConvert) FixateCaps(direction gst.PadDirection, caps, othercaps *gst.Caps) *gst.Caps {
 	var _arg0 *C.GstGLViewConvert // out
@@ -189,8 +189,8 @@ func (viewconvert *GLViewConvert) FixateCaps(direction gst.PadDirection, caps, o
 //
 // The function returns the following values:
 //
-//    - outbufPtr: Buffer.
-//    - flowReturn: FlowReturn.
+//   - outbufPtr: Buffer.
+//   - flowReturn: FlowReturn.
 //
 func (viewconvert *GLViewConvert) Output() (*gst.Buffer, gst.FlowReturn) {
 	var _arg0 *C.GstGLViewConvert // out
@@ -222,11 +222,11 @@ func (viewconvert *GLViewConvert) Output() (*gst.Buffer, gst.FlowReturn) {
 //
 // The function takes the following parameters:
 //
-//    - inbuf filled Buffer to convert.
+//   - inbuf filled Buffer to convert.
 //
 // The function returns the following values:
 //
-//    - buffer: converted Buffer or NULL.
+//   - buffer (optional): converted Buffer or NULL.
 //
 func (viewconvert *GLViewConvert) Perform(inbuf *gst.Buffer) *gst.Buffer {
 	var _arg0 *C.GstGLViewConvert // out
@@ -242,13 +242,15 @@ func (viewconvert *GLViewConvert) Perform(inbuf *gst.Buffer) *gst.Buffer {
 
 	var _buffer *gst.Buffer // out
 
-	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -268,8 +270,8 @@ func (viewconvert *GLViewConvert) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - inCaps: input Caps.
-//    - outCaps: output Caps.
+//   - inCaps: input Caps.
+//   - outCaps: output Caps.
 //
 // The function returns the following values:
 //
@@ -301,7 +303,7 @@ func (viewconvert *GLViewConvert) SetCaps(inCaps, outCaps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - context to set.
+//   - context to set.
 //
 func (viewconvert *GLViewConvert) SetContext(context GLContexter) {
 	var _arg0 *C.GstGLViewConvert // out
@@ -319,12 +321,12 @@ func (viewconvert *GLViewConvert) SetContext(context GLContexter) {
 //
 // The function takes the following parameters:
 //
-//    - isDiscont: true if we have a discontinuity.
-//    - input: Buffer.
+//   - isDiscont: true if we have a discontinuity.
+//   - input: Buffer.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (viewconvert *GLViewConvert) SubmitInputBuffer(isDiscont bool, input *gst.Buffer) gst.FlowReturn {
 	var _arg0 *C.GstGLViewConvert // out
@@ -356,13 +358,13 @@ func (viewconvert *GLViewConvert) SubmitInputBuffer(isDiscont bool, input *gst.B
 //
 // The function takes the following parameters:
 //
-//    - direction: PadDirection.
-//    - caps to transform.
-//    - filter: set of filter Caps.
+//   - direction: PadDirection.
+//   - caps to transform.
+//   - filter: set of filter Caps.
 //
 // The function returns the following values:
 //
-//    - ret: converted Caps.
+//   - ret: converted Caps.
 //
 func (viewconvert *GLViewConvert) TransformCaps(direction gst.PadDirection, caps, filter *gst.Caps) *gst.Caps {
 	var _arg0 *C.GstGLViewConvert // out

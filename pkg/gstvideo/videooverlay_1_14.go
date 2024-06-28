@@ -21,14 +21,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - object: instance on which the property is set.
-//    - lastPropId: highest property ID.
-//    - propertyId: property ID.
-//    - value to be set.
+//   - object: instance on which the property is set.
+//   - lastPropId: highest property ID.
+//   - propertyId: property ID.
+//   - value to be set.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the property_id matches the GstVideoOverlay property.
+//   - ok: TRUE if the property_id matches the GstVideoOverlay property.
 //
 func VideoOverlaySetProperty(object *coreglib.Object, lastPropId int, propertyId uint, value *coreglib.Value) bool {
 	var _arg1 *C.GObject // out

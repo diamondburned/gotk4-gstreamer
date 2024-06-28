@@ -45,7 +45,7 @@ func init() {
 // FOURCC_FORMAT: can be used together with T_FOURCC_ARGS to properly output a
 // #guint32 fourcc value in a printf\()-style text message.
 //
-//    printf ("fourcc: %" GST_FOURCC_FORMAT "\n", GST_FOURCC_ARGS (fcc));.
+//	printf ("fourcc: %" GST_FOURCC_FORMAT "\n", GST_FOURCC_ARGS (fcc));.
 const FOURCC_FORMAT = "c%c%c%c"
 
 // VALUE_EQUAL indicates that the first value provided to a comparison function
@@ -68,12 +68,12 @@ const VALUE_UNORDERED = 2
 //
 // The function takes the following parameters:
 //
-//    - value1: value to compare.
-//    - value2: another value to compare.
+//   - value1: value to compare.
+//   - value2: another value to compare.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the values can be compared.
+//   - ok: TRUE if the values can be compared.
 //
 func ValueCanCompare(value1, value2 *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -102,12 +102,12 @@ func ValueCanCompare(value1, value2 *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - value1: value to intersect.
-//    - value2: another value to intersect.
+//   - value1: value to intersect.
+//   - value2: another value to intersect.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the values can intersect.
+//   - ok: TRUE if the values can intersect.
 //
 func ValueCanIntersect(value1, value2 *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -134,12 +134,12 @@ func ValueCanIntersect(value1, value2 *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - minuend: value to subtract from.
-//    - subtrahend: value to subtract.
+//   - minuend: value to subtract from.
+//   - subtrahend: value to subtract.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a subtraction is possible.
+//   - ok: TRUE if a subtraction is possible.
 //
 func ValueCanSubtract(minuend, subtrahend *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -164,19 +164,19 @@ func ValueCanSubtract(minuend, subtrahend *coreglib.Value) bool {
 
 // ValueCanUnion determines if value1 and value2 can be non-trivially unioned.
 // Any two values can be trivially unioned by adding both of them to a
-// GstValueList. However, certain types have the possibility to be unioned in a
-// simpler way. For example, an integer range and an integer can be unioned if
-// the integer is a subset of the integer range. If there is the possibility
+// GstValueList. However, certain types have the possibility to be unioned in
+// a simpler way. For example, an integer range and an integer can be unioned
+// if the integer is a subset of the integer range. If there is the possibility
 // that two values can be unioned, this function returns TRUE.
 //
 // The function takes the following parameters:
 //
-//    - value1: value to union.
-//    - value2: another value to union.
+//   - value1: value to union.
+//   - value2: another value to union.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there is a function allowing the two values to be unioned.
+//   - ok: TRUE if there is a function allowing the two values to be unioned.
 //
 func ValueCanUnion(value1, value2 *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -200,19 +200,19 @@ func ValueCanUnion(value1, value2 *coreglib.Value) bool {
 }
 
 // ValueCompare compares value1 and value2. If value1 and value2 cannot be
-// compared, the function returns GST_VALUE_UNORDERED. Otherwise, if value1 is
-// greater than value2, GST_VALUE_GREATER_THAN is returned. If value1 is less
-// than value2, GST_VALUE_LESS_THAN is returned. If the values are equal,
+// compared, the function returns GST_VALUE_UNORDERED. Otherwise, if value1
+// is greater than value2, GST_VALUE_GREATER_THAN is returned. If value1 is
+// less than value2, GST_VALUE_LESS_THAN is returned. If the values are equal,
 // GST_VALUE_EQUAL is returned.
 //
 // The function takes the following parameters:
 //
-//    - value1: value to compare.
-//    - value2: another value to compare.
+//   - value1: value to compare.
+//   - value2: another value to compare.
 //
 // The function returns the following values:
 //
-//    - gint: comparison result.
+//   - gint: comparison result.
 //
 func ValueCompare(value1, value2 *coreglib.Value) int {
 	var _arg1 *C.GValue // out
@@ -238,12 +238,12 @@ func ValueCompare(value1, value2 *coreglib.Value) int {
 //
 // The function takes the following parameters:
 //
-//    - src: string to deserialize.
+//   - src: string to deserialize.
 //
 // The function returns the following values:
 //
-//    - dest to fill with contents of deserialization.
-//    - ok: TRUE on success.
+//   - dest to fill with contents of deserialization.
+//   - ok: TRUE on success.
 //
 func ValueDeserialize(src string) (coreglib.Value, bool) {
 	var _arg1 C.GValue   // in
@@ -268,17 +268,17 @@ func ValueDeserialize(src string) (coreglib.Value, bool) {
 }
 
 // ValueFixate: fixate src into a new value dest. For ranges, the first element
-// is taken. For lists and arrays, the first item is fixated and returned. If
-// src is already fixed, this function returns FALSE.
+// is taken. For lists and arrays, the first item is fixated and returned.
+// If src is already fixed, this function returns FALSE.
 //
 // The function takes the following parameters:
 //
-//    - dest: #GValue destination.
-//    - src to fixate.
+//   - dest: #GValue destination.
+//   - src to fixate.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if dest contains a fixated version of src.
+//   - ok: TRUE if dest contains a fixated version of src.
 //
 func ValueFixate(dest, src *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -306,13 +306,13 @@ func ValueFixate(dest, src *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - product: GValue initialized to T_TYPE_FRACTION.
-//    - factor1: GValue initialized to T_TYPE_FRACTION.
-//    - factor2: GValue initialized to T_TYPE_FRACTION.
+//   - product: GValue initialized to T_TYPE_FRACTION.
+//   - factor1: GValue initialized to T_TYPE_FRACTION.
+//   - factor2: GValue initialized to T_TYPE_FRACTION.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE in case of an error (like integer overflow), TRUE otherwise.
+//   - ok: FALSE in case of an error (like integer overflow), TRUE otherwise.
 //
 func ValueFractionMultiply(product, factor1, factor2 *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -343,13 +343,13 @@ func ValueFractionMultiply(product, factor1, factor2 *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - dest: GValue initialized to T_TYPE_FRACTION.
-//    - minuend: GValue initialized to T_TYPE_FRACTION.
-//    - subtrahend: GValue initialized to T_TYPE_FRACTION.
+//   - dest: GValue initialized to T_TYPE_FRACTION.
+//   - minuend: GValue initialized to T_TYPE_FRACTION.
+//   - subtrahend: GValue initialized to T_TYPE_FRACTION.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE in case of an error (like integer overflow), TRUE otherwise.
+//   - ok: FALSE in case of an error (like integer overflow), TRUE otherwise.
 //
 func ValueFractionSubtract(dest, minuend, subtrahend *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -379,11 +379,11 @@ func ValueFractionSubtract(dest, minuend, subtrahend *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_BITMASK.
+//   - value: GValue initialized to T_TYPE_BITMASK.
 //
 // The function returns the following values:
 //
-//    - guint64: bitmask.
+//   - guint64: bitmask.
 //
 func ValueGetBitmask(value *coreglib.Value) uint64 {
 	var _arg1 *C.GValue // out
@@ -407,11 +407,11 @@ func ValueGetBitmask(value *coreglib.Value) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_CAPS.
+//   - value: GValue initialized to GST_TYPE_CAPS.
 //
 // The function returns the following values:
 //
-//    - caps contents of value.
+//   - caps contents of value.
 //
 func ValueGetCaps(value *coreglib.Value) *Caps {
 	var _arg1 *C.GValue  // out
@@ -433,11 +433,11 @@ func ValueGetCaps(value *coreglib.Value) *Caps {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_CAPS_FEATURES.
+//   - value: GValue initialized to GST_TYPE_CAPS_FEATURES.
 //
 // The function returns the following values:
 //
-//    - capsFeatures contents of value.
+//   - capsFeatures contents of value.
 //
 func ValueGetCapsFeatures(value *coreglib.Value) *CapsFeatures {
 	var _arg1 *C.GValue          // out
@@ -459,11 +459,11 @@ func ValueGetCapsFeatures(value *coreglib.Value) *CapsFeatures {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_DOUBLE_RANGE.
+//   - value: GValue initialized to GST_TYPE_DOUBLE_RANGE.
 //
 // The function returns the following values:
 //
-//    - gdouble: maximum of the range.
+//   - gdouble: maximum of the range.
 //
 func ValueGetDoubleRangeMax(value *coreglib.Value) float64 {
 	var _arg1 *C.GValue // out
@@ -485,11 +485,11 @@ func ValueGetDoubleRangeMax(value *coreglib.Value) float64 {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_DOUBLE_RANGE.
+//   - value: GValue initialized to GST_TYPE_DOUBLE_RANGE.
 //
 // The function returns the following values:
 //
-//    - gdouble: minimum of the range.
+//   - gdouble: minimum of the range.
 //
 func ValueGetDoubleRangeMin(value *coreglib.Value) float64 {
 	var _arg1 *C.GValue // out
@@ -512,11 +512,11 @@ func ValueGetDoubleRangeMin(value *coreglib.Value) float64 {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_FRACTION.
+//   - value: GValue initialized to T_TYPE_FRACTION.
 //
 // The function returns the following values:
 //
-//    - gint: denominator of the fraction.
+//   - gint: denominator of the fraction.
 //
 func ValueGetFractionDenominator(value *coreglib.Value) int {
 	var _arg1 *C.GValue // out
@@ -539,11 +539,11 @@ func ValueGetFractionDenominator(value *coreglib.Value) int {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_FRACTION.
+//   - value: GValue initialized to T_TYPE_FRACTION.
 //
 // The function returns the following values:
 //
-//    - gint: numerator of the fraction.
+//   - gint: numerator of the fraction.
 //
 func ValueGetFractionNumerator(value *coreglib.Value) int {
 	var _arg1 *C.GValue // out
@@ -565,11 +565,11 @@ func ValueGetFractionNumerator(value *coreglib.Value) int {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
+//   - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
 //
 // The function returns the following values:
 //
-//    - ret (optional): maximum of the range.
+//   - ret (optional): maximum of the range.
 //
 func ValueGetFractionRangeMax(value *coreglib.Value) *coreglib.Value {
 	var _arg1 *C.GValue // out
@@ -593,11 +593,11 @@ func ValueGetFractionRangeMax(value *coreglib.Value) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
+//   - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
 //
 // The function returns the following values:
 //
-//    - ret (optional): minimum of the range.
+//   - ret (optional): minimum of the range.
 //
 func ValueGetFractionRangeMin(value *coreglib.Value) *coreglib.Value {
 	var _arg1 *C.GValue // out
@@ -621,11 +621,11 @@ func ValueGetFractionRangeMin(value *coreglib.Value) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT64_RANGE.
+//   - value: GValue initialized to GST_TYPE_INT64_RANGE.
 //
 // The function returns the following values:
 //
-//    - gint64: maximum of the range.
+//   - gint64: maximum of the range.
 //
 func ValueGetInt64RangeMax(value *coreglib.Value) int64 {
 	var _arg1 *C.GValue // out
@@ -647,11 +647,11 @@ func ValueGetInt64RangeMax(value *coreglib.Value) int64 {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT64_RANGE.
+//   - value: GValue initialized to GST_TYPE_INT64_RANGE.
 //
 // The function returns the following values:
 //
-//    - gint64: minimum of the range.
+//   - gint64: minimum of the range.
 //
 func ValueGetInt64RangeMin(value *coreglib.Value) int64 {
 	var _arg1 *C.GValue // out
@@ -673,11 +673,11 @@ func ValueGetInt64RangeMin(value *coreglib.Value) int64 {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT64_RANGE.
+//   - value: GValue initialized to GST_TYPE_INT64_RANGE.
 //
 // The function returns the following values:
 //
-//    - gint64: step of the range.
+//   - gint64: step of the range.
 //
 func ValueGetInt64RangeStep(value *coreglib.Value) int64 {
 	var _arg1 *C.GValue // out
@@ -699,11 +699,11 @@ func ValueGetInt64RangeStep(value *coreglib.Value) int64 {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT_RANGE.
+//   - value: GValue initialized to GST_TYPE_INT_RANGE.
 //
 // The function returns the following values:
 //
-//    - gint: maximum of the range.
+//   - gint: maximum of the range.
 //
 func ValueGetIntRangeMax(value *coreglib.Value) int {
 	var _arg1 *C.GValue // out
@@ -725,11 +725,11 @@ func ValueGetIntRangeMax(value *coreglib.Value) int {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT_RANGE.
+//   - value: GValue initialized to GST_TYPE_INT_RANGE.
 //
 // The function returns the following values:
 //
-//    - gint: minimum of the range.
+//   - gint: minimum of the range.
 //
 func ValueGetIntRangeMin(value *coreglib.Value) int {
 	var _arg1 *C.GValue // out
@@ -751,11 +751,11 @@ func ValueGetIntRangeMin(value *coreglib.Value) int {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT_RANGE.
+//   - value: GValue initialized to GST_TYPE_INT_RANGE.
 //
 // The function returns the following values:
 //
-//    - gint: step of the range.
+//   - gint: step of the range.
 //
 func ValueGetIntRangeStep(value *coreglib.Value) int {
 	var _arg1 *C.GValue // out
@@ -777,11 +777,11 @@ func ValueGetIntRangeStep(value *coreglib.Value) int {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_STRUCTURE.
+//   - value: GValue initialized to GST_TYPE_STRUCTURE.
 //
 // The function returns the following values:
 //
-//    - structure contents of value.
+//   - structure contents of value.
 //
 func ValueGetStructure(value *coreglib.Value) *Structure {
 	var _arg1 *C.GValue       // out
@@ -804,11 +804,11 @@ func ValueGetStructure(value *coreglib.Value) *Structure {
 //
 // The function takes the following parameters:
 //
-//    - src: source value.
+//   - src: source value.
 //
 // The function returns the following values:
 //
-//    - dest: target value.
+//   - dest: target value.
 //
 func ValueInitAndCopy(src *coreglib.Value) coreglib.Value {
 	var _arg1 C.GValue  // in
@@ -832,14 +832,14 @@ func ValueInitAndCopy(src *coreglib.Value) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value1: value to intersect.
-//    - value2: another value to intersect.
+//   - value1: value to intersect.
+//   - value2: another value to intersect.
 //
 // The function returns the following values:
 //
-//    - dest (optional): a uninitialized #GValue that will hold the calculated
-//      intersection value. May be NULL if the resulting set if not needed.
-//    - ok: TRUE if the intersection is non-empty.
+//   - dest (optional): a uninitialized #GValue that will hold the calculated
+//     intersection value. May be NULL if the resulting set if not needed.
+//   - ok: TRUE if the intersection is non-empty.
 //
 func ValueIntersect(value1, value2 *coreglib.Value) (coreglib.Value, bool) {
 	var _arg1 C.GValue   // in
@@ -868,18 +868,18 @@ func ValueIntersect(value1, value2 *coreglib.Value) (coreglib.Value, bool) {
 	return _dest, _ok
 }
 
-// ValueIsFixed tests if the given GValue, if available in a GstStructure (or
-// any other container) contains a "fixed" (which means: one value) or an
+// ValueIsFixed tests if the given GValue, if available in a GstStructure
+// (or any other container) contains a "fixed" (which means: one value) or an
 // "unfixed" (which means: multiple possible values, such as data lists or data
 // ranges) value.
 //
 // The function takes the following parameters:
 //
-//    - value to check.
+//   - value to check.
 //
 // The function returns the following values:
 //
-//    - ok: true if the value is "fixed".
+//   - ok: true if the value is "fixed".
 //
 func ValueIsFixed(value *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -903,12 +903,12 @@ func ValueIsFixed(value *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - value1: #GValue.
-//    - value2: #GValue.
+//   - value1: #GValue.
+//   - value2: #GValue.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is value1 is a subset of value2.
+//   - ok: TRUE is value1 is a subset of value2.
 //
 func ValueIsSubset(value1, value2 *coreglib.Value) bool {
 	var _arg1 *C.GValue  // out
@@ -936,7 +936,7 @@ func ValueIsSubset(value1, value2 *coreglib.Value) bool {
 //
 // The function takes the following parameters:
 //
-//    - table: structure containing functions to register.
+//   - table: structure containing functions to register.
 //
 func ValueRegister(table *ValueTable) {
 	var _arg1 *C.GstValueTable // out
@@ -955,11 +955,11 @@ func ValueRegister(table *ValueTable) {
 //
 // The function takes the following parameters:
 //
-//    - value to serialize.
+//   - value to serialize.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): serialization for value or NULL if none exists.
+//   - utf8 (optional): serialization for value or NULL if none exists.
 //
 func ValueSerialize(value *coreglib.Value) string {
 	var _arg1 *C.GValue // out
@@ -984,8 +984,8 @@ func ValueSerialize(value *coreglib.Value) string {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_BITMASK.
-//    - bitmask: bitmask.
+//   - value: GValue initialized to T_TYPE_BITMASK.
+//   - bitmask: bitmask.
 //
 func ValueSetBitmask(value *coreglib.Value, bitmask uint64) {
 	var _arg1 *C.GValue // out
@@ -1004,8 +1004,8 @@ func ValueSetBitmask(value *coreglib.Value, bitmask uint64) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_CAPS.
-//    - caps to set the value to.
+//   - value: GValue initialized to GST_TYPE_CAPS.
+//   - caps to set the value to.
 //
 func ValueSetCaps(value *coreglib.Value, caps *Caps) {
 	var _arg1 *C.GValue  // out
@@ -1023,8 +1023,8 @@ func ValueSetCaps(value *coreglib.Value, caps *Caps) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_CAPS_FEATURES.
-//    - features to set the value to.
+//   - value: GValue initialized to GST_TYPE_CAPS_FEATURES.
+//   - features to set the value to.
 //
 func ValueSetCapsFeatures(value *coreglib.Value, features *CapsFeatures) {
 	var _arg1 *C.GValue          // out
@@ -1042,9 +1042,9 @@ func ValueSetCapsFeatures(value *coreglib.Value, features *CapsFeatures) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_DOUBLE_RANGE.
-//    - start of the range.
-//    - end of the range.
+//   - value: GValue initialized to GST_TYPE_DOUBLE_RANGE.
+//   - start of the range.
+//   - end of the range.
 //
 func ValueSetDoubleRange(value *coreglib.Value, start, end float64) {
 	var _arg1 *C.GValue // out
@@ -1067,9 +1067,9 @@ func ValueSetDoubleRange(value *coreglib.Value, start, end float64) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_FRACTION.
-//    - numerator of the fraction.
-//    - denominator of the fraction.
+//   - value: GValue initialized to T_TYPE_FRACTION.
+//   - numerator of the fraction.
+//   - denominator of the fraction.
 //
 func ValueSetFraction(value *coreglib.Value, numerator, denominator int) {
 	var _arg1 *C.GValue // out
@@ -1090,9 +1090,9 @@ func ValueSetFraction(value *coreglib.Value, numerator, denominator int) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
-//    - start of the range (a GST_TYPE_FRACTION GValue).
-//    - end of the range (a GST_TYPE_FRACTION GValue).
+//   - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
+//   - start of the range (a GST_TYPE_FRACTION GValue).
+//   - end of the range (a GST_TYPE_FRACTION GValue).
 //
 func ValueSetFractionRange(value, start, end *coreglib.Value) {
 	var _arg1 *C.GValue // out
@@ -1114,11 +1114,11 @@ func ValueSetFractionRange(value, start, end *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
-//    - numeratorStart: numerator start of the range.
-//    - denominatorStart: denominator start of the range.
-//    - numeratorEnd: numerator end of the range.
-//    - denominatorEnd: denominator end of the range.
+//   - value: GValue initialized to GST_TYPE_FRACTION_RANGE.
+//   - numeratorStart: numerator start of the range.
+//   - denominatorStart: denominator start of the range.
+//   - numeratorEnd: numerator end of the range.
+//   - denominatorEnd: denominator end of the range.
 //
 func ValueSetFractionRangeFull(value *coreglib.Value, numeratorStart, denominatorStart, numeratorEnd, denominatorEnd int) {
 	var _arg1 *C.GValue // out
@@ -1145,9 +1145,9 @@ func ValueSetFractionRangeFull(value *coreglib.Value, numeratorStart, denominato
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT64_RANGE.
-//    - start of the range.
-//    - end of the range.
+//   - value: GValue initialized to GST_TYPE_INT64_RANGE.
+//   - start of the range.
+//   - end of the range.
 //
 func ValueSetInt64Range(value *coreglib.Value, start, end int64) {
 	var _arg1 *C.GValue // out
@@ -1169,10 +1169,10 @@ func ValueSetInt64Range(value *coreglib.Value, start, end int64) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT64_RANGE.
-//    - start of the range.
-//    - end of the range.
-//    - step of the range.
+//   - value: GValue initialized to GST_TYPE_INT64_RANGE.
+//   - start of the range.
+//   - end of the range.
+//   - step of the range.
 //
 func ValueSetInt64RangeStep(value *coreglib.Value, start, end, step int64) {
 	var _arg1 *C.GValue // out
@@ -1196,9 +1196,9 @@ func ValueSetInt64RangeStep(value *coreglib.Value, start, end, step int64) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT_RANGE.
-//    - start of the range.
-//    - end of the range.
+//   - value: GValue initialized to GST_TYPE_INT_RANGE.
+//   - start of the range.
+//   - end of the range.
 //
 func ValueSetIntRange(value *coreglib.Value, start, end int) {
 	var _arg1 *C.GValue // out
@@ -1220,10 +1220,10 @@ func ValueSetIntRange(value *coreglib.Value, start, end int) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_INT_RANGE.
-//    - start of the range.
-//    - end of the range.
-//    - step of the range.
+//   - value: GValue initialized to GST_TYPE_INT_RANGE.
+//   - start of the range.
+//   - end of the range.
+//   - step of the range.
 //
 func ValueSetIntRangeStep(value *coreglib.Value, start, end, step int) {
 	var _arg1 *C.GValue // out
@@ -1247,8 +1247,8 @@ func ValueSetIntRangeStep(value *coreglib.Value, start, end, step int) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_STRUCTURE.
-//    - structure to set the value to.
+//   - value: GValue initialized to GST_TYPE_STRUCTURE.
+//   - structure to set the value to.
 //
 func ValueSetStructure(value *coreglib.Value, structure *Structure) {
 	var _arg1 *C.GValue       // out
@@ -1267,15 +1267,15 @@ func ValueSetStructure(value *coreglib.Value, structure *Structure) {
 //
 // The function takes the following parameters:
 //
-//    - minuend: value to subtract from.
-//    - subtrahend: value to subtract.
+//   - minuend: value to subtract from.
+//   - subtrahend: value to subtract.
 //
 // The function returns the following values:
 //
-//    - dest (optional): destination value for the result if the subtraction is
-//      not empty. May be NULL, in which case the resulting set will not be
-//      computed, which can give a fair speedup.
-//    - ok: TRUE if the subtraction is not empty.
+//   - dest (optional): destination value for the result if the subtraction
+//     is not empty. May be NULL, in which case the resulting set will not be
+//     computed, which can give a fair speedup.
+//   - ok: TRUE if the subtraction is not empty.
 //
 func ValueSubtract(minuend, subtrahend *coreglib.Value) (coreglib.Value, bool) {
 	var _arg1 C.GValue   // in
@@ -1305,13 +1305,13 @@ func ValueSubtract(minuend, subtrahend *coreglib.Value) (coreglib.Value, bool) {
 //
 // The function takes the following parameters:
 //
-//    - value1: value to union.
-//    - value2: another value to union.
+//   - value1: value to union.
+//   - value2: another value to union.
 //
 // The function returns the following values:
 //
-//    - dest: destination value.
-//    - ok: TRUE if the union succeeded.
+//   - dest: destination value.
+//   - ok: TRUE if the union succeeded.
 //
 func ValueUnion(value1, value2 *coreglib.Value) (coreglib.Value, bool) {
 	var _arg1 C.GValue   // in
@@ -1503,8 +1503,8 @@ func marshalValueArray(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_ARRAY.
-//    - appendValue: value to append.
+//   - value of type T_TYPE_ARRAY.
+//   - appendValue: value to append.
 //
 func ValueArrayAppendValue(value, appendValue *coreglib.Value) {
 	var _arg1 *C.GValue // out
@@ -1522,11 +1522,11 @@ func ValueArrayAppendValue(value, appendValue *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_ARRAY.
+//   - value of type T_TYPE_ARRAY.
 //
 // The function returns the following values:
 //
-//    - guint: number of values.
+//   - guint: number of values.
 //
 func ValueArrayGetSize(value *coreglib.Value) uint {
 	var _arg1 *C.GValue // out
@@ -1549,12 +1549,12 @@ func ValueArrayGetSize(value *coreglib.Value) uint {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_ARRAY.
-//    - index of value to get from the array.
+//   - value of type T_TYPE_ARRAY.
+//   - index of value to get from the array.
 //
 // The function returns the following values:
 //
-//    - ret: value at the given index.
+//   - ret: value at the given index.
 //
 func ValueArrayGetValue(value *coreglib.Value, index uint) *coreglib.Value {
 	var _arg1 *C.GValue // out
@@ -1579,8 +1579,8 @@ func ValueArrayGetValue(value *coreglib.Value, index uint) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_ARRAY.
-//    - prependValue: value to prepend.
+//   - value of type T_TYPE_ARRAY.
+//   - prependValue: value to prepend.
 //
 func ValueArrayPrependValue(value, prependValue *coreglib.Value) {
 	var _arg1 *C.GValue // out
@@ -1618,8 +1618,8 @@ func marshalValueList(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_LIST.
-//    - appendValue: value to append.
+//   - value of type T_TYPE_LIST.
+//   - appendValue: value to append.
 //
 func ValueListAppendValue(value, appendValue *coreglib.Value) {
 	var _arg1 *C.GValue // out
@@ -1633,18 +1633,18 @@ func ValueListAppendValue(value, appendValue *coreglib.Value) {
 	runtime.KeepAlive(appendValue)
 }
 
-// ValueListConcat concatenates copies of value1 and value2 into a list. Values
-// that are not of type T_TYPE_LIST are treated as if they were lists of length
-// 1. dest will be initialized to the type T_TYPE_LIST.
+// ValueListConcat concatenates copies of value1 and value2 into a list.
+// Values that are not of type T_TYPE_LIST are treated as if they were lists of
+// length 1. dest will be initialized to the type T_TYPE_LIST.
 //
 // The function takes the following parameters:
 //
-//    - value1: #GValue.
-//    - value2: #GValue.
+//   - value1: #GValue.
+//   - value2: #GValue.
 //
 // The function returns the following values:
 //
-//    - dest: uninitialized #GValue to take the result.
+//   - dest: uninitialized #GValue to take the result.
 //
 func ValueListConcat(value1, value2 *coreglib.Value) coreglib.Value {
 	var _arg1 C.GValue  // in
@@ -1669,11 +1669,11 @@ func ValueListConcat(value1, value2 *coreglib.Value) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_LIST.
+//   - value of type T_TYPE_LIST.
 //
 // The function returns the following values:
 //
-//    - guint: number of values.
+//   - guint: number of values.
 //
 func ValueListGetSize(value *coreglib.Value) uint {
 	var _arg1 *C.GValue // out
@@ -1696,12 +1696,12 @@ func ValueListGetSize(value *coreglib.Value) uint {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_LIST.
-//    - index of value to get from the list.
+//   - value of type T_TYPE_LIST.
+//   - index of value to get from the list.
 //
 // The function returns the following values:
 //
-//    - ret: value at the given index.
+//   - ret: value at the given index.
 //
 func ValueListGetValue(value *coreglib.Value, index uint) *coreglib.Value {
 	var _arg1 *C.GValue // out
@@ -1730,12 +1730,12 @@ func ValueListGetValue(value *coreglib.Value, index uint) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value1: #GValue.
-//    - value2: #GValue.
+//   - value1: #GValue.
+//   - value2: #GValue.
 //
 // The function returns the following values:
 //
-//    - dest: uninitialized #GValue to take the result.
+//   - dest: uninitialized #GValue to take the result.
 //
 func ValueListMerge(value1, value2 *coreglib.Value) coreglib.Value {
 	var _arg1 C.GValue  // in
@@ -1760,8 +1760,8 @@ func ValueListMerge(value1, value2 *coreglib.Value) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_LIST.
-//    - prependValue: value to prepend.
+//   - value of type T_TYPE_LIST.
+//   - prependValue: value to prepend.
 //
 func ValueListPrependValue(value, prependValue *coreglib.Value) {
 	var _arg1 *C.GValue // out

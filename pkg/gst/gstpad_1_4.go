@@ -15,11 +15,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ret to get the name of.
+//   - ret to get the name of.
 //
 // The function returns the following values:
 //
-//    - utf8: static string with the name of the pad-link return.
+//   - utf8: static string with the name of the pad-link return.
 //
 func PadLinkGetName(ret PadLinkReturn) string {
 	var _arg1 C.GstPadLinkReturn // out

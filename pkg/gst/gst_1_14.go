@@ -18,8 +18,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): path of the executable that initialized GStreamer, or
-//      NULL if it could not be determined.
+//   - utf8 (optional): path of the executable that initialized GStreamer,
+//     or NULL if it could not be determined.
 //
 func GetMainExecutablePath() string {
 	var _cret *C.gchar // in

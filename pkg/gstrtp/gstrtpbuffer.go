@@ -18,8 +18,8 @@ import "C"
 // RTP_VERSION: supported RTP version 2.
 const RTP_VERSION = 2
 
-// RTPBuffer helper functions makes it easy to parse and create regular Buffer
-// objects that contain RTP payloads. These buffers are typically of
+// RTPBuffer helper functions makes it easy to parse and create regular
+// Buffer objects that contain RTP payloads. These buffers are typically of
 // 'application/x-rtp' Caps.
 //
 // An instance of this type is always passed by reference.
@@ -90,20 +90,20 @@ func (r *RTPBuffer) SetState(state uint) {
 
 // AddExtensionOnebyteHeader adds a RFC 5285 header extension with a one byte
 // header to the end of the RTP header. If there is already a RFC 5285 header
-// extension with a one byte header, the new extension will be appended. It will
-// not work if there is already a header extension that does not follow the
-// mechanism described in RFC 5285 or if there is a header extension with a two
-// bytes header as described in RFC 5285. In that case, use
-// gst_rtp_buffer_add_extension_twobytes_header().
+// extension with a one byte header, the new extension will be appended.
+// It will not work if there is already a header extension that does not
+// follow the mechanism described in RFC 5285 or if there is a header
+// extension with a two bytes header as described in RFC 5285. In that case,
+// use gst_rtp_buffer_add_extension_twobytes_header().
 //
 // The function takes the following parameters:
 //
-//    - id: ID of the header extension (between 1 and 14).
-//    - data: location for data.
+//   - id: ID of the header extension (between 1 and 14).
+//   - data: location for data.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if header extension could be added.
+//   - ok: TRUE if header extension could be added.
 //
 func (rtp *RTPBuffer) AddExtensionOnebyteHeader(id byte, data []byte) bool {
 	var _arg0 *C.GstRTPBuffer // out
@@ -135,21 +135,21 @@ func (rtp *RTPBuffer) AddExtensionOnebyteHeader(id byte, data []byte) bool {
 
 // AddExtensionTwobytesHeader adds a RFC 5285 header extension with a two bytes
 // header to the end of the RTP header. If there is already a RFC 5285 header
-// extension with a two bytes header, the new extension will be appended. It
-// will not work if there is already a header extension that does not follow the
-// mechanism described in RFC 5285 or if there is a header extension with a one
-// byte header as described in RFC 5285. In that case, use
-// gst_rtp_buffer_add_extension_onebyte_header().
+// extension with a two bytes header, the new extension will be appended.
+// It will not work if there is already a header extension that does not
+// follow the mechanism described in RFC 5285 or if there is a header
+// extension with a one byte header as described in RFC 5285. In that case,
+// use gst_rtp_buffer_add_extension_onebyte_header().
 //
 // The function takes the following parameters:
 //
-//    - appbits: application specific bits.
-//    - id: ID of the header extension.
-//    - data: location for data.
+//   - appbits: application specific bits.
+//   - id: ID of the header extension.
+//   - data: location for data.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if header extension could be added.
+//   - ok: TRUE if header extension could be added.
 //
 func (rtp *RTPBuffer) AddExtensionTwobytesHeader(appbits byte, id byte, data []byte) bool {
 	var _arg0 *C.GstRTPBuffer // out
@@ -186,11 +186,11 @@ func (rtp *RTPBuffer) AddExtensionTwobytesHeader(appbits byte, id byte, data []b
 //
 // The function takes the following parameters:
 //
-//    - idx: index of the CSRC to get.
+//   - idx: index of the CSRC to get.
 //
 // The function returns the following values:
 //
-//    - guint32: CSRC at index idx in host order.
+//   - guint32: CSRC at index idx in host order.
 //
 func (rtp *RTPBuffer) Csrc(idx byte) uint32 {
 	var _arg0 *C.GstRTPBuffer // out
@@ -215,7 +215,7 @@ func (rtp *RTPBuffer) Csrc(idx byte) uint32 {
 //
 // The function returns the following values:
 //
-//    - guint8: CSRC count of buffer.
+//   - guint8: CSRC count of buffer.
 //
 func (rtp *RTPBuffer) CsrcCount() byte {
 	var _arg0 *C.GstRTPBuffer // out
@@ -237,7 +237,7 @@ func (rtp *RTPBuffer) CsrcCount() byte {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if buffer has the extension bit set.
+//   - ok: TRUE if buffer has the extension bit set.
 //
 func (rtp *RTPBuffer) Extension() bool {
 	var _arg0 *C.GstRTPBuffer // out
@@ -268,8 +268,9 @@ func (rtp *RTPBuffer) Extension() bool {
 //
 // The function returns the following values:
 //
-//    - bits: location for header bits.
-//    - bytes: new #GBytes if an extension header was present and NULL otherwise.
+//   - bits: location for header bits.
+//   - bytes (optional): new #GBytes if an extension header was present and NULL
+//     otherwise.
 //
 func (rtp *RTPBuffer) ExtensionData() (uint16, *glib.Bytes) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -285,13 +286,15 @@ func (rtp *RTPBuffer) ExtensionData() (uint16, *glib.Bytes) {
 	var _bytes *glib.Bytes // out
 
 	_bits = uint16(_arg1)
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_bytes)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
 
 	return _bits, _bytes
 }
@@ -301,13 +304,13 @@ func (rtp *RTPBuffer) ExtensionData() (uint16, *glib.Bytes) {
 //
 // The function takes the following parameters:
 //
-//    - id: ID of the header extension to be read (between 1 and 14).
-//    - nth: read the nth extension packet with the requested ID.
+//   - id: ID of the header extension to be read (between 1 and 14).
+//   - nth: read the nth extension packet with the requested ID.
 //
 // The function returns the following values:
 //
-//    - data (optional): location for data.
-//    - ok: TRUE if buffer had the requested header extension.
+//   - data (optional): location for data.
+//   - ok: TRUE if buffer had the requested header extension.
 //
 func (rtp *RTPBuffer) ExtensionOnebyteHeader(id byte, nth uint) ([]byte, bool) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -343,14 +346,14 @@ func (rtp *RTPBuffer) ExtensionOnebyteHeader(id byte, nth uint) ([]byte, bool) {
 //
 // The function takes the following parameters:
 //
-//    - id: ID of the header extension to be read (between 1 and 14).
-//    - nth: read the nth extension packet with the requested ID.
+//   - id: ID of the header extension to be read (between 1 and 14).
+//   - nth: read the nth extension packet with the requested ID.
 //
 // The function returns the following values:
 //
-//    - appbits (optional): application specific bits.
-//    - data (optional): location for data.
-//    - ok: TRUE if buffer had the requested header extension.
+//   - appbits (optional): application specific bits.
+//   - data (optional): location for data.
+//   - ok: TRUE if buffer had the requested header extension.
 //
 func (rtp *RTPBuffer) ExtensionTwobytesHeader(id byte, nth uint) (byte, []byte, bool) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -389,7 +392,7 @@ func (rtp *RTPBuffer) ExtensionTwobytesHeader(id byte, nth uint) (byte, []byte, 
 //
 // The function returns the following values:
 //
-//    - guint: total length of the header in buffer.
+//   - guint: total length of the header in buffer.
 //
 func (rtp *RTPBuffer) HeaderLen() uint {
 	var _arg0 *C.GstRTPBuffer // out
@@ -411,7 +414,7 @@ func (rtp *RTPBuffer) HeaderLen() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if buffer has the marker bit set.
+//   - ok: TRUE if buffer has the marker bit set.
 //
 func (rtp *RTPBuffer) Marker() bool {
 	var _arg0 *C.GstRTPBuffer // out
@@ -435,7 +438,7 @@ func (rtp *RTPBuffer) Marker() bool {
 //
 // The function returns the following values:
 //
-//    - guint: total length of the packet in buffer.
+//   - guint: total length of the packet in buffer.
 //
 func (rtp *RTPBuffer) PacketLen() uint {
 	var _arg0 *C.GstRTPBuffer // out
@@ -457,7 +460,7 @@ func (rtp *RTPBuffer) PacketLen() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if buffer has the padding bit set.
+//   - ok: TRUE if buffer has the padding bit set.
 //
 func (rtp *RTPBuffer) Padding() bool {
 	var _arg0 *C.GstRTPBuffer // out
@@ -483,7 +486,7 @@ func (rtp *RTPBuffer) Padding() bool {
 //
 // The function returns the following values:
 //
-//    - buffer: new buffer with the data of the payload.
+//   - buffer: new buffer with the data of the payload.
 //
 func (rtp *RTPBuffer) PayloadBuffer() *gst.Buffer {
 	var _arg0 *C.GstRTPBuffer // out
@@ -513,7 +516,7 @@ func (rtp *RTPBuffer) PayloadBuffer() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - bytes: new #GBytes containing the payload data in rtp.
+//   - bytes (optional): new #GBytes containing the payload data in rtp.
 //
 func (rtp *RTPBuffer) Payload() *glib.Bytes {
 	var _arg0 *C.GstRTPBuffer // out
@@ -526,13 +529,15 @@ func (rtp *RTPBuffer) Payload() *glib.Bytes {
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_bytes)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
 
 	return _bytes
 }
@@ -541,7 +546,7 @@ func (rtp *RTPBuffer) Payload() *glib.Bytes {
 //
 // The function returns the following values:
 //
-//    - guint: length of the payload in buffer.
+//   - guint: length of the payload in buffer.
 //
 func (rtp *RTPBuffer) PayloadLen() uint {
 	var _arg0 *C.GstRTPBuffer // out
@@ -565,12 +570,12 @@ func (rtp *RTPBuffer) PayloadLen() uint {
 //
 // The function takes the following parameters:
 //
-//    - offset in the payload.
-//    - len: length in the payload.
+//   - offset in the payload.
+//   - len: length in the payload.
 //
 // The function returns the following values:
 //
-//    - buffer: new buffer with the specified data of the payload.
+//   - buffer: new buffer with the specified data of the payload.
 //
 func (rtp *RTPBuffer) PayloadSubbuffer(offset uint, len uint) *gst.Buffer {
 	var _arg0 *C.GstRTPBuffer // out
@@ -604,7 +609,7 @@ func (rtp *RTPBuffer) PayloadSubbuffer(offset uint, len uint) *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - guint8: payload type.
+//   - guint8: payload type.
 //
 func (rtp *RTPBuffer) PayloadType() byte {
 	var _arg0 *C.GstRTPBuffer // out
@@ -626,7 +631,7 @@ func (rtp *RTPBuffer) PayloadType() byte {
 //
 // The function returns the following values:
 //
-//    - guint16: sequence number in host order.
+//   - guint16: sequence number in host order.
 //
 func (rtp *RTPBuffer) Seq() uint16 {
 	var _arg0 *C.GstRTPBuffer // out
@@ -648,7 +653,7 @@ func (rtp *RTPBuffer) Seq() uint16 {
 //
 // The function returns the following values:
 //
-//    - guint32: SSRC of buffer in host order.
+//   - guint32: SSRC of buffer in host order.
 //
 func (rtp *RTPBuffer) Ssrc() uint32 {
 	var _arg0 *C.GstRTPBuffer // out
@@ -670,7 +675,7 @@ func (rtp *RTPBuffer) Ssrc() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint32: timestamp in host order.
+//   - guint32: timestamp in host order.
 //
 func (rtp *RTPBuffer) Timestamp() uint32 {
 	var _arg0 *C.GstRTPBuffer // out
@@ -692,7 +697,7 @@ func (rtp *RTPBuffer) Timestamp() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint8: version of buffer.
+//   - guint8: version of buffer.
 //
 func (rtp *RTPBuffer) Version() byte {
 	var _arg0 *C.GstRTPBuffer // out
@@ -717,7 +722,7 @@ func (rtp *RTPBuffer) Version() byte {
 //
 // The function takes the following parameters:
 //
-//    - len: new amount of padding.
+//   - len: new amount of padding.
 //
 func (rtp *RTPBuffer) PadTo(len uint) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -750,8 +755,8 @@ func (rtp *RTPBuffer) RemoveExtensionData() {
 //
 // The function takes the following parameters:
 //
-//    - idx: CSRC index to set.
-//    - csrc: CSRC in host order to set at idx.
+//   - idx: CSRC index to set.
+//   - csrc: CSRC in host order to set at idx.
 //
 func (rtp *RTPBuffer) SetCsrc(idx byte, csrc uint32) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -772,7 +777,7 @@ func (rtp *RTPBuffer) SetCsrc(idx byte, csrc uint32) {
 //
 // The function takes the following parameters:
 //
-//    - extension: new extension.
+//   - extension: new extension.
 //
 func (rtp *RTPBuffer) SetExtension(extension bool) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -796,13 +801,13 @@ func (rtp *RTPBuffer) SetExtension(extension bool) {
 //
 // The function takes the following parameters:
 //
-//    - bits specific for the extension.
-//    - length that counts the number of 32-bit words in the extension, excluding
-//      the extension header ( therefore zero is a valid length).
+//   - bits specific for the extension.
+//   - length that counts the number of 32-bit words in the extension, excluding
+//     the extension header ( therefore zero is a valid length).
 //
 // The function returns the following values:
 //
-//    - ok: true if done.
+//   - ok: true if done.
 //
 func (rtp *RTPBuffer) SetExtensionData(bits uint16, length uint16) bool {
 	var _arg0 *C.GstRTPBuffer // out
@@ -832,7 +837,7 @@ func (rtp *RTPBuffer) SetExtensionData(bits uint16, length uint16) bool {
 //
 // The function takes the following parameters:
 //
-//    - marker: new marker.
+//   - marker: new marker.
 //
 func (rtp *RTPBuffer) SetMarker(marker bool) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -853,7 +858,7 @@ func (rtp *RTPBuffer) SetMarker(marker bool) {
 //
 // The function takes the following parameters:
 //
-//    - len: new packet length.
+//   - len: new packet length.
 //
 func (rtp *RTPBuffer) SetPacketLen(len uint) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -871,7 +876,7 @@ func (rtp *RTPBuffer) SetPacketLen(len uint) {
 //
 // The function takes the following parameters:
 //
-//    - padding: new padding.
+//   - padding: new padding.
 //
 func (rtp *RTPBuffer) SetPadding(padding bool) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -892,7 +897,7 @@ func (rtp *RTPBuffer) SetPadding(padding bool) {
 //
 // The function takes the following parameters:
 //
-//    - payloadType: new type.
+//   - payloadType: new type.
 //
 func (rtp *RTPBuffer) SetPayloadType(payloadType byte) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -910,7 +915,7 @@ func (rtp *RTPBuffer) SetPayloadType(payloadType byte) {
 //
 // The function takes the following parameters:
 //
-//    - seq: new sequence number.
+//   - seq: new sequence number.
 //
 func (rtp *RTPBuffer) SetSeq(seq uint16) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -928,7 +933,7 @@ func (rtp *RTPBuffer) SetSeq(seq uint16) {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: new SSRC.
+//   - ssrc: new SSRC.
 //
 func (rtp *RTPBuffer) SetSsrc(ssrc uint32) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -946,7 +951,7 @@ func (rtp *RTPBuffer) SetSsrc(ssrc uint32) {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: new timestamp.
+//   - timestamp: new timestamp.
 //
 func (rtp *RTPBuffer) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -964,7 +969,7 @@ func (rtp *RTPBuffer) SetTimestamp(timestamp uint32) {
 //
 // The function takes the following parameters:
 //
-//    - version: new version.
+//   - version: new version.
 //
 func (rtp *RTPBuffer) SetVersion(version byte) {
 	var _arg0 *C.GstRTPBuffer // out
@@ -996,10 +1001,10 @@ func (rtp *RTPBuffer) Unmap() {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - payloadLen: length of the payload.
-//    - padLen: amount of padding.
-//    - csrcCount: number of CSRC entries.
+//   - buffer: Buffer.
+//   - payloadLen: length of the payload.
+//   - padLen: amount of padding.
+//   - csrcCount: number of CSRC entries.
 //
 func RTPBufferAllocateData(buffer *gst.Buffer, payloadLen uint, padLen, csrcCount byte) {
 	var _arg1 *C.GstBuffer // out
@@ -1024,11 +1029,11 @@ func RTPBufferAllocateData(buffer *gst.Buffer, payloadLen uint, padLen, csrcCoun
 //
 // The function takes the following parameters:
 //
-//    - csrcCount: number of CSRC entries.
+//   - csrcCount: number of CSRC entries.
 //
 // The function returns the following values:
 //
-//    - guint: length of an RTP header with csrc_count CSRC entries.
+//   - guint: length of an RTP header with csrc_count CSRC entries.
 //
 func RTPBufferCalcHeaderLen(csrcCount byte) uint {
 	var _arg1 C.guint8 // out
@@ -1046,19 +1051,19 @@ func RTPBufferCalcHeaderLen(csrcCount byte) uint {
 	return _guint
 }
 
-// RTPBufferCalcPacketLen: calculate the total length of an RTP packet with a
-// payload size of payload_len, a padding of pad_len and a csrc_count CSRC
+// RTPBufferCalcPacketLen: calculate the total length of an RTP packet with
+// a payload size of payload_len, a padding of pad_len and a csrc_count CSRC
 // entries.
 //
 // The function takes the following parameters:
 //
-//    - payloadLen: length of the payload.
-//    - padLen: amount of padding.
-//    - csrcCount: number of CSRC entries.
+//   - payloadLen: length of the payload.
+//   - padLen: amount of padding.
+//   - csrcCount: number of CSRC entries.
 //
 // The function returns the following values:
 //
-//    - guint: total length of an RTP header with given parameters.
+//   - guint: total length of an RTP header with given parameters.
 //
 func RTPBufferCalcPacketLen(payloadLen uint, padLen, csrcCount byte) uint {
 	var _arg1 C.guint  // out
@@ -1087,13 +1092,13 @@ func RTPBufferCalcPacketLen(payloadLen uint, padLen, csrcCount byte) uint {
 //
 // The function takes the following parameters:
 //
-//    - packetLen: length of the total RTP packet.
-//    - padLen: amount of padding.
-//    - csrcCount: number of CSRC entries.
+//   - packetLen: length of the total RTP packet.
+//   - padLen: amount of padding.
+//   - csrcCount: number of CSRC entries.
 //
 // The function returns the following values:
 //
-//    - guint: length of the payload of an RTP packet with given parameters.
+//   - guint: length of the payload of an RTP packet with given parameters.
 //
 func RTPBufferCalcPayloadLen(packetLen uint, padLen, csrcCount byte) uint {
 	var _arg1 C.guint  // out
@@ -1123,13 +1128,13 @@ func RTPBufferCalcPayloadLen(packetLen uint, padLen, csrcCount byte) uint {
 //
 // The function takes the following parameters:
 //
-//    - seqnum1: sequence number.
-//    - seqnum2: sequence number.
+//   - seqnum1: sequence number.
+//   - seqnum2: sequence number.
 //
 // The function returns the following values:
 //
-//    - gint: negative value if seqnum1 is bigger than seqnum2, 0 if they are
-//      equal or a positive value if seqnum1 is smaller than segnum2.
+//   - gint: negative value if seqnum1 is bigger than seqnum2, 0 if they are
+//     equal or a positive value if seqnum1 is smaller than segnum2.
 //
 func RTPBufferCompareSeqnum(seqnum1, seqnum2 uint16) int {
 	var _arg1 C.guint16 // out
@@ -1155,12 +1160,12 @@ func RTPBufferCompareSeqnum(seqnum1, seqnum2 uint16) int {
 //
 // The function takes the following parameters:
 //
-//    - payloadType: static payload type.
+//   - payloadType: static payload type.
 //
 // The function returns the following values:
 //
-//    - guint32: default clock rate or -1 if the payload type is not static or
-//      the clock-rate is undefined.
+//   - guint32: default clock rate or -1 if the payload type is not static or
+//     the clock-rate is undefined.
 //
 func RTPBufferDefaultClockRate(payloadType byte) uint32 {
 	var _arg1 C.guint8  // out
@@ -1182,13 +1187,13 @@ func RTPBufferDefaultClockRate(payloadType byte) uint32 {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - flags: MapFlags.
+//   - buffer: Buffer.
+//   - flags: MapFlags.
 //
 // The function returns the following values:
 //
-//    - rtp: RTPBuffer.
-//    - ok: TRUE if buffer could be mapped.
+//   - rtp: RTPBuffer.
+//   - ok: TRUE if buffer could be mapped.
 //
 func RTPBufferMap(buffer *gst.Buffer, flags gst.MapFlags) (*RTPBuffer, bool) {
 	var _arg1 *C.GstBuffer   // out
@@ -1220,14 +1225,14 @@ func RTPBufferMap(buffer *gst.Buffer, flags gst.MapFlags) (*RTPBuffer, bool) {
 //
 // The function takes the following parameters:
 //
-//    - payloadLen: length of the payload.
-//    - padLen: amount of padding.
-//    - csrcCount: number of CSRC entries.
+//   - payloadLen: length of the payload.
+//   - padLen: amount of padding.
+//   - csrcCount: number of CSRC entries.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer that can hold an RTP packet with given
-//      parameters.
+//   - buffer: newly allocated buffer that can hold an RTP packet with given
+//     parameters.
 //
 func NewRTPBufferAllocate(payloadLen uint, padLen, csrcCount byte) *gst.Buffer {
 	var _arg1 C.guint      // out
@@ -1259,18 +1264,18 @@ func NewRTPBufferAllocate(payloadLen uint, padLen, csrcCount byte) *gst.Buffer {
 
 // NewRTPBufferAllocateLen: create a new Buffer that can hold an RTP packet that
 // is exactly packet_len long. The length of the payload depends on pad_len and
-// csrc_count and can be calculated with gst_rtp_buffer_calc_payload_len(). All
-// RTP header fields will be set to 0/FALSE.
+// csrc_count and can be calculated with gst_rtp_buffer_calc_payload_len().
+// All RTP header fields will be set to 0/FALSE.
 //
 // The function takes the following parameters:
 //
-//    - packetLen: total length of the packet.
-//    - padLen: amount of padding.
-//    - csrcCount: number of CSRC entries.
+//   - packetLen: total length of the packet.
+//   - padLen: amount of padding.
+//   - csrcCount: number of CSRC entries.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer that can hold an RTP packet of packet_len.
+//   - buffer: newly allocated buffer that can hold an RTP packet of packet_len.
 //
 func NewRTPBufferAllocateLen(packetLen uint, padLen, csrcCount byte) *gst.Buffer {
 	var _arg1 C.guint      // out
@@ -1306,11 +1311,11 @@ func NewRTPBufferAllocateLen(packetLen uint, padLen, csrcCount byte) *gst.Buffer
 //
 // The function takes the following parameters:
 //
-//    - data for the new buffer.
+//   - data for the new buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer with a copy of data and of size len.
+//   - buffer: newly allocated buffer with a copy of data and of size len.
 //
 func NewRTPBufferCopyData(data []byte) *gst.Buffer {
 	var _arg1 C.gconstpointer // out
@@ -1344,11 +1349,11 @@ func NewRTPBufferCopyData(data []byte) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - data: data for the new buffer.
+//   - data: data for the new buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer with data and of size len.
+//   - buffer: newly allocated buffer with data and of size len.
 //
 func NewRTPBufferTakeData(data []byte) *gst.Buffer {
 	var _arg1 C.gpointer // out

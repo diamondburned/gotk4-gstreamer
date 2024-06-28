@@ -55,8 +55,8 @@ const (
 	// VideoInterlaceModeFields: 2 fields are stored in one buffer, use the
 	// frame ID to get access to the required field. For multiview (the 'views'
 	// property > 1) the fields of view N can be found at frame ID (N * 2) and
-	// (N * 2) + 1. Each field has only half the amount of lines as noted in the
-	// height property. This mode requires multiple GstVideoMeta metadata to
+	// (N * 2) + 1. Each field has only half the amount of lines as noted in
+	// the height property. This mode requires multiple GstVideoMeta metadata to
 	// describe the fields.
 	VideoInterlaceModeFields
 	// VideoInterlaceModeAlternate: 1 field is stored in one buffer,
@@ -90,8 +90,8 @@ func (v VideoInterlaceMode) String() string {
 }
 
 // VideoMultiviewFramePacking represents the subset of VideoMultiviewMode values
-// that can be applied to any video frame without needing extra metadata. It can
-// be used by elements that provide a property to override the multiview
+// that can be applied to any video frame without needing extra metadata.
+// It can be used by elements that provide a property to override the multiview
 // interpretation of a video stream when the video doesn't contain any markers.
 //
 // This enum is used (for example) on playbin, to re-interpret a played video
@@ -204,8 +204,8 @@ const (
 	// separate frames alternately.
 	VideoMultiviewModeFrameByFrame VideoMultiviewMode = 32
 	// VideoMultiviewModeMultiviewFrameByFrame: multiple independent views are
-	// provided in separate frames in sequence. This method only applies to raw
-	// video buffers at the moment. Specific view identification is via the
+	// provided in separate frames in sequence. This method only applies to
+	// raw video buffers at the moment. Specific view identification is via the
 	// GstVideoMultiviewMeta and VideoMeta(s) on raw video buffers.
 	VideoMultiviewModeMultiviewFrameByFrame VideoMultiviewMode = 33
 	// VideoMultiviewModeSeparated: multiple views are provided as separate
@@ -316,26 +316,26 @@ const (
 	// VideoMultiviewFlagsRightViewFirst: for stereo streams, the normal
 	// arrangement of left and right views is reversed.
 	VideoMultiviewFlagsRightViewFirst VideoMultiviewFlags = 0b1
-	// VideoMultiviewFlagsLeftFlipped: left view is vertically mirrored.
-	VideoMultiviewFlagsLeftFlipped VideoMultiviewFlags = 0b10
-	// VideoMultiviewFlagsLeftFlopped: left view is horizontally mirrored.
-	VideoMultiviewFlagsLeftFlopped VideoMultiviewFlags = 0b100
-	// VideoMultiviewFlagsRightFlipped: right view is vertically mirrored.
-	VideoMultiviewFlagsRightFlipped VideoMultiviewFlags = 0b1000
 	// VideoMultiviewFlagsRightFlopped: right view is horizontally mirrored.
 	VideoMultiviewFlagsRightFlopped VideoMultiviewFlags = 0b10000
 	// VideoMultiviewFlagsHalfAspect: for frame-packed multiview modes,
-	// indicates that the individual views have been encoded with half the true
-	// width or height and should be scaled back up for display. This flag is
-	// used for overriding input layout interpretation by adjusting
+	// indicates that the individual views have been encoded with half
+	// the true width or height and should be scaled back up for display.
+	// This flag is used for overriding input layout interpretation by adjusting
 	// pixel-aspect-ratio. For side-by-side, column interleaved or checkerboard
 	// packings, the pixel width will be doubled. For row interleaved and
 	// top-bottom encodings, pixel height will be doubled.
 	VideoMultiviewFlagsHalfAspect VideoMultiviewFlags = 0b100000000000000
+	// VideoMultiviewFlagsLeftFlipped: left view is vertically mirrored.
+	VideoMultiviewFlagsLeftFlipped VideoMultiviewFlags = 0b10
 	// VideoMultiviewFlagsMixedMono: video stream contains both mono and
 	// multiview portions, signalled on each buffer by the absence or presence
 	// of the GST_VIDEO_BUFFER_FLAG_MULTIPLE_VIEW buffer flag.
 	VideoMultiviewFlagsMixedMono VideoMultiviewFlags = 0b1000000000000000
+	// VideoMultiviewFlagsLeftFlopped: left view is horizontally mirrored.
+	VideoMultiviewFlagsLeftFlopped VideoMultiviewFlags = 0b100
+	// VideoMultiviewFlagsRightFlipped: right view is vertically mirrored.
+	VideoMultiviewFlagsRightFlipped VideoMultiviewFlags = 0b1000
 )
 
 func marshalVideoMultiviewFlags(p uintptr) (interface{}, error) {
@@ -360,18 +360,18 @@ func (v VideoMultiviewFlags) String() string {
 			builder.WriteString("None|")
 		case VideoMultiviewFlagsRightViewFirst:
 			builder.WriteString("RightViewFirst|")
-		case VideoMultiviewFlagsLeftFlipped:
-			builder.WriteString("LeftFlipped|")
-		case VideoMultiviewFlagsLeftFlopped:
-			builder.WriteString("LeftFlopped|")
-		case VideoMultiviewFlagsRightFlipped:
-			builder.WriteString("RightFlipped|")
 		case VideoMultiviewFlagsRightFlopped:
 			builder.WriteString("RightFlopped|")
 		case VideoMultiviewFlagsHalfAspect:
 			builder.WriteString("HalfAspect|")
+		case VideoMultiviewFlagsLeftFlipped:
+			builder.WriteString("LeftFlipped|")
 		case VideoMultiviewFlagsMixedMono:
 			builder.WriteString("MixedMono|")
+		case VideoMultiviewFlagsLeftFlopped:
+			builder.WriteString("LeftFlopped|")
+		case VideoMultiviewFlagsRightFlipped:
+			builder.WriteString("RightFlipped|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoMultiviewFlags(0b%b)|", bit))
 		}
@@ -440,13 +440,15 @@ func NewVideoInfoFromCaps(caps *gst.Caps) *VideoInfo {
 
 	var _videoInfo *VideoInfo // out
 
-	_videoInfo = (*VideoInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoInfo)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_info_free((*C.GstVideoInfo)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoInfo = (*VideoInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoInfo)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_info_free((*C.GstVideoInfo)(intern.C))
+			},
+		)
+	}
 
 	return _videoInfo
 }
@@ -632,12 +634,12 @@ func (v *VideoInfo) SetFPSD(fpsD int) {
 //
 // The function takes the following parameters:
 //
-//    - align: alignment parameters.
+//   - align: alignment parameters.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if alignment could not be applied, e.g. because the size of a
-//      frame can't be represented as a 32 bit integer (Since: 1.12).
+//   - ok: FALSE if alignment could not be applied, e.g. because the size of a
+//     frame can't be represented as a 32 bit integer (Since: 1.12).
 //
 func (info *VideoInfo) Align(align *VideoAlignment) bool {
 	var _arg0 *C.GstVideoInfo      // out
@@ -673,13 +675,13 @@ func (info *VideoInfo) Align(align *VideoAlignment) bool {
 //
 // The function takes the following parameters:
 //
-//    - align: alignment parameters.
+//   - align: alignment parameters.
 //
 // The function returns the following values:
 //
-//    - planeSize (optional): array used to store the plane sizes.
-//    - ok: FALSE if alignment could not be applied, e.g. because the size of a
-//      frame can't be represented as a 32 bit integer.
+//   - planeSize (optional): array used to store the plane sizes.
+//   - ok: FALSE if alignment could not be applied, e.g. because the size of a
+//     frame can't be represented as a 32 bit integer.
 //
 func (info *VideoInfo) AlignFull(align *VideoAlignment) (uint, bool) {
 	var _arg0 *C.GstVideoInfo      // out
@@ -712,14 +714,14 @@ func (info *VideoInfo) AlignFull(align *VideoAlignment) (uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - srcFormat of the src_value.
-//    - srcValue: value to convert.
-//    - destFormat of the dest_value.
+//   - srcFormat of the src_value.
+//   - srcValue: value to convert.
+//   - destFormat of the dest_value.
 //
 // The function returns the following values:
 //
-//    - destValue: pointer to destination value.
-//    - ok: TRUE if the conversion was successful.
+//   - destValue: pointer to destination value.
+//   - ok: TRUE if the conversion was successful.
 //
 func (info *VideoInfo) Convert(srcFormat gst.Format, srcValue int64, destFormat gst.Format) (int64, bool) {
 	var _arg0 *C.GstVideoInfo // out
@@ -755,7 +757,7 @@ func (info *VideoInfo) Convert(srcFormat gst.Format, srcValue int64, destFormat 
 //
 // The function returns the following values:
 //
-//    - videoInfo: new VideoInfo. free with gst_video_info_free.
+//   - videoInfo: new VideoInfo. free with gst_video_info_free.
 //
 func (info *VideoInfo) Copy() *VideoInfo {
 	var _arg0 *C.GstVideoInfo // out
@@ -783,11 +785,11 @@ func (info *VideoInfo) Copy() *VideoInfo {
 //
 // The function takes the following parameters:
 //
-//    - other: VideoInfo.
+//   - other: VideoInfo.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if info and other are equal, else FALSE.
+//   - ok: TRUE if info and other are equal, else FALSE.
 //
 func (info *VideoInfo) IsEqual(other *VideoInfo) bool {
 	var _arg0 *C.GstVideoInfo // out
@@ -819,14 +821,14 @@ func (info *VideoInfo) IsEqual(other *VideoInfo) bool {
 //
 // The function takes the following parameters:
 //
-//    - format: format.
-//    - width: width.
-//    - height: height.
+//   - format: format.
+//   - width: width.
+//   - height: height.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the returned video info is invalid, e.g. because the size of
-//      a frame can't be represented as a 32 bit integer (Since: 1.12).
+//   - ok: FALSE if the returned video info is invalid, e.g. because the size of
+//     a frame can't be represented as a 32 bit integer (Since: 1.12).
 //
 func (info *VideoInfo) SetFormat(format VideoFormat, width uint, height uint) bool {
 	var _arg0 *C.GstVideoInfo  // out
@@ -860,15 +862,15 @@ func (info *VideoInfo) SetFormat(format VideoFormat, width uint, height uint) bo
 //
 // The function takes the following parameters:
 //
-//    - format: format.
-//    - mode: VideoInterlaceMode.
-//    - width: width.
-//    - height: height.
+//   - format: format.
+//   - mode: VideoInterlaceMode.
+//   - width: width.
+//   - height: height.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the returned video info is invalid, e.g. because the size of
-//      a frame can't be represented as a 32 bit integer.
+//   - ok: FALSE if the returned video info is invalid, e.g. because the size of
+//     a frame can't be represented as a 32 bit integer.
 //
 func (info *VideoInfo) SetInterlacedFormat(format VideoFormat, mode VideoInterlaceMode, width uint, height uint) bool {
 	var _arg0 *C.GstVideoInfo         // out
@@ -904,7 +906,7 @@ func (info *VideoInfo) SetInterlacedFormat(format VideoFormat, mode VideoInterla
 //
 // The function returns the following values:
 //
-//    - caps: new Caps containing the info of info.
+//   - caps: new Caps containing the info of info.
 //
 func (info *VideoInfo) ToCaps() *gst.Caps {
 	var _arg0 *C.GstVideoInfo // out
@@ -932,12 +934,12 @@ func (info *VideoInfo) ToCaps() *gst.Caps {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - info: VideoInfo.
-//    - ok: TRUE if caps could be parsed.
+//   - info: VideoInfo.
+//   - ok: TRUE if caps could be parsed.
 //
 func VideoInfoFromCaps(caps *gst.Caps) (*VideoInfo, bool) {
 	var _arg1 C.GstVideoInfo // in
@@ -964,7 +966,7 @@ func VideoInfoFromCaps(caps *gst.Caps) (*VideoInfo, bool) {
 //
 // The function returns the following values:
 //
-//    - info: VideoInfo.
+//   - info: VideoInfo.
 //
 func VideoInfoInit() *VideoInfo {
 	var _arg1 C.GstVideoInfo // in

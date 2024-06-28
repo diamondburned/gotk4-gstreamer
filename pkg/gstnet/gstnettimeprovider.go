@@ -93,14 +93,14 @@ func marshalNetTimeProvider(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - clock to export over the network.
-//    - address (optional) to bind on as a dotted quad (xxx.xxx.xxx.xxx), IPv6
-//      address, or NULL to bind to all addresses.
-//    - port to bind on, or 0 to let the kernel choose.
+//   - clock to export over the network.
+//   - address (optional) to bind on as a dotted quad (xxx.xxx.xxx.xxx),
+//     IPv6 address, or NULL to bind to all addresses.
+//   - port to bind on, or 0 to let the kernel choose.
 //
 // The function returns the following values:
 //
-//    - netTimeProvider: new NetTimeProvider, or NULL on error.
+//   - netTimeProvider (optional): new NetTimeProvider, or NULL on error.
 //
 func NewNetTimeProvider(clock gst.Clocker, address string, port int) *NetTimeProvider {
 	var _arg1 *C.GstClock           // out
@@ -122,7 +122,9 @@ func NewNetTimeProvider(clock gst.Clocker, address string, port int) *NetTimePro
 
 	var _netTimeProvider *NetTimeProvider // out
 
-	_netTimeProvider = wrapNetTimeProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_netTimeProvider = wrapNetTimeProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _netTimeProvider
 }

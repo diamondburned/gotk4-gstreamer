@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display: existing GLDisplay.
+//   - display: existing GLDisplay.
 //
 // The function returns the following values:
 //
-//    - glDisplayEGL: new GLDisplayEGL.
+//   - glDisplayEGL (optional): new GLDisplayEGL.
 //
 func GLDisplayEGLFromGLDisplay(display *gstgl.GLDisplay) *GLDisplayEGL {
 	var _arg1 *C.GstGLDisplay    // out
@@ -39,7 +39,9 @@ func GLDisplayEGLFromGLDisplay(display *gstgl.GLDisplay) *GLDisplayEGL {
 
 	var _glDisplayEGL *GLDisplayEGL // out
 
-	_glDisplayEGL = wrapGLDisplayEGL(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_glDisplayEGL = wrapGLDisplayEGL(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _glDisplayEGL
 }
@@ -50,12 +52,12 @@ func GLDisplayEGLFromGLDisplay(display *gstgl.GLDisplay) *GLDisplayEGL {
 //
 // The function takes the following parameters:
 //
-//    - typ: GLDisplayType.
-//    - display: pointer to a display (or 0).
+//   - typ: GLDisplayType.
+//   - display: pointer to a display (or 0).
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): EGLDisplay or EGL_NO_DISPLAY.
+//   - gpointer (optional): EGLDisplay or EGL_NO_DISPLAY.
 //
 func GLDisplayEGLGetFromNative(typ gstgl.GLDisplayType, display uintptr) unsafe.Pointer {
 	var _arg1 C.GstGLDisplayType // out
@@ -63,7 +65,7 @@ func GLDisplayEGLGetFromNative(typ gstgl.GLDisplayType, display uintptr) unsafe.
 	var _cret C.gpointer         // in
 
 	_arg1 = C.GstGLDisplayType(typ)
-	_arg2 = (C.guintptr)(unsafe.Pointer(display))
+	_arg2 = C.guintptr(display)
 
 	_cret = C.gst_gl_display_egl_get_from_native(_arg1, _arg2)
 	runtime.KeepAlive(typ)

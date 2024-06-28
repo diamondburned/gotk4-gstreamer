@@ -38,8 +38,8 @@ func defaultGLFramebufferOverrides(v *GLFramebuffer) GLFramebufferOverrides {
 // GLFramebuffer represents and holds an OpenGL framebuffer object with it's
 // associated attachments.
 //
-// A GLFramebuffer can be created with gst_gl_framebuffer_new() or
-// gst_gl_framebuffer_new_with_default_depth() and bound with
+// A GLFramebuffer can be created with gst_gl_framebuffer_new()
+// or gst_gl_framebuffer_new_with_default_depth() and bound with
 // gst_gl_framebuffer_bind(). Other resources can be bound with
 // gst_gl_framebuffer_attach()
 //
@@ -89,11 +89,11 @@ func marshalGLFramebuffer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glFramebuffer: new GLFramebuffer.
+//   - glFramebuffer: new GLFramebuffer.
 //
 func NewGLFramebuffer(context GLContexter) *GLFramebuffer {
 	var _arg1 *C.GstGLContext     // out
@@ -116,13 +116,13 @@ func NewGLFramebuffer(context GLContexter) *GLFramebuffer {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - width for the depth buffer.
-//    - height: for the depth buffer.
+//   - context: GLContext.
+//   - width for the depth buffer.
+//   - height: for the depth buffer.
 //
 // The function returns the following values:
 //
-//    - glFramebuffer: new GLFramebuffer with a depth buffer of width and height.
+//   - glFramebuffer: new GLFramebuffer with a depth buffer of width and height.
 //
 func NewGLFramebufferWithDefaultDepth(context GLContexter, width, height uint) *GLFramebuffer {
 	var _arg1 *C.GstGLContext     // out
@@ -152,8 +152,8 @@ func NewGLFramebufferWithDefaultDepth(context GLContexter, width, height uint) *
 //
 // The function takes the following parameters:
 //
-//    - attachmentPoint: openGL attachment point to bind mem to.
-//    - mem: memory object to bind to attachment_point.
+//   - attachmentPoint: openGL attachment point to bind mem to.
+//   - mem: memory object to bind to attachment_point.
 //
 func (fb *GLFramebuffer) Attach(attachmentPoint uint, mem *GLBaseMemory) {
 	var _arg0 *C.GstGLFramebuffer // out
@@ -187,8 +187,8 @@ func (fb *GLFramebuffer) Bind() {
 //
 // The function returns the following values:
 //
-//    - width (optional): output width.
-//    - height (optional): output height.
+//   - width (optional): output width.
+//   - height (optional): output height.
 //
 func (fb *GLFramebuffer) EffectiveDimensions() (width, height uint) {
 	var _arg0 *C.GstGLFramebuffer // out
@@ -211,7 +211,7 @@ func (fb *GLFramebuffer) EffectiveDimensions() (width, height uint) {
 
 // The function returns the following values:
 //
-//    - guint: openGL id for fb.
+//   - guint: openGL id for fb.
 //
 func (fb *GLFramebuffer) ID() uint {
 	var _arg0 *C.GstGLFramebuffer // out

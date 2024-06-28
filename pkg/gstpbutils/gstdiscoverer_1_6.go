@@ -97,11 +97,11 @@ func (d DiscovererSerializeFlags) Has(other DiscovererSerializeFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - variant to deserialize into a DiscovererInfo.
+//   - variant to deserialize into a DiscovererInfo.
 //
 // The function returns the following values:
 //
-//    - discovererInfo: newly-allocated DiscovererInfo.
+//   - discovererInfo: newly-allocated DiscovererInfo.
 //
 func DiscovererInfoFromVariant(variant *glib.Variant) *DiscovererInfo {
 	var _arg1 *C.GVariant          // out

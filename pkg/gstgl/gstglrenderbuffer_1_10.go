@@ -29,11 +29,11 @@ func init() {
 
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - ok: whether the memory at mem is a GLRenderbuffer.
+//   - ok: whether the memory at mem is a GLRenderbuffer.
 //
 func IsGLRenderbuffer(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -114,7 +114,7 @@ func (g *GLRenderbuffer) SetRenderbufferWrapped(renderbufferWrapped bool) {
 
 // The function returns the following values:
 //
-//    - glFormat of gl_mem.
+//   - glFormat of gl_mem.
 //
 func (glMem *GLRenderbuffer) Format() GLFormat {
 	var _arg0 *C.GstGLRenderbuffer // out
@@ -134,7 +134,7 @@ func (glMem *GLRenderbuffer) Format() GLFormat {
 
 // The function returns the following values:
 //
-//    - gint: configured height of gl_mem.
+//   - gint: configured height of gl_mem.
 //
 func (glMem *GLRenderbuffer) Height() int {
 	var _arg0 *C.GstGLRenderbuffer // out
@@ -154,7 +154,7 @@ func (glMem *GLRenderbuffer) Height() int {
 
 // The function returns the following values:
 //
-//    - guint: openGL renderbuffer handle of gl_mem.
+//   - guint: openGL renderbuffer handle of gl_mem.
 //
 func (glMem *GLRenderbuffer) ID() uint {
 	var _arg0 *C.GstGLRenderbuffer // out
@@ -174,7 +174,7 @@ func (glMem *GLRenderbuffer) ID() uint {
 
 // The function returns the following values:
 //
-//    - gint: configured width of gl_mem.
+//   - gint: configured width of gl_mem.
 //
 func (glMem *GLRenderbuffer) Width() int {
 	var _arg0 *C.GstGLRenderbuffer // out

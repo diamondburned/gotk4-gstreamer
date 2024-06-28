@@ -16,13 +16,13 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
-//    - name: name.
+//   - element to setup pad on.
+//   - tmpl: pad template.
+//   - name: name.
 //
 // The function returns the following values:
 //
-//    - pad: new pad.
+//   - pad: new pad.
 //
 func CheckSetupSinkPadByNameFromTemplate(element gst.Elementer, tmpl *gst.PadTemplate, name string) *gst.Pad {
 	var _arg1 *C.GstElement     // out
@@ -58,12 +58,12 @@ func CheckSetupSinkPadByNameFromTemplate(element gst.Elementer, tmpl *gst.PadTem
 
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
+//   - element to setup pad on.
+//   - tmpl: pad template.
 //
 // The function returns the following values:
 //
-//    - pad: new pad.
+//   - pad: new pad.
 //
 func CheckSetupSinkPadFromTemplate(element gst.Elementer, tmpl *gst.PadTemplate) *gst.Pad {
 	var _arg1 *C.GstElement     // out
@@ -95,13 +95,13 @@ func CheckSetupSinkPadFromTemplate(element gst.Elementer, tmpl *gst.PadTemplate)
 
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
-//    - name: name.
+//   - element to setup pad on.
+//   - tmpl: pad template.
+//   - name: name.
 //
 // The function returns the following values:
 //
-//    - pad: new pad.
+//   - pad: new pad.
 //
 func CheckSetupSrcPadByNameFromTemplate(element gst.Elementer, tmpl *gst.PadTemplate, name string) *gst.Pad {
 	var _arg1 *C.GstElement     // out
@@ -137,12 +137,12 @@ func CheckSetupSrcPadByNameFromTemplate(element gst.Elementer, tmpl *gst.PadTemp
 
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
+//   - element to setup pad on.
+//   - tmpl: pad template.
 //
 // The function returns the following values:
 //
-//    - pad: new pad.
+//   - pad: new pad.
 //
 func CheckSetupSrcPadFromTemplate(element gst.Elementer, tmpl *gst.PadTemplate) *gst.Pad {
 	var _arg1 *C.GstElement     // out

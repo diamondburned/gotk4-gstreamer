@@ -135,9 +135,9 @@ func (b BusFlags) Has(other BusFlags) bool {
 // will remove the #GSource from the mainloop.
 type BusFunc func(bus *Bus, message *Message) (ok bool)
 
-// BusSyncHandler: handler will be invoked synchronously, when a new message has
-// been injected into the bus. This function is mostly used internally. Only one
-// sync handler can be attached to a given bus.
+// BusSyncHandler: handler will be invoked synchronously, when a new message
+// has been injected into the bus. This function is mostly used internally.
+// Only one sync handler can be attached to a given bus.
 //
 // If the handler returns GST_BUS_DROP, it should unref the message, else the
 // message should not be unreffed by the sync handler.
@@ -149,14 +149,14 @@ type BusOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - message that has been posted asynchronously.
+	//   - message that has been posted asynchronously.
 	//
 	Message func(message *Message)
 	// SyncMessage: message has been posted on the bus.
 	//
 	// The function takes the following parameters:
 	//
-	//    - message that has been posted synchronously.
+	//   - message that has been posted synchronously.
 	//
 	SyncMessage func(message *Message)
 }
@@ -186,11 +186,11 @@ func defaultBusOverrides(v *Bus) BusOverrides {
 // gst_bus_peek() and gst_bus_pop() methods one can look at or retrieve a
 // previously posted message.
 //
-// The bus can be polled with the gst_bus_poll() method. This methods blocks up
-// to the specified timeout value until one of the specified messages types is
-// posted on the bus. The application can then gst_bus_pop() the messages from
-// the bus to handle them. Alternatively the application can register an
-// asynchronous bus function using gst_bus_add_watch_full() or
+// The bus can be polled with the gst_bus_poll() method. This methods blocks
+// up to the specified timeout value until one of the specified messages
+// types is posted on the bus. The application can then gst_bus_pop() the
+// messages from the bus to handle them. Alternatively the application can
+// register an asynchronous bus function using gst_bus_add_watch_full() or
 // gst_bus_add_watch(). This function will install a #GSource in the default
 // glib main loop and will deliver messages a short while after they have been
 // posted. Note that the main loop should be running for the asynchronous
@@ -198,8 +198,8 @@ func defaultBusOverrides(v *Bus) BusOverrides {
 //
 // It is also possible to get messages from the bus without any thread
 // marshalling with the gst_bus_set_sync_handler() method. This makes it
-// possible to react to a message in the same thread that posted the message on
-// the bus. This should only be used if the application is able to deal with
+// possible to react to a message in the same thread that posted the message
+// on the bus. This should only be used if the application is able to deal with
 // messages from different threads.
 //
 // Every Pipeline has one bus.
@@ -276,7 +276,7 @@ func (bus *Bus) ConnectSyncMessage(f func(message *Message)) coreglib.SignalHand
 //
 // The function returns the following values:
 //
-//    - bus: new Bus instance.
+//   - bus: new Bus instance.
 //
 func NewBus() *Bus {
 	var _cret *C.GstBus // in
@@ -290,8 +290,8 @@ func NewBus() *Bus {
 	return _bus
 }
 
-// AddSignalWatch adds a bus signal watch to the default main context with the
-// default priority ( G_PRIORITY_DEFAULT ). It is also possible to use a
+// AddSignalWatch adds a bus signal watch to the default main context with
+// the default priority ( G_PRIORITY_DEFAULT ). It is also possible to use a
 // non-default main context set up using g_main_context_push_thread_default()
 // (before one had to create a bus watch source and attach it to the desired
 // main context 'manually').
@@ -329,7 +329,7 @@ func (bus *Bus) AddSignalWatch() {
 //
 // The function takes the following parameters:
 //
-//    - priority of the watch.
+//   - priority of the watch.
 //
 func (bus *Bus) AddSignalWatchFull(priority int) {
 	var _arg0 *C.GstBus // out
@@ -345,8 +345,8 @@ func (bus *Bus) AddSignalWatchFull(priority int) {
 
 // AddWatch adds a bus watch to the default main context with the given priority
 // (e.g. G_PRIORITY_DEFAULT). It is also possible to use a non-default main
-// context set up using g_main_context_push_thread_default() (before one had to
-// create a bus watch source and attach it to the desired main context
+// context set up using g_main_context_push_thread_default() (before one had
+// to create a bus watch source and attach it to the desired main context
 // 'manually').
 //
 // This function is used to receive asynchronous messages in the main loop.
@@ -367,12 +367,12 @@ func (bus *Bus) AddSignalWatchFull(priority int) {
 //
 // The function takes the following parameters:
 //
-//    - priority of the watch.
-//    - fn: function to call when a message is received.
+//   - priority of the watch.
+//   - fn: function to call when a message is received.
 //
 // The function returns the following values:
 //
-//    - guint: event source id or 0 if bus already got an event source.
+//   - guint: event source id or 0 if bus already got an event source.
 //
 func (bus *Bus) AddWatch(priority int, fn BusFunc) uint {
 	var _arg0 *C.GstBus    // out
@@ -405,12 +405,12 @@ func (bus *Bus) AddWatch(priority int, fn BusFunc) uint {
 //
 // The function takes the following parameters:
 //
-//    - message: Message received.
-//    - data (optional): user data.
+//   - message: Message received.
+//   - data (optional): user data.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE.
+//   - ok: TRUE.
 //
 func (bus *Bus) AsyncSignalFunc(message *Message, data unsafe.Pointer) bool {
 	var _arg0 *C.GstBus     // out
@@ -445,7 +445,7 @@ func (bus *Bus) AsyncSignalFunc(message *Message, data unsafe.Pointer) bool {
 //
 // The function returns the following values:
 //
-//    - source (optional) that can be added to a Loop.
+//   - source (optional) that can be added to a Loop.
 //
 func (bus *Bus) CreateWatch() *glib.Source {
 	var _arg0 *C.GstBus  // out
@@ -471,15 +471,15 @@ func (bus *Bus) CreateWatch() *glib.Source {
 	return _source
 }
 
-// DisableSyncMessageEmission instructs GStreamer to stop emitting the
-// "sync-message" signal for this bus. See
+// DisableSyncMessageEmission instructs GStreamer to stop
+// emitting the "sync-message" signal for this bus. See
 // gst_bus_enable_sync_message_emission() for more information.
 //
 // In the event that multiple pieces of code have called
-// gst_bus_enable_sync_message_emission(), the sync-message emissions will only
-// be stopped after all calls to gst_bus_enable_sync_message_emission() were
-// "cancelled" by calling this function. In this way the semantics are exactly
-// the same as gst_object_ref() that which calls enable should also call
+// gst_bus_enable_sync_message_emission(), the sync-message emissions will
+// only be stopped after all calls to gst_bus_enable_sync_message_emission()
+// were "cancelled" by calling this function. In this way the semantics are
+// exactly the same as gst_object_ref() that which calls enable should also call
 // disable.
 func (bus *Bus) DisableSyncMessageEmission() {
 	var _arg0 *C.GstBus // out
@@ -502,8 +502,8 @@ func (bus *Bus) DisableSyncMessageEmission() {
 // While this function looks similar to gst_bus_add_signal_watch(), it is not
 // exactly the same -- this function enables *synchronous* emission of signals
 // when messages arrive; gst_bus_add_signal_watch() adds an idle callback to pop
-// messages off the bus *asynchronously*. The sync-message signal comes from the
-// thread of whatever object posted the message; the "message" signal is
+// messages off the bus *asynchronously*. The sync-message signal comes from
+// the thread of whatever object posted the message; the "message" signal is
 // marshalled to the main thread via the Loop.
 func (bus *Bus) EnableSyncMessageEmission() {
 	var _arg0 *C.GstBus // out
@@ -519,7 +519,7 @@ func (bus *Bus) EnableSyncMessageEmission() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there are messages on the bus to be handled, FALSE otherwise.
+//   - ok: TRUE if there are messages on the bus to be handled, FALSE otherwise.
 //
 func (bus *Bus) HavePending() bool {
 	var _arg0 *C.GstBus  // out
@@ -544,7 +544,7 @@ func (bus *Bus) HavePending() bool {
 //
 // The function returns the following values:
 //
-//    - message (optional) that is on the bus, or NULL if the bus is empty.
+//   - message (optional) that is on the bus, or NULL if the bus is empty.
 //
 func (bus *Bus) Peek() *Message {
 	var _arg0 *C.GstBus     // out
@@ -571,12 +571,12 @@ func (bus *Bus) Peek() *Message {
 }
 
 // Poll polls the bus for messages. Will block while waiting for messages to
-// come. You can specify a maximum time to poll with the timeout parameter. If
-// timeout is negative, this function will block indefinitely.
+// come. You can specify a maximum time to poll with the timeout parameter.
+// If timeout is negative, this function will block indefinitely.
 //
-// All messages not in events will be popped off the bus and will be ignored. It
-// is not possible to use message enums beyond T_MESSAGE_EXTENDED in the events
-// mask
+// All messages not in events will be popped off the bus and will be ignored.
+// It is not possible to use message enums beyond T_MESSAGE_EXTENDED in the
+// events mask
 //
 // Because poll is implemented using the "message" signal enabled by
 // gst_bus_add_signal_watch(), calling gst_bus_poll() will cause the "message"
@@ -588,14 +588,14 @@ func (bus *Bus) Peek() *Message {
 //
 // You should never use this function, since it is pure evil. This is especially
 // true for GUI applications based on Gtk+ or Qt, but also for any other
-// non-trivial application that uses the GLib main loop. As this function runs a
-// GLib main loop, any callback attached to the default GLib main context may be
-// invoked. This could be timeouts, GUI events, I/O events etc.; even if
-// gst_bus_poll() is called with a 0 timeout. Any of these callbacks may do
-// things you do not expect, e.g. destroy the main application window or some
-// other resource; change other application state; display a dialog and run
-// another main loop until the user clicks it away. In short, using this
-// function may add a lot of complexity to your code through unexpected
+// non-trivial application that uses the GLib main loop. As this function runs
+// a GLib main loop, any callback attached to the default GLib main context
+// may be invoked. This could be timeouts, GUI events, I/O events etc.;
+// even if gst_bus_poll() is called with a 0 timeout. Any of these callbacks
+// may do things you do not expect, e.g. destroy the main application window
+// or some other resource; change other application state; display a dialog
+// and run another main loop until the user clicks it away. In short, using
+// this function may add a lot of complexity to your code through unexpected
 // re-entrancy and unexpected changes to your application's state.
 //
 // For 0 timeouts use gst_bus_pop_filtered() instead of this function; for other
@@ -604,14 +604,14 @@ func (bus *Bus) Peek() *Message {
 //
 // The function takes the following parameters:
 //
-//    - events: mask of MessageType, representing the set of message types to
-//      poll for (note special handling of extended message types below).
-//    - timeout: poll timeout, as a ClockTime, or T_CLOCK_TIME_NONE to poll
-//      indefinitely.
+//   - events: mask of MessageType, representing the set of message types to
+//     poll for (note special handling of extended message types below).
+//   - timeout: poll timeout, as a ClockTime, or T_CLOCK_TIME_NONE to poll
+//     indefinitely.
 //
 // The function returns the following values:
 //
-//    - message (optional) that was received, or NULL if the poll timed out.
+//   - message (optional) that was received, or NULL if the poll timed out.
 //
 func (bus *Bus) Poll(events MessageType, timeout ClockTime) *Message {
 	var _arg0 *C.GstBus        // out
@@ -621,9 +621,7 @@ func (bus *Bus) Poll(events MessageType, timeout ClockTime) *Message {
 
 	_arg0 = (*C.GstBus)(unsafe.Pointer(coreglib.InternObject(bus).Native()))
 	_arg1 = C.GstMessageType(events)
-	_arg2 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timeout)
 
 	_cret = C.gst_bus_poll(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(bus)
@@ -649,7 +647,7 @@ func (bus *Bus) Poll(events MessageType, timeout ClockTime) *Message {
 //
 // The function returns the following values:
 //
-//    - message (optional) that is on the bus, or NULL if the bus is empty.
+//   - message (optional) that is on the bus, or NULL if the bus is empty.
 //
 func (bus *Bus) Pop() *Message {
 	var _arg0 *C.GstBus     // out
@@ -683,12 +681,12 @@ func (bus *Bus) Pop() *Message {
 //
 // The function takes the following parameters:
 //
-//    - types: message types to take into account.
+//   - types: message types to take into account.
 //
 // The function returns the following values:
 //
-//    - message (optional): next Message matching type that is on the bus, or
-//      NULL if the bus is empty or there is no message matching type.
+//   - message (optional): next Message matching type that is on the bus,
+//     or NULL if the bus is empty or there is no message matching type.
 //
 func (bus *Bus) PopFiltered(types MessageType) *Message {
 	var _arg0 *C.GstBus        // out
@@ -722,11 +720,11 @@ func (bus *Bus) PopFiltered(types MessageType) *Message {
 //
 // The function takes the following parameters:
 //
-//    - message to post.
+//   - message to post.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the message could be posted, FALSE if the bus is flushing.
+//   - ok: TRUE if the message could be posted, FALSE if the bus is flushing.
 //
 func (bus *Bus) Post(message *Message) bool {
 	var _arg0 *C.GstBus     // out
@@ -765,7 +763,7 @@ func (bus *Bus) RemoveSignalWatch() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success or FALSE if bus has no event source.
+//   - ok: TRUE on success or FALSE if bus has no event source.
 //
 func (bus *Bus) RemoveWatch() bool {
 	var _arg0 *C.GstBus  // out
@@ -791,7 +789,7 @@ func (bus *Bus) RemoveWatch() bool {
 //
 // The function takes the following parameters:
 //
-//    - flushing: whether or not to flush the bus.
+//   - flushing: whether or not to flush the bus.
 //
 func (bus *Bus) SetFlushing(flushing bool) {
 	var _arg0 *C.GstBus  // out
@@ -807,10 +805,10 @@ func (bus *Bus) SetFlushing(flushing bool) {
 	runtime.KeepAlive(flushing)
 }
 
-// SetSyncHandler sets the synchronous handler on the bus. The function will be
-// called every time a new message is posted on the bus. Note that the function
-// will be called in the same thread context as the posting object. This
-// function is usually only called by the creator of the bus. Applications
+// SetSyncHandler sets the synchronous handler on the bus. The function will
+// be called every time a new message is posted on the bus. Note that the
+// function will be called in the same thread context as the posting object.
+// This function is usually only called by the creator of the bus. Applications
 // should handle messages asynchronously using the gst_bus watch and poll
 // functions.
 //
@@ -819,7 +817,7 @@ func (bus *Bus) SetFlushing(flushing bool) {
 //
 // The function takes the following parameters:
 //
-//    - fn (optional): handler function to install.
+//   - fn (optional): handler function to install.
 //
 func (bus *Bus) SetSyncHandler(fn BusSyncHandler) {
 	var _arg0 *C.GstBus           // out
@@ -844,12 +842,12 @@ func (bus *Bus) SetSyncHandler(fn BusSyncHandler) {
 //
 // The function takes the following parameters:
 //
-//    - message: Message received.
-//    - data (optional): user data.
+//   - message: Message received.
+//   - data (optional): user data.
 //
 // The function returns the following values:
 //
-//    - busSyncReply: GST_BUS_PASS.
+//   - busSyncReply: GST_BUS_PASS.
 //
 func (bus *Bus) SyncSignalHandler(message *Message, data unsafe.Pointer) BusSyncReply {
 	var _arg0 *C.GstBus         // out
@@ -881,12 +879,12 @@ func (bus *Bus) SyncSignalHandler(message *Message, data unsafe.Pointer) BusSync
 //
 // The function takes the following parameters:
 //
-//    - timeout: timeout.
+//   - timeout: timeout.
 //
 // The function returns the following values:
 //
-//    - message (optional) that is on the bus after the specified timeout or NULL
-//      if the bus is empty after the timeout expired.
+//   - message (optional) that is on the bus after the specified timeout or NULL
+//     if the bus is empty after the timeout expired.
 //
 func (bus *Bus) TimedPop(timeout ClockTime) *Message {
 	var _arg0 *C.GstBus      // out
@@ -894,9 +892,7 @@ func (bus *Bus) TimedPop(timeout ClockTime) *Message {
 	var _cret *C.GstMessage  // in
 
 	_arg0 = (*C.GstBus)(unsafe.Pointer(coreglib.InternObject(bus).Native()))
-	_arg1 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timeout)
 
 	_cret = C.gst_bus_timed_pop(_arg0, _arg1)
 	runtime.KeepAlive(bus)
@@ -921,19 +917,19 @@ func (bus *Bus) TimedPop(timeout ClockTime) *Message {
 // type mask types, waiting up to the specified timeout (and discarding any
 // messages that do not match the mask provided).
 //
-// If timeout is 0, this function behaves like gst_bus_pop_filtered(). If
-// timeout is T_CLOCK_TIME_NONE, this function will block forever until a
+// If timeout is 0, this function behaves like gst_bus_pop_filtered().
+// If timeout is T_CLOCK_TIME_NONE, this function will block forever until a
 // matching message was posted on the bus.
 //
 // The function takes the following parameters:
 //
-//    - timeout in nanoseconds, or GST_CLOCK_TIME_NONE to wait forever.
-//    - types: message types to take into account, GST_MESSAGE_ANY for any type.
+//   - timeout in nanoseconds, or GST_CLOCK_TIME_NONE to wait forever.
+//   - types: message types to take into account, GST_MESSAGE_ANY for any type.
 //
 // The function returns the following values:
 //
-//    - message (optional) matching the filter in types, or NULL if no matching
-//      message was found on the bus until the timeout expired.
+//   - message (optional) matching the filter in types, or NULL if no matching
+//     message was found on the bus until the timeout expired.
 //
 func (bus *Bus) TimedPopFiltered(timeout ClockTime, types MessageType) *Message {
 	var _arg0 *C.GstBus        // out
@@ -942,9 +938,7 @@ func (bus *Bus) TimedPopFiltered(timeout ClockTime, types MessageType) *Message 
 	var _cret *C.GstMessage    // in
 
 	_arg0 = (*C.GstBus)(unsafe.Pointer(coreglib.InternObject(bus).Native()))
-	_arg1 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timeout)
 	_arg2 = C.GstMessageType(types)
 
 	_cret = C.gst_bus_timed_pop_filtered(_arg0, _arg1, _arg2)
@@ -971,7 +965,7 @@ func (bus *Bus) TimedPopFiltered(timeout ClockTime, types MessageType) *Message 
 //
 // The function takes the following parameters:
 //
-//    - message that has been posted asynchronously.
+//   - message that has been posted asynchronously.
 //
 func (bus *Bus) message(message *Message) {
 	gclass := (*C.GstBusClass)(coreglib.PeekParentClass(bus))
@@ -992,7 +986,7 @@ func (bus *Bus) message(message *Message) {
 //
 // The function takes the following parameters:
 //
-//    - message that has been posted synchronously.
+//   - message that has been posted synchronously.
 //
 func (bus *Bus) syncMessage(message *Message) {
 	gclass := (*C.GstBusClass)(coreglib.PeekParentClass(bus))

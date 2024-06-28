@@ -31,12 +31,12 @@ type bitReader struct {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) BitsUint16(nbits uint) (uint16, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -66,12 +66,12 @@ func (reader *BitReader) BitsUint16(nbits uint) (uint16, bool) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) BitsUint32(nbits uint) (uint32, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -101,12 +101,12 @@ func (reader *BitReader) BitsUint32(nbits uint) (uint32, bool) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) BitsUint64(nbits uint) (uint64, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -136,12 +136,12 @@ func (reader *BitReader) BitsUint64(nbits uint) (uint64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint8 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint8 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) BitsUint8(nbits uint) (byte, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -171,7 +171,7 @@ func (reader *BitReader) BitsUint8(nbits uint) (byte, bool) {
 //
 // The function returns the following values:
 //
-//    - guint: current position of reader in bits.
+//   - guint: current position of reader in bits.
 //
 func (reader *BitReader) Pos() uint {
 	var _arg0 *C.GstBitReader // out
@@ -193,7 +193,7 @@ func (reader *BitReader) Pos() uint {
 //
 // The function returns the following values:
 //
-//    - guint: remaining number of bits of reader instance.
+//   - guint: remaining number of bits of reader instance.
 //
 func (reader *BitReader) Remaining() uint {
 	var _arg0 *C.GstBitReader // out
@@ -215,7 +215,7 @@ func (reader *BitReader) Remaining() uint {
 //
 // The function returns the following values:
 //
-//    - guint: total number of bits of reader instance.
+//   - guint: total number of bits of reader instance.
 //
 func (reader *BitReader) Size() uint {
 	var _arg0 *C.GstBitReader // out
@@ -238,7 +238,7 @@ func (reader *BitReader) Size() uint {
 //
 // The function takes the following parameters:
 //
-//    - data from which the bit reader should read.
+//   - data from which the bit reader should read.
 //
 func (reader *BitReader) Init(data []byte) {
 	var _arg0 *C.GstBitReader // out
@@ -260,12 +260,12 @@ func (reader *BitReader) Init(data []byte) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) PeekBitsUint16(nbits uint) (uint16, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -295,12 +295,12 @@ func (reader *BitReader) PeekBitsUint16(nbits uint) (uint16, bool) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) PeekBitsUint32(nbits uint) (uint32, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -330,12 +330,12 @@ func (reader *BitReader) PeekBitsUint32(nbits uint) (uint32, bool) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) PeekBitsUint64(nbits uint) (uint64, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -365,12 +365,12 @@ func (reader *BitReader) PeekBitsUint64(nbits uint) (uint64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to read.
+//   - nbits: number of bits to read.
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint8 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint8 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) PeekBitsUint8(nbits uint) (byte, bool) {
 	var _arg0 *C.GstBitReader // out
@@ -400,11 +400,11 @@ func (reader *BitReader) PeekBitsUint8(nbits uint) (byte, bool) {
 //
 // The function takes the following parameters:
 //
-//    - pos: new position in bits.
+//   - pos: new position in bits.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the position could be set successfully, FALSE otherwise.
+//   - ok: TRUE if the position could be set successfully, FALSE otherwise.
 //
 func (reader *BitReader) SetPos(pos uint) bool {
 	var _arg0 *C.GstBitReader // out
@@ -431,11 +431,11 @@ func (reader *BitReader) SetPos(pos uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - nbits: number of bits to skip.
+//   - nbits: number of bits to skip.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if nbits bits could be skipped, FALSE otherwise.
+//   - ok: TRUE if nbits bits could be skipped, FALSE otherwise.
 //
 func (reader *BitReader) Skip(nbits uint) bool {
 	var _arg0 *C.GstBitReader // out
@@ -462,7 +462,7 @@ func (reader *BitReader) Skip(nbits uint) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *BitReader) SkipToByte() bool {
 	var _arg0 *C.GstBitReader // out

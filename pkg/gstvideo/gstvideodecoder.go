@@ -114,7 +114,7 @@ func init() {
 
 // VIDEO_DECODER_MAX_ERRORS: default maximum number of errors tolerated before
 // signaling error.
-const VIDEO_DECODER_MAX_ERRORS = 10
+const VIDEO_DECODER_MAX_ERRORS = -1
 
 // VIDEO_DECODER_SINK_NAME: name of the templates for the sink pad.
 const VIDEO_DECODER_SINK_NAME = "sink"
@@ -148,28 +148,28 @@ type VideoDecoderOverrides struct {
 	caps func(filter *gst.Caps) *gst.Caps
 	// The function takes the following parameters:
 	//
-	//    - frame to handle.
+	//   - frame to handle.
 	//
 	// The function returns the following values:
 	//
 	HandleFrame func(frame *VideoCodecFrame) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - timestamp: timestamp of the missing data.
-	//    - duration: duration of the missing data.
+	//   - timestamp: timestamp of the missing data.
+	//   - duration: duration of the missing data.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the decoder should be drained afterwards.
+	//   - ok: TRUE if the decoder should be drained afterwards.
 	//
 	HandleMissingData func(timestamp, duration gst.ClockTime) bool
 	// Negotiate with downstream elements to currently configured
-	// VideoCodecState. Unmark GST_PAD_FLAG_NEED_RECONFIGURE in any case. But
-	// mark it again if negotiate fails.
+	// VideoCodecState. Unmark GST_PAD_FLAG_NEED_RECONFIGURE in any case.
+	// But mark it again if negotiate fails.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the negotiation succeeded, else FALSE.
+	//   - ok: TRUE if the negotiation succeeded, else FALSE.
 	//
 	Negotiate func() bool
 	// The function returns the following values:
@@ -177,9 +177,9 @@ type VideoDecoderOverrides struct {
 	Open func() bool
 	// The function takes the following parameters:
 	//
-	//    - frame
-	//    - adapter
-	//    - atEos
+	//   - frame
+	//   - adapter
+	//   - atEos
 	//
 	// The function returns the following values:
 	//
@@ -227,8 +227,8 @@ type VideoDecoderOverrides struct {
 	Stop func() bool
 	// The function takes the following parameters:
 	//
-	//    - frame
-	//    - meta
+	//   - frame
+	//   - meta
 	//
 	// The function returns the following values:
 	//
@@ -269,80 +269,78 @@ func defaultVideoDecoderOverrides(v *VideoDecoder) VideoDecoderOverrides {
 //
 // Configuration
 //
-//    * Initially, GstVideoDecoder calls start when the decoder element
-//      is activated, which allows the subclass to perform any global setup.
+//   - Initially, GstVideoDecoder calls start when the decoder element is
+//     activated, which allows the subclass to perform any global setup.
 //
-//    * GstVideoDecoder calls set_format to inform the subclass of caps
-//      describing input video data that it is about to receive, including
-//      possibly configuration data.
-//      While unlikely, it might be called more than once, if changing input
-//      parameters require reconfiguration.
+//   - GstVideoDecoder calls set_format to inform the subclass of caps
+//     describing input video data that it is about to receive, including
+//     possibly configuration data. While unlikely, it might be called more than
+//     once, if changing input parameters require reconfiguration.
 //
-//    * Incoming data buffers are processed as needed, described in Data
-//      Processing below.
+//   - Incoming data buffers are processed as needed, described in Data
+//     Processing below.
 //
-//    * GstVideoDecoder calls stop at end of all processing.
+//   - GstVideoDecoder calls stop at end of all processing.
 //
 // Data processing
 //
-//    * The base class gathers input data, and optionally allows subclass
-//      to parse this into subsequently manageable chunks, typically
-//      corresponding to and referred to as 'frames'.
+//   - The base class gathers input data, and optionally allows subclass to
+//     parse this into subsequently manageable chunks, typically corresponding
+//     to and referred to as 'frames'.
 //
-//    * Each input frame is provided in turn to the subclass' handle_frame
-//      callback.
-//    * When the subclass enables the subframe mode with gst_video_decoder_set_subframe_mode,
-//      the base class will provide to the subclass the same input frame with
-//      different input buffers to the subclass handle_frame
-//      callback. During this call, the subclass needs to take
-//      ownership of the input_buffer as GstVideoCodecFrame.input_buffer
-//      will have been changed before the next subframe buffer is received.
-//      The subclass will call gst_video_decoder_have_last_subframe
-//      when a new input frame can be created by the base class.
-//      Every subframe will share the same GstVideoCodecFrame.output_buffer
-//      to write the decoding result. The subclass is responsible to protect
-//      its access.
+//   - Each input frame is provided in turn to the subclass' handle_frame
+//     callback.
 //
-//    * If codec processing results in decoded data, the subclass should call
-//      gst_video_decoder_finish_frame to have decoded data pushed
-//      downstream. In subframe mode
-//      the subclass should call gst_video_decoder_finish_subframe until the
-//      last subframe where it should call gst_video_decoder_finish_frame.
-//      The subclass can detect the last subframe using GST_VIDEO_BUFFER_FLAG_MARKER
-//      on buffers or using its own logic to collect the subframes.
-//      In case of decoding failure, the subclass must call
-//      gst_video_decoder_drop_frame or gst_video_decoder_drop_subframe,
-//      to allow the base class to do timestamp and offset tracking, and possibly
-//      to requeue the frame for a later attempt in the case of reverse playback.
+//   - When the subclass enables the subframe mode with
+//     gst_video_decoder_set_subframe_mode, the base class will provide to
+//     the subclass the same input frame with different input buffers to the
+//     subclass handle_frame callback. During this call, the subclass needs to
+//     take ownership of the input_buffer as GstVideoCodecFrame.input_buffer
+//     will have been changed before the next subframe buffer is received.
+//     The subclass will call gst_video_decoder_have_last_subframe when a new
+//     input frame can be created by the base class. Every subframe will share
+//     the same GstVideoCodecFrame.output_buffer to write the decoding result.
+//     The subclass is responsible to protect its access.
+//
+//   - If codec processing results in decoded data, the subclass should call
+//     gst_video_decoder_finish_frame to have decoded data pushed downstream. In
+//     subframe mode the subclass should call gst_video_decoder_finish_subframe
+//     until the last subframe where it should call
+//     gst_video_decoder_finish_frame. The subclass can detect the last subframe
+//     using GST_VIDEO_BUFFER_FLAG_MARKER on buffers or using its own logic to
+//     collect the subframes. In case of decoding failure, the subclass must
+//     call gst_video_decoder_drop_frame or gst_video_decoder_drop_subframe,
+//     to allow the base class to do timestamp and offset tracking, and possibly
+//     to requeue the frame for a later attempt in the case of reverse playback.
 //
 // Shutdown phase
 //
-//    * The GstVideoDecoder class calls stop to inform the subclass that data
-//      parsing will be stopped.
+//   - The GstVideoDecoder class calls stop to inform the subclass that data
+//     parsing will be stopped.
 //
 // Additional Notes
 //
-//    * Seeking/Flushing
+//   - Seeking/Flushing
 //
-//      * When the pipeline is seeked or otherwise flushed, the subclass is
-//        informed via a call to its reset callback, with the hard parameter
-//        set to true. This indicates the subclass should drop any internal data
-//        queues and timestamps and prepare for a fresh set of buffers to arrive
-//        for parsing and decoding.
+//   - When the pipeline is seeked or otherwise flushed, the subclass is
+//     informed via a call to its reset callback, with the hard parameter set to
+//     true. This indicates the subclass should drop any internal data queues
+//     and timestamps and prepare for a fresh set of buffers to arrive for
+//     parsing and decoding.
 //
-//    * End Of Stream
+//   - End Of Stream
 //
-//      * At end-of-stream, the subclass parse function may be called some final
-//        times with the at_eos parameter set to true, indicating that the element
-//        should not expect any more data to be arriving, and it should parse and
-//        remaining frames and call gst_video_decoder_have_frame() if possible.
+//   - At end-of-stream, the subclass parse function may be called some final
+//     times with the at_eos parameter set to true, indicating that the element
+//     should not expect any more data to be arriving, and it should parse and
+//     remaining frames and call gst_video_decoder_have_frame() if possible.
 //
 // The subclass is responsible for providing pad template caps for source and
 // sink pads. The pads need to be named "sink" and "src". It also needs to
-// provide information about the output caps, when they are known. This may be
-// when the base class calls the subclass' set_format function, though it might
-// be during decoding, before calling gst_video_decoder_finish_frame. This is
-// done via gst_video_decoder_set_output_state
+// provide information about the output caps, when they are known. This may
+// be when the base class calls the subclass' set_format function, though it
+// might be during decoding, before calling gst_video_decoder_finish_frame.
+// This is done via gst_video_decoder_set_output_state
 //
 // The subclass is also responsible for providing (presentation) timestamps
 // (likely based on corresponding input ones). If that is not applicable or
@@ -357,25 +355,26 @@ func defaultVideoDecoderOverrides(v *VideoDecoder) VideoDecoderOverrides {
 //
 // The base class provides some support for reverse playback, in particular in
 // case incoming data is not packetized or upstream does not provide fragments
-// on keyframe boundaries. However, the subclass should then be prepared for the
-// parsing and frame processing stage to occur separately (in normal forward
+// on keyframe boundaries. However, the subclass should then be prepared for
+// the parsing and frame processing stage to occur separately (in normal forward
 // processing, the latter immediately follows the former), The subclass also
 // needs to ensure the parsing stage properly marks keyframes, unless it knows
 // the upstream elements will do so properly for incoming data.
 //
 // The bare minimum that a functional subclass needs to implement is:
 //
-//    * Provide pad templates
-//    * Inform the base class of output caps via
-//       gst_video_decoder_set_output_state
+//   - Provide pad templates
 //
-//    * Parse input data, if it is not considered packetized from upstream
-//       Data will be provided to parse which should invoke
-//       gst_video_decoder_add_to_frame and gst_video_decoder_have_frame to
-//       separate the data belonging to each video frame.
+//   - Inform the base class of output caps via
+//     gst_video_decoder_set_output_state
 //
-//    * Accept data in handle_frame and provide decoded results to
-//       gst_video_decoder_finish_frame, or call gst_video_decoder_drop_frame.
+//   - Parse input data, if it is not considered packetized from
+//     upstream Data will be provided to parse which should invoke
+//     gst_video_decoder_add_to_frame and gst_video_decoder_have_frame to
+//     separate the data belonging to each video frame.
+//
+//   - Accept data in handle_frame and provide decoded results to
+//     gst_video_decoder_finish_frame, or call gst_video_decoder_drop_frame.
 type VideoDecoder struct {
 	_ [0]func() // equal guard
 	gst.Element
@@ -528,7 +527,7 @@ func BaseVideoDecoder(obj VideoDecoderer) *VideoDecoder {
 //
 // The function takes the following parameters:
 //
-//    - nBytes: number of bytes to add.
+//   - nBytes: number of bytes to add.
 //
 func (decoder *VideoDecoder) AddToFrame(nBytes int) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -550,8 +549,8 @@ func (decoder *VideoDecoder) AddToFrame(nBytes int) {
 //
 // The function returns the following values:
 //
-//    - buffer: allocated buffer, or NULL if no buffer could be allocated (e.g.
-//      when downstream is flushing or shutting down).
+//   - buffer (optional): allocated buffer, or NULL if no buffer could be
+//     allocated (e.g. when downstream is flushing or shutting down).
 //
 func (decoder *VideoDecoder) AllocateOutputBuffer() *gst.Buffer {
 	var _arg0 *C.GstVideoDecoder // out
@@ -564,13 +563,15 @@ func (decoder *VideoDecoder) AllocateOutputBuffer() *gst.Buffer {
 
 	var _buffer *gst.Buffer // out
 
-	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -584,11 +585,11 @@ func (decoder *VideoDecoder) AllocateOutputBuffer() *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - frame: VideoCodecFrame.
+//   - frame: VideoCodecFrame.
 //
 // The function returns the following values:
 //
-//    - flowReturn: GST_FLOW_OK if an output buffer could be allocated.
+//   - flowReturn: GST_FLOW_OK if an output buffer could be allocated.
 //
 func (decoder *VideoDecoder) AllocateOutputFrame(frame *VideoCodecFrame) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -615,12 +616,12 @@ func (decoder *VideoDecoder) AllocateOutputFrame(frame *VideoCodecFrame) gst.Flo
 //
 // The function takes the following parameters:
 //
-//    - frame: VideoCodecFrame.
-//    - params: BufferPoolAcquireParams.
+//   - frame: VideoCodecFrame.
+//   - params: BufferPoolAcquireParams.
 //
 // The function returns the following values:
 //
-//    - flowReturn: GST_FLOW_OK if an output buffer could be allocated.
+//   - flowReturn: GST_FLOW_OK if an output buffer could be allocated.
 //
 func (decoder *VideoDecoder) AllocateOutputFrameWithParams(frame *VideoCodecFrame, params *gst.BufferPoolAcquireParams) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder            // out
@@ -644,17 +645,17 @@ func (decoder *VideoDecoder) AllocateOutputFrameWithParams(frame *VideoCodecFram
 	return _flowReturn
 }
 
-// DropFrame: similar to gst_video_decoder_finish_frame(), but drops frame in
-// any case and posts a QoS message with the frame's details on the bus. In any
-// case, the frame is considered finished and released.
+// DropFrame: similar to gst_video_decoder_finish_frame(), but drops frame
+// in any case and posts a QoS message with the frame's details on the bus.
+// In any case, the frame is considered finished and released.
 //
 // The function takes the following parameters:
 //
-//    - frame to drop.
+//   - frame to drop.
 //
 // The function returns the following values:
 //
-//    - flowReturn usually GST_FLOW_OK.
+//   - flowReturn usually GST_FLOW_OK.
 //
 func (dec *VideoDecoder) DropFrame(frame *VideoCodecFrame) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -680,11 +681,11 @@ func (dec *VideoDecoder) DropFrame(frame *VideoCodecFrame) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - frame: VideoCodecFrame.
+//   - frame: VideoCodecFrame.
 //
 // The function returns the following values:
 //
-//    - flowReturn usually GST_FLOW_OK.
+//   - flowReturn usually GST_FLOW_OK.
 //
 func (dec *VideoDecoder) DropSubframe(frame *VideoCodecFrame) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -707,8 +708,8 @@ func (dec *VideoDecoder) DropSubframe(frame *VideoCodecFrame) gst.FlowReturn {
 
 // FinishFrame: frame should have a valid decoded data buffer, whose metadata
 // fields are then appropriately set according to frame data and pushed
-// downstream. If no output data is provided, frame is considered skipped. In
-// any case, the frame is considered finished and released.
+// downstream. If no output data is provided, frame is considered skipped.
+// In any case, the frame is considered finished and released.
 //
 // After calling this function the output buffer of the frame is to be
 // considered read-only. This function will also change the metadata of the
@@ -716,11 +717,11 @@ func (dec *VideoDecoder) DropSubframe(frame *VideoCodecFrame) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - frame: decoded VideoCodecFrame.
+//   - frame: decoded VideoCodecFrame.
 //
 // The function returns the following values:
 //
-//    - flowReturn resulting from sending data downstream.
+//   - flowReturn resulting from sending data downstream.
 //
 func (decoder *VideoDecoder) FinishFrame(frame *VideoCodecFrame) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -747,11 +748,11 @@ func (decoder *VideoDecoder) FinishFrame(frame *VideoCodecFrame) gst.FlowReturn 
 //
 // The function takes the following parameters:
 //
-//    - frame: VideoCodecFrame.
+//   - frame: VideoCodecFrame.
 //
 // The function returns the following values:
 //
-//    - flowReturn usually GST_FLOW_OK.
+//   - flowReturn usually GST_FLOW_OK.
 //
 func (decoder *VideoDecoder) FinishSubframe(frame *VideoCodecFrame) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -779,8 +780,8 @@ func (decoder *VideoDecoder) FinishSubframe(frame *VideoCodecFrame) gst.FlowRetu
 //
 // The function returns the following values:
 //
-//    - allocator (optional): Allocator used.
-//    - params (optional) the AllocationParams of allocator.
+//   - allocator (optional): Allocator used.
+//   - params (optional) the AllocationParams of allocator.
 //
 func (decoder *VideoDecoder) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -824,8 +825,8 @@ func (decoder *VideoDecoder) Allocator() (gst.Allocatorrer, *gst.AllocationParam
 
 // The function returns the following values:
 //
-//    - bufferPool: instance of the BufferPool used by the decoder; free it after
-//      use it.
+//   - bufferPool (optional): instance of the BufferPool used by the decoder;
+//     free it after use it.
 //
 func (decoder *VideoDecoder) BufferPool() *gst.BufferPool {
 	var _arg0 *C.GstVideoDecoder // out
@@ -838,14 +839,16 @@ func (decoder *VideoDecoder) BufferPool() *gst.BufferPool {
 
 	var _bufferPool *gst.BufferPool // out
 
-	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_bufferPool = &gst.BufferPool{
-			GstObject: gst.GstObject{
-				InitiallyUnowned: coreglib.InitiallyUnowned{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_bufferPool = &gst.BufferPool{
+				GstObject: gst.GstObject{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -854,7 +857,7 @@ func (decoder *VideoDecoder) BufferPool() *gst.BufferPool {
 
 // The function returns the following values:
 //
-//    - gint: currently configured byte to time conversion setting.
+//   - gint: currently configured byte to time conversion setting.
 //
 func (dec *VideoDecoder) EstimateRate() int {
 	var _arg0 *C.GstVideoDecoder // out
@@ -876,12 +879,12 @@ func (dec *VideoDecoder) EstimateRate() int {
 //
 // The function takes the following parameters:
 //
-//    - frameNumber: system_frame_number of a frame.
+//   - frameNumber: system_frame_number of a frame.
 //
 // The function returns the following values:
 //
-//    - videoCodecFrame: pending unfinished VideoCodecFrame identified by
-//      frame_number.
+//   - videoCodecFrame (optional): pending unfinished VideoCodecFrame identified
+//     by frame_number.
 //
 func (decoder *VideoDecoder) Frame(frameNumber int) *VideoCodecFrame {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -897,13 +900,15 @@ func (decoder *VideoDecoder) Frame(frameNumber int) *VideoCodecFrame {
 
 	var _videoCodecFrame *VideoCodecFrame // out
 
-	_videoCodecFrame = (*VideoCodecFrame)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoCodecFrame)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_codec_frame_unref((*C.GstVideoCodecFrame)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoCodecFrame = (*VideoCodecFrame)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoCodecFrame)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_codec_frame_unref((*C.GstVideoCodecFrame)(intern.C))
+			},
+		)
+	}
 
 	return _videoCodecFrame
 }
@@ -912,7 +917,7 @@ func (decoder *VideoDecoder) Frame(frameNumber int) *VideoCodecFrame {
 //
 // The function returns the following values:
 //
-//    - list: pending unfinished VideoCodecFrame.
+//   - list: pending unfinished VideoCodecFrame.
 //
 func (decoder *VideoDecoder) Frames() []*VideoCodecFrame {
 	var _arg0 *C.GstVideoDecoder // out
@@ -947,11 +952,11 @@ func (decoder *VideoDecoder) Frames() []*VideoCodecFrame {
 //
 // The function takes the following parameters:
 //
-//    - frame to update.
+//   - frame to update.
 //
 // The function returns the following values:
 //
-//    - guint: current subframe index received in subframe mode, 1 otherwise.
+//   - guint: current subframe index received in subframe mode, 1 otherwise.
 //
 func (decoder *VideoDecoder) InputSubframeIndex(frame *VideoCodecFrame) uint {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -977,10 +982,10 @@ func (decoder *VideoDecoder) InputSubframeIndex(frame *VideoCodecFrame) uint {
 //
 // The function returns the following values:
 //
-//    - minLatency (optional) address of variable in which to store the
-//      configured minimum latency, or NULL.
-//    - maxLatency (optional) address of variable in which to store the
-//      configured mximum latency, or NULL.
+//   - minLatency (optional) address of variable in which to store the
+//     configured minimum latency, or NULL.
+//   - maxLatency (optional) address of variable in which to store the
+//     configured mximum latency, or NULL.
 //
 func (decoder *VideoDecoder) Latency() (minLatency, maxLatency gst.ClockTime) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -995,28 +1000,24 @@ func (decoder *VideoDecoder) Latency() (minLatency, maxLatency gst.ClockTime) {
 	var _minLatency gst.ClockTime // out
 	var _maxLatency gst.ClockTime // out
 
-	_minLatency = uint64(_arg1)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_maxLatency = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_minLatency = gst.ClockTime(_arg1)
+	_maxLatency = gst.ClockTime(_arg2)
 
 	return _minLatency, _maxLatency
 }
 
-// MaxDecodeTime determines maximum possible decoding time for frame that will
-// allow it to decode and arrive in time (as determined by QoS events). In
-// particular, a negative result means decoding in time is no longer possible
+// MaxDecodeTime determines maximum possible decoding time for frame that
+// will allow it to decode and arrive in time (as determined by QoS events).
+// In particular, a negative result means decoding in time is no longer possible
 // and should therefore occur as soon/skippy as possible.
 //
 // The function takes the following parameters:
 //
-//    - frame: VideoCodecFrame.
+//   - frame: VideoCodecFrame.
 //
 // The function returns the following values:
 //
-//    - clockTimeDiff: max decoding time.
+//   - clockTimeDiff: max decoding time.
 //
 func (decoder *VideoDecoder) MaxDecodeTime(frame *VideoCodecFrame) gst.ClockTimeDiff {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1032,16 +1033,14 @@ func (decoder *VideoDecoder) MaxDecodeTime(frame *VideoCodecFrame) gst.ClockTime
 
 	var _clockTimeDiff gst.ClockTimeDiff // out
 
-	_clockTimeDiff = int64(_cret)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
+	_clockTimeDiff = gst.ClockTimeDiff(_cret)
 
 	return _clockTimeDiff
 }
 
 // The function returns the following values:
 //
-//    - gint: currently configured decoder tolerated error count.
+//   - gint: currently configured decoder tolerated error count.
 //
 func (dec *VideoDecoder) MaxErrors() int {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1063,7 +1062,7 @@ func (dec *VideoDecoder) MaxErrors() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if required format handling is enabled.
+//   - ok: TRUE if required format handling is enabled.
 //
 func (dec *VideoDecoder) NeedsFormat() bool {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1088,7 +1087,7 @@ func (dec *VideoDecoder) NeedsFormat() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a sync point is required in the beginning.
+//   - ok: TRUE if a sync point is required in the beginning.
 //
 func (dec *VideoDecoder) NeedsSyncPoint() bool {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1112,7 +1111,7 @@ func (dec *VideoDecoder) NeedsSyncPoint() bool {
 //
 // The function returns the following values:
 //
-//    - videoCodecFrame: oldest pending unfinished VideoCodecFrame.
+//   - videoCodecFrame (optional): oldest pending unfinished VideoCodecFrame.
 //
 func (decoder *VideoDecoder) OldestFrame() *VideoCodecFrame {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1125,13 +1124,15 @@ func (decoder *VideoDecoder) OldestFrame() *VideoCodecFrame {
 
 	var _videoCodecFrame *VideoCodecFrame // out
 
-	_videoCodecFrame = (*VideoCodecFrame)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoCodecFrame)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_codec_frame_unref((*C.GstVideoCodecFrame)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoCodecFrame = (*VideoCodecFrame)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoCodecFrame)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_codec_frame_unref((*C.GstVideoCodecFrame)(intern.C))
+			},
+		)
+	}
 
 	return _videoCodecFrame
 }
@@ -1140,7 +1141,7 @@ func (decoder *VideoDecoder) OldestFrame() *VideoCodecFrame {
 //
 // The function returns the following values:
 //
-//    - videoCodecState describing format of video data.
+//   - videoCodecState (optional) describing format of video data.
 //
 func (decoder *VideoDecoder) OutputState() *VideoCodecState {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1153,13 +1154,15 @@ func (decoder *VideoDecoder) OutputState() *VideoCodecState {
 
 	var _videoCodecState *VideoCodecState // out
 
-	_videoCodecState = (*VideoCodecState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoCodecState)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_codec_state_unref((*C.GstVideoCodecState)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoCodecState = (*VideoCodecState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoCodecState)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_codec_state_unref((*C.GstVideoCodecState)(intern.C))
+			},
+		)
+	}
 
 	return _videoCodecState
 }
@@ -1169,7 +1172,7 @@ func (decoder *VideoDecoder) OutputState() *VideoCodecState {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if input data is considered packetized.
+//   - ok: TRUE if input data is considered packetized.
 //
 func (decoder *VideoDecoder) Packetized() bool {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1194,7 +1197,7 @@ func (decoder *VideoDecoder) Packetized() bool {
 //
 // The function returns the following values:
 //
-//    - gsize: number of bytes pending for the current frame.
+//   - gsize: number of bytes pending for the current frame.
 //
 func (decoder *VideoDecoder) PendingFrameSize() uint {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1217,11 +1220,11 @@ func (decoder *VideoDecoder) PendingFrameSize() uint {
 //
 // The function takes the following parameters:
 //
-//    - frame to update.
+//   - frame to update.
 //
 // The function returns the following values:
 //
-//    - guint: current subframe processed received in subframe mode.
+//   - guint: current subframe processed received in subframe mode.
 //
 func (decoder *VideoDecoder) ProcessedSubframeIndex(frame *VideoCodecFrame) uint {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1244,7 +1247,7 @@ func (decoder *VideoDecoder) ProcessedSubframeIndex(frame *VideoCodecFrame) uint
 
 // The function returns the following values:
 //
-//    - gdouble: current QoS proportion.
+//   - gdouble: current QoS proportion.
 //
 func (decoder *VideoDecoder) QosProportion() float64 {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1262,13 +1265,13 @@ func (decoder *VideoDecoder) QosProportion() float64 {
 	return _gdouble
 }
 
-// SubframeMode queries whether input data is considered as subframes or not by
-// the base class. If FALSE, each input buffer will be considered as a full
+// SubframeMode queries whether input data is considered as subframes or not
+// by the base class. If FALSE, each input buffer will be considered as a full
 // frame.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if input data is considered as sub frames.
+//   - ok: TRUE if input data is considered as sub frames.
 //
 func (decoder *VideoDecoder) SubframeMode() bool {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1294,7 +1297,7 @@ func (decoder *VideoDecoder) SubframeMode() bool {
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (decoder *VideoDecoder) HaveFrame() gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1312,18 +1315,18 @@ func (decoder *VideoDecoder) HaveFrame() gst.FlowReturn {
 	return _flowReturn
 }
 
-// HaveLastSubframe indicates that the last subframe has been processed by the
-// decoder in frame. This will release the current frame in video decoder
+// HaveLastSubframe indicates that the last subframe has been processed by
+// the decoder in frame. This will release the current frame in video decoder
 // allowing to receive new frames from upstream elements. This method must be
 // called in the subclass handle_frame callback.
 //
 // The function takes the following parameters:
 //
-//    - frame to update.
+//   - frame to update.
 //
 // The function returns the following values:
 //
-//    - flowReturn usually GST_FLOW_OK.
+//   - flowReturn usually GST_FLOW_OK.
 //
 func (decoder *VideoDecoder) HaveLastSubframe(frame *VideoCodecFrame) gst.FlowReturn {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1344,13 +1347,44 @@ func (decoder *VideoDecoder) HaveLastSubframe(frame *VideoCodecFrame) gst.FlowRe
 	return _flowReturn
 }
 
+// MergeTags sets the audio decoder tags and how they should be merged with
+// any upstream stream tags. This will override any tags previously-set with
+// gst_audio_decoder_merge_tags().
+//
+// Note that this is provided for convenience, and the subclass is not required
+// to use this and can still do tag handling on its own.
+//
+// MT safe.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) to merge, or NULL to unset previously-set tags.
+//   - mode to use, usually T_TAG_MERGE_REPLACE.
+//
+func (decoder *VideoDecoder) MergeTags(tags *gst.TagList, mode gst.TagMergeMode) {
+	var _arg0 *C.GstVideoDecoder // out
+	var _arg1 *C.GstTagList      // out
+	var _arg2 C.GstTagMergeMode  // out
+
+	_arg0 = (*C.GstVideoDecoder)(unsafe.Pointer(coreglib.InternObject(decoder).Native()))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+	}
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_video_decoder_merge_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(decoder)
+	runtime.KeepAlive(tags)
+	runtime.KeepAlive(mode)
+}
+
 // Negotiate with downstream elements to currently configured VideoCodecState.
 // Unmark GST_PAD_FLAG_NEED_RECONFIGURE in any case. But mark it again if
 // negotiate fails.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (decoder *VideoDecoder) Negotiate() bool {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1370,18 +1404,18 @@ func (decoder *VideoDecoder) Negotiate() bool {
 	return _ok
 }
 
-// ProxyGetcaps returns caps that express caps (or sink template caps if caps ==
-// NULL) restricted to resolution/format/... combinations supported by
+// ProxyGetcaps returns caps that express caps (or sink template caps if caps
+// == NULL) restricted to resolution/format/... combinations supported by
 // downstream elements.
 //
 // The function takes the following parameters:
 //
-//    - caps (optional): initial caps.
-//    - filter (optional) caps.
+//   - caps (optional): initial caps.
+//   - filter (optional) caps.
 //
 // The function returns the following values:
 //
-//    - ret owned by caller.
+//   - ret owned by caller.
 //
 func (decoder *VideoDecoder) ProxyGetcaps(caps, filter *gst.Caps) *gst.Caps {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1421,7 +1455,7 @@ func (decoder *VideoDecoder) ProxyGetcaps(caps, filter *gst.Caps) *gst.Caps {
 //
 // The function takes the following parameters:
 //
-//    - frame to release.
+//   - frame to release.
 //
 func (dec *VideoDecoder) ReleaseFrame(frame *VideoCodecFrame) {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1436,34 +1470,35 @@ func (dec *VideoDecoder) ReleaseFrame(frame *VideoCodecFrame) {
 }
 
 // RequestSyncPoint allows the VideoDecoder subclass to request from the base
-// class that a new sync should be requested from upstream, and that frame was
-// the frame when the subclass noticed that a new sync point is required. A
-// reason for the subclass to do this could be missing reference frames, for
-// example.
+// class that a new sync should be requested from upstream, and that frame
+// was the frame when the subclass noticed that a new sync point is required.
+// A reason for the subclass to do this could be missing reference frames,
+// for example.
 //
-// The base class will then request a new sync point from upstream as long as
-// the time that passed since the last one is exceeding
+// The base class will then request a new sync point from upstream
+// as long as the time that passed since the last one is exceeding
 // VideoDecoder:min-force-key-unit-interval.
 //
 // The subclass can signal via flags how the frames until the next sync point
 // should be handled:
 //
-//    * If GST_VIDEO_DECODER_REQUEST_SYNC_POINT_DISCARD_INPUT is selected then
-//      all following input frames until the next sync point are discarded.
-//      This can be useful if the lack of a sync point will prevent all further
-//      decoding and the decoder implementation is not very robust in handling
-//      missing references frames.
-//    * If GST_VIDEO_DECODER_REQUEST_SYNC_POINT_CORRUPT_OUTPUT is selected
-//      then all output frames following frame are marked as corrupted via
-//      GST_BUFFER_FLAG_CORRUPTED. Corrupted frames can be automatically
-//      dropped by the base class, see VideoDecoder:discard-corrupted-frames.
-//      Subclasses can manually mark frames as corrupted via GST_VIDEO_CODEC_FRAME_FLAG_CORRUPTED
-//      before calling gst_video_decoder_finish_frame().
+//   - If GST_VIDEO_DECODER_REQUEST_SYNC_POINT_DISCARD_INPUT is selected then
+//     all following input frames until the next sync point are discarded.
+//     This can be useful if the lack of a sync point will prevent all further
+//     decoding and the decoder implementation is not very robust in handling
+//     missing references frames.
+//   - If GST_VIDEO_DECODER_REQUEST_SYNC_POINT_CORRUPT_OUTPUT is selected
+//     then all output frames following frame are marked as corrupted via
+//     GST_BUFFER_FLAG_CORRUPTED. Corrupted frames can be automatically
+//     dropped by the base class, see VideoDecoder:discard-corrupted-frames.
+//     Subclasses can manually mark frames as corrupted via
+//     GST_VIDEO_CODEC_FRAME_FLAG_CORRUPTED before calling
+//     gst_video_decoder_finish_frame().
 //
 // The function takes the following parameters:
 //
-//    - frame: VideoCodecFrame.
-//    - flags: VideoDecoderRequestSyncPointFlags.
+//   - frame: VideoCodecFrame.
+//   - flags: VideoDecoderRequestSyncPointFlags.
 //
 func (dec *VideoDecoder) RequestSyncPoint(frame *VideoCodecFrame, flags VideoDecoderRequestSyncPointFlags) {
 	var _arg0 *C.GstVideoDecoder                     // out
@@ -1485,7 +1520,7 @@ func (dec *VideoDecoder) RequestSyncPoint(frame *VideoCodecFrame, flags VideoDec
 //
 // The function takes the following parameters:
 //
-//    - enabled: whether to enable byte to time conversion.
+//   - enabled: whether to enable byte to time conversion.
 //
 func (dec *VideoDecoder) SetEstimateRate(enabled bool) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1506,15 +1541,15 @@ func (dec *VideoDecoder) SetEstimateRate(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - fmt: VideoFormat.
-//    - interlaceMode: VideoInterlaceMode.
-//    - width in pixels.
-//    - height in pixels.
-//    - reference (optional): optional reference VideoCodecState.
+//   - fmt: VideoFormat.
+//   - interlaceMode: VideoInterlaceMode.
+//   - width in pixels.
+//   - height in pixels.
+//   - reference (optional): optional reference VideoCodecState.
 //
 // The function returns the following values:
 //
-//    - videoCodecState: newly configured output state.
+//   - videoCodecState (optional): newly configured output state.
 //
 func (decoder *VideoDecoder) SetInterlacedOutputState(fmt VideoFormat, interlaceMode VideoInterlaceMode, width, height uint, reference *VideoCodecState) *VideoCodecState {
 	var _arg0 *C.GstVideoDecoder      // out
@@ -1544,25 +1579,28 @@ func (decoder *VideoDecoder) SetInterlacedOutputState(fmt VideoFormat, interlace
 
 	var _videoCodecState *VideoCodecState // out
 
-	_videoCodecState = (*VideoCodecState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoCodecState)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_codec_state_unref((*C.GstVideoCodecState)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoCodecState = (*VideoCodecState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoCodecState)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_codec_state_unref((*C.GstVideoCodecState)(intern.C))
+			},
+		)
+	}
 
 	return _videoCodecState
 }
 
 // SetLatency lets VideoDecoder sub-classes tell the baseclass what the decoder
-// latency is. Will also post a LATENCY message on the bus so the pipeline can
+// latency is. If the provided values changed from previously provided ones,
+// this will also post a LATENCY message on the bus so the pipeline can
 // reconfigure its global latency.
 //
 // The function takes the following parameters:
 //
-//    - minLatency: minimum latency.
-//    - maxLatency: maximum latency.
+//   - minLatency: minimum latency.
+//   - maxLatency: maximum latency.
 //
 func (decoder *VideoDecoder) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1570,12 +1608,8 @@ func (decoder *VideoDecoder) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	var _arg2 C.GstClockTime     // out
 
 	_arg0 = (*C.GstVideoDecoder)(unsafe.Pointer(coreglib.InternObject(decoder).Native()))
-	_arg1 = C.guint64(minLatency)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(maxLatency)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(minLatency)
+	_arg2 = C.GstClockTime(maxLatency)
 
 	C.gst_video_decoder_set_latency(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(decoder)
@@ -1583,16 +1617,16 @@ func (decoder *VideoDecoder) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	runtime.KeepAlive(maxLatency)
 }
 
-// SetMaxErrors sets numbers of tolerated decoder errors, where a tolerated one
-// is then only warned about, but more than tolerated will lead to fatal error.
-// You can set -1 for never returning fatal errors. Default is set to
+// SetMaxErrors sets numbers of tolerated decoder errors, where a tolerated
+// one is then only warned about, but more than tolerated will lead to fatal
+// error. You can set -1 for never returning fatal errors. Default is set to
 // GST_VIDEO_DECODER_MAX_ERRORS.
 //
 // The '-1' option was added in 1.4.
 //
 // The function takes the following parameters:
 //
-//    - num: max tolerated errors.
+//   - num: max tolerated errors.
 //
 func (dec *VideoDecoder) SetMaxErrors(num int) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1606,15 +1640,15 @@ func (dec *VideoDecoder) SetMaxErrors(num int) {
 	runtime.KeepAlive(num)
 }
 
-// SetNeedsFormat configures decoder format needs. If enabled, subclass needs to
-// be negotiated with format caps before it can process any data. It will then
-// never be handed any data before it has been configured. Otherwise, it might
-// be handed data without having been configured and is then expected being able
-// to do so either by default or based on the input data.
+// SetNeedsFormat configures decoder format needs. If enabled, subclass needs
+// to be negotiated with format caps before it can process any data. It will
+// then never be handed any data before it has been configured. Otherwise,
+// it might be handed data without having been configured and is then expected
+// being able to do so either by default or based on the input data.
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (dec *VideoDecoder) SetNeedsFormat(enabled bool) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1640,7 +1674,7 @@ func (dec *VideoDecoder) SetNeedsFormat(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (dec *VideoDecoder) SetNeedsSyncPoint(enabled bool) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1664,8 +1698,8 @@ func (dec *VideoDecoder) SetNeedsSyncPoint(enabled bool) {
 // or framerate) from an existing VideoCodecState, it can be provided as a
 // reference.
 //
-// If the subclass wishes to override some fields from the output state (like
-// pixel-aspect-ratio or framerate) it can do so on the returned
+// If the subclass wishes to override some fields from the output state
+// (like pixel-aspect-ratio or framerate) it can do so on the returned
 // VideoCodecState.
 //
 // The new output state will only take effect (set on pads and buffers) starting
@@ -1673,14 +1707,14 @@ func (dec *VideoDecoder) SetNeedsSyncPoint(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - fmt: VideoFormat.
-//    - width in pixels.
-//    - height in pixels.
-//    - reference (optional): optional reference VideoCodecState.
+//   - fmt: VideoFormat.
+//   - width in pixels.
+//   - height in pixels.
+//   - reference (optional): optional reference VideoCodecState.
 //
 // The function returns the following values:
 //
-//    - videoCodecState: newly configured output state.
+//   - videoCodecState (optional): newly configured output state.
 //
 func (decoder *VideoDecoder) SetOutputState(fmt VideoFormat, width, height uint, reference *VideoCodecState) *VideoCodecState {
 	var _arg0 *C.GstVideoDecoder    // out
@@ -1707,13 +1741,15 @@ func (decoder *VideoDecoder) SetOutputState(fmt VideoFormat, width, height uint,
 
 	var _videoCodecState *VideoCodecState // out
 
-	_videoCodecState = (*VideoCodecState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoCodecState)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_codec_state_unref((*C.GstVideoCodecState)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoCodecState = (*VideoCodecState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoCodecState)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_codec_state_unref((*C.GstVideoCodecState)(intern.C))
+			},
+		)
+	}
 
 	return _videoCodecState
 }
@@ -1723,7 +1759,7 @@ func (decoder *VideoDecoder) SetOutputState(fmt VideoFormat, width, height uint,
 //
 // The function takes the following parameters:
 //
-//    - packetized: whether the input data should be considered as packetized.
+//   - packetized: whether the input data should be considered as packetized.
 //
 func (decoder *VideoDecoder) SetPacketized(packetized bool) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1743,10 +1779,10 @@ func (decoder *VideoDecoder) SetPacketized(packetized bool) {
 // subclass can receive the data at a granularity lower than one frame.
 //
 // Note that in this mode, the subclass has two options. It can either require
-// the presence of a GST_VIDEO_BUFFER_FLAG_MARKER to mark the end of a frame. Or
-// it can operate in such a way that it will decode a single frame at a time. In
-// this second case, every buffer that arrives to the element is considered part
-// of the same frame until gst_video_decoder_finish_frame() is called.
+// the presence of a GST_VIDEO_BUFFER_FLAG_MARKER to mark the end of a frame.
+// Or it can operate in such a way that it will decode a single frame at a time.
+// In this second case, every buffer that arrives to the element is considered
+// part of the same frame until gst_video_decoder_finish_frame() is called.
 //
 // In either case, the same VideoCodecFrame will be passed to the
 // GstVideoDecoderClass:handle_frame vmethod repeatedly with a different
@@ -1756,7 +1792,7 @@ func (decoder *VideoDecoder) SetPacketized(packetized bool) {
 //
 // The function takes the following parameters:
 //
-//    - subframeMode: whether the input data should be considered as subframes.
+//   - subframeMode: whether the input data should be considered as subframes.
 //
 func (decoder *VideoDecoder) SetSubframeMode(subframeMode bool) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1781,7 +1817,7 @@ func (decoder *VideoDecoder) SetSubframeMode(subframeMode bool) {
 //
 // The function takes the following parameters:
 //
-//    - use: if the default pad accept-caps query handling should be used.
+//   - use: if the default pad accept-caps query handling should be used.
 //
 func (decoder *VideoDecoder) SetUseDefaultPadAcceptcaps(use bool) {
 	var _arg0 *C.GstVideoDecoder // out
@@ -1947,7 +1983,7 @@ func (decoder *VideoDecoder) caps(filter *gst.Caps) *gst.Caps {
 
 // The function takes the following parameters:
 //
-//    - frame to handle.
+//   - frame to handle.
 //
 // The function returns the following values:
 //
@@ -1975,12 +2011,12 @@ func (decoder *VideoDecoder) handleFrame(frame *VideoCodecFrame) gst.FlowReturn 
 
 // The function takes the following parameters:
 //
-//    - timestamp: timestamp of the missing data.
-//    - duration: duration of the missing data.
+//   - timestamp: timestamp of the missing data.
+//   - duration: duration of the missing data.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the decoder should be drained afterwards.
+//   - ok: TRUE if the decoder should be drained afterwards.
 //
 func (decoder *VideoDecoder) handleMissingData(timestamp, duration gst.ClockTime) bool {
 	gclass := (*C.GstVideoDecoderClass)(coreglib.PeekParentClass(decoder))
@@ -1992,12 +2028,8 @@ func (decoder *VideoDecoder) handleMissingData(timestamp, duration gst.ClockTime
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GstVideoDecoder)(unsafe.Pointer(coreglib.InternObject(decoder).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(duration)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
+	_arg2 = C.GstClockTime(duration)
 
 	_cret = C._gotk4_gstvideo1_VideoDecoder_virtual_handle_missing_data(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(decoder)
@@ -2019,7 +2051,7 @@ func (decoder *VideoDecoder) handleMissingData(timestamp, duration gst.ClockTime
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (decoder *VideoDecoder) negotiate() bool {
 	gclass := (*C.GstVideoDecoderClass)(coreglib.PeekParentClass(decoder))
@@ -2067,9 +2099,9 @@ func (decoder *VideoDecoder) open() bool {
 
 // The function takes the following parameters:
 //
-//    - frame
-//    - adapter
-//    - atEos
+//   - frame
+//   - adapter
+//   - atEos
 //
 // The function returns the following values:
 //
@@ -2349,8 +2381,8 @@ func (decoder *VideoDecoder) stop() bool {
 
 // The function takes the following parameters:
 //
-//    - frame
-//    - meta
+//   - frame
+//   - meta
 //
 // The function returns the following values:
 //

@@ -141,35 +141,37 @@ func (b BufferPoolAcquireFlags) Has(other BufferPoolAcquireFlags) bool {
 // BufferPoolOverrides contains methods that are overridable.
 type BufferPoolOverrides struct {
 	// AcquireBuffer acquires a buffer from pool. buffer should point to a
-	// memory location that can hold a pointer to the new buffer.
+	// memory location that can hold a pointer to the new buffer. When the pool
+	// is empty, this function will by default block until a buffer is released
+	// into the pool again or when the pool is set to flushing or deactivated.
 	//
 	// params can contain optional parameters to influence the allocation.
 	//
 	// The function takes the following parameters:
 	//
-	//    - params (optional): parameters.
+	//   - params (optional): parameters.
 	//
 	// The function returns the following values:
 	//
-	//    - buffer: location for a Buffer.
-	//    - flowReturn such as GST_FLOW_FLUSHING when the pool is inactive.
+	//   - buffer (optional): location for a Buffer.
+	//   - flowReturn such as GST_FLOW_FLUSHING when the pool is inactive.
 	//
 	AcquireBuffer func(params *BufferPoolAcquireParams) (*Buffer, FlowReturn)
 	// AllocBuffer: allocate a buffer. the default implementation allocates
 	// buffers from the configured memory allocator and with the configured
-	// parameters. All metadata that is present on the allocated buffer will be
-	// marked as T_META_FLAG_POOLED and T_META_FLAG_LOCKED and will not be
+	// parameters. All metadata that is present on the allocated buffer will
+	// be marked as T_META_FLAG_POOLED and T_META_FLAG_LOCKED and will not be
 	// removed from the buffer in BufferPoolClass::reset_buffer. The buffer
 	// should have the T_BUFFER_FLAG_TAG_MEMORY cleared.
 	//
 	// The function takes the following parameters:
 	//
-	//    - params (optional): parameters.
+	//   - params (optional): parameters.
 	//
 	// The function returns the following values:
 	//
-	//    - buffer: location for a Buffer.
-	//    - flowReturn to indicate whether the allocation was successful.
+	//   - buffer (optional): location for a Buffer.
+	//   - flowReturn to indicate whether the allocation was successful.
 	//
 	AllocBuffer func(params *BufferPoolAcquireParams) (*Buffer, FlowReturn)
 	// FlushStart: enter the flushing state.
@@ -180,16 +182,16 @@ type BufferPoolOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - buffer to free.
+	//   - buffer to free.
 	//
 	FreeBuffer func(buffer *Buffer)
-	// Options gets a NULL terminated array of string with supported bufferpool
-	// options for pool. An option would typically be enabled with
+	// Options gets a NULL terminated array of string with supported
+	// bufferpool options for pool. An option would typically be enabled with
 	// gst_buffer_pool_config_add_option().
 	//
 	// The function returns the following values:
 	//
-	//    - utf8s: NULL terminated array of strings.
+	//   - utf8s: NULL terminated array of strings.
 	//
 	Options func() []string
 	// ReleaseBuffer releases buffer to pool. buffer should have previously been
@@ -200,7 +202,7 @@ type BufferPoolOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - buffer: Buffer.
+	//   - buffer: Buffer.
 	//
 	ReleaseBuffer func(buffer *Buffer)
 	// ResetBuffer: reset the buffer to its state when it was freshly allocated.
@@ -212,7 +214,7 @@ type BufferPoolOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - buffer to reset.
+	//   - buffer to reset.
 	//
 	ResetBuffer func(buffer *Buffer)
 	// SetConfig sets the configuration of the pool. If the pool is already
@@ -221,9 +223,9 @@ type BufferPoolOverrides struct {
 	// active configuration will remain. Buffers allocated from this pool must
 	// be returned or else this function will do nothing and return FALSE.
 	//
-	// config is a Structure that contains the configuration parameters for the
-	// pool. A default and mandatory set of parameters can be configured with
-	// gst_buffer_pool_config_set_params(),
+	// config is a Structure that contains the configuration parameters
+	// for the pool. A default and mandatory set of parameters can
+	// be configured with gst_buffer_pool_config_set_params(),
 	// gst_buffer_pool_config_set_allocator() and
 	// gst_buffer_pool_config_add_option().
 	//
@@ -235,11 +237,11 @@ type BufferPoolOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - config: Structure.
+	//   - config: Structure.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE when the configuration could be set.
+	//   - ok: TRUE when the configuration could be set.
 	//
 	SetConfig func(config *Structure) bool
 	// Start the bufferpool. The default implementation will preallocate
@@ -247,7 +249,7 @@ type BufferPoolOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the pool could be started.
+	//   - ok: whether the pool could be started.
 	//
 	Start func() bool
 	// Stop the bufferpool. the default implementation will free the
@@ -256,7 +258,7 @@ type BufferPoolOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the pool could be stopped.
+	//   - ok: whether the pool could be stopped.
 	//
 	Stop func() bool
 }
@@ -283,8 +285,8 @@ func defaultBufferPoolOverrides(v *BufferPool) BufferPoolOverrides {
 // A BufferPool is created with gst_buffer_pool_new().
 //
 // Once a pool is created, it needs to be configured. A call to
-// gst_buffer_pool_get_config() returns the current configuration structure from
-// the pool. With gst_buffer_pool_config_set_params() and
+// gst_buffer_pool_get_config() returns the current configuration
+// structure from the pool. With gst_buffer_pool_config_set_params() and
 // gst_buffer_pool_config_set_allocator() the bufferpool parameters and
 // allocator can be configured. Other properties can be configured in the pool
 // depending on the pool implementation.
@@ -309,8 +311,8 @@ func defaultBufferPoolOverrides(v *BufferPool) BufferPoolOverrides {
 // pool with gst_buffer_pool_release_buffer() when their refcount drops to 0.
 //
 // The bufferpool can be deactivated again with gst_buffer_pool_set_active().
-// All further gst_buffer_pool_acquire_buffer() calls will return an error. When
-// all buffers are returned to the pool they will be freed.
+// All further gst_buffer_pool_acquire_buffer() calls will return an error.
+// When all buffers are returned to the pool they will be freed.
 type BufferPool struct {
 	_ [0]func() // equal guard
 	GstObject
@@ -400,7 +402,7 @@ func marshalBufferPool(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - bufferPool: new BufferPool instance.
+//   - bufferPool: new BufferPool instance.
 //
 func NewBufferPool() *BufferPool {
 	var _cret *C.GstBufferPool // in
@@ -415,18 +417,20 @@ func NewBufferPool() *BufferPool {
 }
 
 // AcquireBuffer acquires a buffer from pool. buffer should point to a memory
-// location that can hold a pointer to the new buffer.
+// location that can hold a pointer to the new buffer. When the pool is empty,
+// this function will by default block until a buffer is released into the pool
+// again or when the pool is set to flushing or deactivated.
 //
 // params can contain optional parameters to influence the allocation.
 //
 // The function takes the following parameters:
 //
-//    - params (optional): parameters.
+//   - params (optional): parameters.
 //
 // The function returns the following values:
 //
-//    - buffer: location for a Buffer.
-//    - flowReturn such as GST_FLOW_FLUSHING when the pool is inactive.
+//   - buffer (optional): location for a Buffer.
+//   - flowReturn such as GST_FLOW_FLUSHING when the pool is inactive.
 //
 func (pool *BufferPool) AcquireBuffer(params *BufferPoolAcquireParams) (*Buffer, FlowReturn) {
 	var _arg0 *C.GstBufferPool              // out
@@ -446,13 +450,15 @@ func (pool *BufferPool) AcquireBuffer(params *BufferPoolAcquireParams) (*Buffer,
 	var _buffer *Buffer        // out
 	var _flowReturn FlowReturn // out
 
-	_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	_flowReturn = FlowReturn(_cret)
 
 	return _buffer, _flowReturn
@@ -464,7 +470,7 @@ func (pool *BufferPool) AcquireBuffer(params *BufferPoolAcquireParams) (*Buffer,
 //
 // The function returns the following values:
 //
-//    - structure: copy of the current configuration of pool.
+//   - structure: copy of the current configuration of pool.
 //
 func (pool *BufferPool) Config() *Structure {
 	var _arg0 *C.GstBufferPool // out
@@ -488,13 +494,13 @@ func (pool *BufferPool) Config() *Structure {
 	return _structure
 }
 
-// Options gets a NULL terminated array of string with supported bufferpool
-// options for pool. An option would typically be enabled with
+// Options gets a NULL terminated array of string with supported
+// bufferpool options for pool. An option would typically be enabled with
 // gst_buffer_pool_config_add_option().
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL terminated array of strings.
+//   - utf8s: NULL terminated array of strings.
 //
 func (pool *BufferPool) Options() []string {
 	var _arg0 *C.GstBufferPool // out
@@ -528,11 +534,11 @@ func (pool *BufferPool) Options() []string {
 //
 // The function takes the following parameters:
 //
-//    - option: option.
+//   - option: option.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the buffer pool contains option.
+//   - ok: TRUE if the buffer pool contains option.
 //
 func (pool *BufferPool) HasOption(option string) bool {
 	var _arg0 *C.GstBufferPool // out
@@ -561,7 +567,7 @@ func (pool *BufferPool) HasOption(option string) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when the pool is active.
+//   - ok: TRUE when the pool is active.
 //
 func (pool *BufferPool) IsActive() bool {
 	var _arg0 *C.GstBufferPool // out
@@ -589,7 +595,7 @@ func (pool *BufferPool) IsActive() bool {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 func (pool *BufferPool) ReleaseBuffer(buffer *Buffer) {
 	var _arg0 *C.GstBufferPool // out
@@ -616,12 +622,12 @@ func (pool *BufferPool) ReleaseBuffer(buffer *Buffer) {
 //
 // The function takes the following parameters:
 //
-//    - active: new active state.
+//   - active: new active state.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE when the pool was not configured or when preallocation of the
-//      buffers failed.
+//   - ok: FALSE when the pool was not configured or when preallocation of the
+//     buffers failed.
 //
 func (pool *BufferPool) SetActive(active bool) bool {
 	var _arg0 *C.GstBufferPool // out
@@ -665,11 +671,11 @@ func (pool *BufferPool) SetActive(active bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - config: Structure.
+//   - config: Structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when the configuration could be set.
+//   - ok: TRUE when the configuration could be set.
 //
 func (pool *BufferPool) SetConfig(config *Structure) bool {
 	var _arg0 *C.GstBufferPool // out
@@ -698,7 +704,7 @@ func (pool *BufferPool) SetConfig(config *Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - flushing: whether to start or stop flushing.
+//   - flushing: whether to start or stop flushing.
 //
 func (pool *BufferPool) SetFlushing(flushing bool) {
 	var _arg0 *C.GstBufferPool // out
@@ -715,18 +721,20 @@ func (pool *BufferPool) SetFlushing(flushing bool) {
 }
 
 // acquireBuffer acquires a buffer from pool. buffer should point to a memory
-// location that can hold a pointer to the new buffer.
+// location that can hold a pointer to the new buffer. When the pool is empty,
+// this function will by default block until a buffer is released into the pool
+// again or when the pool is set to flushing or deactivated.
 //
 // params can contain optional parameters to influence the allocation.
 //
 // The function takes the following parameters:
 //
-//    - params (optional): parameters.
+//   - params (optional): parameters.
 //
 // The function returns the following values:
 //
-//    - buffer: location for a Buffer.
-//    - flowReturn such as GST_FLOW_FLUSHING when the pool is inactive.
+//   - buffer (optional): location for a Buffer.
+//   - flowReturn such as GST_FLOW_FLUSHING when the pool is inactive.
 //
 func (pool *BufferPool) acquireBuffer(params *BufferPoolAcquireParams) (*Buffer, FlowReturn) {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -749,33 +757,35 @@ func (pool *BufferPool) acquireBuffer(params *BufferPoolAcquireParams) (*Buffer,
 	var _buffer *Buffer        // out
 	var _flowReturn FlowReturn // out
 
-	_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	_flowReturn = FlowReturn(_cret)
 
 	return _buffer, _flowReturn
 }
 
 // allocBuffer: allocate a buffer. the default implementation allocates buffers
-// from the configured memory allocator and with the configured parameters. All
-// metadata that is present on the allocated buffer will be marked as
-// T_META_FLAG_POOLED and T_META_FLAG_LOCKED and will not be removed from the
-// buffer in BufferPoolClass::reset_buffer. The buffer should have the
+// from the configured memory allocator and with the configured parameters.
+// All metadata that is present on the allocated buffer will be marked as
+// T_META_FLAG_POOLED and T_META_FLAG_LOCKED and will not be removed from
+// the buffer in BufferPoolClass::reset_buffer. The buffer should have the
 // T_BUFFER_FLAG_TAG_MEMORY cleared.
 //
 // The function takes the following parameters:
 //
-//    - params (optional): parameters.
+//   - params (optional): parameters.
 //
 // The function returns the following values:
 //
-//    - buffer: location for a Buffer.
-//    - flowReturn to indicate whether the allocation was successful.
+//   - buffer (optional): location for a Buffer.
+//   - flowReturn to indicate whether the allocation was successful.
 //
 func (pool *BufferPool) allocBuffer(params *BufferPoolAcquireParams) (*Buffer, FlowReturn) {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -798,13 +808,15 @@ func (pool *BufferPool) allocBuffer(params *BufferPoolAcquireParams) (*Buffer, F
 	var _buffer *Buffer        // out
 	var _flowReturn FlowReturn // out
 
-	_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	_flowReturn = FlowReturn(_cret)
 
 	return _buffer, _flowReturn
@@ -840,7 +852,7 @@ func (pool *BufferPool) flushStop() {
 //
 // The function takes the following parameters:
 //
-//    - buffer to free.
+//   - buffer to free.
 //
 func (pool *BufferPool) freeBuffer(buffer *Buffer) {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -857,13 +869,13 @@ func (pool *BufferPool) freeBuffer(buffer *Buffer) {
 	runtime.KeepAlive(buffer)
 }
 
-// Options gets a NULL terminated array of string with supported bufferpool
-// options for pool. An option would typically be enabled with
+// Options gets a NULL terminated array of string with supported
+// bufferpool options for pool. An option would typically be enabled with
 // gst_buffer_pool_config_add_option().
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL terminated array of strings.
+//   - utf8s: NULL terminated array of strings.
 //
 func (pool *BufferPool) options() []string {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -904,7 +916,7 @@ func (pool *BufferPool) options() []string {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 func (pool *BufferPool) releaseBuffer(buffer *Buffer) {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -922,16 +934,16 @@ func (pool *BufferPool) releaseBuffer(buffer *Buffer) {
 	runtime.KeepAlive(buffer)
 }
 
-// resetBuffer: reset the buffer to its state when it was freshly allocated. The
-// default implementation will clear the flags, timestamps and will remove the
-// metadata without the T_META_FLAG_POOLED flag (even the metadata with
+// resetBuffer: reset the buffer to its state when it was freshly allocated.
+// The default implementation will clear the flags, timestamps and will remove
+// the metadata without the T_META_FLAG_POOLED flag (even the metadata with
 // T_META_FLAG_LOCKED). If the T_BUFFER_FLAG_TAG_MEMORY was set, this function
 // can also try to restore the memory and clear the T_BUFFER_FLAG_TAG_MEMORY
 // again.
 //
 // The function takes the following parameters:
 //
-//    - buffer to reset.
+//   - buffer to reset.
 //
 func (pool *BufferPool) resetBuffer(buffer *Buffer) {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -967,11 +979,11 @@ func (pool *BufferPool) resetBuffer(buffer *Buffer) {
 //
 // The function takes the following parameters:
 //
-//    - config: Structure.
+//   - config: Structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when the configuration could be set.
+//   - ok: TRUE when the configuration could be set.
 //
 func (pool *BufferPool) setConfig(config *Structure) bool {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -1003,7 +1015,7 @@ func (pool *BufferPool) setConfig(config *Structure) bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the pool could be started.
+//   - ok: whether the pool could be started.
 //
 func (pool *BufferPool) start() bool {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -1032,7 +1044,7 @@ func (pool *BufferPool) start() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the pool could be stopped.
+//   - ok: whether the pool could be stopped.
 //
 func (pool *BufferPool) stop() bool {
 	gclass := (*C.GstBufferPoolClass)(coreglib.PeekParentClass(pool))
@@ -1064,8 +1076,8 @@ func (pool *BufferPool) stop() bool {
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
-//    - option to add.
+//   - config: BufferPool configuration.
+//   - option to add.
 //
 func BufferPoolConfigAddOption(config *Structure, option string) {
 	var _arg1 *C.GstStructure // out
@@ -1084,13 +1096,13 @@ func BufferPoolConfigAddOption(config *Structure, option string) {
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
+//   - config: BufferPool configuration.
 //
 // The function returns the following values:
 //
-//    - allocator (optional) or NULL.
-//    - params (optional) or NULL.
-//    - ok: TRUE, if the values are set.
+//   - allocator (optional) or NULL.
+//   - params (optional) or NULL.
+//   - ok: TRUE, if the values are set.
 //
 func BufferPoolConfigGetAllocator(config *Structure) (Allocatorrer, *AllocationParams, bool) {
 	var _arg1 *C.GstStructure       // out
@@ -1136,12 +1148,12 @@ func BufferPoolConfigGetAllocator(config *Structure) (Allocatorrer, *AllocationP
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
-//    - index: position in the option array to read.
+//   - config: BufferPool configuration.
+//   - index: position in the option array to read.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): option at index.
+//   - utf8 (optional): option at index.
 //
 func BufferPoolConfigGetOption(config *Structure, index uint) string {
 	var _arg1 *C.GstStructure // out
@@ -1168,16 +1180,16 @@ func BufferPoolConfigGetOption(config *Structure, index uint) string {
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
+//   - config: BufferPool configuration.
 //
 // The function returns the following values:
 //
-//    - caps (optional) of buffers.
-//    - size (optional) of each buffer, not including prefix and padding.
-//    - minBuffers (optional): minimum amount of buffers to allocate.
-//    - maxBuffers (optional): maximum amount of buffers to allocate or 0 for
-//      unlimited.
-//    - ok: TRUE if all parameters could be fetched.
+//   - caps (optional) of buffers.
+//   - size (optional) of each buffer, not including prefix and padding.
+//   - minBuffers (optional): minimum amount of buffers to allocate.
+//   - maxBuffers (optional): maximum amount of buffers to allocate or 0 for
+//     unlimited.
+//   - ok: TRUE if all parameters could be fetched.
 //
 func BufferPoolConfigGetParams(config *Structure) (caps *Caps, size, minBuffers, maxBuffers uint, ok bool) {
 	var _arg1 *C.GstStructure // out
@@ -1215,12 +1227,12 @@ func BufferPoolConfigGetParams(config *Structure) (caps *Caps, size, minBuffers,
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
-//    - option: option.
+//   - config: BufferPool configuration.
+//   - option: option.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the options array contains option.
+//   - ok: TRUE if the options array contains option.
 //
 func BufferPoolConfigHasOption(config *Structure, option string) bool {
 	var _arg1 *C.GstStructure // out
@@ -1249,11 +1261,11 @@ func BufferPoolConfigHasOption(config *Structure, option string) bool {
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
+//   - config: BufferPool configuration.
 //
 // The function returns the following values:
 //
-//    - guint options array size as a #guint.
+//   - guint options array size as a #guint.
 //
 func BufferPoolConfigNOptions(config *Structure) uint {
 	var _arg1 *C.GstStructure // out
@@ -1286,9 +1298,9 @@ func BufferPoolConfigNOptions(config *Structure) uint {
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
-//    - allocator (optional): Allocator.
-//    - params (optional): AllocationParams.
+//   - config: BufferPool configuration.
+//   - allocator (optional): Allocator.
+//   - params (optional): AllocationParams.
 //
 func BufferPoolConfigSetAllocator(config *Structure, allocator Allocatorrer, params *AllocationParams) {
 	var _arg1 *C.GstStructure        // out
@@ -1313,11 +1325,11 @@ func BufferPoolConfigSetAllocator(config *Structure, allocator Allocatorrer, par
 //
 // The function takes the following parameters:
 //
-//    - config: BufferPool configuration.
-//    - caps (optional) for the buffers.
-//    - size of each buffer, not including prefix and padding.
-//    - minBuffers: minimum amount of buffers to allocate.
-//    - maxBuffers: maximum amount of buffers to allocate or 0 for unlimited.
+//   - config: BufferPool configuration.
+//   - caps (optional) for the buffers.
+//   - size of each buffer, not including prefix and padding.
+//   - minBuffers: minimum amount of buffers to allocate.
+//   - maxBuffers: maximum amount of buffers to allocate or 0 for unlimited.
 //
 func BufferPoolConfigSetParams(config *Structure, caps *Caps, size, minBuffers, maxBuffers uint) {
 	var _arg1 *C.GstStructure // out

@@ -25,11 +25,11 @@ const GL_API_OPENGL_NAME = "opengl"
 
 // The function takes the following parameters:
 //
-//    - apiS: space separated string of OpenGL apis.
+//   - apiS: space separated string of OpenGL apis.
 //
 // The function returns the following values:
 //
-//    - glapI represented by api_s.
+//   - glapI represented by api_s.
 //
 func GLAPIFromString(apiS string) GLAPI {
 	var _arg1 *C.gchar   // out
@@ -50,11 +50,11 @@ func GLAPIFromString(apiS string) GLAPI {
 
 // The function takes the following parameters:
 //
-//    - api to stringify.
+//   - api to stringify.
 //
 // The function returns the following values:
 //
-//    - utf8: space separated string of the OpenGL api's enabled in api.
+//   - utf8: space separated string of the OpenGL api's enabled in api.
 //
 func GLAPIToString(api GLAPI) string {
 	var _arg1 C.GstGLAPI // out
@@ -75,11 +75,11 @@ func GLAPIToString(api GLAPI) string {
 
 // The function takes the following parameters:
 //
-//    - platformS: space separated string of OpenGL platformss.
+//   - platformS: space separated string of OpenGL platformss.
 //
 // The function returns the following values:
 //
-//    - glPlatform represented by platform_s.
+//   - glPlatform represented by platform_s.
 //
 func GLPlatformFromString(platformS string) GLPlatform {
 	var _arg1 *C.gchar        // out
@@ -100,11 +100,11 @@ func GLPlatformFromString(platformS string) GLPlatform {
 
 // The function takes the following parameters:
 //
-//    - platform to stringify.
+//   - platform to stringify.
 //
 // The function returns the following values:
 //
-//    - utf8: space separated string of the OpenGL platforms enabled in platform.
+//   - utf8: space separated string of the OpenGL platforms enabled in platform.
 //
 func GLPlatformToString(platform GLPlatform) string {
 	var _arg1 C.GstGLPlatform // out

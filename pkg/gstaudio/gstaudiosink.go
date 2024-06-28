@@ -91,14 +91,15 @@ type AudioSinkOverrides struct {
 	// The function returns the following values:
 	//
 	Unprepare func() bool
+	// Write samples to the device.
+	//
 	// The function takes the following parameters:
 	//
-	//    - data (optional)
-	//    - length
+	//   - data: sample data.
 	//
 	// The function returns the following values:
 	//
-	Write func(data unsafe.Pointer, length uint) int
+	Write func(data []byte) int
 }
 
 func defaultAudioSinkOverrides(v *AudioSink) AudioSinkOverrides {
@@ -390,30 +391,32 @@ func (sink *AudioSink) unprepare() bool {
 	return _ok
 }
 
+// Write: write samples to the device.
+//
 // The function takes the following parameters:
 //
-//    - data (optional)
-//    - length
+//   - data: sample data.
 //
 // The function returns the following values:
 //
-func (sink *AudioSink) write(data unsafe.Pointer, length uint) int {
+func (sink *AudioSink) write(data []byte) int {
 	gclass := (*C.GstAudioSinkClass)(coreglib.PeekParentClass(sink))
 	fnarg := gclass.write
 
 	var _arg0 *C.GstAudioSink // out
 	var _arg1 C.gpointer      // out
-	var _arg2 C.guint         // out
-	var _cret C.gint          // in
+	var _arg2 C.guint
+	var _cret C.gint // in
 
 	_arg0 = (*C.GstAudioSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(data))
-	_arg2 = C.guint(length)
+	_arg2 = (C.guint)(len(data))
+	if len(data) > 0 {
+		_arg1 = (C.gpointer)(unsafe.Pointer(&data[0]))
+	}
 
 	_cret = C._gotk4_gstaudio1_AudioSink_virtual_write(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(sink)
 	runtime.KeepAlive(data)
-	runtime.KeepAlive(length)
 
 	var _gint int // out
 

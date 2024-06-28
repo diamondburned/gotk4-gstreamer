@@ -21,8 +21,8 @@ import (
 // extern GstPadProbeReturn _gotk4_gst1_PadProbeCallback(GstPad*, GstPadProbeInfo*, gpointer);
 import "C"
 
-// Harness is meant to make writing unit test for GStreamer much easier. It can
-// be thought of as a way of treating a Element as a black box,
+// Harness is meant to make writing unit test for GStreamer much easier.
+// It can be thought of as a way of treating a Element as a black box,
 // deterministically feeding it data, and controlling what data it outputs.
 //
 // The basic structure of Harness is two "floating" Pads that connect to the
@@ -35,9 +35,8 @@ import "C"
 //    |_____|  | |_____|          |_____| |  |_____|
 //             |__________________________|
 //
-//
-// With this, you can now simulate any environment the Element might find itself
-// in. By specifying the Caps of the harness Pads, using functions like
+// With this, you can now simulate any environment the Element might find
+// itself in. By specifying the Caps of the harness Pads, using functions like
 // gst_harness_set_src_caps() or gst_harness_set_sink_caps_str(), you can test
 // how the Element interacts with different caps sets.
 //
@@ -45,9 +44,9 @@ import "C"
 // gst_harness_new_parse() supporting standard gst-launch syntax, you can easily
 // test a whole pipeline instead of just one element.
 //
-// You can then go on to push Buffers and Events on to the srcpad, using
-// functions like gst_harness_push() and gst_harness_push_event(), and then pull
-// them out to examine them with gst_harness_pull() and
+// You can then go on to push Buffers and Events on to the srcpad,
+// using functions like gst_harness_push() and gst_harness_push_event(),
+// and then pull them out to examine them with gst_harness_pull() and
 // gst_harness_pull_event().
 //
 // A simple buffer-in buffer-out example
@@ -144,7 +143,7 @@ func (h *Harness) SinkHarness() *Harness {
 //
 // The function takes the following parameters:
 //
-//    - sinkpad to link to the harness srcpad.
+//   - sinkpad to link to the harness srcpad.
 //
 func (h *Harness) AddElementSinkPad(sinkpad *gst.Pad) {
 	var _arg0 *C.GstHarness // out
@@ -158,15 +157,15 @@ func (h *Harness) AddElementSinkPad(sinkpad *gst.Pad) {
 	runtime.KeepAlive(sinkpad)
 }
 
-// AddElementSrcPad links the specified Pad the GstHarness sinkpad. This can be
-// useful if perhaps the srcpad did not exist at the time of creating the
+// AddElementSrcPad links the specified Pad the GstHarness sinkpad. This can
+// be useful if perhaps the srcpad did not exist at the time of creating the
 // harness, like a demuxer that provides a sometimes-pad after receiving data.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - srcpad to link to the harness sinkpad.
+//   - srcpad to link to the harness sinkpad.
 //
 func (h *Harness) AddElementSrcPad(srcpad *gst.Pad) {
 	var _arg0 *C.GstHarness // out
@@ -180,18 +179,18 @@ func (h *Harness) AddElementSrcPad(srcpad *gst.Pad) {
 	runtime.KeepAlive(srcpad)
 }
 
-// AddProbe: convenience function to allows you to call gst_pad_add_probe on a
-// Pad of a Element that are residing inside the Harness, by using normal
+// AddProbe: convenience function to allows you to call gst_pad_add_probe on
+// a Pad of a Element that are residing inside the Harness, by using normal
 // gst_pad_add_probe syntax
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - elementName with a ElementFactory name.
-//    - padName with the name of the pad to attach the probe to.
-//    - mask (see gst_pad_add_probe).
-//    - callback (see gst_pad_add_probe).
+//   - elementName with a ElementFactory name.
+//   - padName with the name of the pad to attach the probe to.
+//   - mask (see gst_pad_add_probe).
+//   - callback (see gst_pad_add_probe).
 //
 func (h *Harness) AddProbe(elementName string, padName string, mask gst.PadProbeType, callback gst.PadProbeCallback) {
 	var _arg0 *C.GstHarness         // out
@@ -227,8 +226,8 @@ func (h *Harness) AddProbe(elementName string, padName string, mask gst.PadProbe
 //
 // The function takes the following parameters:
 //
-//    - api: metadata API.
-//    - params (optional): API specific parameters.
+//   - api: metadata API.
+//   - params (optional): API specific parameters.
 //
 func (h *Harness) AddProposeAllocationMeta(api coreglib.Type, params *gst.Structure) {
 	var _arg0 *C.GstHarness   // out
@@ -254,7 +253,7 @@ func (h *Harness) AddProposeAllocationMeta(api coreglib.Type, params *gst.Struct
 //
 // The function takes the following parameters:
 //
-//    - sinkElementName with the name of a Element.
+//   - sinkElementName with the name of a Element.
 //
 func (h *Harness) AddSink(sinkElementName string) {
 	var _arg0 *C.GstHarness // out
@@ -270,11 +269,11 @@ func (h *Harness) AddSink(sinkElementName string) {
 }
 
 // AddSinkHarness: similar to gst_harness_add_src, this allows you to send the
-// data coming out of your harnessed Element to a sink-element, allowing to test
-// different responses the element output might create in sink elements. An
-// example might be an existing sink providing some analytical data on the input
-// it receives that can be useful to your testing. If the goal is to test a
-// sink-element itself, this is better achieved using gst_harness_new directly
+// data coming out of your harnessed Element to a sink-element, allowing to
+// test different responses the element output might create in sink elements.
+// An example might be an existing sink providing some analytical data on the
+// input it receives that can be useful to your testing. If the goal is to test
+// a sink-element itself, this is better achieved using gst_harness_new directly
 // on the sink.
 //
 // If a sink-harness already exists it will be replaced.
@@ -283,7 +282,7 @@ func (h *Harness) AddSink(sinkElementName string) {
 //
 // The function takes the following parameters:
 //
-//    - sinkHarness to be added as a sink-harness.
+//   - sinkHarness to be added as a sink-harness.
 //
 func (h *Harness) AddSinkHarness(sinkHarness *Harness) {
 	var _arg0 *C.GstHarness // out
@@ -306,7 +305,7 @@ func (h *Harness) AddSinkHarness(sinkHarness *Harness) {
 //
 // The function takes the following parameters:
 //
-//    - launchline with the name of a Element.
+//   - launchline with the name of a Element.
 //
 func (h *Harness) AddSinkParse(launchline string) {
 	var _arg0 *C.GstHarness // out
@@ -328,8 +327,8 @@ func (h *Harness) AddSinkParse(launchline string) {
 //
 // The function takes the following parameters:
 //
-//    - srcElementName with the name of a Element.
-//    - hasClockWait specifying if the Element uses gst_clock_wait_id internally.
+//   - srcElementName with the name of a Element.
+//   - hasClockWait specifying if the Element uses gst_clock_wait_id internally.
 //
 func (h *Harness) AddSrc(srcElementName string, hasClockWait bool) {
 	var _arg0 *C.GstHarness // out
@@ -353,8 +352,8 @@ func (h *Harness) AddSrc(srcElementName string, hasClockWait bool) {
 // By adding a src-type Element, it is then easy to use functions like
 // gst_harness_push_from_src or gst_harness_src_crank_and_push_many to provide
 // your harnessed element with input. The has_clock_wait variable is a great way
-// to control you src-element with, in that you can have it produce a buffer for
-// you by simply cranking the clock, and not have it spin out of control
+// to control you src-element with, in that you can have it produce a buffer
+// for you by simply cranking the clock, and not have it spin out of control
 // producing buffers as fast as possible.
 //
 // If a src-harness already exists it will be replaced.
@@ -363,8 +362,8 @@ func (h *Harness) AddSrc(srcElementName string, hasClockWait bool) {
 //
 // The function takes the following parameters:
 //
-//    - srcHarness to be added as a src-harness.
-//    - hasClockWait specifying if the Element uses gst_clock_wait_id internally.
+//   - srcHarness to be added as a src-harness.
+//   - hasClockWait specifying if the Element uses gst_clock_wait_id internally.
 //
 func (h *Harness) AddSrcHarness(srcHarness *Harness, hasClockWait bool) {
 	var _arg0 *C.GstHarness // out
@@ -384,18 +383,18 @@ func (h *Harness) AddSrcHarness(srcHarness *Harness, hasClockWait bool) {
 	runtime.KeepAlive(hasClockWait)
 }
 
-// AddSrcParse: similar to gst_harness_add_src, this allows you to specify a
-// launch-line, which can be useful for both having more then one Element acting
-// as your src (Like a src producing raw buffers, and then an encoder, providing
-// encoded data), but also by allowing you to set properties like "is-live"
-// directly on the elements.
+// AddSrcParse: similar to gst_harness_add_src, this allows you to specify
+// a launch-line, which can be useful for both having more then one Element
+// acting as your src (Like a src producing raw buffers, and then an encoder,
+// providing encoded data), but also by allowing you to set properties like
+// "is-live" directly on the elements.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - launchline describing a gst-launch type line.
-//    - hasClockWait specifying if the Element uses gst_clock_wait_id internally.
+//   - launchline describing a gst-launch type line.
+//   - hasClockWait specifying if the Element uses gst_clock_wait_id internally.
 //
 func (h *Harness) AddSrcParse(launchline string, hasClockWait bool) {
 	var _arg0 *C.GstHarness // out
@@ -421,7 +420,7 @@ func (h *Harness) AddSrcParse(launchline string, hasClockWait bool) {
 //
 // The function returns the following values:
 //
-//    - guint number of buffers in the queue.
+//   - guint number of buffers in the queue.
 //
 func (h *Harness) BuffersInQueue() uint {
 	var _arg0 *C.GstHarness // out
@@ -447,7 +446,7 @@ func (h *Harness) BuffersInQueue() uint {
 //
 // The function returns the following values:
 //
-//    - guint number of buffers received.
+//   - guint number of buffers received.
 //
 func (h *Harness) BuffersReceived() uint {
 	var _arg0 *C.GstHarness // out
@@ -476,11 +475,11 @@ func (h *Harness) BuffersReceived() uint {
 //
 // The function takes the following parameters:
 //
-//    - waits describing the number of ClockIDs to crank.
+//   - waits describing the number of ClockIDs to crank.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean TRUE if the "crank" was successful, FALSE if not.
+//   - ok: gboolean TRUE if the "crank" was successful, FALSE if not.
 //
 func (h *Harness) CrankMultipleClockWaits(waits uint) bool {
 	var _arg0 *C.GstHarness // out
@@ -515,7 +514,7 @@ func (h *Harness) CrankMultipleClockWaits(waits uint) bool {
 //
 // The function returns the following values:
 //
-//    - ok: gboolean TRUE if the "crank" was successful, FALSE if not.
+//   - ok: gboolean TRUE if the "crank" was successful, FALSE if not.
 //
 func (h *Harness) CrankSingleClockWait() bool {
 	var _arg0 *C.GstHarness // out
@@ -542,11 +541,11 @@ func (h *Harness) CrankSingleClockWait() bool {
 //
 // The function takes the following parameters:
 //
-//    - size specifying the size of the buffer.
+//   - size specifying the size of the buffer.
 //
 // The function returns the following values:
 //
-//    - buffer of size size.
+//   - buffer of size size.
 //
 func (h *Harness) CreateBuffer(size uint) *gst.Buffer {
 	var _arg0 *C.GstHarness // out
@@ -580,7 +579,7 @@ func (h *Harness) CreateBuffer(size uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - filename with a the name of a file.
+//   - filename with a the name of a file.
 //
 func (h *Harness) DumpToFile(filename string) {
 	var _arg0 *C.GstHarness // out
@@ -601,7 +600,7 @@ func (h *Harness) DumpToFile(filename string) {
 //
 // The function returns the following values:
 //
-//    - guint number of events in the queue.
+//   - guint number of events in the queue.
 //
 func (h *Harness) EventsInQueue() uint {
 	var _arg0 *C.GstHarness // out
@@ -627,7 +626,7 @@ func (h *Harness) EventsInQueue() uint {
 //
 // The function returns the following values:
 //
-//    - guint number of events received.
+//   - guint number of events received.
 //
 func (h *Harness) EventsReceived() uint {
 	var _arg0 *C.GstHarness // out
@@ -645,20 +644,20 @@ func (h *Harness) EventsReceived() uint {
 	return _guint
 }
 
-// FindElement: most useful in conjunction with gst_harness_new_parse, this will
-// scan the Elements inside the Harness, and check if any of them matches
-// element_name. Typical usecase being that you need to access one of the
-// harnessed elements for properties and/or signals.
+// FindElement: most useful in conjunction with gst_harness_new_parse,
+// this will scan the Elements inside the Harness, and check if any of them
+// matches element_name. Typical usecase being that you need to access one of
+// the harnessed elements for properties and/or signals.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - elementName with a ElementFactory name.
+//   - elementName with a ElementFactory name.
 //
 // The function returns the following values:
 //
-//    - element (optional) or NULL if not found.
+//   - element (optional) or NULL if not found.
 //
 func (h *Harness) FindElement(elementName string) gst.Elementer {
 	var _arg0 *C.GstHarness // out
@@ -702,8 +701,8 @@ func (h *Harness) FindElement(elementName string) gst.Elementer {
 //
 // The function returns the following values:
 //
-//    - allocator (optional): Allocator used.
-//    - params (optional) of allocator.
+//   - allocator (optional): Allocator used.
+//   - params (optional) of allocator.
 //
 func (h *Harness) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 	var _arg0 *C.GstHarness         // out
@@ -735,12 +734,6 @@ func (h *Harness) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 		}
 	}
 	_params = (*gst.AllocationParams)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_params)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_allocation_params_free((*C.GstAllocationParams)(intern.C))
-		},
-	)
 
 	return _allocator, _params
 }
@@ -752,8 +745,8 @@ func (h *Harness) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 //
 // The function returns the following values:
 //
-//    - clockTime with the timestamp or GST_CLOCK_TIME_NONE if no Buffer has been
-//      pushed on the Harness srcpad.
+//   - clockTime with the timestamp or GST_CLOCK_TIME_NONE if no Buffer has been
+//     pushed on the Harness srcpad.
 //
 func (h *Harness) LastPushedTimestamp() gst.ClockTime {
 	var _arg0 *C.GstHarness  // out
@@ -766,9 +759,7 @@ func (h *Harness) LastPushedTimestamp() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -780,7 +771,7 @@ func (h *Harness) LastPushedTimestamp() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - testClock or NULL if the testclock is not present.
+//   - testClock (optional) or NULL if the testclock is not present.
 //
 func (h *Harness) Testclock() *TestClock {
 	var _arg0 *C.GstHarness   // out
@@ -793,14 +784,16 @@ func (h *Harness) Testclock() *TestClock {
 
 	var _testClock *TestClock // out
 
-	_testClock = wrapTestClock(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_testClock = wrapTestClock(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _testClock
 }
 
-// Play: this will set the harnessed Element to GST_STATE_PLAYING. Elements
-// without a sink-Pad and with the GST_ELEMENT_FLAG_SOURCE flag set is
-// considered a src Element Non-src Elements (like sinks and filters) are
+// Play: this will set the harnessed Element to GST_STATE_PLAYING.
+// Elements without a sink-Pad and with the GST_ELEMENT_FLAG_SOURCE flag set
+// is considered a src Element Non-src Elements (like sinks and filters) are
 // automatically set to playing by the Harness, but src Elements are not to
 // avoid them starting to produce buffers. Hence, for src Element you must call
 // gst_harness_play() explicitly.
@@ -823,7 +816,7 @@ func (h *Harness) Play() {
 //
 // The function returns the following values:
 //
-//    - buffer or NULL if timed out.
+//   - buffer (optional) or NULL if timed out.
 //
 func (h *Harness) Pull() *gst.Buffer {
 	var _arg0 *C.GstHarness // out
@@ -836,13 +829,15 @@ func (h *Harness) Pull() *gst.Buffer {
 
 	var _buffer *gst.Buffer // out
 
-	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -854,7 +849,7 @@ func (h *Harness) Pull() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - event or NULL if timed out.
+//   - event (optional) or NULL if timed out.
 //
 func (h *Harness) PullEvent() *gst.Event {
 	var _arg0 *C.GstHarness // out
@@ -867,13 +862,15 @@ func (h *Harness) PullEvent() *gst.Event {
 
 	var _event *gst.Event // out
 
-	_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_event)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_event)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _event
 }
@@ -883,8 +880,8 @@ func (h *Harness) PullEvent() *gst.Event {
 //
 // The function returns the following values:
 //
-//    - buf or NULL if EOS or timeout occures first.
-//    - ok: TRUE on success, FALSE on timeout.
+//   - buf (optional) or NULL if EOS or timeout occures first.
+//   - ok: TRUE on success, FALSE on timeout.
 //
 func (h *Harness) PullUntilEos() (*gst.Buffer, bool) {
 	var _arg0 *C.GstHarness // out
@@ -899,13 +896,15 @@ func (h *Harness) PullUntilEos() (*gst.Buffer, bool) {
 	var _buf *gst.Buffer // out
 	var _ok bool         // out
 
-	_buf = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buf)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_buf = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -920,7 +919,7 @@ func (h *Harness) PullUntilEos() (*gst.Buffer, bool) {
 //
 // The function returns the following values:
 //
-//    - event or NULL if timed out.
+//   - event (optional) or NULL if timed out.
 //
 func (h *Harness) PullUpstreamEvent() *gst.Event {
 	var _arg0 *C.GstHarness // out
@@ -933,13 +932,15 @@ func (h *Harness) PullUpstreamEvent() *gst.Event {
 
 	var _event *gst.Event // out
 
-	_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_event)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_event)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _event
 }
@@ -951,11 +952,11 @@ func (h *Harness) PullUpstreamEvent() *gst.Event {
 //
 // The function takes the following parameters:
 //
-//    - buffer to push.
+//   - buffer to push.
 //
 // The function returns the following values:
 //
-//    - flowReturn with the result from the push.
+//   - flowReturn with the result from the push.
 //
 func (h *Harness) Push(buffer *gst.Buffer) gst.FlowReturn {
 	var _arg0 *C.GstHarness   // out
@@ -978,18 +979,18 @@ func (h *Harness) Push(buffer *gst.Buffer) gst.FlowReturn {
 }
 
 // PushAndPull: basically a gst_harness_push and a gst_harness_pull in one line.
-// Reflects the fact that you often want to do exactly this in your test: Push
-// one buffer in, and inspect the outcome.
+// Reflects the fact that you often want to do exactly this in your test:
+// Push one buffer in, and inspect the outcome.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - buffer to push.
+//   - buffer to push.
 //
 // The function returns the following values:
 //
-//    - ret or NULL if timed out.
+//   - ret (optional) or NULL if timed out.
 //
 func (h *Harness) PushAndPull(buffer *gst.Buffer) *gst.Buffer {
 	var _arg0 *C.GstHarness // out
@@ -1006,13 +1007,15 @@ func (h *Harness) PushAndPull(buffer *gst.Buffer) *gst.Buffer {
 
 	var _ret *gst.Buffer // out
 
-	_ret = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_ret = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_ret)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _ret
 }
@@ -1023,11 +1026,11 @@ func (h *Harness) PushAndPull(buffer *gst.Buffer) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - event to push.
+//   - event to push.
 //
 // The function returns the following values:
 //
-//    - ok with the result from the push.
+//   - ok with the result from the push.
 //
 func (h *Harness) PushEvent(event *gst.Event) bool {
 	var _arg0 *C.GstHarness // out
@@ -1036,6 +1039,7 @@ func (h *Harness) PushEvent(event *gst.Event) bool {
 
 	_arg0 = (*C.GstHarness)(gextras.StructNative(unsafe.Pointer(h)))
 	_arg1 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(event)), nil)
 
 	_cret = C.gst_harness_push_event(_arg0, _arg1)
 	runtime.KeepAlive(h)
@@ -1060,7 +1064,7 @@ func (h *Harness) PushEvent(event *gst.Event) bool {
 //
 // The function returns the following values:
 //
-//    - flowReturn with the result of the push.
+//   - flowReturn with the result of the push.
 //
 func (h *Harness) PushFromSrc() gst.FlowReturn {
 	var _arg0 *C.GstHarness   // out
@@ -1085,7 +1089,7 @@ func (h *Harness) PushFromSrc() gst.FlowReturn {
 //
 // The function returns the following values:
 //
-//    - flowReturn with the result of the push.
+//   - flowReturn with the result of the push.
 //
 func (h *Harness) PushToSink() gst.FlowReturn {
 	var _arg0 *C.GstHarness   // out
@@ -1109,11 +1113,11 @@ func (h *Harness) PushToSink() gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - event to push.
+//   - event to push.
 //
 // The function returns the following values:
 //
-//    - ok with the result from the push.
+//   - ok with the result from the push.
 //
 func (h *Harness) PushUpstreamEvent(event *gst.Event) bool {
 	var _arg0 *C.GstHarness // out
@@ -1122,6 +1126,7 @@ func (h *Harness) PushUpstreamEvent(event *gst.Event) bool {
 
 	_arg0 = (*C.GstHarness)(gextras.StructNative(unsafe.Pointer(h)))
 	_arg1 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(event)), nil)
 
 	_cret = C.gst_harness_push_upstream_event(_arg0, _arg1)
 	runtime.KeepAlive(h)
@@ -1142,7 +1147,7 @@ func (h *Harness) PushUpstreamEvent(event *gst.Event) bool {
 //
 // The function returns the following values:
 //
-//    - clockTime with min latency.
+//   - clockTime with min latency.
 //
 func (h *Harness) QueryLatency() gst.ClockTime {
 	var _arg0 *C.GstHarness  // out
@@ -1155,17 +1160,15 @@ func (h *Harness) QueryLatency() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
 
-// SetBlockingPushMode: setting this will make the harness block in the
-// chain-function, and then release when gst_harness_pull() or
-// gst_harness_try_pull() is called. Can be useful when wanting to control a
-// src-element that is not implementing gst_clock_id_wait() so it can't be
+// SetBlockingPushMode: setting this will make the harness block in
+// the chain-function, and then release when gst_harness_pull() or
+// gst_harness_try_pull() is called. Can be useful when wanting to control
+// a src-element that is not implementing gst_clock_id_wait() so it can't be
 // controlled by the TestClock, since it otherwise would produce buffers as fast
 // as possible.
 //
@@ -1185,8 +1188,8 @@ func (h *Harness) SetBlockingPushMode() {
 //
 // The function takes the following parameters:
 //
-//    - in to set on the harness srcpad.
-//    - out to set on the harness sinkpad.
+//   - in to set on the harness srcpad.
+//   - out to set on the harness sinkpad.
 //
 func (h *Harness) SetCaps(in *gst.Caps, out *gst.Caps) {
 	var _arg0 *C.GstHarness // out
@@ -1211,8 +1214,8 @@ func (h *Harness) SetCaps(in *gst.Caps, out *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - in: gchar describing a Caps to set on the harness srcpad.
-//    - out: gchar describing a Caps to set on the harness sinkpad.
+//   - in: gchar describing a Caps to set on the harness srcpad.
+//   - out: gchar describing a Caps to set on the harness sinkpad.
 //
 func (h *Harness) SetCapsStr(in string, out string) {
 	var _arg0 *C.GstHarness // out
@@ -1239,7 +1242,7 @@ func (h *Harness) SetCapsStr(in string, out string) {
 //
 // The function takes the following parameters:
 //
-//    - dropBuffers specifying to drop outgoing buffers or not.
+//   - dropBuffers specifying to drop outgoing buffers or not.
 //
 func (h *Harness) SetDropBuffers(dropBuffers bool) {
 	var _arg0 *C.GstHarness // out
@@ -1257,13 +1260,13 @@ func (h *Harness) SetDropBuffers(dropBuffers bool) {
 
 // SetForwarding as a convenience, a src-harness will forward
 // GST_EVENT_STREAM_START, GST_EVENT_CAPS and GST_EVENT_SEGMENT to the
-// main-harness if forwarding is enabled, and forward any sticky-events from the
-// main-harness to the sink-harness. It will also forward the
+// main-harness if forwarding is enabled, and forward any sticky-events
+// from the main-harness to the sink-harness. It will also forward the
 // GST_QUERY_ALLOCATION.
 //
 // If forwarding is disabled, the user will have to either manually push these
-// events from the src-harness using gst_harness_src_push_event(), or create and
-// push them manually. While this will allow full control and inspection of
+// events from the src-harness using gst_harness_src_push_event(), or create
+// and push them manually. While this will allow full control and inspection of
 // these events, for the most cases having forwarding enabled will be sufficient
 // when writing a test where the src-harness' main function is providing data
 // for the main-harness.
@@ -1274,7 +1277,7 @@ func (h *Harness) SetDropBuffers(dropBuffers bool) {
 //
 // The function takes the following parameters:
 //
-//    - forwarding to enable/disable forwarding.
+//   - forwarding to enable/disable forwarding.
 //
 func (h *Harness) SetForwarding(forwarding bool) {
 	var _arg0 *C.GstHarness // out
@@ -1295,7 +1298,7 @@ func (h *Harness) SetForwarding(forwarding bool) {
 //
 // The function takes the following parameters:
 //
-//    - isLive: TRUE for live, FALSE for non-live.
+//   - isLive: TRUE for live, FALSE for non-live.
 //
 func (h *Harness) SetLive(isLive bool) {
 	var _arg0 *C.GstHarness // out
@@ -1318,8 +1321,8 @@ func (h *Harness) SetLive(isLive bool) {
 //
 // The function takes the following parameters:
 //
-//    - allocator (optional): Allocator.
-//    - params (optional): AllocationParams.
+//   - allocator (optional): Allocator.
+//   - params (optional): AllocationParams.
 //
 func (h *Harness) SetProposeAllocator(allocator gst.Allocatorrer, params *gst.AllocationParams) {
 	var _arg0 *C.GstHarness          // out
@@ -1347,7 +1350,7 @@ func (h *Harness) SetProposeAllocator(allocator gst.Allocatorrer, params *gst.Al
 //
 // The function takes the following parameters:
 //
-//    - caps to set on the harness sinkpad.
+//   - caps to set on the harness sinkpad.
 //
 func (h *Harness) SetSinkCaps(caps *gst.Caps) {
 	var _arg0 *C.GstHarness // out
@@ -1368,7 +1371,7 @@ func (h *Harness) SetSinkCaps(caps *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - str: gchar describing a Caps to set on the harness sinkpad.
+//   - str: gchar describing a Caps to set on the harness sinkpad.
 //
 func (h *Harness) SetSinkCapsStr(str string) {
 	var _arg0 *C.GstHarness // out
@@ -1390,7 +1393,7 @@ func (h *Harness) SetSinkCapsStr(str string) {
 //
 // The function takes the following parameters:
 //
-//    - caps to set on the harness srcpad.
+//   - caps to set on the harness srcpad.
 //
 func (h *Harness) SetSrcCaps(caps *gst.Caps) {
 	var _arg0 *C.GstHarness // out
@@ -1405,15 +1408,15 @@ func (h *Harness) SetSrcCaps(caps *gst.Caps) {
 	runtime.KeepAlive(caps)
 }
 
-// SetSrcCapsStr sets the GstHarness srcpad caps using a string. This must be
-// done before any buffers can legally be pushed from the harness to the
+// SetSrcCapsStr sets the GstHarness srcpad caps using a string. This must
+// be done before any buffers can legally be pushed from the harness to the
 // element.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - str: gchar describing a Caps to set on the harness srcpad.
+//   - str: gchar describing a Caps to set on the harness srcpad.
 //
 func (h *Harness) SetSrcCapsStr(str string) {
 	var _arg0 *C.GstHarness // out
@@ -1434,11 +1437,11 @@ func (h *Harness) SetSrcCapsStr(str string) {
 //
 // The function takes the following parameters:
 //
-//    - time to advance the clock to.
+//   - time to advance the clock to.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean TRUE if the time could be set. FALSE if not.
+//   - ok: gboolean TRUE if the time could be set. FALSE if not.
 //
 func (h *Harness) SetTime(time gst.ClockTime) bool {
 	var _arg0 *C.GstHarness  // out
@@ -1446,9 +1449,7 @@ func (h *Harness) SetTime(time gst.ClockTime) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstHarness)(gextras.StructNative(unsafe.Pointer(h)))
-	_arg1 = C.guint64(time)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	_cret = C.gst_harness_set_time(_arg0, _arg1)
 	runtime.KeepAlive(h)
@@ -1468,16 +1469,14 @@ func (h *Harness) SetTime(time gst.ClockTime) bool {
 //
 // The function takes the following parameters:
 //
-//    - latency specifying the latency.
+//   - latency specifying the latency.
 //
 func (h *Harness) SetUpstreamLatency(latency gst.ClockTime) {
 	var _arg0 *C.GstHarness  // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstHarness)(gextras.StructNative(unsafe.Pointer(h)))
-	_arg1 = C.guint64(latency)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(latency)
 
 	C.gst_harness_set_upstream_latency(_arg0, _arg1)
 	runtime.KeepAlive(h)
@@ -1491,11 +1490,11 @@ func (h *Harness) SetUpstreamLatency(latency gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - pushes with the number of calls to gst_harness_push_to_sink.
+//   - pushes with the number of calls to gst_harness_push_to_sink.
 //
 // The function returns the following values:
 //
-//    - flowReturn with the result of the push.
+//   - flowReturn with the result of the push.
 //
 func (h *Harness) SinkPushMany(pushes int) gst.FlowReturn {
 	var _arg0 *C.GstHarness   // out
@@ -1517,8 +1516,8 @@ func (h *Harness) SinkPushMany(pushes int) gst.FlowReturn {
 }
 
 // SrcCrankAndPushMany: transfer data from the src-Harness to the main-Harness.
-// Similar to gst_harness_push_from_src, this variant allows you to specify how
-// many cranks and how many pushes to perform. This can be useful for both
+// Similar to gst_harness_push_from_src, this variant allows you to specify
+// how many cranks and how many pushes to perform. This can be useful for both
 // moving a lot of data at the same time, as well as cases when one crank does
 // not equal one buffer to push and v.v.
 //
@@ -1526,12 +1525,12 @@ func (h *Harness) SinkPushMany(pushes int) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - cranks with the number of calls to gst_harness_crank_single_clock_wait.
-//    - pushes with the number of calls to gst_harness_push.
+//   - cranks with the number of calls to gst_harness_crank_single_clock_wait.
+//   - pushes with the number of calls to gst_harness_push.
 //
 // The function returns the following values:
 //
-//    - flowReturn with the result of the push.
+//   - flowReturn with the result of the push.
 //
 func (h *Harness) SrcCrankAndPushMany(cranks int, pushes int) gst.FlowReturn {
 	var _arg0 *C.GstHarness   // out
@@ -1555,16 +1554,16 @@ func (h *Harness) SrcCrankAndPushMany(cranks int, pushes int) gst.FlowReturn {
 	return _flowReturn
 }
 
-// SrcPushEvent: similar to what gst_harness_src_push does with Buffers, this
-// transfers a Event from the src-Harness to the main-Harness. Note that some
-// Events are being transferred automagically. Look at sink_forward_pad for
+// SrcPushEvent: similar to what gst_harness_src_push does with Buffers,
+// this transfers a Event from the src-Harness to the main-Harness. Note that
+// some Events are being transferred automagically. Look at sink_forward_pad for
 // details.
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - ok with the result of the push.
+//   - ok with the result of the push.
 //
 func (h *Harness) SrcPushEvent() bool {
 	var _arg0 *C.GstHarness // out
@@ -1589,8 +1588,8 @@ func (h *Harness) SrcPushEvent() bool {
 //
 // The function returns the following values:
 //
-//    - buffer: data as a buffer. Unref with gst_buffer_unref() when no longer
-//      needed.
+//   - buffer: data as a buffer. Unref with gst_buffer_unref() when no longer
+//     needed.
 //
 func (h *Harness) TakeAllDataAsBuffer() *gst.Buffer {
 	var _arg0 *C.GstHarness // out
@@ -1619,8 +1618,8 @@ func (h *Harness) TakeAllDataAsBuffer() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - bytes: pointer to the data, newly allocated. Free with g_free() when no
-//      longer needed.
+//   - bytes: pointer to the data, newly allocated. Free with g_free() when no
+//     longer needed.
 //
 func (h *Harness) TakeAllData() *glib.Bytes {
 	var _arg0 *C.GstHarness // out
@@ -1664,7 +1663,7 @@ func (h *Harness) Teardown() {
 //
 // The function returns the following values:
 //
-//    - buffer or NULL if no buffers are present in the Queue.
+//   - buffer (optional) or NULL if no buffers are present in the Queue.
 //
 func (h *Harness) TryPull() *gst.Buffer {
 	var _arg0 *C.GstHarness // out
@@ -1677,13 +1676,15 @@ func (h *Harness) TryPull() *gst.Buffer {
 
 	var _buffer *gst.Buffer // out
 
-	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -1695,7 +1696,7 @@ func (h *Harness) TryPull() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - event or NULL if no buffers are present in the Queue.
+//   - event (optional) or NULL if no buffers are present in the Queue.
 //
 func (h *Harness) TryPullEvent() *gst.Event {
 	var _arg0 *C.GstHarness // out
@@ -1708,25 +1709,27 @@ func (h *Harness) TryPullEvent() *gst.Event {
 
 	var _event *gst.Event // out
 
-	_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_event)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_event)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _event
 }
 
-// TryPullUpstreamEvent pulls an Event from the Queue on the Harness srcpad. See
-// gst_harness_try_pull for details.
+// TryPullUpstreamEvent pulls an Event from the Queue on the Harness srcpad.
+// See gst_harness_try_pull for details.
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - event or NULL if no buffers are present in the Queue.
+//   - event (optional) or NULL if no buffers are present in the Queue.
 //
 func (h *Harness) TryPullUpstreamEvent() *gst.Event {
 	var _arg0 *C.GstHarness // out
@@ -1739,13 +1742,15 @@ func (h *Harness) TryPullUpstreamEvent() *gst.Event {
 
 	var _event *gst.Event // out
 
-	_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_event)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_event = (*gst.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_event)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _event
 }
@@ -1756,7 +1761,7 @@ func (h *Harness) TryPullUpstreamEvent() *gst.Event {
 //
 // The function returns the following values:
 //
-//    - guint number of events in the queue.
+//   - guint number of events in the queue.
 //
 func (h *Harness) UpstreamEventsInQueue() uint {
 	var _arg0 *C.GstHarness // out
@@ -1782,7 +1787,7 @@ func (h *Harness) UpstreamEventsInQueue() uint {
 //
 // The function returns the following values:
 //
-//    - guint number of events received.
+//   - guint number of events received.
 //
 func (h *Harness) UpstreamEventsReceived() uint {
 	var _arg0 *C.GstHarness // out
@@ -1833,13 +1838,13 @@ func (h *Harness) UseTestclock() {
 //
 // The function takes the following parameters:
 //
-//    - waits describing the numbers of ClockID registered with the TestClock.
-//    - timeout describing how many seconds to wait for waits to be true.
+//   - waits describing the numbers of ClockID registered with the TestClock.
+//   - timeout describing how many seconds to wait for waits to be true.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean TRUE if the waits have been registered, FALSE if not. (Could
-//      be that it timed out waiting or that more waits than waits was found).
+//   - ok: gboolean TRUE if the waits have been registered, FALSE if not. (Could
+//     be that it timed out waiting or that more waits than waits was found).
 //
 func (h *Harness) WaitForClockIDWaits(waits uint, timeout uint) bool {
 	var _arg0 *C.GstHarness // out

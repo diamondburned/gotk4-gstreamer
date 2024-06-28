@@ -17,12 +17,12 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - context: Context.
+//   - context: Context.
 //
 // The function returns the following values:
 //
-//    - display: resulting GLDisplay.
-//    - ok: whether display was in context.
+//   - display (optional): resulting GLDisplay.
+//   - ok: whether display was in context.
 //
 func ContextGetGLDisplay(context *gst.Context) (*GLDisplay, bool) {
 	var _arg1 *C.GstContext   // out
@@ -37,7 +37,9 @@ func ContextGetGLDisplay(context *gst.Context) (*GLDisplay, bool) {
 	var _display *GLDisplay // out
 	var _ok bool            // out
 
-	_display = wrapGLDisplay(coreglib.AssumeOwnership(unsafe.Pointer(_arg2)))
+	if _arg2 != nil {
+		_display = wrapGLDisplay(coreglib.AssumeOwnership(unsafe.Pointer(_arg2)))
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -49,15 +51,17 @@ func ContextGetGLDisplay(context *gst.Context) (*GLDisplay, bool) {
 //
 // The function takes the following parameters:
 //
-//    - context: Context.
-//    - display: resulting GLDisplay.
+//   - context: Context.
+//   - display (optional): resulting GLDisplay.
 //
 func ContextSetGLDisplay(context *gst.Context, display *GLDisplay) {
 	var _arg1 *C.GstContext   // out
 	var _arg2 *C.GstGLDisplay // out
 
 	_arg1 = (*C.GstContext)(gextras.StructNative(unsafe.Pointer(context)))
-	_arg2 = (*C.GstGLDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	if display != nil {
+		_arg2 = (*C.GstGLDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	}
 
 	C.gst_context_set_gl_display(_arg1, _arg2)
 	runtime.KeepAlive(context)

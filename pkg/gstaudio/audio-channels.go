@@ -32,8 +32,8 @@ func init() {
 //
 // These are the channels defined in SMPTE 2036-2-2008 Table 1 for 22.2 audio
 // systems with the Surround and Wide channels from DTS Coherent Acoustics
-// (v.1.3.1) and 10.2 and 7.1 layouts. In the caps the actual channel layout is
-// expressed with a channel count and a channel mask, which describes the
+// (v.1.3.1) and 10.2 and 7.1 layouts. In the caps the actual channel layout
+// is expressed with a channel count and a channel mask, which describes the
 // existing channels. The positions in the bit mask correspond to the enum
 // values. For negotiation it is allowed to have more bits set in the channel
 // mask than the number of channels to specify the allowed channel positions but
@@ -209,12 +209,12 @@ func (a AudioChannelPosition) String() string {
 //
 // The function takes the following parameters:
 //
-//    - channelMask: input channel_mask.
-//    - position: the GstAudioChannelPosition<!-- -->s.
+//   - channelMask: input channel_mask.
+//   - position: the GstAudioChannelPosition<!-- -->s.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if channel and channel mask are valid and could be converted.
+//   - ok: TRUE if channel and channel mask are valid and could be converted.
 //
 func AudioChannelPositionsFromMask(channelMask uint64, position []AudioChannelPosition) bool {
 	var _arg2 C.guint64                  // out
@@ -249,13 +249,13 @@ func AudioChannelPositionsFromMask(channelMask uint64, position []AudioChannelPo
 //
 // The function takes the following parameters:
 //
-//    - position: GstAudioChannelPositions.
-//    - forceOrder: only consider the GStreamer channel order.
+//   - position: GstAudioChannelPositions.
+//   - forceOrder: only consider the GStreamer channel order.
 //
 // The function returns the following values:
 //
-//    - channelMask: output channel mask.
-//    - ok: TRUE if the channel positions are valid and could be converted.
+//   - channelMask: output channel mask.
+//   - ok: TRUE if the channel positions are valid and could be converted.
 //
 func AudioChannelPositionsToMask(position []AudioChannelPosition, forceOrder bool) (uint64, bool) {
 	var _arg1 *C.GstAudioChannelPosition // out
@@ -292,12 +292,12 @@ func AudioChannelPositionsToMask(position []AudioChannelPosition, forceOrder boo
 //
 // The function takes the following parameters:
 //
-//    - position: channel positions to reorder to.
+//   - position: channel positions to reorder to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the channel positions are valid and reordering was
-//      successful.
+//   - ok: TRUE if the channel positions are valid and reordering was
+//     successful.
 //
 func AudioChannelPositionsToValidOrder(position []AudioChannelPosition) bool {
 	var _arg1 *C.GstAudioChannelPosition // out
@@ -327,12 +327,12 @@ func AudioChannelPositionsToValidOrder(position []AudioChannelPosition) bool {
 //
 // The function takes the following parameters:
 //
-//    - position: GstAudioChannelPositions to check.
-//    - forceOrder: only consider the GStreamer channel order.
+//   - position: GstAudioChannelPositions to check.
+//   - forceOrder: only consider the GStreamer channel order.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the channel positions are valid.
+//   - ok: TRUE if the channel positions are valid.
 //
 func AudioCheckValidChannelPositions(position []AudioChannelPosition, forceOrder bool) bool {
 	var _arg1 *C.GstAudioChannelPosition // out
@@ -361,9 +361,9 @@ func AudioCheckValidChannelPositions(position []AudioChannelPosition, forceOrder
 	return _ok
 }
 
-// AudioGetChannelReorderMap returns a reorder map for from to to that can be
-// used in custom channel reordering code, e.g. to convert from or to the
-// GStreamer channel order. from and to must contain the same number of
+// AudioGetChannelReorderMap returns a reorder map for from to to that can
+// be used in custom channel reordering code, e.g. to convert from or to
+// the GStreamer channel order. from and to must contain the same number of
 // positions and the same positions, only in a different order.
 //
 // The resulting reorder_map can be used for reordering by assigning channel i
@@ -371,13 +371,13 @@ func AudioCheckValidChannelPositions(position []AudioChannelPosition, forceOrder
 //
 // The function takes the following parameters:
 //
-//    - from: channel positions to reorder from.
-//    - to: channel positions to reorder to.
-//    - reorderMap: pointer to the reorder map.
+//   - from: channel positions to reorder from.
+//   - to: channel positions to reorder to.
+//   - reorderMap: pointer to the reorder map.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the channel positions are valid and reordering is possible.
+//   - ok: TRUE if the channel positions are valid and reordering is possible.
 //
 func AudioGetChannelReorderMap(from, to []AudioChannelPosition, reorderMap []int) bool {
 	var _arg2 *C.GstAudioChannelPosition // out
@@ -426,14 +426,14 @@ func AudioGetChannelReorderMap(from, to []AudioChannelPosition, reorderMap []int
 //
 // The function takes the following parameters:
 //
-//    - data: pointer to the memory.
-//    - format: GstAudioFormat of the buffer.
-//    - from: channel positions in the buffer.
-//    - to: channel positions to convert to.
+//   - data: pointer to the memory.
+//   - format: GstAudioFormat of the buffer.
+//   - from: channel positions in the buffer.
+//   - to: channel positions to convert to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the reordering was possible.
+//   - ok: TRUE if the reordering was possible.
 //
 func AudioReorderChannels(data []byte, format AudioFormat, from, to []AudioChannelPosition) bool {
 	var _arg1 C.gpointer // out
@@ -473,21 +473,21 @@ func AudioReorderChannels(data []byte, format AudioFormat, from, to []AudioChann
 	return _ok
 }
 
-// AudioBufferReorderChannels reorders buffer from the channel positions from to
-// the channel positions to. from and to must contain the same number of
+// AudioBufferReorderChannels reorders buffer from the channel positions from
+// to the channel positions to. from and to must contain the same number of
 // positions and the same positions, only in a different order. buffer must be
 // writable.
 //
 // The function takes the following parameters:
 //
-//    - buffer to reorder.
-//    - format: GstAudioFormat of the buffer.
-//    - from: channel positions in the buffer.
-//    - to: channel positions to convert to.
+//   - buffer to reorder.
+//   - format: GstAudioFormat of the buffer.
+//   - from: channel positions in the buffer.
+//   - to: channel positions to convert to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the reordering was possible.
+//   - ok: TRUE if the reordering was possible.
 //
 func AudioBufferReorderChannels(buffer *gst.Buffer, format AudioFormat, from, to []AudioChannelPosition) bool {
 	var _arg1 *C.GstBuffer               // out

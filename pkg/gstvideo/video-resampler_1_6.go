@@ -233,14 +233,14 @@ func (resampler *VideoResampler) Clear() {
 
 // The function takes the following parameters:
 //
-//    - method
-//    - flags
-//    - nPhases
-//    - nTaps
-//    - shift
-//    - inSize
-//    - outSize
-//    - options
+//   - method
+//   - flags
+//   - nPhases
+//   - nTaps
+//   - shift
+//   - inSize
+//   - outSize
+//   - options
 //
 // The function returns the following values:
 //

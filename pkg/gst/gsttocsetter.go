@@ -94,8 +94,8 @@ func marshalTocSetter(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - toc (optional): TOC set, or NULL. Unref with gst_toc_unref() when no
-//      longer needed.
+//   - toc (optional): TOC set, or NULL. Unref with gst_toc_unref() when no
+//     longer needed.
 //
 func (setter *TocSetter) Toc() *Toc {
 	var _arg0 *C.GstTocSetter // out
@@ -137,7 +137,7 @@ func (setter *TocSetter) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - toc (optional) to set.
+//   - toc (optional) to set.
 //
 func (setter *TocSetter) SetToc(toc *Toc) {
 	var _arg0 *C.GstTocSetter // out

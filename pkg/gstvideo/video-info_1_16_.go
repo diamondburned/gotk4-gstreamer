@@ -10,8 +10,8 @@ import "C"
 // stream is interlaced.
 //
 // Currently it is only used for video with 'interlace-mode=alternate' to ensure
-// backwards compatibility for this new mode. In this mode each buffer carries a
-// single field of interlaced video. GST_VIDEO_BUFFER_FLAG_TOP_FIELD and
+// backwards compatibility for this new mode. In this mode each buffer carries
+// a single field of interlaced video. GST_VIDEO_BUFFER_FLAG_TOP_FIELD and
 // GST_VIDEO_BUFFER_FLAG_BOTTOM_FIELD indicate whether the buffer carries a top
 // or bottom field. The order of buffers/fields in the stream and the timestamps
 // on the buffers indicate the temporal order of the fields. Top and bottom

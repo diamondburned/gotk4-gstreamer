@@ -55,11 +55,11 @@ func (b *BitWriter) SetBitSize(bitSize uint) {
 //
 // The function takes the following parameters:
 //
-//    - trailingBit: trailing bits of last byte, 0 or 1.
+//   - trailingBit: trailing bits of last byte, 0 or 1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (bitwriter *BitWriter) AlignBytes(trailingBit byte) bool {
 	var _arg0 *C.GstBitWriter // out
@@ -82,15 +82,15 @@ func (bitwriter *BitWriter) AlignBytes(trailingBit byte) bool {
 	return _ok
 }
 
-// FreeAndGetBuffer frees bitwriter without destroying the internal data, which
-// is returned as Buffer.
+// FreeAndGetBuffer frees bitwriter without destroying the internal data,
+// which is returned as Buffer.
 //
 // Free-function: gst_buffer_unref.
 //
 // The function returns the following values:
 //
-//    - buffer: new allocated Buffer wrapping the data inside. gst_buffer_unref()
-//      after usage.
+//   - buffer: new allocated Buffer wrapping the data inside. gst_buffer_unref()
+//     after usage.
 //
 func (bitwriter *BitWriter) FreeAndGetBuffer() *gst.Buffer {
 	var _arg0 *C.GstBitWriter // out
@@ -137,7 +137,7 @@ func (bitwriter *BitWriter) Remaining() uint {
 //
 // The function returns the following values:
 //
-//    - guint: size of bits written in data.
+//   - guint: size of bits written in data.
 //
 func (bitwriter *BitWriter) Size() uint {
 	var _arg0 *C.GstBitWriter // out
@@ -159,12 +159,12 @@ func (bitwriter *BitWriter) Size() uint {
 //
 // The function takes the following parameters:
 //
-//    - value of #guint16 to write.
-//    - nbits: number of bits to write.
+//   - value of #guint16 to write.
+//   - nbits: number of bits to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (bitwriter *BitWriter) PutBitsUint16(value uint16, nbits uint) bool {
 	var _arg0 *C.GstBitWriter // out
@@ -194,12 +194,12 @@ func (bitwriter *BitWriter) PutBitsUint16(value uint16, nbits uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - value of #guint32 to write.
-//    - nbits: number of bits to write.
+//   - value of #guint32 to write.
+//   - nbits: number of bits to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (bitwriter *BitWriter) PutBitsUint32(value uint32, nbits uint) bool {
 	var _arg0 *C.GstBitWriter // out
@@ -229,12 +229,12 @@ func (bitwriter *BitWriter) PutBitsUint32(value uint32, nbits uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - value of #guint64 to write.
-//    - nbits: number of bits to write.
+//   - value of #guint64 to write.
+//   - nbits: number of bits to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (bitwriter *BitWriter) PutBitsUint64(value uint64, nbits uint) bool {
 	var _arg0 *C.GstBitWriter // out
@@ -264,12 +264,12 @@ func (bitwriter *BitWriter) PutBitsUint64(value uint64, nbits uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - value of #guint8 to write.
-//    - nbits: number of bits to write.
+//   - value of #guint8 to write.
+//   - nbits: number of bits to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (bitwriter *BitWriter) PutBitsUint8(value byte, nbits uint) bool {
 	var _arg0 *C.GstBitWriter // out
@@ -311,8 +311,8 @@ func (bitwriter *BitWriter) Reset() {
 //
 // The function returns the following values:
 //
-//    - buffer: new allocated Buffer wrapping the current data.
-//      gst_buffer_unref() after usage.
+//   - buffer: new allocated Buffer wrapping the current data.
+//     gst_buffer_unref() after usage.
 //
 func (bitwriter *BitWriter) ResetAndGetBuffer() *gst.Buffer {
 	var _arg0 *C.GstBitWriter // out

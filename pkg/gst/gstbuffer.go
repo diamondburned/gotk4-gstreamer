@@ -122,18 +122,19 @@ const (
 	// it will be clipped against the segment boundaries or because it does not
 	// contain data that should be shown to the user.
 	BufferFlagDecodeOnly BufferFlags = 0b100000
-	// BufferFlagDiscont: buffer marks a data discontinuity in the stream. This
-	// typically occurs after a seek or a dropped buffer from a live or network
-	// source.
+	// BufferFlagDiscont: buffer marks a data discontinuity in the stream.
+	// This typically occurs after a seek or a dropped buffer from a live or
+	// network source.
 	BufferFlagDiscont BufferFlags = 0b1000000
 	// BufferFlagResync: buffer timestamps might have a discontinuity and this
 	// buffer is a good point to resynchronize.
 	BufferFlagResync BufferFlags = 0b10000000
 	// BufferFlagCorrupted: buffer data is corrupted.
 	BufferFlagCorrupted BufferFlags = 0b100000000
-	// BufferFlagMarker: buffer contains a media specific marker. for video this
-	// is the end of a frame boundary, for audio this is the start of a
-	// talkspurt.
+	// BufferFlagMarker: buffer contains a media specific marker. for video
+	// this is the end of a frame boundary, for audio this is the start of a
+	// talkspurt. for RTP packets this matches the marker flag in the RTP packet
+	// header.
 	BufferFlagMarker BufferFlags = 0b1000000000
 	// BufferFlagHeader: buffer contains header information that is needed to
 	// decode the following data.
@@ -241,7 +242,6 @@ func (b BufferFlags) Has(other BufferFlags) bool {
 type BufferForEachMetaFunc func(buffer *Buffer) (meta *Meta, ok bool)
 
 // The function returns the following values:
-//
 func ParentBufferMetaApiGetType() coreglib.Type {
 	var _cret C.GType // in
 
@@ -255,7 +255,6 @@ func ParentBufferMetaApiGetType() coreglib.Type {
 }
 
 // The function returns the following values:
-//
 func ReferenceTimestampMetaApiGetType() coreglib.Type {
 	var _cret C.GType // in
 
@@ -277,7 +276,7 @@ func ReferenceTimestampMetaApiGetType() coreglib.Type {
 // The following example creates a buffer that can hold a given video frame with
 // a given width, height and bits per plane.
 //
-//    C   GstBuffer *buffer;   GstMemory *memory;   gint size, width, height, bpp;   ...   size = width * height * bpp;   buffer = gst_buffer_new ();   memory = gst_allocator_alloc (NULL, size, NULL);   gst_buffer_insert_memory (buffer, -1, memory);   ...
+//	C   GstBuffer *buffer;   GstMemory *memory;   gint size, width, height, bpp;   ...   size = width * height * bpp;   buffer = gst_buffer_new ();   memory = gst_allocator_alloc (NULL, size, NULL);   gst_buffer_insert_memory (buffer, -1, memory);   ...
 //
 // Alternatively, use gst_buffer_new_allocate() to create a buffer with
 // preallocated data of a given size.
@@ -297,8 +296,8 @@ func ReferenceTimestampMetaApiGetType() coreglib.Type {
 // monotonically increasing.
 //
 // A buffer can also have one or both of a start and an end offset. These are
-// media-type specific. For video buffers, the start offset will generally be
-// the frame number. For audio buffers, it will be the number of samples
+// media-type specific. For video buffers, the start offset will generally
+// be the frame number. For audio buffers, it will be the number of samples
 // produced so far. For compressed data, it could be the byte offset in a source
 // or destination file. Likewise, the end offset will be the offset of the end
 // of the buffer. These can only be meaningfully interpreted if you know the
@@ -307,16 +306,16 @@ func ReferenceTimestampMetaApiGetType() coreglib.Type {
 //
 // gst_buffer_ref() is used to increase the refcount of a buffer. This must be
 // done when you want to keep a handle to the buffer after pushing it to the
-// next element. The buffer refcount determines the writability of the buffer, a
-// buffer is only writable when the refcount is exactly 1, i.e. when the caller
-// has the only reference to the buffer.
+// next element. The buffer refcount determines the writability of the buffer,
+// a buffer is only writable when the refcount is exactly 1, i.e. when the
+// caller has the only reference to the buffer.
 //
 // To efficiently create a smaller buffer out of an existing one, you can use
 // gst_buffer_copy_region(). This method tries to share the memory objects
 // between the two buffers.
 //
-// If a plug-in wants to modify the buffer data or metadata in-place, it should
-// first obtain a buffer that is safe to modify by using
+// If a plug-in wants to modify the buffer data or metadata in-place,
+// it should first obtain a buffer that is safe to modify by using
 // gst_buffer_make_writable(). This function is optimized so that a copy will
 // only be made when it is necessary.
 //
@@ -334,8 +333,8 @@ func ReferenceTimestampMetaApiGetType() coreglib.Type {
 // An element should either unref the buffer or push it out on a src pad using
 // gst_pad_push() (see Pad).
 //
-// Buffers are usually freed by unreffing them with gst_buffer_unref(). When the
-// refcount drops to 0, any memory and metadata pointed to by the buffer is
+// Buffers are usually freed by unreffing them with gst_buffer_unref(). When
+// the refcount drops to 0, any memory and metadata pointed to by the buffer is
 // unreffed as well. Buffers allocated from a BufferPool will be returned to the
 // pool when the refcount drops to 0.
 //
@@ -515,21 +514,17 @@ func (b *Buffer) Pool() *BufferPool {
 func (b *Buffer) Pts() ClockTime {
 	valptr := &b.native.pts
 	var _v ClockTime // out
-	_v = uint64(*valptr)
-	type _ = ClockTime
-	type _ = uint64
+	_v = ClockTime(*valptr)
 	return _v
 }
 
-// Dts: decoding timestamp of the buffer, can be T_CLOCK_TIME_NONE when the dts
-// is not known or relevant. The dts contains the timestamp when the media
+// Dts: decoding timestamp of the buffer, can be T_CLOCK_TIME_NONE when the
+// dts is not known or relevant. The dts contains the timestamp when the media
 // should be processed.
 func (b *Buffer) Dts() ClockTime {
 	valptr := &b.native.dts
 	var _v ClockTime // out
-	_v = uint64(*valptr)
-	type _ = ClockTime
-	type _ = uint64
+	_v = ClockTime(*valptr)
 	return _v
 }
 
@@ -538,9 +533,7 @@ func (b *Buffer) Dts() ClockTime {
 func (b *Buffer) Duration() ClockTime {
 	valptr := &b.native.duration
 	var _v ClockTime // out
-	_v = uint64(*valptr)
-	type _ = ClockTime
-	type _ = uint64
+	_v = ClockTime(*valptr)
 	return _v
 }
 
@@ -585,12 +578,11 @@ func (b *Buffer) SetOffsetEnd(offsetEnd uint64) {
 //
 // The function takes the following parameters:
 //
-//    - name: registered name of the desired custom meta.
+//   - name: registered name of the desired custom meta.
 //
 // The function returns the following values:
 //
-//    - customMeta (optional) that was added to the buffer.
-//
+//   - customMeta (optional) that was added to the buffer.
 func (buffer *Buffer) AddCustomMeta(name string) *CustomMeta {
 	var _arg0 *C.GstBuffer     // out
 	var _arg1 *C.gchar         // out
@@ -617,13 +609,12 @@ func (buffer *Buffer) AddCustomMeta(name string) *CustomMeta {
 //
 // The function takes the following parameters:
 //
-//    - info: MetaInfo.
-//    - params (optional) for info.
+//   - info: MetaInfo.
+//   - params (optional) for info.
 //
 // The function returns the following values:
 //
-//    - meta (optional): metadata for the api in info on buffer.
-//
+//   - meta (optional): metadata for the api in info on buffer.
 func (buffer *Buffer) AddMeta(info *MetaInfo, params unsafe.Pointer) *Meta {
 	var _arg0 *C.GstBuffer   // out
 	var _arg1 *C.GstMetaInfo // out
@@ -653,12 +644,11 @@ func (buffer *Buffer) AddMeta(info *MetaInfo, params unsafe.Pointer) *Meta {
 //
 // The function takes the following parameters:
 //
-//    - ref to ref.
+//   - ref to ref.
 //
 // The function returns the following values:
 //
-//    - parentBufferMeta (optional) that was added to the buffer.
-//
+//   - parentBufferMeta (optional) that was added to the buffer.
 func (buffer *Buffer) AddParentBufferMeta(ref *Buffer) *ParentBufferMeta {
 	var _arg0 *C.GstBuffer           // out
 	var _arg1 *C.GstBuffer           // out
@@ -684,13 +674,12 @@ func (buffer *Buffer) AddParentBufferMeta(ref *Buffer) *ParentBufferMeta {
 //
 // The function takes the following parameters:
 //
-//    - info holding cryptographic information relating to the sample contained
-//      in buffer. This function takes ownership of info.
+//   - info holding cryptographic information relating to the sample contained
+//     in buffer. This function takes ownership of info.
 //
 // The function returns the following values:
 //
-//    - protectionMeta: pointer to the added ProtectionMeta if successful.
-//
+//   - protectionMeta: pointer to the added ProtectionMeta if successful.
 func (buffer *Buffer) AddProtectionMeta(info *Structure) *ProtectionMeta {
 	var _arg0 *C.GstBuffer         // out
 	var _arg1 *C.GstStructure      // out
@@ -717,14 +706,13 @@ func (buffer *Buffer) AddProtectionMeta(info *Structure) *ProtectionMeta {
 //
 // The function takes the following parameters:
 //
-//    - reference: identifier for the timestamp reference.
-//    - timestamp: timestamp.
-//    - duration: duration, or GST_CLOCK_TIME_NONE.
+//   - reference: identifier for the timestamp reference.
+//   - timestamp: timestamp.
+//   - duration: duration, or GST_CLOCK_TIME_NONE.
 //
 // The function returns the following values:
 //
-//    - referenceTimestampMeta (optional) that was added to the buffer.
-//
+//   - referenceTimestampMeta (optional) that was added to the buffer.
 func (buffer *Buffer) AddReferenceTimestampMeta(reference *Caps, timestamp ClockTime, duration ClockTime) *ReferenceTimestampMeta {
 	var _arg0 *C.GstBuffer                 // out
 	var _arg1 *C.GstCaps                   // out
@@ -734,12 +722,8 @@ func (buffer *Buffer) AddReferenceTimestampMeta(reference *Caps, timestamp Clock
 
 	_arg0 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
 	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(reference)))
-	_arg2 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(duration)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
+	_arg3 = C.GstClockTime(duration)
 
 	_cret = C.gst_buffer_add_reference_timestamp_meta(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buffer)
@@ -761,12 +745,11 @@ func (buffer *Buffer) AddReferenceTimestampMeta(reference *Caps, timestamp Clock
 //
 // The function takes the following parameters:
 //
-//    - buf2: second source Buffer to append.
+//   - buf2: second source Buffer to append.
 //
 // The function returns the following values:
 //
-//    - buffer: new Buffer that contains the memory of the two source buffers.
-//
+//   - buffer: new Buffer that contains the memory of the two source buffers.
 func (buf1 *Buffer) Append(buf2 *Buffer) *Buffer {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 *C.GstBuffer // out
@@ -802,8 +785,7 @@ func (buf1 *Buffer) Append(buf2 *Buffer) *Buffer {
 //
 // The function takes the following parameters:
 //
-//    - mem: Memory.
-//
+//   - mem: Memory.
 func (buffer *Buffer) AppendMemory(mem *Memory) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 *C.GstMemory // out
@@ -823,14 +805,13 @@ func (buffer *Buffer) AppendMemory(mem *Memory) {
 //
 // The function takes the following parameters:
 //
-//    - buf2: second source Buffer to append.
-//    - offset in buf2.
-//    - size or -1 of buf2.
+//   - buf2: second source Buffer to append.
+//   - offset in buf2.
+//   - size or -1 of buf2.
 //
 // The function returns the following values:
 //
-//    - buffer: new Buffer that contains the memory of the two source buffers.
-//
+//   - buffer: new Buffer that contains the memory of the two source buffers.
 func (buf1 *Buffer) AppendRegion(buf2 *Buffer, offset int, size int) *Buffer {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 *C.GstBuffer // out
@@ -869,8 +850,7 @@ func (buf1 *Buffer) AppendRegion(buf2 *Buffer, offset int, size int) *Buffer {
 //
 // The function returns the following values:
 //
-//    - buffer: new copy of buf.
-//
+//   - buffer (optional): new copy of buf if the copy succeeded, NULL otherwise.
 func (buf *Buffer) CopyDeep() *Buffer {
 	var _arg0 *C.GstBuffer // out
 	var _cret *C.GstBuffer // in
@@ -882,13 +862,15 @@ func (buf *Buffer) CopyDeep() *Buffer {
 
 	var _buffer *Buffer // out
 
-	_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -902,15 +884,14 @@ func (buf *Buffer) CopyDeep() *Buffer {
 //
 // The function takes the following parameters:
 //
-//    - src: source Buffer.
-//    - flags indicating what metadata fields should be copied.
-//    - offset to copy from.
-//    - size: total size to copy. If -1, all data is copied.
+//   - src: source Buffer.
+//   - flags indicating what metadata fields should be copied.
+//   - offset to copy from.
+//   - size: total size to copy. If -1, all data is copied.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the copying succeeded, FALSE otherwise.
-//
+//   - ok: TRUE if the copying succeeded, FALSE otherwise.
 func (dest *Buffer) CopyInto(src *Buffer, flags BufferCopyFlags, offset uint, size uint) bool {
 	var _arg0 *C.GstBuffer         // out
 	var _arg1 *C.GstBuffer         // out
@@ -943,22 +924,21 @@ func (dest *Buffer) CopyInto(src *Buffer, flags BufferCopyFlags, offset uint, si
 
 // CopyRegion creates a sub-buffer from parent at offset and size. This
 // sub-buffer uses the actual memory space of the parent buffer. This function
-// will copy the offset and timestamp fields when the offset is 0. If not, they
-// will be set to T_CLOCK_TIME_NONE and T_BUFFER_OFFSET_NONE. If offset equals 0
-// and size equals the total size of buffer, the duration and offset end fields
-// are also copied. If not they will be set to T_CLOCK_TIME_NONE and
+// will copy the offset and timestamp fields when the offset is 0. If not,
+// they will be set to T_CLOCK_TIME_NONE and T_BUFFER_OFFSET_NONE. If offset
+// equals 0 and size equals the total size of buffer, the duration and offset
+// end fields are also copied. If not they will be set to T_CLOCK_TIME_NONE and
 // T_BUFFER_OFFSET_NONE.
 //
 // The function takes the following parameters:
 //
-//    - flags: BufferCopyFlags.
-//    - offset into parent Buffer at which the new sub-buffer begins.
-//    - size of the new Buffer sub-buffer, in bytes. If -1, all data is copied.
+//   - flags: BufferCopyFlags.
+//   - offset into parent Buffer at which the new sub-buffer begins.
+//   - size of the new Buffer sub-buffer, in bytes. If -1, all data is copied.
 //
 // The function returns the following values:
 //
-//    - buffer: new Buffer or NULL if the arguments were invalid.
-//
+//   - buffer (optional): new Buffer or NULL if copying failed.
 func (parent *Buffer) CopyRegion(flags BufferCopyFlags, offset uint, size uint) *Buffer {
 	var _arg0 *C.GstBuffer         // out
 	var _arg1 C.GstBufferCopyFlags // out
@@ -979,13 +959,15 @@ func (parent *Buffer) CopyRegion(flags BufferCopyFlags, offset uint, size uint) 
 
 	var _buffer *Buffer // out
 
-	_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -995,14 +977,13 @@ func (parent *Buffer) CopyRegion(flags BufferCopyFlags, offset uint, size uint) 
 //
 // The function takes the following parameters:
 //
-//    - offset to extract.
-//    - size to extract.
+//   - offset to extract.
+//   - size to extract.
 //
 // The function returns the following values:
 //
-//    - dest: pointer where the destination array will be written. Might be NULL
-//      if the size is 0.
-//
+//   - dest: pointer where the destination array will be written. Might be NULL
+//     if the size is 0.
 func (buffer *Buffer) ExtractDup(offset uint, size uint) []byte {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gsize      // out
@@ -1032,14 +1013,13 @@ func (buffer *Buffer) ExtractDup(offset uint, size uint) []byte {
 //
 // The function takes the following parameters:
 //
-//    - offset to fill.
-//    - src: source address.
+//   - offset to fill.
+//   - src: source address.
 //
 // The function returns the following values:
 //
-//    - gsize: amount of bytes copied. This value can be lower than size when
-//      buffer did not contain enough data.
-//
+//   - gsize: amount of bytes copied. This value can be lower than size when
+//     buffer did not contain enough data.
 func (buffer *Buffer) Fill(offset uint, src []byte) uint {
 	var _arg0 *C.GstBuffer    // out
 	var _arg1 C.gsize         // out
@@ -1079,17 +1059,16 @@ func (buffer *Buffer) Fill(offset uint, src []byte) uint {
 //
 // The function takes the following parameters:
 //
-//    - offset: offset.
-//    - size: size.
+//   - offset: offset.
+//   - size: size.
 //
 // The function returns the following values:
 //
-//    - idx: pointer to index.
-//    - length: pointer to length.
-//    - skip: pointer to skip.
-//    - ok: TRUE when size bytes starting from offset could be found in buffer
-//      and idx, length and skip will be filled.
-//
+//   - idx: pointer to index.
+//   - length: pointer to length.
+//   - skip: pointer to skip.
+//   - ok: TRUE when size bytes starting from offset could be found in buffer
+//     and idx, length and skip will be filled.
 func (buffer *Buffer) FindMemory(offset uint, size uint) (idx uint, length uint, skip uint, ok bool) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gsize      // out
@@ -1131,12 +1110,11 @@ func (buffer *Buffer) FindMemory(offset uint, size uint) (idx uint, length uint,
 //
 // The function takes the following parameters:
 //
-//    - fn to call.
+//   - fn to call.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE when func returned FALSE for one of the metadata.
-//
+//   - ok: FALSE when func returned FALSE for one of the metadata.
 func (buffer *Buffer) ForEachMeta(fn BufferForEachMetaFunc) bool {
 	var _arg0 *C.GstBuffer               // out
 	var _arg1 C.GstBufferForeachMetaFunc // out
@@ -1166,8 +1144,7 @@ func (buffer *Buffer) ForEachMeta(fn BufferForEachMetaFunc) bool {
 //
 // The function returns the following values:
 //
-//    - memory (optional) that contains the merged memory.
-//
+//   - memory (optional) that contains the merged memory.
 func (buffer *Buffer) AllMemory() *Memory {
 	var _arg0 *C.GstBuffer // out
 	var _cret *C.GstMemory // in
@@ -1196,12 +1173,11 @@ func (buffer *Buffer) AllMemory() *Memory {
 //
 // The function takes the following parameters:
 //
-//    - name: registered name of the custom meta to retrieve.
+//   - name: registered name of the custom meta to retrieve.
 //
 // The function returns the following values:
 //
-//    - customMeta (optional): CustomMeta.
-//
+//   - customMeta (optional): CustomMeta.
 func (buffer *Buffer) CustomMeta(name string) *CustomMeta {
 	var _arg0 *C.GstBuffer     // out
 	var _arg1 *C.gchar         // out
@@ -1228,8 +1204,7 @@ func (buffer *Buffer) CustomMeta(name string) *CustomMeta {
 //
 // The function returns the following values:
 //
-//    - bufferFlags flags set on this buffer.
-//
+//   - bufferFlags flags set on this buffer.
 func (buffer *Buffer) Flags() BufferFlags {
 	var _arg0 *C.GstBuffer     // out
 	var _cret C.GstBufferFlags // in
@@ -1250,12 +1225,11 @@ func (buffer *Buffer) Flags() BufferFlags {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
+//   - idx: index.
 //
 // The function returns the following values:
 //
-//    - memory (optional) that contains the data of the memory block at idx.
-//
+//   - memory (optional) that contains the data of the memory block at idx.
 func (buffer *Buffer) Memory(idx uint) *Memory {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1290,14 +1264,13 @@ func (buffer *Buffer) Memory(idx uint) *Memory {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length.
+//   - idx: index.
+//   - length: length.
 //
 // The function returns the following values:
 //
-//    - memory (optional) that contains the merged data of length blocks starting
-//      at idx.
-//
+//   - memory (optional) that contains the merged data of length blocks starting
+//     at idx.
 func (buffer *Buffer) MemoryRange(idx uint, length int) *Memory {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1330,18 +1303,17 @@ func (buffer *Buffer) MemoryRange(idx uint, length int) *Memory {
 
 // Meta gets the metadata for api on buffer. When there is no such metadata,
 // NULL is returned. If multiple metadata with the given api are attached to
-// this buffer only the first one is returned. To handle multiple metadata with
-// a given API use gst_buffer_iterate_meta() or gst_buffer_foreach_meta()
+// this buffer only the first one is returned. To handle multiple metadata
+// with a given API use gst_buffer_iterate_meta() or gst_buffer_foreach_meta()
 // instead and check the meta->info.api member for the API type.
 //
 // The function takes the following parameters:
 //
-//    - api of an API.
+//   - api of an API.
 //
 // The function returns the following values:
 //
-//    - meta (optional): metadata for api on buffer.
-//
+//   - meta (optional): metadata for api on buffer.
 func (buffer *Buffer) Meta(api coreglib.Type) *Meta {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.GType      // out
@@ -1365,12 +1337,11 @@ func (buffer *Buffer) Meta(api coreglib.Type) *Meta {
 
 // The function takes the following parameters:
 //
-//    - apiType of an API.
+//   - apiType of an API.
 //
 // The function returns the following values:
 //
-//    - guint: number of metas of type api_type on buffer.
-//
+//   - guint: number of metas of type api_type on buffer.
 func (buffer *Buffer) NMeta(apiType coreglib.Type) uint {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.GType      // out
@@ -1390,21 +1361,20 @@ func (buffer *Buffer) NMeta(apiType coreglib.Type) uint {
 	return _guint
 }
 
-// ReferenceTimestampMeta finds the first ReferenceTimestampMeta on buffer that
-// conforms to reference. Conformance is tested by checking if the meta's
+// ReferenceTimestampMeta finds the first ReferenceTimestampMeta on buffer
+// that conforms to reference. Conformance is tested by checking if the meta's
 // reference is a subset of reference.
 //
 // Buffers can contain multiple ReferenceTimestampMeta metadata items.
 //
 // The function takes the following parameters:
 //
-//    - reference (optional) Caps.
+//   - reference (optional) Caps.
 //
 // The function returns the following values:
 //
-//    - referenceTimestampMeta (optional) or NULL when there is no such metadata
-//      on buffer.
-//
+//   - referenceTimestampMeta (optional) or NULL when there is no such metadata
+//     on buffer.
 func (buffer *Buffer) ReferenceTimestampMeta(reference *Caps) *ReferenceTimestampMeta {
 	var _arg0 *C.GstBuffer                 // out
 	var _arg1 *C.GstCaps                   // out
@@ -1432,8 +1402,7 @@ func (buffer *Buffer) ReferenceTimestampMeta(reference *Caps) *ReferenceTimestam
 //
 // The function returns the following values:
 //
-//    - gsize: total size of the memory blocks in buffer.
-//
+//   - gsize: total size of the memory blocks in buffer.
 func (buffer *Buffer) Size() uint {
 	var _arg0 *C.GstBuffer // out
 	var _cret C.gsize      // in
@@ -1459,10 +1428,9 @@ func (buffer *Buffer) Size() uint {
 //
 // The function returns the following values:
 //
-//    - offset (optional): pointer to the offset.
-//    - maxsize (optional): pointer to the maxsize.
-//    - gsize: total size of the memory blocks in buffer.
-//
+//   - offset (optional): pointer to the offset.
+//   - maxsize (optional): pointer to the maxsize.
+//   - gsize: total size of the memory blocks in buffer.
 func (buffer *Buffer) Sizes() (offset uint, maxsize uint, gsize uint) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gsize      // in
@@ -1489,22 +1457,21 @@ func (buffer *Buffer) Sizes() (offset uint, maxsize uint, gsize uint) {
 // buffer.
 //
 // When not NULL, offset will contain the offset of the data in the memory block
-// in buffer at idx and maxsize will contain the sum of the size and offset and
-// the amount of extra padding on the memory block at idx + length -1. offset
-// and maxsize can be used to resize the buffer memory blocks with
+// in buffer at idx and maxsize will contain the sum of the size and offset
+// and the amount of extra padding on the memory block at idx + length -1.
+// offset and maxsize can be used to resize the buffer memory blocks with
 // gst_buffer_resize_range().
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length.
+//   - idx: index.
+//   - length: length.
 //
 // The function returns the following values:
 //
-//    - offset (optional): pointer to the offset.
-//    - maxsize (optional): pointer to the maxsize.
-//    - gsize: total size of length memory blocks starting at idx in buffer.
-//
+//   - offset (optional): pointer to the offset.
+//   - maxsize (optional): pointer to the maxsize.
+//   - gsize: total size of length memory blocks starting at idx in buffer.
 func (buffer *Buffer) SizesRange(idx uint, length int) (offset uint, maxsize uint, gsize uint) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1537,12 +1504,11 @@ func (buffer *Buffer) SizesRange(idx uint, length int) (offset uint, maxsize uin
 //
 // The function takes the following parameters:
 //
-//    - flags flag to check.
+//   - flags flag to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if all flags in flags are found on buffer.
-//
+//   - ok: TRUE if all flags in flags are found on buffer.
 func (buffer *Buffer) HasFlags(flags BufferFlags) bool {
 	var _arg0 *C.GstBuffer     // out
 	var _arg1 C.GstBufferFlags // out
@@ -1573,9 +1539,8 @@ func (buffer *Buffer) HasFlags(flags BufferFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - idx: index to add the memory at, or -1 to append it to the end.
-//    - mem: Memory.
-//
+//   - idx: index to add the memory at, or -1 to append it to the end.
+//   - mem: Memory.
 func (buffer *Buffer) InsertMemory(idx int, mem *Memory) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gint       // out
@@ -1599,8 +1564,7 @@ func (buffer *Buffer) InsertMemory(idx int, mem *Memory) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if all memory blocks in buffer are writable.
-//
+//   - ok: TRUE if all memory blocks in buffer are writable.
 func (buffer *Buffer) IsAllMemoryWritable() bool {
 	var _arg0 *C.GstBuffer // out
 	var _cret C.gboolean   // in
@@ -1629,13 +1593,12 @@ func (buffer *Buffer) IsAllMemoryWritable() bool {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length, should not be 0.
+//   - idx: index.
+//   - length: length, should not be 0.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the memory range is writable.
-//
+//   - ok: TRUE if the memory range is writable.
 func (buffer *Buffer) IsMemoryRangeWritable(idx uint, length int) bool {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1673,13 +1636,12 @@ func (buffer *Buffer) IsMemoryRangeWritable(idx uint, length int) bool {
 //
 // The function takes the following parameters:
 //
-//    - flags for the mapping.
+//   - flags for the mapping.
 //
 // The function returns the following values:
 //
-//    - info about the mapping.
-//    - ok: TRUE if the map succeeded and info contains valid data.
-//
+//   - info about the mapping.
+//   - ok: TRUE if the map succeeded and info contains valid data.
 func (buffer *Buffer) Map(flags MapFlags) (*MapInfo, bool) {
 	var _arg0 *C.GstBuffer  // out
 	var _arg1 C.GstMapInfo  // in
@@ -1719,15 +1681,14 @@ func (buffer *Buffer) Map(flags MapFlags) (*MapInfo, bool) {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length.
-//    - flags for the mapping.
+//   - idx: index.
+//   - length: length.
+//   - flags for the mapping.
 //
 // The function returns the following values:
 //
-//    - info about the mapping.
-//    - ok: TRUE if the map succeeded and info contains valid data.
-//
+//   - info about the mapping.
+//   - ok: TRUE if the map succeeded and info contains valid data.
 func (buffer *Buffer) MapRange(idx uint, length int, flags MapFlags) (*MapInfo, bool) {
 	var _arg0 *C.GstBuffer  // out
 	var _arg1 C.guint       // out
@@ -1763,13 +1724,12 @@ func (buffer *Buffer) MapRange(idx uint, length int, flags MapFlags) (*MapInfo, 
 //
 // The function takes the following parameters:
 //
-//    - offset in buffer.
-//    - mem: memory to compare.
+//   - offset in buffer.
+//   - mem: memory to compare.
 //
 // The function returns the following values:
 //
-//    - gint: 0 if the memory is equal.
-//
+//   - gint: 0 if the memory is equal.
 func (buffer *Buffer) Memcmp(offset uint, mem []byte) int {
 	var _arg0 *C.GstBuffer    // out
 	var _arg1 C.gsize         // out
@@ -1800,15 +1760,14 @@ func (buffer *Buffer) Memcmp(offset uint, mem []byte) int {
 //
 // The function takes the following parameters:
 //
-//    - offset in buffer.
-//    - val: value to set.
-//    - size to set.
+//   - offset in buffer.
+//   - val: value to set.
+//   - size to set.
 //
 // The function returns the following values:
 //
-//    - gsize: amount of bytes filled. This value can be lower than size when
-//      buffer did not contain enough data.
-//
+//   - gsize: amount of bytes filled. This value can be lower than size when
+//     buffer did not contain enough data.
 func (buffer *Buffer) Memset(offset uint, val byte, size uint) uint {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gsize      // out
@@ -1839,8 +1798,7 @@ func (buffer *Buffer) Memset(offset uint, val byte, size uint) uint {
 //
 // The function returns the following values:
 //
-//    - guint: number of memory blocks this buffer is made of.
-//
+//   - guint: number of memory blocks this buffer is made of.
 func (buffer *Buffer) NMemory() uint {
 	var _arg0 *C.GstBuffer // out
 	var _cret C.guint      // in
@@ -1863,12 +1821,11 @@ func (buffer *Buffer) NMemory() uint {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
+//   - idx: index.
 //
 // The function returns the following values:
 //
-//    - memory (optional) at idx.
-//
+//   - memory (optional) at idx.
 func (buffer *Buffer) PeekMemory(idx uint) *Memory {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1898,8 +1855,7 @@ func (buffer *Buffer) PeekMemory(idx uint) *Memory {
 //
 // The function takes the following parameters:
 //
-//    - mem: Memory.
-//
+//   - mem: Memory.
 func (buffer *Buffer) PrependMemory(mem *Memory) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 *C.GstMemory // out
@@ -1927,8 +1883,7 @@ func (buffer *Buffer) RemoveAllMemory() {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//
+//   - idx: index.
 func (buffer *Buffer) RemoveMemory(idx uint) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1947,9 +1902,8 @@ func (buffer *Buffer) RemoveMemory(idx uint) {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length.
-//
+//   - idx: index.
+//   - length: length.
 func (buffer *Buffer) RemoveMemoryRange(idx uint, length int) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -1969,13 +1923,12 @@ func (buffer *Buffer) RemoveMemoryRange(idx uint, length int) {
 //
 // The function takes the following parameters:
 //
-//    - meta: Meta.
+//   - meta: Meta.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the metadata existed and was removed, FALSE if no such
-//      metadata was on buffer.
-//
+//   - ok: TRUE if the metadata existed and was removed, FALSE if no such
+//     metadata was on buffer.
 func (buffer *Buffer) RemoveMeta(meta *Meta) bool {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 *C.GstMeta   // out
@@ -2001,8 +1954,7 @@ func (buffer *Buffer) RemoveMeta(meta *Meta) bool {
 //
 // The function takes the following parameters:
 //
-//    - mem: Memory.
-//
+//   - mem: Memory.
 func (buffer *Buffer) ReplaceAllMemory(mem *Memory) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 *C.GstMemory // out
@@ -2020,9 +1972,8 @@ func (buffer *Buffer) ReplaceAllMemory(mem *Memory) {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - mem: Memory.
-//
+//   - idx: index.
+//   - mem: Memory.
 func (buffer *Buffer) ReplaceMemory(idx uint, mem *Memory) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -2049,10 +2000,9 @@ func (buffer *Buffer) ReplaceMemory(idx uint, mem *Memory) {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length, should not be 0.
-//    - mem: Memory.
-//
+//   - idx: index.
+//   - length: length, should not be 0.
+//   - mem: Memory.
 func (buffer *Buffer) ReplaceMemoryRange(idx uint, length int, mem *Memory) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -2076,9 +2026,8 @@ func (buffer *Buffer) ReplaceMemoryRange(idx uint, length int, mem *Memory) {
 //
 // The function takes the following parameters:
 //
-//    - offset adjustment.
-//    - size: new size or -1 to just adjust the offset.
-//
+//   - offset adjustment.
+//   - size: new size or -1 to just adjust the offset.
 func (buffer *Buffer) Resize(offset int, size int) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gssize     // out
@@ -2099,15 +2048,14 @@ func (buffer *Buffer) Resize(offset int, size int) {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: length.
-//    - offset adjustment.
-//    - size: new size or -1 to just adjust the offset.
+//   - idx: index.
+//   - length: length.
+//   - offset adjustment.
+//   - size: new size or -1 to just adjust the offset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if resizing succeeded, FALSE otherwise.
-//
+//   - ok: TRUE if resizing succeeded, FALSE otherwise.
 func (buffer *Buffer) ResizeRange(idx uint, length int, offset int, size int) bool {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.guint      // out
@@ -2142,12 +2090,11 @@ func (buffer *Buffer) ResizeRange(idx uint, length int, offset int, size int) bo
 //
 // The function takes the following parameters:
 //
-//    - flags to set.
+//   - flags to set.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if flags were successfully set on buffer.
-//
+//   - ok: TRUE if flags were successfully set on buffer.
 func (buffer *Buffer) SetFlags(flags BufferFlags) bool {
 	var _arg0 *C.GstBuffer     // out
 	var _arg1 C.GstBufferFlags // out
@@ -2173,8 +2120,7 @@ func (buffer *Buffer) SetFlags(flags BufferFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - size: new size.
-//
+//   - size: new size.
 func (buffer *Buffer) SetSize(size int) {
 	var _arg0 *C.GstBuffer // out
 	var _arg1 C.gssize     // out
@@ -2191,8 +2137,7 @@ func (buffer *Buffer) SetSize(size int) {
 //
 // The function takes the following parameters:
 //
-//    - info: MapInfo.
-//
+//   - info: MapInfo.
 func (buffer *Buffer) Unmap(info *MapInfo) {
 	var _arg0 *C.GstBuffer  // out
 	var _arg1 *C.GstMapInfo // out
@@ -2209,12 +2154,11 @@ func (buffer *Buffer) Unmap(info *MapInfo) {
 //
 // The function takes the following parameters:
 //
-//    - flags to clear.
+//   - flags to clear.
 //
 // The function returns the following values:
 //
-//    - ok: true if flags is successfully cleared from buffer.
-//
+//   - ok: true if flags is successfully cleared from buffer.
 func (buffer *Buffer) UnsetFlags(flags BufferFlags) bool {
 	var _arg0 *C.GstBuffer     // out
 	var _arg1 C.GstBufferFlags // out

@@ -12,5 +12,5 @@ import "C"
 //
 // Example:
 //
-//    C printf("%" GST_STIME_FORMAT "\n", GST_STIME_ARGS(ts));.
+//	C printf("%" GST_STIME_FORMAT "\n", GST_STIME_ARGS(ts));.
 const STIME_FORMAT = "c%"

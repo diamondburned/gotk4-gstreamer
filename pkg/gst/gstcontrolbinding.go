@@ -49,13 +49,13 @@ type ControlBindingOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - timestamp: time that should be processed.
-	//    - interval: time spacing between subsequent values.
-	//    - values: array to put control-values in.
+	//   - timestamp: time that should be processed.
+	//   - interval: time spacing between subsequent values.
+	//   - values: array to put control-values in.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the given array could be filled, FALSE otherwise.
+	//   - ok: TRUE if the given array could be filled, FALSE otherwise.
 	//
 	GValueArray func(timestamp, interval ClockTime, values []coreglib.Value) bool
 	// Value gets the value for the given controlled property at the requested
@@ -63,12 +63,12 @@ type ControlBindingOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - timestamp: time the control-change should be read from.
+	//   - timestamp: time the control-change should be read from.
 	//
 	// The function returns the following values:
 	//
-	//    - value (optional): GValue of the property at the given time, or NULL
-	//      if the property isn't controlled.
+	//   - value (optional): GValue of the property at the given time, or NULL
+	//     if the property isn't controlled.
 	//
 	Value func(timestamp ClockTime) *coreglib.Value
 	// SyncValues sets the property of the object, according to the
@@ -79,14 +79,14 @@ type ControlBindingOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - object that has controlled properties.
-	//    - timestamp: time that should be processed.
-	//    - lastSync: last time this was called.
+	//   - object that has controlled properties.
+	//   - timestamp: time that should be processed.
+	//   - lastSync: last time this was called.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the controller value could be applied to the object
-	//      property, FALSE otherwise.
+	//   - ok: TRUE if the controller value could be applied to the object
+	//     property, FALSE otherwise.
 	//
 	SyncValues func(object GstObjector, timestamp, lastSync ClockTime) bool
 }
@@ -185,13 +185,13 @@ func BaseControlBinding(obj ControlBindinger) *ControlBinding {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time that should be processed.
-//    - interval: time spacing between subsequent values.
-//    - values: array to put control-values in.
+//   - timestamp: time that should be processed.
+//   - interval: time spacing between subsequent values.
+//   - values: array to put control-values in.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the given array could be filled, FALSE otherwise.
+//   - ok: TRUE if the given array could be filled, FALSE otherwise.
 //
 func (binding *ControlBinding) GValueArray(timestamp, interval ClockTime, values []coreglib.Value) bool {
 	var _arg0 *C.GstControlBinding // out
@@ -202,12 +202,8 @@ func (binding *ControlBinding) GValueArray(timestamp, interval ClockTime, values
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GstControlBinding)(unsafe.Pointer(coreglib.InternObject(binding).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
+	_arg2 = C.GstClockTime(interval)
 	_arg3 = (C.guint)(len(values))
 	_arg4 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg4))
@@ -237,12 +233,12 @@ func (binding *ControlBinding) GValueArray(timestamp, interval ClockTime, values
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time the control-change should be read from.
+//   - timestamp: time the control-change should be read from.
 //
 // The function returns the following values:
 //
-//    - value (optional): GValue of the property at the given time, or NULL if
-//      the property isn't controlled.
+//   - value (optional): GValue of the property at the given time, or NULL if
+//     the property isn't controlled.
 //
 func (binding *ControlBinding) Value(timestamp ClockTime) *coreglib.Value {
 	var _arg0 *C.GstControlBinding // out
@@ -250,9 +246,7 @@ func (binding *ControlBinding) Value(timestamp ClockTime) *coreglib.Value {
 	var _cret *C.GValue            // in
 
 	_arg0 = (*C.GstControlBinding)(unsafe.Pointer(coreglib.InternObject(binding).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_control_binding_get_value(_arg0, _arg1)
 	runtime.KeepAlive(binding)
@@ -274,7 +268,7 @@ func (binding *ControlBinding) Value(timestamp ClockTime) *coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the binding is inactive.
+//   - ok: TRUE if the binding is inactive.
 //
 func (binding *ControlBinding) IsDisabled() bool {
 	var _arg0 *C.GstControlBinding // out
@@ -299,8 +293,8 @@ func (binding *ControlBinding) IsDisabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - disabled: boolean that specifies whether to disable the controller or
-//      not.
+//   - disabled: boolean that specifies whether to disable the controller or
+//     not.
 //
 func (binding *ControlBinding) SetDisabled(disabled bool) {
 	var _arg0 *C.GstControlBinding // out
@@ -324,14 +318,14 @@ func (binding *ControlBinding) SetDisabled(disabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - object that has controlled properties.
-//    - timestamp: time that should be processed.
-//    - lastSync: last time this was called.
+//   - object that has controlled properties.
+//   - timestamp: time that should be processed.
+//   - lastSync: last time this was called.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the controller value could be applied to the object property,
-//      FALSE otherwise.
+//   - ok: TRUE if the controller value could be applied to the object property,
+//     FALSE otherwise.
 //
 func (binding *ControlBinding) SyncValues(object GstObjector, timestamp, lastSync ClockTime) bool {
 	var _arg0 *C.GstControlBinding // out
@@ -342,12 +336,8 @@ func (binding *ControlBinding) SyncValues(object GstObjector, timestamp, lastSyn
 
 	_arg0 = (*C.GstControlBinding)(unsafe.Pointer(coreglib.InternObject(binding).Native()))
 	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg2 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(lastSync)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
+	_arg3 = C.GstClockTime(lastSync)
 
 	_cret = C.gst_control_binding_sync_values(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(binding)
@@ -373,13 +363,13 @@ func (binding *ControlBinding) SyncValues(object GstObjector, timestamp, lastSyn
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time that should be processed.
-//    - interval: time spacing between subsequent values.
-//    - values: array to put control-values in.
+//   - timestamp: time that should be processed.
+//   - interval: time spacing between subsequent values.
+//   - values: array to put control-values in.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the given array could be filled, FALSE otherwise.
+//   - ok: TRUE if the given array could be filled, FALSE otherwise.
 //
 func (binding *ControlBinding) gValueArray(timestamp, interval ClockTime, values []coreglib.Value) bool {
 	gclass := (*C.GstControlBindingClass)(coreglib.PeekParentClass(binding))
@@ -393,12 +383,8 @@ func (binding *ControlBinding) gValueArray(timestamp, interval ClockTime, values
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GstControlBinding)(unsafe.Pointer(coreglib.InternObject(binding).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
+	_arg2 = C.GstClockTime(interval)
 	_arg3 = (C.guint)(len(values))
 	_arg4 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg4))
@@ -428,12 +414,12 @@ func (binding *ControlBinding) gValueArray(timestamp, interval ClockTime, values
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time the control-change should be read from.
+//   - timestamp: time the control-change should be read from.
 //
 // The function returns the following values:
 //
-//    - value (optional): GValue of the property at the given time, or NULL if
-//      the property isn't controlled.
+//   - value (optional): GValue of the property at the given time, or NULL if
+//     the property isn't controlled.
 //
 func (binding *ControlBinding) value(timestamp ClockTime) *coreglib.Value {
 	gclass := (*C.GstControlBindingClass)(coreglib.PeekParentClass(binding))
@@ -444,9 +430,7 @@ func (binding *ControlBinding) value(timestamp ClockTime) *coreglib.Value {
 	var _cret *C.GValue            // in
 
 	_arg0 = (*C.GstControlBinding)(unsafe.Pointer(coreglib.InternObject(binding).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
 
 	_cret = C._gotk4_gst1_ControlBinding_virtual_get_value(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(binding)
@@ -472,14 +456,14 @@ func (binding *ControlBinding) value(timestamp ClockTime) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - object that has controlled properties.
-//    - timestamp: time that should be processed.
-//    - lastSync: last time this was called.
+//   - object that has controlled properties.
+//   - timestamp: time that should be processed.
+//   - lastSync: last time this was called.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the controller value could be applied to the object property,
-//      FALSE otherwise.
+//   - ok: TRUE if the controller value could be applied to the object property,
+//     FALSE otherwise.
 //
 func (binding *ControlBinding) syncValues(object GstObjector, timestamp, lastSync ClockTime) bool {
 	gclass := (*C.GstControlBindingClass)(coreglib.PeekParentClass(binding))
@@ -493,12 +477,8 @@ func (binding *ControlBinding) syncValues(object GstObjector, timestamp, lastSyn
 
 	_arg0 = (*C.GstControlBinding)(unsafe.Pointer(coreglib.InternObject(binding).Native()))
 	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg2 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(lastSync)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
+	_arg3 = C.GstClockTime(lastSync)
 
 	_cret = C._gotk4_gst1_ControlBinding_virtual_sync_values(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(binding)

@@ -158,9 +158,9 @@ type MiniObjectNotify func(obj *MiniObject)
 // Subclasses will include MiniObject as the first member in their structure and
 // then call gst_mini_object_init() to initialize the MiniObject fields.
 //
-// gst_mini_object_ref() and gst_mini_object_unref() increment and decrement the
-// refcount respectively. When the refcount of a mini-object reaches 0, the
-// dispose function is called first and when this returns TRUE, the free
+// gst_mini_object_ref() and gst_mini_object_unref() increment and decrement
+// the refcount respectively. When the refcount of a mini-object reaches 0,
+// the dispose function is called first and when this returns TRUE, the free
 // function of the miniobject is called.
 //
 // A copy can be made with gst_mini_object_copy().
@@ -205,7 +205,7 @@ func marshalMiniObject(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parent MiniObject.
+//   - parent MiniObject.
 //
 func (object *MiniObject) AddParent(parent *MiniObject) {
 	var _arg0 *C.GstMiniObject // out
@@ -224,11 +224,11 @@ func (object *MiniObject) AddParent(parent *MiniObject) {
 //
 // The function takes the following parameters:
 //
-//    - quark naming the user data pointer.
+//   - quark naming the user data pointer.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): user data pointer set, or NULL.
+//   - gpointer (optional): user data pointer set, or NULL.
 //
 func (object *MiniObject) Qdata(quark glib.Quark) unsafe.Pointer {
 	var _arg0 *C.GstMiniObject // out
@@ -236,9 +236,7 @@ func (object *MiniObject) Qdata(quark glib.Quark) unsafe.Pointer {
 	var _cret C.gpointer       // in
 
 	_arg0 = (*C.GstMiniObject)(gextras.StructNative(unsafe.Pointer(object)))
-	_arg1 = C.guint32(quark)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(quark)
 
 	_cret = C.gst_mini_object_get_qdata(_arg0, _arg1)
 	runtime.KeepAlive(object)
@@ -264,7 +262,7 @@ func (object *MiniObject) Qdata(quark glib.Quark) unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the object is writable.
+//   - ok: TRUE if the object is writable.
 //
 func (miniObject *MiniObject) IsWritable() bool {
 	var _arg0 *C.GstMiniObject // out
@@ -288,11 +286,11 @@ func (miniObject *MiniObject) IsWritable() bool {
 //
 // The function takes the following parameters:
 //
-//    - flags: LockFlags.
+//   - flags: LockFlags.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if object could be locked.
+//   - ok: TRUE if object could be locked.
 //
 func (object *MiniObject) Lock(flags LockFlags) bool {
 	var _arg0 *C.GstMiniObject // out
@@ -320,7 +318,7 @@ func (object *MiniObject) Lock(flags LockFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - parent MiniObject.
+//   - parent MiniObject.
 //
 func (object *MiniObject) RemoveParent(parent *MiniObject) {
 	var _arg0 *C.GstMiniObject // out
@@ -340,11 +338,11 @@ func (object *MiniObject) RemoveParent(parent *MiniObject) {
 //
 // The function takes the following parameters:
 //
-//    - quark naming the user data pointer.
+//   - quark naming the user data pointer.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): user data pointer set, or NULL.
+//   - gpointer (optional): user data pointer set, or NULL.
 //
 func (object *MiniObject) StealQdata(quark glib.Quark) unsafe.Pointer {
 	var _arg0 *C.GstMiniObject // out
@@ -352,9 +350,7 @@ func (object *MiniObject) StealQdata(quark glib.Quark) unsafe.Pointer {
 	var _cret C.gpointer       // in
 
 	_arg0 = (*C.GstMiniObject)(gextras.StructNative(unsafe.Pointer(object)))
-	_arg1 = C.guint32(quark)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(quark)
 
 	_cret = C.gst_mini_object_steal_qdata(_arg0, _arg1)
 	runtime.KeepAlive(object)
@@ -371,7 +367,7 @@ func (object *MiniObject) StealQdata(quark glib.Quark) unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - flags: LockFlags.
+//   - flags: LockFlags.
 //
 func (object *MiniObject) Unlock(flags LockFlags) {
 	var _arg0 *C.GstMiniObject // out

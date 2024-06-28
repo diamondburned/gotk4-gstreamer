@@ -117,7 +117,7 @@ func marshalStreamVolume(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - ok returns TRUE if the stream is muted.
+//   - ok returns TRUE if the stream is muted.
 //
 func (volume *StreamVolume) Mute() bool {
 	var _arg0 *C.GstStreamVolume // out
@@ -139,11 +139,11 @@ func (volume *StreamVolume) Mute() bool {
 
 // The function takes the following parameters:
 //
-//    - format which should be returned.
+//   - format which should be returned.
 //
 // The function returns the following values:
 //
-//    - gdouble: current stream volume as linear factor.
+//   - gdouble: current stream volume as linear factor.
 //
 func (volume *StreamVolume) Volume(format StreamVolumeFormat) float64 {
 	var _arg0 *C.GstStreamVolume      // out
@@ -166,7 +166,7 @@ func (volume *StreamVolume) Volume(format StreamVolumeFormat) float64 {
 
 // The function takes the following parameters:
 //
-//    - mute: mute state that should be set.
+//   - mute: mute state that should be set.
 //
 func (volume *StreamVolume) SetMute(mute bool) {
 	var _arg0 *C.GstStreamVolume // out
@@ -184,8 +184,8 @@ func (volume *StreamVolume) SetMute(mute bool) {
 
 // The function takes the following parameters:
 //
-//    - format of val.
-//    - val: linear volume factor that should be set.
+//   - format of val.
+//   - val: linear volume factor that should be set.
 //
 func (volume *StreamVolume) SetVolume(format StreamVolumeFormat, val float64) {
 	var _arg0 *C.GstStreamVolume      // out
@@ -204,13 +204,13 @@ func (volume *StreamVolume) SetVolume(format StreamVolumeFormat, val float64) {
 
 // The function takes the following parameters:
 //
-//    - from to convert from.
-//    - to to convert to.
-//    - val: volume in from format that should be converted.
+//   - from to convert from.
+//   - to to convert to.
+//   - val: volume in from format that should be converted.
 //
 // The function returns the following values:
 //
-//    - gdouble: converted volume.
+//   - gdouble: converted volume.
 //
 func StreamVolumeConvertVolume(from, to StreamVolumeFormat, val float64) float64 {
 	var _arg1 C.GstStreamVolumeFormat // out

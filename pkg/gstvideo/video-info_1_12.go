@@ -33,8 +33,8 @@ func init() {
 type VideoFieldOrder C.gint
 
 const (
-	// VideoFieldOrderUnknown: unknown field order for interlaced content. The
-	// actual field order is signalled via buffer flags.
+	// VideoFieldOrderUnknown: unknown field order for interlaced content.
+	// The actual field order is signalled via buffer flags.
 	VideoFieldOrderUnknown VideoFieldOrder = iota
 	// VideoFieldOrderTopFieldFirst: top field is first.
 	VideoFieldOrderTopFieldFirst
@@ -64,12 +64,12 @@ func (v VideoFieldOrder) String() string {
 //
 // The function takes the following parameters:
 //
-//    - order: field order.
+//   - order: field order.
 //
 // The function returns the following values:
 //
-//    - videoFieldOrder of order or T_VIDEO_FIELD_ORDER_UNKNOWN when order is not
-//      a valid string representation for a VideoFieldOrder.
+//   - videoFieldOrder of order or T_VIDEO_FIELD_ORDER_UNKNOWN when order is not
+//     a valid string representation for a VideoFieldOrder.
 //
 func VideoFieldOrderFromString(order string) VideoFieldOrder {
 	var _arg1 *C.gchar             // out
@@ -92,11 +92,11 @@ func VideoFieldOrderFromString(order string) VideoFieldOrder {
 //
 // The function takes the following parameters:
 //
-//    - order: VideoFieldOrder.
+//   - order: VideoFieldOrder.
 //
 // The function returns the following values:
 //
-//    - utf8: order as a string or NULL if order in invalid.
+//   - utf8: order as a string.
 //
 func VideoFieldOrderToString(order VideoFieldOrder) string {
 	var _arg1 C.GstVideoFieldOrder // out

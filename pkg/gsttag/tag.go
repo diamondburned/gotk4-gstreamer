@@ -120,8 +120,8 @@ const TAG_CAPTURING_SCENE_CAPTURE_TYPE = "capturing-scene-capture-type"
 // The allowed values are: "normal" "soft" "hard".
 const TAG_CAPTURING_SHARPNESS = "capturing-sharpness"
 
-// TAG_CAPTURING_SHUTTER_SPEED: shutter speed used when capturing an image, in
-// seconds. (fraction).
+// TAG_CAPTURING_SHUTTER_SPEED: shutter speed used when capturing an image,
+// in seconds. (fraction).
 const TAG_CAPTURING_SHUTTER_SPEED = "capturing-shutter-speed"
 
 // TAG_CAPTURING_SOURCE indicates the source of capture. The device/medium used
@@ -161,8 +161,8 @@ const TAG_CMML_HEAD = "cmml-head"
 // TAG_CMML_STREAM: annodex CMML stream element tag.
 const TAG_CMML_STREAM = "cmml-stream"
 
-// TAG_ID3V2_HEADER_SIZE: ID3V2 header size considered minimum input for some
-// functions such as gst_tag_list_from_id3v2_tag() and
+// TAG_ID3V2_HEADER_SIZE: ID3V2 header size considered minimum input
+// for some functions such as gst_tag_list_from_id3v2_tag() and
 // gst_tag_get_id3v2_tag_size() for example.
 const TAG_ID3V2_HEADER_SIZE = 10
 
@@ -402,19 +402,19 @@ func (t TagLicenseFlags) Has(other TagLicenseFlags) bool {
 // TagCheckLanguageCode: check if a given string contains a known ISO 639
 // language code.
 //
-// This is useful in situations where it's not clear whether a given string is a
-// language code (which should be put into a T_TAG_LANGUAGE_CODE tag) or a
-// free-form language name descriptor (which should be put into a
+// This is useful in situations where it's not clear whether a given string
+// is a language code (which should be put into a T_TAG_LANGUAGE_CODE tag)
+// or a free-form language name descriptor (which should be put into a
 // T_TAG_LANGUAGE_NAME tag instead).
 //
 // The function takes the following parameters:
 //
-//    - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
+//   - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two- or three-letter language code in lang_code is a
-//      valid ISO-639 language code.
+//   - ok: TRUE if the two- or three-letter language code in lang_code is a
+//     valid ISO-639 language code.
 //
 func TagCheckLanguageCode(langCode string) bool {
 	var _arg1 *C.gchar   // out
@@ -446,13 +446,13 @@ func TagCheckLanguageCode(langCode string) bool {
 //
 // The function takes the following parameters:
 //
-//    - data: string data.
-//    - envVars: a NULL-terminated string array of environment variable names, or
-//      NULL.
+//   - data: string data.
+//   - envVars: a NULL-terminated string array of environment variable names,
+//     or NULL.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string in UTF-8 encoding, or NULL.
+//   - utf8 (optional): newly-allocated string in UTF-8 encoding, or NULL.
 //
 func TagFreeformStringToUTF8(data string, envVars []string) string {
 	var _arg1 *C.gchar // out
@@ -484,8 +484,10 @@ func TagFreeformStringToUTF8(data string, envVars []string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -494,11 +496,11 @@ func TagFreeformStringToUTF8(data string, envVars []string) string {
 //
 // The function takes the following parameters:
 //
-//    - id3Tag: ID3v2 tag to convert to GStreamer tag.
+//   - id3Tag: ID3v2 tag to convert to GStreamer tag.
 //
 // The function returns the following values:
 //
-//    - utf8: corresponding GStreamer tag or NULL if none exists.
+//   - utf8 (optional): corresponding GStreamer tag or NULL if none exists.
 //
 func TagFromID3Tag(id3Tag string) string {
 	var _arg1 *C.gchar // out
@@ -512,7 +514,9 @@ func TagFromID3Tag(id3Tag string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -522,12 +526,12 @@ func TagFromID3Tag(id3Tag string) string {
 //
 // The function takes the following parameters:
 //
-//    - typ: type of ID3v2 user tag (e.g. "TXXX" or "UDIF").
-//    - id3UserTag: ID3v2 user tag to convert to GStreamer tag.
+//   - typ: type of ID3v2 user tag (e.g. "TXXX" or "UDIF").
+//   - id3UserTag: ID3v2 user tag to convert to GStreamer tag.
 //
 // The function returns the following values:
 //
-//    - utf8: corresponding GStreamer tag or NULL if none exists.
+//   - utf8 (optional): corresponding GStreamer tag or NULL if none exists.
 //
 func TagFromID3UserTag(typ, id3UserTag string) string {
 	var _arg1 *C.gchar // out
@@ -545,7 +549,9 @@ func TagFromID3UserTag(typ, id3UserTag string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -554,11 +560,11 @@ func TagFromID3UserTag(typ, id3UserTag string) string {
 //
 // The function takes the following parameters:
 //
-//    - vorbisTag: vorbiscomment tag to convert to GStreamer tag.
+//   - vorbisTag: vorbiscomment tag to convert to GStreamer tag.
 //
 // The function returns the following values:
 //
-//    - utf8: corresponding GStreamer tag or NULL if none exists.
+//   - utf8 (optional): corresponding GStreamer tag or NULL if none exists.
 //
 func TagFromVorbisTag(vorbisTag string) string {
 	var _arg1 *C.gchar // out
@@ -572,7 +578,9 @@ func TagFromVorbisTag(vorbisTag string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -582,11 +590,11 @@ func TagFromVorbisTag(vorbisTag string) string {
 //
 // The function takes the following parameters:
 //
-//    - buffer holding ID3v2 tag (or at least the start of one).
+//   - buffer holding ID3v2 tag (or at least the start of one).
 //
 // The function returns the following values:
 //
-//    - guint: size of tag, or 0 if header is invalid or too small.
+//   - guint: size of tag, or 0 if header is invalid or too small.
 //
 func TagGetID3V2TagSize(buffer *gst.Buffer) uint {
 	var _arg1 *C.GstBuffer // out
@@ -604,21 +612,21 @@ func TagGetID3V2TagSize(buffer *gst.Buffer) uint {
 	return _guint
 }
 
-// TagGetLanguageCodeISO6391 returns two-letter ISO-639-1 language code given a
-// three-letter ISO-639-2 language code or two-letter ISO-639-1 language code
+// TagGetLanguageCodeISO6391 returns two-letter ISO-639-1 language code given
+// a three-letter ISO-639-2 language code or two-letter ISO-639-1 language code
 // (both are accepted for convenience).
 //
 // Language codes are case-sensitive and expected to be lower case.
 //
 // The function takes the following parameters:
 //
-//    - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
+//   - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
 //
 // The function returns the following values:
 //
-//    - utf8: two-letter ISO-639-1 language code string that maps to lang_code,
-//      or NULL if no mapping is known. The returned string must not be modified
-//      or freed.
+//   - utf8 (optional): two-letter ISO-639-1 language code string that maps to
+//     lang_code, or NULL if no mapping is known. The returned string must not
+//     be modified or freed.
 //
 func TagGetLanguageCodeISO6391(langCode string) string {
 	var _arg1 *C.gchar // out
@@ -632,7 +640,9 @@ func TagGetLanguageCodeISO6391(langCode string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -642,20 +652,20 @@ func TagGetLanguageCodeISO6391(langCode string) string {
 // ISO-639-2 language code (both are accepted for convenience).
 //
 // The "bibliographic" code is derived from the English name of the language
-// (e.g. "ger" for German instead of "de" or "deu"). In most scenarios, the
-// "terminological" codes are preferred.
+// (e.g. "ger" for German instead of "de" or "deu"). In most scenarios,
+// the "terminological" codes are preferred.
 //
 // Language codes are case-sensitive and expected to be lower case.
 //
 // The function takes the following parameters:
 //
-//    - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
+//   - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
 //
 // The function returns the following values:
 //
-//    - utf8: three-letter ISO-639-2 language code string that maps to lang_code,
-//      or NULL if no mapping is known. The returned string must not be modified
-//      or freed.
+//   - utf8 (optional): three-letter ISO-639-2 language code string that maps to
+//     lang_code, or NULL if no mapping is known. The returned string must not
+//     be modified or freed.
 //
 func TagGetLanguageCodeISO6392B(langCode string) string {
 	var _arg1 *C.gchar // out
@@ -669,7 +679,9 @@ func TagGetLanguageCodeISO6392B(langCode string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -686,13 +698,13 @@ func TagGetLanguageCodeISO6392B(langCode string) string {
 //
 // The function takes the following parameters:
 //
-//    - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
+//   - langCode: ISO-639 language code (e.g. "deu" or "ger" or "de").
 //
 // The function returns the following values:
 //
-//    - utf8: three-letter ISO-639-2 language code string that maps to lang_code,
-//      or NULL if no mapping is known. The returned string must not be modified
-//      or freed.
+//   - utf8 (optional): three-letter ISO-639-2 language code string that maps to
+//     lang_code, or NULL if no mapping is known. The returned string must not
+//     be modified or freed.
 //
 func TagGetLanguageCodeISO6392T(langCode string) string {
 	var _arg1 *C.gchar // out
@@ -706,7 +718,9 @@ func TagGetLanguageCodeISO6392T(langCode string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -718,8 +732,8 @@ func TagGetLanguageCodeISO6392T(langCode string) string {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated string array with two-letter language codes. Free
-//      with g_strfreev() when no longer needed.
+//   - utf8s: NULL-terminated string array with two-letter language codes.
+//     Free with g_strfreev() when no longer needed.
 //
 func TagGetLanguageCodes() []string {
 	var _cret **C.gchar // in
@@ -756,14 +770,14 @@ func TagGetLanguageCodes() []string {
 //
 // The function takes the following parameters:
 //
-//    - languageCode: two or three-letter ISO-639 language code.
+//   - languageCode: two or three-letter ISO-639 language code.
 //
 // The function returns the following values:
 //
-//    - utf8: language name in UTF-8 format, or NULL if language_code could not
-//      be mapped to a language name. The returned string must not be modified
-//      and does not need to freed; it will stay valid until the application is
-//      terminated.
+//   - utf8 (optional): language name in UTF-8 format, or NULL if language_code
+//     could not be mapped to a language name. The returned string must not
+//     be modified and does not need to freed; it will stay valid until the
+//     application is terminated.
 //
 func TagGetLanguageName(languageCode string) string {
 	var _arg1 *C.gchar // out
@@ -777,7 +791,9 @@ func TagGetLanguageName(languageCode string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -787,13 +803,13 @@ func TagGetLanguageName(languageCode string) string {
 //
 // The function takes the following parameters:
 //
-//    - licenseRef: license reference string in form of a URI, e.g.
-//      "http://creativecommons.org/licenses/by-nc-nd/2.0/".
+//   - licenseRef: license reference string in form of a URI, e.g.
+//     "http://creativecommons.org/licenses/by-nc-nd/2.0/".
 //
 // The function returns the following values:
 //
-//    - utf8: description of the license, or NULL if the license is unknown or a
-//      description is not available.
+//   - utf8 (optional): description of the license, or NULL if the license is
+//     unknown or a description is not available.
 //
 func TagGetLicenseDescription(licenseRef string) string {
 	var _arg1 *C.gchar // out
@@ -807,7 +823,9 @@ func TagGetLicenseDescription(licenseRef string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -817,12 +835,12 @@ func TagGetLicenseDescription(licenseRef string) string {
 //
 // The function takes the following parameters:
 //
-//    - licenseRef: license reference string in form of a URI, e.g.
-//      "http://creativecommons.org/licenses/by-nc-nd/2.0/".
+//   - licenseRef: license reference string in form of a URI, e.g.
+//     "http://creativecommons.org/licenses/by-nc-nd/2.0/".
 //
 // The function returns the following values:
 //
-//    - tagLicenseFlags flags of the license, or 0 if the license is unknown.
+//   - tagLicenseFlags flags of the license, or 0 if the license is unknown.
 //
 func TagGetLicenseFlags(licenseRef string) TagLicenseFlags {
 	var _arg1 *C.gchar             // out
@@ -852,13 +870,13 @@ func TagGetLicenseFlags(licenseRef string) TagLicenseFlags {
 //
 // The function takes the following parameters:
 //
-//    - licenseRef: license reference string in form of a URI, e.g.
-//      "http://creativecommons.org/licenses/by-nc-nd/2.0/".
+//   - licenseRef: license reference string in form of a URI, e.g.
+//     "http://creativecommons.org/licenses/by-nc-nd/2.0/".
 //
 // The function returns the following values:
 //
-//    - utf8: jurisdiction code of the license, or NULL if the license is unknown
-//      or is not specific to a particular jurisdiction.
+//   - utf8 (optional): jurisdiction code of the license, or NULL if the license
+//     is unknown or is not specific to a particular jurisdiction.
 //
 func TagGetLicenseJurisdiction(licenseRef string) string {
 	var _arg1 *C.gchar // out
@@ -872,7 +890,9 @@ func TagGetLicenseJurisdiction(licenseRef string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -882,12 +902,13 @@ func TagGetLicenseJurisdiction(licenseRef string) string {
 //
 // The function takes the following parameters:
 //
-//    - licenseRef: license reference string in form of a URI, e.g.
-//      "http://creativecommons.org/licenses/by-nc-nd/2.0/".
+//   - licenseRef: license reference string in form of a URI, e.g.
+//     "http://creativecommons.org/licenses/by-nc-nd/2.0/".
 //
 // The function returns the following values:
 //
-//    - utf8: nick name of the license, or NULL if the license is unknown.
+//   - utf8 (optional): nick name of the license, or NULL if the license is
+//     unknown.
 //
 func TagGetLicenseNick(licenseRef string) string {
 	var _arg1 *C.gchar // out
@@ -901,7 +922,9 @@ func TagGetLicenseNick(licenseRef string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -911,13 +934,13 @@ func TagGetLicenseNick(licenseRef string) string {
 //
 // The function takes the following parameters:
 //
-//    - licenseRef: license reference string in form of a URI, e.g.
-//      "http://creativecommons.org/licenses/by-nc-nd/2.0/".
+//   - licenseRef: license reference string in form of a URI, e.g.
+//     "http://creativecommons.org/licenses/by-nc-nd/2.0/".
 //
 // The function returns the following values:
 //
-//    - utf8: title of the license, or NULL if the license is unknown or no title
-//      is available.
+//   - utf8 (optional): title of the license, or NULL if the license is unknown
+//     or no title is available.
 //
 func TagGetLicenseTitle(licenseRef string) string {
 	var _arg1 *C.gchar // out
@@ -931,7 +954,9 @@ func TagGetLicenseTitle(licenseRef string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -940,13 +965,13 @@ func TagGetLicenseTitle(licenseRef string) string {
 //
 // The function takes the following parameters:
 //
-//    - licenseRef: license reference string in form of a URI, e.g.
-//      "http://creativecommons.org/licenses/by-nc-nd/2.0/".
+//   - licenseRef: license reference string in form of a URI, e.g.
+//     "http://creativecommons.org/licenses/by-nc-nd/2.0/".
 //
 // The function returns the following values:
 //
-//    - utf8: version of the license, or NULL if the license is not known or has
-//      no version.
+//   - utf8 (optional): version of the license, or NULL if the license is not
+//     known or has no version.
 //
 func TagGetLicenseVersion(licenseRef string) string {
 	var _arg1 *C.gchar // out
@@ -960,7 +985,9 @@ func TagGetLicenseVersion(licenseRef string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -972,8 +999,8 @@ func TagGetLicenseVersion(licenseRef string) string {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of license strings. Free with g_strfreev()
-//      when no longer needed.
+//   - utf8s: NULL-terminated array of license strings. Free with g_strfreev()
+//     when no longer needed.
 //
 func TagGetLicenses() []string {
 	var _cret **C.gchar // in
@@ -1006,7 +1033,7 @@ func TagGetLicenses() []string {
 //
 // The function returns the following values:
 //
-//    - guint: number of ID3v1 genres that can be identified.
+//   - guint: number of ID3v1 genres that can be identified.
 //
 func TagID3GenreCount() uint {
 	var _cret C.guint // in
@@ -1024,11 +1051,11 @@ func TagID3GenreCount() uint {
 //
 // The function takes the following parameters:
 //
-//    - id: ID of genre to query.
+//   - id: ID of genre to query.
 //
 // The function returns the following values:
 //
-//    - utf8: genre or NULL if no genre is associated with that ID.
+//   - utf8 (optional): genre or NULL if no genre is associated with that ID.
 //
 func TagID3GenreGet(id uint) string {
 	var _arg1 C.guint  // out
@@ -1041,14 +1068,16 @@ func TagID3GenreGet(id uint) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // TagImageDataToImageSample: helper function for tag-reading plugins to create
-// a Sample suitable to add to a TagList as an image tag (such as T_TAG_IMAGE or
-// T_TAG_PREVIEW_IMAGE) from the encoded image data and an (optional) image
+// a Sample suitable to add to a TagList as an image tag (such as T_TAG_IMAGE
+// or T_TAG_PREVIEW_IMAGE) from the encoded image data and an (optional) image
 // type.
 //
 // Background: cover art and other images in tags are usually stored as a blob
@@ -1070,14 +1099,15 @@ func TagID3GenreGet(id uint) string {
 //
 // The function takes the following parameters:
 //
-//    - imageData: (encoded) image.
-//    - imageType: type of the image, or T_TAG_IMAGE_TYPE_UNDEFINED. Pass
-//      T_TAG_IMAGE_TYPE_NONE if no image type should be set at all (e.g. for
-//      preview images).
+//   - imageData: (encoded) image.
+//   - imageType: type of the image, or T_TAG_IMAGE_TYPE_UNDEFINED.
+//     Pass T_TAG_IMAGE_TYPE_NONE if no image type should be set at all (e.g.
+//     for preview images).
 //
 // The function returns the following values:
 //
-//    - sample: newly-allocated image sample for use in tag lists, or NULL.
+//   - sample (optional): newly-allocated image sample for use in tag lists,
+//     or NULL.
 //
 func TagImageDataToImageSample(imageData []byte, imageType TagImageType) *gst.Sample {
 	var _arg1 *C.guint8 // out
@@ -1097,37 +1127,554 @@ func TagImageDataToImageSample(imageData []byte, imageType TagImageType) *gst.Sa
 
 	var _sample *gst.Sample // out
 
-	_sample = (*gst.Sample)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_sample = (*gst.Sample)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_sample)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _sample
+}
+
+// TagListAddID3Image adds an image from an ID3 APIC frame (or
+// similar, such as used in FLAC) to the given tag list. Also see
+// gst_tag_image_data_to_image_sample() for more information on image tags in
+// GStreamer.
+//
+// The function takes the following parameters:
+//
+//   - tagList: tag list.
+//   - imageData: (encoded) image.
+//   - id3PictureType: picture type as per the ID3 (v2.4.0) specification for
+//     the APIC frame (0 = unknown/other).
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the image was processed, otherwise FALSE.
+//
+func TagListAddID3Image(tagList *gst.TagList, imageData []byte, id3PictureType uint) bool {
+	var _arg1 *C.GstTagList // out
+	var _arg2 *C.guint8     // out
+	var _arg3 C.guint
+	var _arg4 C.guint    // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+	_arg3 = (C.guint)(len(imageData))
+	if len(imageData) > 0 {
+		_arg2 = (*C.guint8)(unsafe.Pointer(&imageData[0]))
+	}
+	_arg4 = C.guint(id3PictureType)
+
+	_cret = C.gst_tag_list_add_id3_image(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(tagList)
+	runtime.KeepAlive(imageData)
+	runtime.KeepAlive(id3PictureType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TagListFromExifBuffer parses the IFD and IFD tags data contained in the
+// buffer and puts it on a taglist. The base_offset is used to subtract from
+// the offset in the tag entries and be able to get the offset relative to the
+// buffer start.
+//
+// The function takes the following parameters:
+//
+//   - buffer: exif buffer.
+//   - byteOrder: byte order of the data.
+//   - baseOffset: offset from the tiff header to this buffer.
+//
+// The function returns the following values:
+//
+//   - tagList: parsed taglist.
+//
+func TagListFromExifBuffer(buffer *gst.Buffer, byteOrder int, baseOffset uint32) *gst.TagList {
+	var _arg1 *C.GstBuffer  // out
+	var _arg2 C.gint        // out
+	var _arg3 C.guint32     // out
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+	_arg2 = C.gint(byteOrder)
+	_arg3 = C.guint32(baseOffset)
+
+	_cret = C.gst_tag_list_from_exif_buffer(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(byteOrder)
+	runtime.KeepAlive(baseOffset)
+
+	var _tagList *gst.TagList // out
+
+	_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_sample)),
+		gextras.StructIntern(unsafe.Pointer(_tagList)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
 
-	return _sample
+	return _tagList
+}
+
+// TagListFromExifBufferWithTIFFHeader parses the exif tags starting with a tiff
+// header structure.
+//
+// The function takes the following parameters:
+//
+//   - buffer: exif buffer.
+//
+// The function returns the following values:
+//
+//   - tagList: taglist.
+//
+func TagListFromExifBufferWithTIFFHeader(buffer *gst.Buffer) *gst.TagList {
+	var _arg1 *C.GstBuffer  // out
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+
+	_cret = C.gst_tag_list_from_exif_buffer_with_tiff_header(_arg1)
+	runtime.KeepAlive(buffer)
+
+	var _tagList *gst.TagList // out
+
+	_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tagList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _tagList
+}
+
+// TagListFromID3V2Tag creates a new tag list that contains the information
+// parsed out of a ID3 tag.
+//
+// The function takes the following parameters:
+//
+//   - buffer to convert.
+//
+// The function returns the following values:
+//
+//   - tagList (optional): new TagList with all tags that could be extracted
+//     from the given vorbiscomment buffer or NULL on error.
+//
+func TagListFromID3V2Tag(buffer *gst.Buffer) *gst.TagList {
+	var _arg1 *C.GstBuffer  // out
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+
+	_cret = C.gst_tag_list_from_id3v2_tag(_arg1)
+	runtime.KeepAlive(buffer)
+
+	var _tagList *gst.TagList // out
+
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _tagList
+}
+
+// TagListFromVorbiscomment creates a new tag list that contains the information
+// parsed out of a vorbiscomment packet.
+//
+// The function takes the following parameters:
+//
+//   - data to convert.
+//   - idData: identification data at start of stream.
+//
+// The function returns the following values:
+//
+//   - vendorString (optional): pointer to a string that should take the vendor
+//     string of this vorbis comment or NULL if you don't need it.
+//   - tagList (optional): new TagList with all tags that could be extracted
+//     from the given vorbiscomment buffer or NULL on error.
+//
+func TagListFromVorbiscomment(data, idData []byte) (string, *gst.TagList) {
+	var _arg1 *C.guint8 // out
+	var _arg2 C.gsize
+	var _arg3 *C.guint8 // out
+	var _arg4 C.guint
+	var _arg5 *C.gchar      // in
+	var _cret *C.GstTagList // in
+
+	_arg2 = (C.gsize)(len(data))
+	if len(data) > 0 {
+		_arg1 = (*C.guint8)(unsafe.Pointer(&data[0]))
+	}
+	_arg4 = (C.guint)(len(idData))
+	if len(idData) > 0 {
+		_arg3 = (*C.guint8)(unsafe.Pointer(&idData[0]))
+	}
+
+	_cret = C.gst_tag_list_from_vorbiscomment(_arg1, _arg2, _arg3, _arg4, &_arg5)
+	runtime.KeepAlive(data)
+	runtime.KeepAlive(idData)
+
+	var _vendorString string  // out
+	var _tagList *gst.TagList // out
+
+	if _arg5 != nil {
+		_vendorString = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _vendorString, _tagList
+}
+
+// TagListFromVorbiscommentBuffer creates a new tag list that contains the
+// information parsed out of a vorbiscomment packet.
+//
+// The function takes the following parameters:
+//
+//   - buffer to convert.
+//   - idData: identification data at start of stream.
+//
+// The function returns the following values:
+//
+//   - vendorString (optional): pointer to a string that should take the vendor
+//     string of this vorbis comment or NULL if you don't need it.
+//   - tagList (optional): new TagList with all tags that could be extracted
+//     from the given vorbiscomment buffer or NULL on error.
+//
+func TagListFromVorbiscommentBuffer(buffer *gst.Buffer, idData []byte) (string, *gst.TagList) {
+	var _arg1 *C.GstBuffer // out
+	var _arg2 *C.guint8    // out
+	var _arg3 C.guint
+	var _arg4 *C.gchar      // in
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+	_arg3 = (C.guint)(len(idData))
+	if len(idData) > 0 {
+		_arg2 = (*C.guint8)(unsafe.Pointer(&idData[0]))
+	}
+
+	_cret = C.gst_tag_list_from_vorbiscomment_buffer(_arg1, _arg2, _arg3, &_arg4)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(idData)
+
+	var _vendorString string  // out
+	var _tagList *gst.TagList // out
+
+	if _arg4 != nil {
+		_vendorString = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _vendorString, _tagList
+}
+
+// TagListFromXmpBuffer: parse a xmp packet into a taglist.
+//
+// The function takes the following parameters:
+//
+//   - buffer: buffer.
+//
+// The function returns the following values:
+//
+//   - tagList (optional): new taglist or NULL, free the list when done.
+//
+func TagListFromXmpBuffer(buffer *gst.Buffer) *gst.TagList {
+	var _arg1 *C.GstBuffer  // out
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+
+	_cret = C.gst_tag_list_from_xmp_buffer(_arg1)
+	runtime.KeepAlive(buffer)
+
+	var _tagList *gst.TagList // out
+
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _tagList
+}
+
+// TagListNewFromID3V1 parses the data containing an ID3v1 tag and returns a
+// TagList from the parsed data.
+//
+// The function takes the following parameters:
+//
+//   - data: 128 bytes of data containing the ID3v1 tag.
+//
+// The function returns the following values:
+//
+//   - tagList (optional): new tag list or NULL if the data was not an ID3v1
+//     tag.
+//
+func TagListNewFromID3V1(data [128]byte) *gst.TagList {
+	var _arg1 *C.guint8     // out
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.guint8)(unsafe.Pointer(&data))
+
+	_cret = C.gst_tag_list_new_from_id3v1(_arg1)
+	runtime.KeepAlive(data)
+
+	var _tagList *gst.TagList // out
+
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _tagList
+}
+
+// TagListToExifBuffer formats the tags in taglist on exif format. The resulting
+// buffer contains the tags IFD and is followed by the data pointed by the tag
+// entries.
+//
+// The function takes the following parameters:
+//
+//   - taglist: taglist.
+//   - byteOrder: byte order used in writing (G_LITTLE_ENDIAN or G_BIG_ENDIAN).
+//   - baseOffset: offset from the tiff header first byte.
+//
+// The function returns the following values:
+//
+//   - buffer: gstBuffer containing the tag entries followed by the tag data.
+//
+func TagListToExifBuffer(taglist *gst.TagList, byteOrder int, baseOffset uint32) *gst.Buffer {
+	var _arg1 *C.GstTagList // out
+	var _arg2 C.gint        // out
+	var _arg3 C.guint32     // out
+	var _cret *C.GstBuffer  // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(taglist)))
+	_arg2 = C.gint(byteOrder)
+	_arg3 = C.guint32(baseOffset)
+
+	_cret = C.gst_tag_list_to_exif_buffer(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(taglist)
+	runtime.KeepAlive(byteOrder)
+	runtime.KeepAlive(baseOffset)
+
+	var _buffer *gst.Buffer // out
+
+	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_buffer)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _buffer
+}
+
+// TagListToExifBufferWithTIFFHeader formats the tags in taglist into exif
+// structure, a tiff header is put in the beginning of the buffer.
+//
+// The function takes the following parameters:
+//
+//   - taglist: taglist.
+//
+// The function returns the following values:
+//
+//   - buffer: gstBuffer containing the data.
+//
+func TagListToExifBufferWithTIFFHeader(taglist *gst.TagList) *gst.Buffer {
+	var _arg1 *C.GstTagList // out
+	var _cret *C.GstBuffer  // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(taglist)))
+
+	_cret = C.gst_tag_list_to_exif_buffer_with_tiff_header(_arg1)
+	runtime.KeepAlive(taglist)
+
+	var _buffer *gst.Buffer // out
+
+	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_buffer)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _buffer
+}
+
+// TagListToVorbiscommentBuffer creates a new vorbiscomment buffer from a tag
+// list.
+//
+// The function takes the following parameters:
+//
+//   - list: tag list to convert.
+//   - idData: identification data at start of stream.
+//   - vendorString (optional): string that describes the vendor string or NULL.
+//
+// The function returns the following values:
+//
+//   - buffer: new Buffer containing a vorbiscomment buffer with all tags that
+//     could be converted from the given tag list.
+//
+func TagListToVorbiscommentBuffer(list *gst.TagList, idData []byte, vendorString string) *gst.Buffer {
+	var _arg1 *C.GstTagList // out
+	var _arg2 *C.guint8     // out
+	var _arg3 C.guint
+	var _arg4 *C.gchar     // out
+	var _cret *C.GstBuffer // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg3 = (C.guint)(len(idData))
+	if len(idData) > 0 {
+		_arg2 = (*C.guint8)(unsafe.Pointer(&idData[0]))
+	}
+	if vendorString != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(vendorString)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
+
+	_cret = C.gst_tag_list_to_vorbiscomment_buffer(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(idData)
+	runtime.KeepAlive(vendorString)
+
+	var _buffer *gst.Buffer // out
+
+	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_buffer)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _buffer
+}
+
+// TagListToXmpBuffer formats a taglist as a xmp packet using only the selected
+// schemas. An empty list (NULL) means that all schemas should be used.
+//
+// The function takes the following parameters:
+//
+//   - list: tags.
+//   - readOnly does the container forbid inplace editing.
+//   - schemas: NULL terminated array of schemas to be used on serialization.
+//
+// The function returns the following values:
+//
+//   - buffer (optional): new buffer or NULL, unref the buffer when done.
+//
+func TagListToXmpBuffer(list *gst.TagList, readOnly bool, schemas []string) *gst.Buffer {
+	var _arg1 *C.GstTagList // out
+	var _arg2 C.gboolean    // out
+	var _arg3 **C.gchar     // out
+	var _cret *C.GstBuffer  // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	if readOnly {
+		_arg2 = C.TRUE
+	}
+	{
+		_arg3 = (**C.gchar)(C.calloc(C.size_t((len(schemas) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg3))
+		{
+			out := unsafe.Slice(_arg3, len(schemas)+1)
+			var zero *C.gchar
+			out[len(schemas)] = zero
+			for i := range schemas {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(schemas[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	_cret = C.gst_tag_list_to_xmp_buffer(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(readOnly)
+	runtime.KeepAlive(schemas)
+
+	var _buffer *gst.Buffer // out
+
+	if _cret != nil {
+		_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _buffer
 }
 
 // TagParseExtendedComment: convenience function to parse a
 // GST_TAG_EXTENDED_COMMENT string and separate it into its components.
 //
 // If successful, key, lang and/or value will be set to newly allocated strings
-// that you need to free with g_free() when done. key and lang may also be set
-// to NULL by this function if there is no key or no language code in the
+// that you need to free with g_free() when done. key and lang may also be
+// set to NULL by this function if there is no key or no language code in the
 // extended comment string.
 //
 // The function takes the following parameters:
 //
-//    - extComment: extended comment string, see T_TAG_EXTENDED_COMMENT.
-//    - failIfNoKey: whether to fail if strings are not in key=value form.
+//   - extComment: extended comment string, see T_TAG_EXTENDED_COMMENT.
+//   - failIfNoKey: whether to fail if strings are not in key=value form.
 //
 // The function returns the following values:
 //
-//    - key (optional): return location for the comment description key, or NULL.
-//    - lang (optional): return location for the comment ISO-639 language code,
-//      or NULL.
-//    - value: return location for the actual comment string, or NULL.
-//    - ok: TRUE if the string could be parsed, otherwise FALSE.
+//   - key (optional): return location for the comment description key, or NULL.
+//   - lang (optional): return location for the comment ISO-639 language code,
+//     or NULL.
+//   - value: return location for the actual comment string, or NULL.
+//   - ok: TRUE if the string could be parsed, otherwise FALSE.
 //
 func TagParseExtendedComment(extComment string, failIfNoKey bool) (key, lang, value string, ok bool) {
 	var _arg1 *C.gchar   // out
@@ -1180,11 +1727,11 @@ func TagRegisterMusicbrainzTags() {
 //
 // The function takes the following parameters:
 //
-//    - gstTag: GStreamer tag to convert to vorbiscomment tag.
+//   - gstTag: GStreamer tag to convert to vorbiscomment tag.
 //
 // The function returns the following values:
 //
-//    - utf8: corresponding ID3v2 tag or NULL if none exists.
+//   - utf8 (optional): corresponding ID3v2 tag or NULL if none exists.
 //
 func TagToID3Tag(gstTag string) string {
 	var _arg1 *C.gchar // out
@@ -1198,20 +1745,62 @@ func TagToID3Tag(gstTag string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
+}
+
+// TagToVorbisComments creates a new tag list that contains the information
+// parsed out of a vorbiscomment packet.
+//
+// The function takes the following parameters:
+//
+//   - list: TagList.
+//   - tag: GStreamer tag identifier, such as T_TAG_ARTIST.
+//
+// The function returns the following values:
+//
+//   - ret of newly-allocated key=value strings. Free with g_list_foreach (list,
+//     (GFunc) g_free, NULL) plus g_list_free (list).
+//
+func TagToVorbisComments(list *gst.TagList, tag string) []string {
+	var _arg1 *C.GstTagList // out
+	var _arg2 *C.gchar      // out
+	var _cret *C.GList      // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.gst_tag_to_vorbis_comments(_arg1, _arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _ret []string // out
+
+	_ret = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		_ret = append(_ret, dst)
+	})
+
+	return _ret
 }
 
 // TagToVorbisTag looks up the vorbiscomment tag for a GStreamer tag.
 //
 // The function takes the following parameters:
 //
-//    - gstTag: GStreamer tag to convert to vorbiscomment tag.
+//   - gstTag: GStreamer tag to convert to vorbiscomment tag.
 //
 // The function returns the following values:
 //
-//    - utf8: corresponding vorbiscomment tag or NULL if none exists.
+//   - utf8 (optional): corresponding vorbiscomment tag or NULL if none exists.
 //
 func TagToVorbisTag(gstTag string) string {
 	var _arg1 *C.gchar // out
@@ -1225,7 +1814,9 @@ func TagToVorbisTag(gstTag string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1234,7 +1825,7 @@ func TagToVorbisTag(gstTag string) string {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL terminated array of strings with the schema names.
+//   - utf8s: NULL terminated array of strings with the schema names.
 //
 func TagXmpListSchemas() []string {
 	var _cret **C.gchar // in
@@ -1258,4 +1849,35 @@ func TagXmpListSchemas() []string {
 	}
 
 	return _utf8s
+}
+
+// VorbisTagAdd: convenience function using gst_tag_from_vorbis_tag(), parsing a
+// vorbis comment string into the right type and adding it to the given taglist
+// list.
+//
+// Unknown vorbiscomment tags will be added to the tag list in form of a
+// T_TAG_EXTENDED_COMMENT.
+//
+// The function takes the following parameters:
+//
+//   - list: TagList.
+//   - tag: vorbiscomment tag string (key in key=value), must be valid UTF-8.
+//   - value: vorbiscomment value string (value in key=value), must be valid
+//     UTF-8.
+//
+func VorbisTagAdd(list *gst.TagList, tag, value string) {
+	var _arg1 *C.GstTagList // out
+	var _arg2 *C.gchar      // out
+	var _arg3 *C.gchar      // out
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	C.gst_vorbis_tag_add(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(value)
 }

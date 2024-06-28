@@ -19,11 +19,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - event to check.
+//   - event to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event is a valid force key unit event.
+//   - ok: TRUE if the event is a valid force key unit event.
 //
 func VideoEventIsForceKeyUnit(event *gst.Event) bool {
 	var _arg1 *C.GstEvent // out
@@ -54,15 +54,15 @@ func VideoEventIsForceKeyUnit(event *gst.Event) bool {
 //
 // The function takes the following parameters:
 //
-//    - timestamp of the buffer that starts a new key unit.
-//    - streamTime: stream_time of the buffer that starts a new key unit.
-//    - runningTime: running_time of the buffer that starts a new key unit.
-//    - allHeaders: TRUE to produce headers when starting a new key unit.
-//    - count: integer that can be used to number key units.
+//   - timestamp of the buffer that starts a new key unit.
+//   - streamTime: stream_time of the buffer that starts a new key unit.
+//   - runningTime: running_time of the buffer that starts a new key unit.
+//   - allHeaders: TRUE to produce headers when starting a new key unit.
+//   - count: integer that can be used to number key units.
 //
 // The function returns the following values:
 //
-//    - event: new GstEvent.
+//   - event: new GstEvent.
 //
 func VideoEventNewDownstreamForceKeyUnit(timestamp, streamTime, runningTime gst.ClockTime, allHeaders bool, count uint) *gst.Event {
 	var _arg1 C.GstClockTime // out
@@ -72,15 +72,9 @@ func VideoEventNewDownstreamForceKeyUnit(timestamp, streamTime, runningTime gst.
 	var _arg5 C.guint        // out
 	var _cret *C.GstEvent    // in
 
-	_arg1 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(streamTime)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(runningTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
+	_arg2 = C.GstClockTime(streamTime)
+	_arg3 = C.GstClockTime(runningTime)
 	if allHeaders {
 		_arg4 = C.TRUE
 	}
@@ -115,11 +109,11 @@ func VideoEventNewDownstreamForceKeyUnit(timestamp, streamTime, runningTime gst.
 //
 // The function takes the following parameters:
 //
-//    - inStill: boolean value for the still-frame state of the event.
+//   - inStill: boolean value for the still-frame state of the event.
 //
 // The function returns the following values:
 //
-//    - event: new GstEvent.
+//   - event: new GstEvent.
 //
 func VideoEventNewStillFrame(inStill bool) *gst.Event {
 	var _arg1 C.gboolean  // out
@@ -158,13 +152,13 @@ func VideoEventNewStillFrame(inStill bool) *gst.Event {
 //
 // The function takes the following parameters:
 //
-//    - runningTime: running_time at which a new key unit should be produced.
-//    - allHeaders: TRUE to produce headers when starting a new key unit.
-//    - count: integer that can be used to number key units.
+//   - runningTime: running_time at which a new key unit should be produced.
+//   - allHeaders: TRUE to produce headers when starting a new key unit.
+//   - count: integer that can be used to number key units.
 //
 // The function returns the following values:
 //
-//    - event: new GstEvent.
+//   - event: new GstEvent.
 //
 func VideoEventNewUpstreamForceKeyUnit(runningTime gst.ClockTime, allHeaders bool, count uint) *gst.Event {
 	var _arg1 C.GstClockTime // out
@@ -172,9 +166,7 @@ func VideoEventNewUpstreamForceKeyUnit(runningTime gst.ClockTime, allHeaders boo
 	var _arg3 C.guint        // out
 	var _cret *C.GstEvent    // in
 
-	_arg1 = C.guint64(runningTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(runningTime)
 	if allHeaders {
 		_arg2 = C.TRUE
 	}
@@ -208,16 +200,16 @@ func VideoEventNewUpstreamForceKeyUnit(runningTime gst.ClockTime, allHeaders boo
 //
 // The function takes the following parameters:
 //
-//    - event to parse.
+//   - event to parse.
 //
 // The function returns the following values:
 //
-//    - timestamp: pointer to the timestamp in the event.
-//    - streamTime: pointer to the stream-time in the event.
-//    - runningTime: pointer to the running-time in the event.
-//    - allHeaders: pointer to the all_headers flag in the event.
-//    - count: pointer to the count field of the event.
-//    - ok: TRUE if the event is a valid downstream force key unit event.
+//   - timestamp: pointer to the timestamp in the event.
+//   - streamTime: pointer to the stream-time in the event.
+//   - runningTime: pointer to the running-time in the event.
+//   - allHeaders: pointer to the all_headers flag in the event.
+//   - count: pointer to the count field of the event.
+//   - ok: TRUE if the event is a valid downstream force key unit event.
 //
 func VideoEventParseDownstreamForceKeyUnit(event *gst.Event) (timestamp, streamTime, runningTime gst.ClockTime, allHeaders bool, count uint, ok bool) {
 	var _arg1 *C.GstEvent    // out
@@ -240,15 +232,9 @@ func VideoEventParseDownstreamForceKeyUnit(event *gst.Event) (timestamp, streamT
 	var _count uint                // out
 	var _ok bool                   // out
 
-	_timestamp = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_streamTime = uint64(_arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_runningTime = uint64(_arg4)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_timestamp = gst.ClockTime(_arg2)
+	_streamTime = gst.ClockTime(_arg3)
+	_runningTime = gst.ClockTime(_arg4)
 	if _arg5 != 0 {
 		_allHeaders = true
 	}
@@ -270,13 +256,13 @@ func VideoEventParseDownstreamForceKeyUnit(event *gst.Event) (timestamp, streamT
 //
 // The function takes the following parameters:
 //
-//    - event to parse.
+//   - event to parse.
 //
 // The function returns the following values:
 //
-//    - inStill: A boolean to receive the still-frame status from the event, or
-//      NULL.
-//    - ok: TRUE if the event is a valid still-frame event. FALSE if not.
+//   - inStill: A boolean to receive the still-frame status from the event,
+//     or NULL.
+//   - ok: TRUE if the event is a valid still-frame event. FALSE if not.
 //
 func VideoEventParseStillFrame(event *gst.Event) (inStill, ok bool) {
 	var _arg1 *C.GstEvent // out
@@ -301,8 +287,8 @@ func VideoEventParseStillFrame(event *gst.Event) (inStill, ok bool) {
 	return _inStill, _ok
 }
 
-// VideoEventParseUpstreamForceKeyUnit: get running-time, all-headers and count
-// in the force key unit event. See
+// VideoEventParseUpstreamForceKeyUnit: get running-time,
+// all-headers and count in the force key unit event. See
 // gst_video_event_new_upstream_force_key_unit() for a full description of the
 // upstream force key unit event.
 //
@@ -314,15 +300,15 @@ func VideoEventParseStillFrame(event *gst.Event) (inStill, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - event to parse.
+//   - event to parse.
 //
 // The function returns the following values:
 //
-//    - runningTime: pointer to the running_time in the event.
-//    - allHeaders: pointer to the all_headers flag in the event.
-//    - count: pointer to the count field in the event.
-//    - ok: TRUE if the event is a valid upstream force-key-unit event. FALSE if
-//      not.
+//   - runningTime: pointer to the running_time in the event.
+//   - allHeaders: pointer to the all_headers flag in the event.
+//   - count: pointer to the count field in the event.
+//   - ok: TRUE if the event is a valid upstream force-key-unit event. FALSE if
+//     not.
 //
 func VideoEventParseUpstreamForceKeyUnit(event *gst.Event) (runningTime gst.ClockTime, allHeaders bool, count uint, ok bool) {
 	var _arg1 *C.GstEvent    // out
@@ -341,9 +327,7 @@ func VideoEventParseUpstreamForceKeyUnit(event *gst.Event) (runningTime gst.Cloc
 	var _count uint                // out
 	var _ok bool                   // out
 
-	_runningTime = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_runningTime = gst.ClockTime(_arg2)
 	if _arg3 != 0 {
 		_allHeaders = true
 	}

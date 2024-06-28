@@ -92,13 +92,13 @@ func (m MetaFlags) Has(other MetaFlags) bool {
 // structure. The structure defines the API of the metadata and should be
 // accessible to all elements using the metadata.
 //
-// A metadata API is registered with gst_meta_api_type_register() which takes a
-// name for the metadata API and some tags associated with the metadata. With
-// gst_meta_api_type_has_tag() one can check if a certain metadata API contains
-// a given tag.
+// A metadata API is registered with gst_meta_api_type_register() which takes
+// a name for the metadata API and some tags associated with the metadata.
+// With gst_meta_api_type_has_tag() one can check if a certain metadata API
+// contains a given tag.
 //
-// Multiple implementations of a metadata API can be registered. To implement a
-// metadata API, gst_meta_register() should be used. This function takes all
+// Multiple implementations of a metadata API can be registered. To implement
+// a metadata API, gst_meta_register() should be used. This function takes all
 // parameters needed to create, free and transform metadata along with the size
 // of the metadata. The function returns a MetaInfo structure that contains the
 // information for the implementation of the API.
@@ -139,13 +139,13 @@ func (m *Meta) Info() *MetaInfo {
 //
 // The function takes the following parameters:
 //
-//    - meta2: Meta.
+//   - meta2: Meta.
 //
 // The function returns the following values:
 //
-//    - gint: negative number if meta1 comes before meta2, 0 if both metas have
-//      an equal sequence number, or a positive integer if meta1 comes after
-//      meta2.
+//   - gint: negative number if meta1 comes before meta2, 0 if both metas have
+//     an equal sequence number, or a positive integer if meta1 comes after
+//     meta2.
 //
 func (meta1 *Meta) CompareSeqnum(meta2 *Meta) int {
 	var _arg0 *C.GstMeta // out
@@ -190,12 +190,12 @@ func (meta *Meta) Seqnum() uint64 {
 //
 // The function takes the following parameters:
 //
-//    - api: API.
-//    - tag to check.
+//   - api: API.
+//   - tag to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if api was registered with tag.
+//   - ok: TRUE if api was registered with tag.
 //
 func MetaApiTypeHasTag(api coreglib.Type, tag glib.Quark) bool {
 	var _arg1 C.GType    // out
@@ -203,9 +203,7 @@ func MetaApiTypeHasTag(api coreglib.Type, tag glib.Quark) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = C.GType(api)
-	_arg2 = C.guint32(tag)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg2 = C.GQuark(tag)
 
 	_cret = C.gst_meta_api_type_has_tag(_arg1, _arg2)
 	runtime.KeepAlive(api)
@@ -225,12 +223,12 @@ func MetaApiTypeHasTag(api coreglib.Type, tag glib.Quark) bool {
 //
 // The function takes the following parameters:
 //
-//    - api: API to register.
-//    - tags for api.
+//   - api: API to register.
+//   - tags for api.
 //
 // The function returns the following values:
 //
-//    - gType: unique GType for api.
+//   - gType: unique GType for api.
 //
 func MetaApiTypeRegister(api string, tags []string) coreglib.Type {
 	var _arg1 *C.gchar  // out
@@ -269,11 +267,11 @@ func MetaApiTypeRegister(api string, tags []string) coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - impl: name.
+//   - impl: name.
 //
 // The function returns the following values:
 //
-//    - metaInfo (optional) with impl, or NULL when no such metainfo exists.
+//   - metaInfo (optional) with impl, or NULL when no such metainfo exists.
 //
 func MetaGetInfo(impl string) *MetaInfo {
 	var _arg1 *C.gchar       // out
@@ -308,8 +306,8 @@ type metaInfo struct {
 
 // The function returns the following values:
 //
-//    - ok: whether info was registered as a CustomMeta with
-//      gst_meta_register_custom().
+//   - ok: whether info was registered as a CustomMeta with
+//     gst_meta_register_custom().
 //
 func (info *MetaInfo) IsCustom() bool {
 	var _arg0 *C.GstMetaInfo // out

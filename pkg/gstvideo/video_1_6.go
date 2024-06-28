@@ -16,21 +16,21 @@ import "C"
 // function will check some standard framerates for a close match (within 0.1%)
 // and return one if possible,
 //
-// It will calculate an arbitrary framerate if no close match was found, and
-// return FALSE.
+// It will calculate an arbitrary framerate if no close match was found,
+// and return FALSE.
 //
 // It returns FALSE if a duration of 0 is passed.
 //
 // The function takes the following parameters:
 //
-//    - duration: nominal duration of one frame.
+//   - duration: nominal duration of one frame.
 //
 // The function returns the following values:
 //
-//    - destN (optional): numerator of the calculated framerate.
-//    - destD (optional): denominator of the calculated framerate.
-//    - ok: TRUE if a close "standard" framerate was recognised, and FALSE
-//      otherwise.
+//   - destN (optional): numerator of the calculated framerate.
+//   - destD (optional): denominator of the calculated framerate.
+//   - ok: TRUE if a close "standard" framerate was recognised, and FALSE
+//     otherwise.
 //
 func VideoGuessFramerate(duration gst.ClockTime) (destN, destD int, ok bool) {
 	var _arg1 C.GstClockTime // out
@@ -38,9 +38,7 @@ func VideoGuessFramerate(duration gst.ClockTime) (destN, destD int, ok bool) {
 	var _arg3 C.gint         // in
 	var _cret C.gboolean     // in
 
-	_arg1 = C.guint64(duration)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(duration)
 
 	_cret = C.gst_video_guess_framerate(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(duration)

@@ -19,13 +19,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - src: pointer to VideoRectangle describing the source area.
-//    - dst: pointer to VideoRectangle describing the destination area.
-//    - scaling indicating if scaling should be applied or not.
+//   - src: pointer to VideoRectangle describing the source area.
+//   - dst: pointer to VideoRectangle describing the destination area.
+//   - scaling indicating if scaling should be applied or not.
 //
 // The function returns the following values:
 //
-//    - result: pointer to a VideoRectangle which will receive the result area.
+//   - result: pointer to a VideoRectangle which will receive the result area.
 //
 func VideoCenterRect(src, dst *VideoRectangle, scaling bool) *VideoRectangle {
 	var _arg1 *C.GstVideoRectangle // out

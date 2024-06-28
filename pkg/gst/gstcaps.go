@@ -47,7 +47,6 @@ func init() {
 //    caps2 | 3  5  8 10
 //          | 6  9 11 12
 //
-//
 // Used when there is no explicit precedence of one caps over the other. e.g.
 // tee's sink pad getcaps function, it will probe its src pad peers' for their
 // caps and intersect them with this mode.
@@ -129,8 +128,8 @@ func (c CapsFlags) Has(other CapsFlags) bool {
 // structure, and both will be removed from the caps if FALSE is returned.
 type CapsFilterMapFunc func(features *CapsFeatures, structure *Structure) (ok bool)
 
-// CapsMapFunc: function that will be called in gst_caps_map_in_place(). The
-// function may modify features and structure.
+// CapsMapFunc: function that will be called in gst_caps_map_in_place().
+// The function may modify features and structure.
 type CapsMapFunc func(features *CapsFeatures, structure *Structure) (ok bool)
 
 // The function returns the following values:
@@ -169,10 +168,10 @@ func StaticCapsGetType() coreglib.Type {
 // Various methods exist to work with the media types such as subtracting or
 // intersecting.
 //
-// Be aware that until 1.20 the Caps / Structure serialization into string had
-// limited support for nested Caps / Structure fields. It could only support one
-// level of nesting. Using more levels would lead to unexpected behavior when
-// using serialization features, such as gst_caps_to_string() or
+// Be aware that until 1.20 the Caps / Structure serialization into string
+// had limited support for nested Caps / Structure fields. It could only
+// support one level of nesting. Using more levels would lead to unexpected
+// behavior when using serialization features, such as gst_caps_to_string() or
 // gst_value_serialize() and their counterparts.
 //
 // An instance of this type is always passed by reference.
@@ -260,13 +259,13 @@ func (c *Caps) MiniObject() *MiniObject {
 	return _v
 }
 
-// Append appends the structures contained in caps2 to caps1. The structures in
-// caps2 are not copied -- they are transferred to caps1, and then caps2 is
+// Append appends the structures contained in caps2 to caps1. The structures
+// in caps2 are not copied -- they are transferred to caps1, and then caps2 is
 // freed. If either caps is ANY, the resulting caps will be ANY.
 //
 // The function takes the following parameters:
 //
-//    - caps2 to append.
+//   - caps2 to append.
 //
 func (caps1 *Caps) Append(caps2 *Caps) {
 	var _arg0 *C.GstCaps // out
@@ -281,12 +280,12 @@ func (caps1 *Caps) Append(caps2 *Caps) {
 	runtime.KeepAlive(caps2)
 }
 
-// AppendStructure appends structure to caps. The structure is not copied; caps
-// becomes the owner of structure.
+// AppendStructure appends structure to caps. The structure is not copied;
+// caps becomes the owner of structure.
 //
 // The function takes the following parameters:
 //
-//    - structure to append.
+//   - structure to append.
 //
 func (caps *Caps) AppendStructure(structure *Structure) {
 	var _arg0 *C.GstCaps      // out
@@ -306,8 +305,8 @@ func (caps *Caps) AppendStructure(structure *Structure) {
 //
 // The function takes the following parameters:
 //
-//    - structure to append.
-//    - features (optional) to append.
+//   - structure to append.
+//   - features (optional) to append.
 //
 func (caps *Caps) AppendStructureFull(structure *Structure, features *CapsFeatures) {
 	var _arg0 *C.GstCaps         // out
@@ -333,11 +332,11 @@ func (caps *Caps) AppendStructureFull(structure *Structure, features *CapsFeatur
 //
 // The function takes the following parameters:
 //
-//    - caps2 to intersect.
+//   - caps2 to intersect.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if intersection would be not empty.
+//   - ok: TRUE if intersection would be not empty.
 //
 func (caps1 *Caps) CanIntersect(caps2 *Caps) bool {
 	var _arg0 *C.GstCaps // out
@@ -369,7 +368,7 @@ func (caps1 *Caps) CanIntersect(caps2 *Caps) bool {
 //
 // The function returns the following values:
 //
-//    - ret: new Caps.
+//   - ret: new Caps.
 //
 func (caps *Caps) Copy() *Caps {
 	var _arg0 *C.GstCaps // out
@@ -398,11 +397,11 @@ func (caps *Caps) Copy() *Caps {
 //
 // The function takes the following parameters:
 //
-//    - nth structure to copy.
+//   - nth structure to copy.
 //
 // The function returns the following values:
 //
-//    - ret: new Caps.
+//   - ret: new Caps.
 //
 func (caps *Caps) CopyNth(nth uint) *Caps {
 	var _arg0 *C.GstCaps // out
@@ -429,16 +428,16 @@ func (caps *Caps) CopyNth(nth uint) *Caps {
 	return _ret
 }
 
-// FilterAndMapInPlace calls the provided function once for each structure and
-// caps feature in the Caps. In contrast to gst_caps_foreach(), the function may
-// modify the structure and features. In contrast to
+// FilterAndMapInPlace calls the provided function once for each structure
+// and caps feature in the Caps. In contrast to gst_caps_foreach(),
+// the function may modify the structure and features. In contrast to
 // gst_caps_filter_and_map_in_place(), the structure and features are removed
 // from the caps if FALSE is returned from the function. The caps must be
 // mutable.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each field.
+//   - fn: function to call for each field.
 //
 func (caps *Caps) FilterAndMapInPlace(fn CapsFilterMapFunc) {
 	var _arg0 *C.GstCaps             // out
@@ -471,7 +470,7 @@ func (caps *Caps) FilterAndMapInPlace(fn CapsFilterMapFunc) {
 //
 // The function returns the following values:
 //
-//    - ret: fixated caps.
+//   - ret: fixated caps.
 //
 func (caps *Caps) Fixate() *Caps {
 	var _arg0 *C.GstCaps // out
@@ -496,18 +495,18 @@ func (caps *Caps) Fixate() *Caps {
 	return _ret
 }
 
-// ForEach calls the provided function once for each structure and caps feature
-// in the Caps. The function must not modify the fields. Also see
+// ForEach calls the provided function once for each structure and caps
+// feature in the Caps. The function must not modify the fields. Also see
 // gst_caps_map_in_place() and gst_caps_filter_and_map_in_place().
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each field.
+//   - fn: function to call for each field.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the supplied function returns TRUE for each call, FALSE
-//      otherwise.
+//   - ok: TRUE if the supplied function returns TRUE for each call, FALSE
+//     otherwise.
 //
 func (caps *Caps) ForEach(fn CapsForEachFunc) bool {
 	var _arg0 *C.GstCaps           // out
@@ -545,12 +544,12 @@ func (caps *Caps) ForEach(fn CapsForEachFunc) bool {
 //
 // The function takes the following parameters:
 //
-//    - index of the structure.
+//   - index of the structure.
 //
 // The function returns the following values:
 //
-//    - capsFeatures (optional): pointer to the CapsFeatures corresponding to
-//      index.
+//   - capsFeatures (optional): pointer to the CapsFeatures corresponding to
+//     index.
 //
 func (caps *Caps) Features(index uint) *CapsFeatures {
 	var _arg0 *C.GstCaps         // out
@@ -577,7 +576,7 @@ func (caps *Caps) Features(index uint) *CapsFeatures {
 //
 // The function returns the following values:
 //
-//    - guint: number of structures that caps contains.
+//   - guint: number of structures that caps contains.
 //
 func (caps *Caps) Size() uint {
 	var _arg0 *C.GstCaps // out
@@ -598,20 +597,20 @@ func (caps *Caps) Size() uint {
 // Structure finds the structure in caps at index, and returns it.
 //
 // WARNING: This function takes a const GstCaps *, but returns a non-const
-// GstStructure *. This is for programming convenience -- the caller should be
-// aware that structures inside a constant Caps should not be modified. However,
-// if you know the caps are writable, either because you have just copied them
-// or made them writable with gst_caps_make_writable(), you may modify the
-// structure returned in the usual way, e.g. with functions like
+// GstStructure *. This is for programming convenience -- the caller should
+// be aware that structures inside a constant Caps should not be modified.
+// However, if you know the caps are writable, either because you have just
+// copied them or made them writable with gst_caps_make_writable(), you may
+// modify the structure returned in the usual way, e.g. with functions like
 // gst_structure_set().
 //
 // The function takes the following parameters:
 //
-//    - index of the structure.
+//   - index of the structure.
 //
 // The function returns the following values:
 //
-//    - structure: pointer to the Structure corresponding to index.
+//   - structure: pointer to the Structure corresponding to index.
 //
 func (caps *Caps) Structure(index uint) *Structure {
 	var _arg0 *C.GstCaps      // out
@@ -637,11 +636,11 @@ func (caps *Caps) Structure(index uint) *Structure {
 //
 // The function takes the following parameters:
 //
-//    - caps2 to intersect.
+//   - caps2 to intersect.
 //
 // The function returns the following values:
 //
-//    - caps: new Caps.
+//   - caps: new Caps.
 //
 func (caps1 *Caps) Intersect(caps2 *Caps) *Caps {
 	var _arg0 *C.GstCaps // out
@@ -674,12 +673,12 @@ func (caps1 *Caps) Intersect(caps2 *Caps) *Caps {
 //
 // The function takes the following parameters:
 //
-//    - caps2 to intersect.
-//    - mode: intersection algorithm/mode to use.
+//   - caps2 to intersect.
+//   - mode: intersection algorithm/mode to use.
 //
 // The function returns the following values:
 //
-//    - caps: new Caps.
+//   - caps: new Caps.
 //
 func (caps1 *Caps) IntersectFull(caps2 *Caps, mode CapsIntersectMode) *Caps {
 	var _arg0 *C.GstCaps             // out
@@ -709,17 +708,17 @@ func (caps1 *Caps) IntersectFull(caps2 *Caps, mode CapsIntersectMode) *Caps {
 	return _caps
 }
 
-// IsAlwaysCompatible: given Caps structure is always compatible with another if
-// every media format that is in the first is also contained in the second. That
-// is, caps1 is a subset of caps2.
+// IsAlwaysCompatible: given Caps structure is always compatible with another
+// if every media format that is in the first is also contained in the second.
+// That is, caps1 is a subset of caps2.
 //
 // The function takes the following parameters:
 //
-//    - caps2 to test.
+//   - caps2 to test.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if caps1 is a subset of caps2.
+//   - ok: TRUE if caps1 is a subset of caps2.
 //
 func (caps1 *Caps) IsAlwaysCompatible(caps2 *Caps) bool {
 	var _arg0 *C.GstCaps // out
@@ -746,7 +745,7 @@ func (caps1 *Caps) IsAlwaysCompatible(caps2 *Caps) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if caps represents any format.
+//   - ok: TRUE if caps represents any format.
 //
 func (caps *Caps) IsAny() bool {
 	var _arg0 *C.GstCaps // out
@@ -770,7 +769,7 @@ func (caps *Caps) IsAny() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if caps represents no formats.
+//   - ok: TRUE if caps represents no formats.
 //
 func (caps *Caps) IsEmpty() bool {
 	var _arg0 *C.GstCaps // out
@@ -794,11 +793,11 @@ func (caps *Caps) IsEmpty() bool {
 //
 // The function takes the following parameters:
 //
-//    - caps2: another Caps.
+//   - caps2: another Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if both caps are equal.
+//   - ok: TRUE if both caps are equal.
 //
 func (caps1 *Caps) IsEqual(caps2 *Caps) bool {
 	var _arg0 *C.GstCaps // out
@@ -826,11 +825,11 @@ func (caps1 *Caps) IsEqual(caps2 *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps2 to test.
+//   - caps2 to test.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the arguments represent the same format.
+//   - ok: TRUE if the arguments represent the same format.
 //
 func (caps1 *Caps) IsEqualFixed(caps2 *Caps) bool {
 	var _arg0 *C.GstCaps // out
@@ -859,7 +858,7 @@ func (caps1 *Caps) IsEqualFixed(caps2 *Caps) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if caps is fixed.
+//   - ok: TRUE if caps is fixed.
 //
 func (caps *Caps) IsFixed() bool {
 	var _arg0 *C.GstCaps // out
@@ -883,11 +882,11 @@ func (caps *Caps) IsFixed() bool {
 //
 // The function takes the following parameters:
 //
-//    - caps2: another Caps.
+//   - caps2: another Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if both caps are strictly equal.
+//   - ok: TRUE if both caps are strictly equal.
 //
 func (caps1 *Caps) IsStrictlyEqual(caps2 *Caps) bool {
 	var _arg0 *C.GstCaps // out
@@ -915,11 +914,11 @@ func (caps1 *Caps) IsStrictlyEqual(caps2 *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - superset: potentially greater Caps.
+//   - superset: potentially greater Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if subset is a subset of superset.
+//   - ok: TRUE if subset is a subset of superset.
 //
 func (subset *Caps) IsSubset(superset *Caps) bool {
 	var _arg0 *C.GstCaps // out
@@ -947,11 +946,11 @@ func (subset *Caps) IsSubset(superset *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - structure: potential Structure subset of caps.
+//   - structure: potential Structure subset of caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if structure is a subset of caps.
+//   - ok: TRUE if structure is a subset of caps.
 //
 func (caps *Caps) IsSubsetStructure(structure *Structure) bool {
 	var _arg0 *C.GstCaps      // out
@@ -979,12 +978,12 @@ func (caps *Caps) IsSubsetStructure(structure *Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - structure: potential Structure subset of caps.
-//    - features (optional) for structure.
+//   - structure: potential Structure subset of caps.
+//   - features (optional) for structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if structure is a subset of caps.
+//   - ok: TRUE if structure is a subset of caps.
 //
 func (caps *Caps) IsSubsetStructureFull(structure *Structure, features *CapsFeatures) bool {
 	var _arg0 *C.GstCaps         // out
@@ -1018,12 +1017,12 @@ func (caps *Caps) IsSubsetStructureFull(structure *Structure, features *CapsFeat
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each field.
+//   - fn: function to call for each field.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the supplied function returns TRUE for each call, FALSE
-//      otherwise.
+//   - ok: TRUE if the supplied function returns TRUE for each call, FALSE
+//     otherwise.
 //
 func (caps *Caps) MapInPlace(fn CapsMapFunc) bool {
 	var _arg0 *C.GstCaps       // out
@@ -1049,18 +1048,18 @@ func (caps *Caps) MapInPlace(fn CapsMapFunc) bool {
 	return _ok
 }
 
-// Merge appends the structures contained in caps2 to caps1 if they are not yet
-// expressed by caps1. The structures in caps2 are not copied -- they are
+// Merge appends the structures contained in caps2 to caps1 if they are not
+// yet expressed by caps1. The structures in caps2 are not copied -- they are
 // transferred to a writable copy of caps1, and then caps2 is freed. If either
 // caps is ANY, the resulting caps will be ANY.
 //
 // The function takes the following parameters:
 //
-//    - caps2 to merge in.
+//   - caps2 to merge in.
 //
 // The function returns the following values:
 //
-//    - caps: merged caps.
+//   - caps: merged caps.
 //
 func (caps1 *Caps) Merge(caps2 *Caps) *Caps {
 	var _arg0 *C.GstCaps // out
@@ -1094,11 +1093,11 @@ func (caps1 *Caps) Merge(caps2 *Caps) *Caps {
 //
 // The function takes the following parameters:
 //
-//    - structure to merge.
+//   - structure to merge.
 //
 // The function returns the following values:
 //
-//    - ret: merged caps.
+//   - ret: merged caps.
 //
 func (caps *Caps) MergeStructure(structure *Structure) *Caps {
 	var _arg0 *C.GstCaps      // out
@@ -1132,12 +1131,12 @@ func (caps *Caps) MergeStructure(structure *Structure) *Caps {
 //
 // The function takes the following parameters:
 //
-//    - structure to merge.
-//    - features (optional) to merge.
+//   - structure to merge.
+//   - features (optional) to merge.
 //
 // The function returns the following values:
 //
-//    - ret: merged caps.
+//   - ret: merged caps.
 //
 func (caps *Caps) MergeStructureFull(structure *Structure, features *CapsFeatures) *Caps {
 	var _arg0 *C.GstCaps         // out
@@ -1172,8 +1171,8 @@ func (caps *Caps) MergeStructureFull(structure *Structure, features *CapsFeature
 	return _ret
 }
 
-// Normalize returns a Caps that represents the same set of formats as caps, but
-// contains no lists. Each list is expanded into separate Structure.
+// Normalize returns a Caps that represents the same set of formats as caps,
+// but contains no lists. Each list is expanded into separate Structure.
 //
 // This function takes ownership of caps and will call gst_caps_make_writable()
 // on it so you must not use caps afterwards unless you keep an additional
@@ -1181,7 +1180,7 @@ func (caps *Caps) MergeStructureFull(structure *Structure, features *CapsFeature
 //
 // The function returns the following values:
 //
-//    - ret: normalized Caps.
+//   - ret: normalized Caps.
 //
 func (caps *Caps) Normalize() *Caps {
 	var _arg0 *C.GstCaps // out
@@ -1211,7 +1210,7 @@ func (caps *Caps) Normalize() *Caps {
 //
 // The function takes the following parameters:
 //
-//    - idx: index of the structure to remove.
+//   - idx: index of the structure to remove.
 //
 func (caps *Caps) RemoveStructure(idx uint) {
 	var _arg0 *C.GstCaps // out
@@ -1230,18 +1229,18 @@ func (caps *Caps) RemoveStructure(idx uint) {
 //
 // This prints the caps in human readable form.
 //
-// This version of the caps serialization function introduces support for nested
-// structures and caps but the resulting strings won't be parsable with
+// This version of the caps serialization function introduces support for
+// nested structures and caps but the resulting strings won't be parsable with
 // GStreamer prior to 1.20 unless T_SERIALIZE_FLAG_BACKWARD_COMPAT is passed as
 // flag.
 //
 // The function takes the following parameters:
 //
-//    - flags: SerializeFlags.
+//   - flags: SerializeFlags.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string representing caps.
+//   - utf8: newly allocated string representing caps.
 //
 func (caps *Caps) Serialize(flags SerializeFlags) string {
 	var _arg0 *C.GstCaps          // out
@@ -1267,8 +1266,8 @@ func (caps *Caps) Serialize(flags SerializeFlags) string {
 //
 // The function takes the following parameters:
 //
-//    - index of the structure.
-//    - features (optional) to set.
+//   - index of the structure.
+//   - features (optional) to set.
 //
 func (caps *Caps) SetFeatures(index uint, features *CapsFeatures) {
 	var _arg0 *C.GstCaps         // out
@@ -1292,7 +1291,7 @@ func (caps *Caps) SetFeatures(index uint, features *CapsFeatures) {
 //
 // The function takes the following parameters:
 //
-//    - features (optional) to set.
+//   - features (optional) to set.
 //
 func (caps *Caps) SetFeaturesSimple(features *CapsFeatures) {
 	var _arg0 *C.GstCaps         // out
@@ -1315,8 +1314,8 @@ func (caps *Caps) SetFeaturesSimple(features *CapsFeatures) {
 //
 // The function takes the following parameters:
 //
-//    - field: name of the field to set.
-//    - value to set the field to.
+//   - field: name of the field to set.
+//   - value to set the field to.
 //
 func (caps *Caps) SetValue(field string, value *coreglib.Value) {
 	var _arg0 *C.GstCaps // out
@@ -1347,7 +1346,7 @@ func (caps *Caps) SetValue(field string, value *coreglib.Value) {
 //
 // The function returns the following values:
 //
-//    - ret: simplified caps.
+//   - ret: simplified caps.
 //
 func (caps *Caps) Simplify() *Caps {
 	var _arg0 *C.GstCaps // out
@@ -1378,11 +1377,11 @@ func (caps *Caps) Simplify() *Caps {
 //
 // The function takes the following parameters:
 //
-//    - index: index of the structure to retrieve.
+//   - index: index of the structure to retrieve.
 //
 // The function returns the following values:
 //
-//    - structure (optional): pointer to the Structure corresponding to index.
+//   - structure (optional): pointer to the Structure corresponding to index.
 //
 func (caps *Caps) StealStructure(index uint) *Structure {
 	var _arg0 *C.GstCaps      // out
@@ -1417,11 +1416,11 @@ func (caps *Caps) StealStructure(index uint) *Structure {
 //
 // The function takes the following parameters:
 //
-//    - subtrahend to subtract.
+//   - subtrahend to subtract.
 //
 // The function returns the following values:
 //
-//    - caps: resulting caps.
+//   - caps: resulting caps.
 //
 func (minuend *Caps) Subtract(subtrahend *Caps) *Caps {
 	var _arg0 *C.GstCaps // out
@@ -1462,7 +1461,7 @@ func (minuend *Caps) Subtract(subtrahend *Caps) *Caps {
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string representing caps.
+//   - utf8: newly allocated string representing caps.
 //
 func (caps *Caps) String() string {
 	var _arg0 *C.GstCaps // out
@@ -1494,7 +1493,7 @@ func (caps *Caps) String() string {
 //
 // The function returns the following values:
 //
-//    - ret: truncated caps.
+//   - ret: truncated caps.
 //
 func (caps *Caps) Truncate() *Caps {
 	var _arg0 *C.GstCaps // out
@@ -1526,11 +1525,11 @@ func (caps *Caps) Truncate() *Caps {
 //
 // The function takes the following parameters:
 //
-//    - str: string to convert to Caps.
+//   - str: string to convert to Caps.
 //
 // The function returns the following values:
 //
-//    - caps (optional): newly allocated Caps.
+//   - caps (optional): newly allocated Caps.
 //
 func CapsFromString(str string) *Caps {
 	var _arg1 *C.gchar   // out
@@ -1601,9 +1600,9 @@ func (staticCaps *StaticCaps) Cleanup() {
 //
 // The function returns the following values:
 //
-//    - caps (optional): pointer to the Caps. Since the core holds an additional
-//      ref to the returned caps, use gst_caps_make_writable() on the returned
-//      caps to modify it.
+//   - caps (optional): pointer to the Caps. Since the core holds an additional
+//     ref to the returned caps, use gst_caps_make_writable() on the returned
+//     caps to modify it.
 //
 func (staticCaps *StaticCaps) Get() *Caps {
 	var _arg0 *C.GstStaticCaps // out

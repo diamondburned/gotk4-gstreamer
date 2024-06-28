@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - spec: ringbufer spec.
+//   - spec: ringbufer spec.
 //
 // The function returns the following values:
 //
-//    - guint: size or 0 if the given type is not supported or cannot be
-//      payloaded.
+//   - guint: size or 0 if the given type is not supported or cannot be
+//     payloaded.
 //
 func AudioIec61937FrameSize(spec *AudioRingBufferSpec) uint {
 	var _arg1 *C.GstAudioRingBufferSpec // out
@@ -47,16 +47,16 @@ func AudioIec61937FrameSize(spec *AudioRingBufferSpec) uint {
 //
 // The function takes the following parameters:
 //
-//    - src: buffer containing the data to payload.
-//    - dst: destination buffer to store the payloaded contents in. Should not
-//      overlap with src.
-//    - spec: ringbufer spec for src.
-//    - endianness: expected byte order of the payloaded data.
+//   - src: buffer containing the data to payload.
+//   - dst: destination buffer to store the payloaded contents in. Should not
+//     overlap with src.
+//   - spec: ringbufer spec for src.
+//   - endianness: expected byte order of the payloaded data.
 //
 // The function returns the following values:
 //
-//    - ok: transfer-full: TRUE if the payloading was successful, FALSE
-//      otherwise.
+//   - ok: transfer-full: TRUE if the payloading was successful, FALSE
+//     otherwise.
 //
 func AudioIec61937Payload(src, dst []byte, spec *AudioRingBufferSpec, endianness int) bool {
 	var _arg1 *C.guint8 // out

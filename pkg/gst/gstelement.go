@@ -156,50 +156,50 @@ type StateChange C.gint
 const (
 	// StateChangeNullToReady: state change from NULL to READY. * The element
 	// must check if the resources it needs are available. Device sinks and
-	// -sources typically try to probe the device to constrain their caps. * The
-	// element opens the device (in case feature need to be probed).
+	// -sources typically try to probe the device to constrain their caps.
+	// * The element opens the device (in case feature need to be probed).
 	StateChangeNullToReady StateChange = 10
-	// StateChangeReadyToPaused: state change from READY to PAUSED. * The
-	// element pads are activated in order to receive data in PAUSED. Streaming
-	// threads are started. * Some elements might need to return
-	// GST_STATE_CHANGE_ASYNC and complete the state change when they have
-	// enough information. It is a requirement for sinks to return
+	// StateChangeReadyToPaused: state change from READY to PAUSED.
+	// * The element pads are activated in order to receive data in PAUSED.
+	// Streaming threads are started. * Some elements might need to return
+	// GST_STATE_CHANGE_ASYNC and complete the state change when they
+	// have enough information. It is a requirement for sinks to return
 	// GST_STATE_CHANGE_ASYNC and complete the state change when they receive
 	// the first buffer or GST_EVENT_EOS (preroll). Sinks also block the
 	// dataflow when in PAUSED. * A pipeline resets the running_time to 0. *
 	// Live sources return GST_STATE_CHANGE_NO_PREROLL and don't generate data.
 	StateChangeReadyToPaused StateChange = 19
-	// StateChangePausedToPlaying: state change from PAUSED to PLAYING. * Most
-	// elements ignore this state change. * The pipeline selects a Clock and
-	// distributes this to all the children before setting them to PLAYING. This
-	// means that it is only allowed to synchronize on the Clock in the PLAYING
-	// state. * The pipeline uses the Clock and the running_time to calculate
-	// the base_time. The base_time is distributed to all children when
-	// performing the state change. * Sink elements stop blocking on the preroll
-	// buffer or event and start rendering the data. * Sinks can post
-	// GST_MESSAGE_EOS in the PLAYING state. It is not allowed to post
+	// StateChangePausedToPlaying: state change from PAUSED to PLAYING.
+	// * Most elements ignore this state change. * The pipeline selects a Clock
+	// and distributes this to all the children before setting them to PLAYING.
+	// This means that it is only allowed to synchronize on the Clock in the
+	// PLAYING state. * The pipeline uses the Clock and the running_time to
+	// calculate the base_time. The base_time is distributed to all children
+	// when performing the state change. * Sink elements stop blocking on
+	// the preroll buffer or event and start rendering the data. * Sinks can
+	// post GST_MESSAGE_EOS in the PLAYING state. It is not allowed to post
 	// GST_MESSAGE_EOS when not in the PLAYING state. * While streaming in
 	// PAUSED or PLAYING elements can create and remove sometimes pads. * Live
 	// sources start generating data and return GST_STATE_CHANGE_SUCCESS.
 	StateChangePausedToPlaying StateChange = 28
-	// StateChangePlayingToPaused: state change from PLAYING to PAUSED. * Most
-	// elements ignore this state change. * The pipeline calculates the
-	// running_time based on the last selected Clock and the base_time. It
-	// stores this information to continue playback when going back to the
+	// StateChangePlayingToPaused: state change from PLAYING to PAUSED.
+	// * Most elements ignore this state change. * The pipeline calculates
+	// the running_time based on the last selected Clock and the base_time.
+	// It stores this information to continue playback when going back to the
 	// PLAYING state. * Sinks unblock any Clock wait calls. * When a sink does
 	// not have a pending buffer to play, it returns T_STATE_CHANGE_ASYNC from
-	// this state change and completes the state change when it receives a new
-	// buffer or an GST_EVENT_EOS. * Any queued GST_MESSAGE_EOS items are
+	// this state change and completes the state change when it receives a
+	// new buffer or an GST_EVENT_EOS. * Any queued GST_MESSAGE_EOS items are
 	// removed since they will be reposted when going back to the PLAYING state.
 	// The EOS messages are queued in Bin containers. * Live sources stop
 	// generating data and return GST_STATE_CHANGE_NO_PREROLL.
 	StateChangePlayingToPaused StateChange = 35
-	// StateChangePausedToReady: state change from PAUSED to READY. * Sinks
-	// unblock any waits in the preroll. * Elements unblock any waits on devices
-	// * Chain or get_range functions return GST_FLOW_FLUSHING. * The element
-	// pads are deactivated so that streaming becomes impossible and all
-	// streaming threads are stopped. * The sink forgets all negotiated formats
-	// * Elements remove all sometimes pads.
+	// StateChangePausedToReady: state change from PAUSED to READY.
+	// * Sinks unblock any waits in the preroll. * Elements unblock any waits
+	// on devices * Chain or get_range functions return GST_FLOW_FLUSHING.
+	// * The element pads are deactivated so that streaming becomes impossible
+	// and all streaming threads are stopped. * The sink forgets all negotiated
+	// formats * Elements remove all sometimes pads.
 	StateChangePausedToReady StateChange = 26
 	// StateChangeReadyToNull: state change from READY to NULL. * Elements close
 	// devices * Elements reset any internal state.
@@ -369,28 +369,28 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - transition: requested transition.
+	//   - transition: requested transition.
 	//
 	// The function returns the following values:
 	//
-	//    - stateChangeReturn of the state transition.
+	//   - stateChangeReturn of the state transition.
 	//
 	ChangeState func(transition StateChange) StateChangeReturn
 	// State gets the state of the element.
 	//
 	// For elements that performed an ASYNC state change, as reported by
 	// gst_element_set_state(), this function will block up to the specified
-	// timeout value for the state change to complete. If the element completes
-	// the state change or goes into an error, this function returns immediately
-	// with a return value of GST_STATE_CHANGE_SUCCESS or
+	// timeout value for the state change to complete. If the element
+	// completes the state change or goes into an error, this function
+	// returns immediately with a return value of GST_STATE_CHANGE_SUCCESS or
 	// GST_STATE_CHANGE_FAILURE respectively.
 	//
 	// For elements that did not return GST_STATE_CHANGE_ASYNC, this function
 	// returns the current and pending state immediately.
 	//
 	// This function returns GST_STATE_CHANGE_NO_PREROLL if the element
-	// successfully changed its state but is not able to provide data yet. This
-	// mostly happens for live sources that only produce data in
+	// successfully changed its state but is not able to provide data yet.
+	// This mostly happens for live sources that only produce data in
 	// GST_STATE_PLAYING. While the state change return is equivalent to
 	// GST_STATE_CHANGE_SUCCESS, it is returned to the application to signal
 	// that some sink elements might not be able to complete their state change
@@ -400,20 +400,22 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - timeout to specify the timeout for an async state change or
-	//      GST_CLOCK_TIME_NONE for infinite timeout.
+	//   - timeout to specify the timeout for an async state change or
+	//     GST_CLOCK_TIME_NONE for infinite timeout.
 	//
 	// The function returns the following values:
 	//
-	//    - state (optional): pointer to State to hold the state. Can be NULL.
-	//    - pending (optional): pointer to State to hold the pending state. Can
-	//      be NULL.
-	//    - stateChangeReturn: GST_STATE_CHANGE_SUCCESS if the element has no
-	//      more pending state and the last state change succeeded,
-	//      GST_STATE_CHANGE_ASYNC if the element is still performing a state
-	//      change or GST_STATE_CHANGE_FAILURE if the last state change failed.
+	//   - state (optional): pointer to State to hold the state. Can be NULL.
 	//
-	//      MT safe.
+	//   - pending (optional): pointer to State to hold the pending state.
+	//     Can be NULL.
+	//
+	//   - stateChangeReturn: GST_STATE_CHANGE_SUCCESS if the element
+	//     has no more pending state and the last state change succeeded,
+	//     GST_STATE_CHANGE_ASYNC if the element is still performing a state
+	//     change or GST_STATE_CHANGE_FAILURE if the last state change failed.
+	//
+	//     MT safe.
 	//
 	State func(timeout ClockTime) (state, pending State, stateChangeReturn StateChangeReturn)
 	// NoMorePads: use this function to signal that the element does not expect
@@ -438,14 +440,14 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - message to post.
+	//   - message to post.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the message was successfully posted. The function returns
-	//      FALSE if the element did not have a bus.
+	//   - ok: TRUE if the message was successfully posted. The function returns
+	//     FALSE if the element did not have a bus.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	PostMessage func(message *Message) bool
 	// ProvideClock: get the clock provided by the given element. > An element
@@ -454,10 +456,10 @@ type ElementOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - clock (optional): gstClock provided by the element or NULL if no
-	//      clock could be provided. Unref after usage.
+	//   - clock (optional): gstClock provided by the element or NULL if no
+	//     clock could be provided. Unref after usage.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	ProvideClock func() Clocker
 	// Query performs a query on the given element.
@@ -470,13 +472,13 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - query: Query.
+	//   - query: Query.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the query could be performed.
+	//   - ok: TRUE if the query could be performed.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Query func(query *Query) bool
 	// The function takes the following parameters:
@@ -493,12 +495,12 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - event to send to the element.
+	//   - event to send to the element.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the event was handled. Events that trigger a preroll
-	//      (such as flushing seeks and steps) will emit GST_MESSAGE_ASYNC_DONE.
+	//   - ok: TRUE if the event was handled. Events that trigger a preroll
+	//     (such as flushing seeks and steps) will emit GST_MESSAGE_ASYNC_DONE.
 	//
 	SendEvent func(event *Event) bool
 	// SetBus sets the bus of the element. Increases the refcount on the bus.
@@ -508,24 +510,24 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - bus (optional) to set.
+	//   - bus (optional) to set.
 	//
 	SetBus func(bus *Bus)
-	// SetClock sets the clock for the element. This function increases the
-	// refcount on the clock. Any previously set clock on the object is
+	// SetClock sets the clock for the element. This function increases
+	// the refcount on the clock. Any previously set clock on the object is
 	// unreffed.
 	//
 	// The function takes the following parameters:
 	//
-	//    - clock (optional) to set for the element.
+	//   - clock (optional) to set for the element.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the element accepted the clock. An element can refuse a
-	//      clock when it, for example, is not able to slave its internal clock
-	//      to the clock or when it requires a specific clock to operate.
+	//   - ok: TRUE if the element accepted the clock. An element can refuse a
+	//     clock when it, for example, is not able to slave its internal clock
+	//     to the clock or when it requires a specific clock to operate.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	SetClock func(clock Clocker) bool
 	// SetContext sets the context of the element. Increases the refcount of the
@@ -535,17 +537,17 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - context to set.
+	//   - context to set.
 	//
 	SetContext func(context *Context)
 	// SetState sets the state of the element. This function will try to set the
 	// requested state by going through all the intermediary states and calling
 	// the class's state change function for each.
 	//
-	// This function can return T_STATE_CHANGE_ASYNC, in which case the element
-	// will perform the remainder of the state change asynchronously in another
-	// thread. An application can use gst_element_get_state() to wait for the
-	// completion of the state change or it can wait for a
+	// This function can return T_STATE_CHANGE_ASYNC, in which case the
+	// element will perform the remainder of the state change asynchronously
+	// in another thread. An application can use gst_element_get_state()
+	// to wait for the completion of the state change or it can wait for a
 	// GST_MESSAGE_ASYNC_DONE or GST_MESSAGE_STATE_CHANGED on the bus.
 	//
 	// State changes to GST_STATE_READY or GST_STATE_NULL never return
@@ -553,21 +555,21 @@ type ElementOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - state element's new State.
+	//   - state element's new State.
 	//
 	// The function returns the following values:
 	//
-	//    - stateChangeReturn: result of the state change using
-	//      StateChangeReturn.
+	//   - stateChangeReturn: result of the state change using
+	//     StateChangeReturn.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	SetState func(state State) StateChangeReturn
 	// The function takes the following parameters:
 	//
-	//    - oldstate
-	//    - newstate
-	//    - pending
+	//   - oldstate
+	//   - newstate
+	//   - pending
 	//
 	StateChanged func(oldstate, newstate, pending State)
 }
@@ -592,13 +594,13 @@ func defaultElementOverrides(v *Element) ElementOverrides {
 	}
 }
 
-// Element is the abstract base class needed to construct an element that can be
-// used in a GStreamer pipeline. Please refer to the plugin writers guide for
+// Element is the abstract base class needed to construct an element that can
+// be used in a GStreamer pipeline. Please refer to the plugin writers guide for
 // more information on creating Element subclasses.
 //
 // The name of a Element can be get with gst_element_get_name() and set with
-// gst_element_set_name(). For speed, GST_ELEMENT_NAME() can be used in the core
-// when using the appropriate locking. Do not use this in plug-ins or
+// gst_element_set_name(). For speed, GST_ELEMENT_NAME() can be used in the
+// core when using the appropriate locking. Do not use this in plug-ins or
 // applications in order to retain ABI compatibility.
 //
 // Elements can have pads (of the type Pad). These pads link to pads on other
@@ -613,25 +615,25 @@ func defaultElementOverrides(v *Element) ElementOverrides {
 // retrieved with gst_element_iterate_pads().
 //
 // Elements can be linked through their pads. If the link is straightforward,
-// use the gst_element_link() convenience function to link two elements, or
-// gst_element_link_many() for more elements in a row. Use
-// gst_element_link_filtered() to link two elements constrained by a specified
-// set of Caps. For finer control, use gst_element_link_pads() and
+// use the gst_element_link() convenience function to link two
+// elements, or gst_element_link_many() for more elements in a row.
+// Use gst_element_link_filtered() to link two elements constrained by a
+// specified set of Caps. For finer control, use gst_element_link_pads() and
 // gst_element_link_pads_filtered() to specify the pads to link on each element
 // by name.
 //
 // Each element has a state (see State). You can get and set the state of an
-// element with gst_element_get_state() and gst_element_set_state(). Setting a
-// state triggers a StateChange. To get a string representation of a State, use
-// gst_element_state_get_name().
+// element with gst_element_get_state() and gst_element_set_state(). Setting
+// a state triggers a StateChange. To get a string representation of a State,
+// use gst_element_state_get_name().
 //
-// You can get and set a Clock on an element using gst_element_get_clock() and
-// gst_element_set_clock(). Some elements can provide a clock for the pipeline
-// if the T_ELEMENT_FLAG_PROVIDE_CLOCK flag is set. With the
+// You can get and set a Clock on an element using gst_element_get_clock()
+// and gst_element_set_clock(). Some elements can provide a clock for
+// the pipeline if the T_ELEMENT_FLAG_PROVIDE_CLOCK flag is set. With the
 // gst_element_provide_clock() method one can retrieve the clock provided by
-// such an element. Not all elements require a clock to operate correctly. If
-// the T_ELEMENT_FLAG_REQUIRE_CLOCK() flag is set, a clock should be set on the
-// element with gst_element_set_clock().
+// such an element. Not all elements require a clock to operate correctly.
+// If the T_ELEMENT_FLAG_REQUIRE_CLOCK() flag is set, a clock should be set on
+// the element with gst_element_set_clock().
 //
 // Note that clock selection and distribution is normally handled by the
 // toplevel Pipeline so the clock functions are only to be used in very specific
@@ -764,10 +766,10 @@ func (element *Element) ConnectNoMorePads(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(element, "no-more-pads", false, unsafe.Pointer(C._gotk4_gst1_Element_ConnectNoMorePads), f)
 }
 
-// ConnectPadAdded: new Pad has been added to the element. Note that this signal
-// will usually be emitted from the context of the streaming thread. Also keep
-// in mind that if you add new elements to the pipeline in the signal handler
-// you will need to set them to the desired target state with
+// ConnectPadAdded: new Pad has been added to the element. Note that this
+// signal will usually be emitted from the context of the streaming thread.
+// Also keep in mind that if you add new elements to the pipeline in the
+// signal handler you will need to set them to the desired target state with
 // gst_element_set_state() or gst_element_sync_state_with_parent().
 func (element *Element) ConnectPadAdded(f func(newPad *Pad)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(element, "pad-added", false, unsafe.Pointer(C._gotk4_gst1_Element_ConnectPadAdded), f)
@@ -804,14 +806,14 @@ func (element *Element) AbortState() {
 //
 // The function takes the following parameters:
 //
-//    - pad to add to the element.
+//   - pad to add to the element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad could be added. This function can fail when a pad
-//      with the same name already existed or the pad already had another parent.
+//   - ok: TRUE if the pad could be added. This function can fail when a pad
+//     with the same name already existed or the pad already had another parent.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) AddPad(pad *Pad) bool {
 	var _arg0 *C.GstElement // out
@@ -836,14 +838,14 @@ func (element *Element) AddPad(pad *Pad) bool {
 
 // The function takes the following parameters:
 //
-//    - propertyName (optional): name of property to watch for changes, or NULL
-//      to watch all properties.
-//    - includeValue: whether to include the new property value in the message.
+//   - propertyName (optional): name of property to watch for changes, or NULL
+//     to watch all properties.
+//   - includeValue: whether to include the new property value in the message.
 //
 // The function returns the following values:
 //
-//    - gulong: watch id, which can be used in connection with
-//      gst_element_remove_property_notify_watch() to remove the watch again.
+//   - gulong: watch id, which can be used in connection with
+//     gst_element_remove_property_notify_watch() to remove the watch again.
 //
 func (element *Element) AddPropertyDeepNotifyWatch(propertyName string, includeValue bool) uint32 {
 	var _arg0 *C.GstElement // out
@@ -874,14 +876,14 @@ func (element *Element) AddPropertyDeepNotifyWatch(propertyName string, includeV
 
 // The function takes the following parameters:
 //
-//    - propertyName (optional): name of property to watch for changes, or NULL
-//      to watch all properties.
-//    - includeValue: whether to include the new property value in the message.
+//   - propertyName (optional): name of property to watch for changes, or NULL
+//     to watch all properties.
+//   - includeValue: whether to include the new property value in the message.
 //
 // The function returns the following values:
 //
-//    - gulong: watch id, which can be used in connection with
-//      gst_element_remove_property_notify_watch() to remove the watch again.
+//   - gulong: watch id, which can be used in connection with
+//     gst_element_remove_property_notify_watch() to remove the watch again.
 //
 func (element *Element) AddPropertyNotifyWatch(propertyName string, includeValue bool) uint32 {
 	var _arg0 *C.GstElement // out
@@ -910,10 +912,10 @@ func (element *Element) AddPropertyNotifyWatch(propertyName string, includeValue
 	return _gulong
 }
 
-// CallAsync calls func from another thread and passes user_data to it. This is
-// to be used for cases when a state change has to be performed from a streaming
-// thread, directly via gst_element_set_state() or indirectly e.g. via SEEK
-// events.
+// CallAsync calls func from another thread and passes user_data to it.
+// This is to be used for cases when a state change has to be performed from a
+// streaming thread, directly via gst_element_set_state() or indirectly e.g.
+// via SEEK events.
 //
 // Calling those functions directly from the streaming thread will cause
 // deadlocks in many situations, as they might involve waiting for the streaming
@@ -923,7 +925,7 @@ func (element *Element) AddPropertyNotifyWatch(propertyName string, includeValue
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call asynchronously from another thread.
+//   - fn: function to call asynchronously from another thread.
 //
 func (element *Element) CallAsync(fn ElementCallAsyncFunc) {
 	var _arg0 *C.GstElement             // out
@@ -948,11 +950,11 @@ func (element *Element) CallAsync(fn ElementCallAsyncFunc) {
 //
 // The function takes the following parameters:
 //
-//    - transition: requested transition.
+//   - transition: requested transition.
 //
 // The function returns the following values:
 //
-//    - stateChangeReturn of the state transition.
+//   - stateChangeReturn of the state transition.
 //
 func (element *Element) ChangeState(transition StateChange) StateChangeReturn {
 	var _arg0 *C.GstElement          // out
@@ -988,13 +990,13 @@ func (element *Element) ChangeState(transition StateChange) StateChangeReturn {
 //
 // The function takes the following parameters:
 //
-//    - ret previous state return value.
+//   - ret previous state return value.
 //
 // The function returns the following values:
 //
-//    - stateChangeReturn: result of the commit state change.
+//   - stateChangeReturn: result of the commit state change.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) ContinueState(ret StateChangeReturn) StateChangeReturn {
 	var _arg0 *C.GstElement          // out
@@ -1027,21 +1029,21 @@ func (element *Element) CreateAllPads() {
 	runtime.KeepAlive(element)
 }
 
-// ForEachPad: call func with user_data for each of element's pads. func will be
-// called exactly once for each pad that exists at the time of this call, unless
-// one of the calls to func returns FALSE in which case we will stop iterating
-// pads and return early. If new pads are added or pads are removed while pads
-// are being iterated, this will not be taken into account until next time this
-// function is used.
+// ForEachPad: call func with user_data for each of element's pads. func will
+// be called exactly once for each pad that exists at the time of this call,
+// unless one of the calls to func returns FALSE in which case we will stop
+// iterating pads and return early. If new pads are added or pads are removed
+// while pads are being iterated, this will not be taken into account until next
+// time this function is used.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each pad.
+//   - fn: function to call for each pad.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if element had no pads or if one of the calls to func returned
-//      FALSE.
+//   - ok: FALSE if element had no pads or if one of the calls to func returned
+//     FALSE.
 //
 func (element *Element) ForEachPad(fn ElementForEachPadFunc) bool {
 	var _arg0 *C.GstElement              // out
@@ -1068,20 +1070,20 @@ func (element *Element) ForEachPad(fn ElementForEachPadFunc) bool {
 }
 
 // ForEachSinkPad: call func with user_data for each of element's sink pads.
-// func will be called exactly once for each sink pad that exists at the time of
-// this call, unless one of the calls to func returns FALSE in which case we
+// func will be called exactly once for each sink pad that exists at the time
+// of this call, unless one of the calls to func returns FALSE in which case we
 // will stop iterating pads and return early. If new sink pads are added or sink
 // pads are removed while the sink pads are being iterated, this will not be
 // taken into account until next time this function is used.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each sink pad.
+//   - fn: function to call for each sink pad.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if element had no sink pads or if one of the calls to func
-//      returned FALSE.
+//   - ok: FALSE if element had no sink pads or if one of the calls to func
+//     returned FALSE.
 //
 func (element *Element) ForEachSinkPad(fn ElementForEachPadFunc) bool {
 	var _arg0 *C.GstElement              // out
@@ -1108,20 +1110,20 @@ func (element *Element) ForEachSinkPad(fn ElementForEachPadFunc) bool {
 }
 
 // ForEachSrcPad: call func with user_data for each of element's source pads.
-// func will be called exactly once for each source pad that exists at the time
-// of this call, unless one of the calls to func returns FALSE in which case we
-// will stop iterating pads and return early. If new source pads are added or
-// source pads are removed while the source pads are being iterated, this will
-// not be taken into account until next time this function is used.
+// func will be called exactly once for each source pad that exists at the
+// time of this call, unless one of the calls to func returns FALSE in which
+// case we will stop iterating pads and return early. If new source pads are
+// added or source pads are removed while the source pads are being iterated,
+// this will not be taken into account until next time this function is used.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each source pad.
+//   - fn: function to call for each source pad.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if element had no source pads or if one of the calls to func
-//      returned FALSE.
+//   - ok: FALSE if element had no source pads or if one of the calls to func
+//     returned FALSE.
 //
 func (element *Element) ForEachSrcPad(fn ElementForEachPadFunc) bool {
 	var _arg0 *C.GstElement              // out
@@ -1153,9 +1155,9 @@ func (element *Element) ForEachSrcPad(fn ElementForEachPadFunc) bool {
 //
 // The function returns the following values:
 //
-//    - clockTime: base time of the element.
+//   - clockTime: base time of the element.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) BaseTime() ClockTime {
 	var _arg0 *C.GstElement  // out
@@ -1168,9 +1170,7 @@ func (element *Element) BaseTime() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1180,9 +1180,9 @@ func (element *Element) BaseTime() ClockTime {
 //
 // The function returns the following values:
 //
-//    - bus (optional) element's Bus. unref after usage.
+//   - bus (optional) element's Bus. unref after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) Bus() *Bus {
 	var _arg0 *C.GstElement // out
@@ -1210,9 +1210,9 @@ func (element *Element) Bus() *Bus {
 //
 // The function returns the following values:
 //
-//    - clock (optional) of the element. unref after usage.
+//   - clock (optional) of the element. unref after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) Clock() Clocker {
 	var _arg0 *C.GstElement // out
@@ -1245,9 +1245,9 @@ func (element *Element) Clock() Clocker {
 	return _clock
 }
 
-// CompatiblePad looks for an unlinked pad to which the given pad can link. It
-// is not guaranteed that linking the pads will work, though it should work in
-// most cases.
+// CompatiblePad looks for an unlinked pad to which the given pad can link.
+// It is not guaranteed that linking the pads will work, though it should work
+// in most cases.
 //
 // This function will first attempt to find a compatible unlinked ALWAYS pad,
 // and if none can be found, it will request a compatible REQUEST pad by looking
@@ -1255,13 +1255,13 @@ func (element *Element) Clock() Clocker {
 //
 // The function takes the following parameters:
 //
-//    - pad to find a compatible one for.
-//    - caps (optional) to use as a filter.
+//   - pad to find a compatible one for.
+//   - caps (optional) to use as a filter.
 //
 // The function returns the following values:
 //
-//    - ret (optional) to which a link can be made, or NULL if one cannot be
-//      found. gst_object_unref() after usage.
+//   - ret (optional) to which a link can be made, or NULL if one cannot be
+//     found. gst_object_unref() after usage.
 //
 func (element *Element) CompatiblePad(pad *Pad, caps *Caps) *Pad {
 	var _arg0 *C.GstElement // out
@@ -1295,12 +1295,12 @@ func (element *Element) CompatiblePad(pad *Pad, caps *Caps) *Pad {
 //
 // The function takes the following parameters:
 //
-//    - compattempl to find a compatible template for.
+//   - compattempl to find a compatible template for.
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional): compatible PadTemplate, or NULL if none was
-//      found. No unreferencing is necessary.
+//   - padTemplate (optional): compatible PadTemplate, or NULL if none was
+//     found. No unreferencing is necessary.
 //
 func (element *Element) CompatiblePadTemplate(compattempl *PadTemplate) *PadTemplate {
 	var _arg0 *C.GstElement     // out
@@ -1329,11 +1329,11 @@ func (element *Element) CompatiblePadTemplate(compattempl *PadTemplate) *PadTemp
 //
 // The function takes the following parameters:
 //
-//    - contextType: name of a context to retrieve.
+//   - contextType: name of a context to retrieve.
 //
 // The function returns the following values:
 //
-//    - context (optional) or NULL.
+//   - context (optional) or NULL.
 //
 func (element *Element) Context(contextType string) *Context {
 	var _arg0 *C.GstElement // out
@@ -1368,11 +1368,11 @@ func (element *Element) Context(contextType string) *Context {
 //
 // The function takes the following parameters:
 //
-//    - contextType: name of a context to retrieve.
+//   - contextType: name of a context to retrieve.
 //
 // The function returns the following values:
 //
-//    - context (optional) or NULL.
+//   - context (optional) or NULL.
 //
 func (element *Element) ContextUnlocked(contextType string) *Context {
 	var _arg0 *C.GstElement // out
@@ -1408,7 +1408,7 @@ func (element *Element) ContextUnlocked(contextType string) *Context {
 //
 // The function returns the following values:
 //
-//    - list: list of Context.
+//   - list: list of Context.
 //
 func (element *Element) Contexts() []*Context {
 	var _arg0 *C.GstElement // out
@@ -1438,13 +1438,13 @@ func (element *Element) Contexts() []*Context {
 	return _list
 }
 
-// CurrentClockTime returns the current clock time of the element, as in, the
-// time of the element's clock, or GST_CLOCK_TIME_NONE if there is no clock.
+// CurrentClockTime returns the current clock time of the element, as in,
+// the time of the element's clock, or GST_CLOCK_TIME_NONE if there is no clock.
 //
 // The function returns the following values:
 //
-//    - clockTime: clock time of the element, or GST_CLOCK_TIME_NONE if there is
-//      no clock.
+//   - clockTime: clock time of the element, or GST_CLOCK_TIME_NONE if there is
+//     no clock.
 //
 func (element *Element) CurrentClockTime() ClockTime {
 	var _arg0 *C.GstElement  // out
@@ -1457,22 +1457,20 @@ func (element *Element) CurrentClockTime() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
 
-// CurrentRunningTime returns the running time of the element. The running time
-// is the element's clock time minus its base time. Will return
+// CurrentRunningTime returns the running time of the element. The running
+// time is the element's clock time minus its base time. Will return
 // GST_CLOCK_TIME_NONE if the element has no clock, or if its base time has not
 // been set.
 //
 // The function returns the following values:
 //
-//    - clockTime: running time of the element, or GST_CLOCK_TIME_NONE if the
-//      element has no clock or its base time has not been set.
+//   - clockTime: running time of the element, or GST_CLOCK_TIME_NONE if the
+//     element has no clock or its base time has not been set.
 //
 func (element *Element) CurrentRunningTime() ClockTime {
 	var _arg0 *C.GstElement  // out
@@ -1485,9 +1483,7 @@ func (element *Element) CurrentRunningTime() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1496,9 +1492,9 @@ func (element *Element) CurrentRunningTime() ClockTime {
 //
 // The function returns the following values:
 //
-//    - elementFactory (optional) used for creating this element or NULL if
-//      element has not been registered (static element). no refcounting is
-//      needed.
+//   - elementFactory (optional) used for creating this element or NULL if
+//     element has not been registered (static element). no refcounting is
+//     needed.
 //
 func (element *Element) Factory() *ElementFactory {
 	var _arg0 *C.GstElement        // out
@@ -1522,11 +1518,11 @@ func (element *Element) Factory() *ElementFactory {
 //
 // The function takes the following parameters:
 //
-//    - key to get.
+//   - key to get.
 //
 // The function returns the following values:
 //
-//    - utf8: metadata for key.
+//   - utf8: metadata for key.
 //
 func (element *Element) Metadata(key string) string {
 	var _arg0 *C.GstElement // out
@@ -1552,12 +1548,12 @@ func (element *Element) Metadata(key string) string {
 //
 // The function takes the following parameters:
 //
-//    - name of the PadTemplate to get.
+//   - name of the PadTemplate to get.
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional) with the given name, or NULL if none was found. No
-//      unreferencing is necessary.
+//   - padTemplate (optional) with the given name, or NULL if none was found.
+//     No unreferencing is necessary.
 //
 func (element *Element) PadTemplate(name string) *PadTemplate {
 	var _arg0 *C.GstElement     // out
@@ -1586,7 +1582,7 @@ func (element *Element) PadTemplate(name string) *PadTemplate {
 //
 // The function returns the following values:
 //
-//    - list of pad templates.
+//   - list of pad templates.
 //
 func (element *Element) PadTemplateList() []*PadTemplate {
 	var _arg0 *C.GstElement // out
@@ -1619,12 +1615,12 @@ func (element *Element) PadTemplateList() []*PadTemplate {
 //
 // The function takes the following parameters:
 //
-//    - name of the request Pad to retrieve.
+//   - name of the request Pad to retrieve.
 //
 // The function returns the following values:
 //
-//    - pad (optional): requested Pad if found, otherwise NULL. Release after
-//      usage.
+//   - pad (optional): requested Pad if found, otherwise NULL. Release after
+//     usage.
 //
 func (element *Element) GetRequestPad(name string) *Pad {
 	var _arg0 *C.GstElement // out
@@ -1657,7 +1653,7 @@ func (element *Element) GetRequestPad(name string) *Pad {
 //
 // The function returns the following values:
 //
-//    - clockTime: start time of the element.
+//   - clockTime: start time of the element.
 //
 func (element *Element) StartTime() ClockTime {
 	var _arg0 *C.GstElement  // out
@@ -1670,9 +1666,7 @@ func (element *Element) StartTime() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1691,28 +1685,30 @@ func (element *Element) StartTime() ClockTime {
 // This function returns GST_STATE_CHANGE_NO_PREROLL if the element successfully
 // changed its state but is not able to provide data yet. This mostly happens
 // for live sources that only produce data in GST_STATE_PLAYING. While the state
-// change return is equivalent to GST_STATE_CHANGE_SUCCESS, it is returned to
-// the application to signal that some sink elements might not be able to
+// change return is equivalent to GST_STATE_CHANGE_SUCCESS, it is returned
+// to the application to signal that some sink elements might not be able to
 // complete their state change because an element is not producing data to
 // complete the preroll. When setting the element to playing, the preroll will
 // complete and playback will start.
 //
 // The function takes the following parameters:
 //
-//    - timeout to specify the timeout for an async state change or
-//      GST_CLOCK_TIME_NONE for infinite timeout.
+//   - timeout to specify the timeout for an async state change or
+//     GST_CLOCK_TIME_NONE for infinite timeout.
 //
 // The function returns the following values:
 //
-//    - state (optional): pointer to State to hold the state. Can be NULL.
-//    - pending (optional): pointer to State to hold the pending state. Can be
-//      NULL.
-//    - stateChangeReturn: GST_STATE_CHANGE_SUCCESS if the element has no more
-//      pending state and the last state change succeeded, GST_STATE_CHANGE_ASYNC
-//      if the element is still performing a state change or
-//      GST_STATE_CHANGE_FAILURE if the last state change failed.
+//   - state (optional): pointer to State to hold the state. Can be NULL.
 //
-//      MT safe.
+//   - pending (optional): pointer to State to hold the pending state. Can be
+//     NULL.
+//
+//   - stateChangeReturn: GST_STATE_CHANGE_SUCCESS if the element
+//     has no more pending state and the last state change succeeded,
+//     GST_STATE_CHANGE_ASYNC if the element is still performing a state change
+//     or GST_STATE_CHANGE_FAILURE if the last state change failed.
+//
+//     MT safe.
 //
 func (element *Element) State(timeout ClockTime) (state, pending State, stateChangeReturn StateChangeReturn) {
 	var _arg0 *C.GstElement          // out
@@ -1722,9 +1718,7 @@ func (element *Element) State(timeout ClockTime) (state, pending State, stateCha
 	var _cret C.GstStateChangeReturn // in
 
 	_arg0 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(element).Native()))
-	_arg3 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg3 = C.GstClockTime(timeout)
 
 	_cret = C.gst_element_get_state(_arg0, &_arg1, &_arg2, _arg3)
 	runtime.KeepAlive(element)
@@ -1746,14 +1740,14 @@ func (element *Element) State(timeout ClockTime) (state, pending State, stateCha
 //
 // The function takes the following parameters:
 //
-//    - name of the static Pad to retrieve.
+//   - name of the static Pad to retrieve.
 //
 // The function returns the following values:
 //
-//    - pad (optional): requested Pad if found, otherwise NULL. unref after
-//      usage.
+//   - pad (optional): requested Pad if found, otherwise NULL. unref after
+//     usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) StaticPad(name string) *Pad {
 	var _arg0 *C.GstElement // out
@@ -1777,16 +1771,16 @@ func (element *Element) StaticPad(name string) *Pad {
 	return _pad
 }
 
-// IsLockedState checks if the state of an element is locked. If the state of an
-// element is locked, state changes of the parent don't affect the element. This
-// way you can leave currently unused elements inside bins. Just lock their
+// IsLockedState checks if the state of an element is locked. If the state of
+// an element is locked, state changes of the parent don't affect the element.
+// This way you can leave currently unused elements inside bins. Just lock their
 // state before changing the state from T_STATE_NULL.
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the element's state is locked.
+//   - ok: TRUE, if the element's state is locked.
 //
 func (element *Element) IsLockedState() bool {
 	var _arg0 *C.GstElement // out
@@ -1806,8 +1800,8 @@ func (element *Element) IsLockedState() bool {
 	return _ok
 }
 
-// IteratePads retrieves an iterator of element's pads. The iterator should be
-// freed after usage. Also more specialized iterators exists such as
+// IteratePads retrieves an iterator of element's pads. The iterator should
+// be freed after usage. Also more specialized iterators exists such as
 // gst_element_iterate_src_pads() or gst_element_iterate_sink_pads().
 //
 // The order of pads returned by the iterator will be the order in which the
@@ -1815,9 +1809,9 @@ func (element *Element) IsLockedState() bool {
 //
 // The function returns the following values:
 //
-//    - iterator of Pad.
+//   - iterator of Pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) IteratePads() *Iterator {
 	var _arg0 *C.GstElement  // out
@@ -1848,9 +1842,9 @@ func (element *Element) IteratePads() *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator of Pad.
+//   - iterator of Pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) IterateSinkPads() *Iterator {
 	var _arg0 *C.GstElement  // out
@@ -1881,9 +1875,9 @@ func (element *Element) IterateSinkPads() *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator of Pad.
+//   - iterator of Pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) IterateSrcPads() *Iterator {
 	var _arg0 *C.GstElement  // out
@@ -1907,22 +1901,22 @@ func (element *Element) IterateSrcPads() *Iterator {
 	return _iterator
 }
 
-// Link links src to dest. The link must be from source to destination; the
-// other direction will not be tried. The function looks for existing pads that
-// aren't linked yet. It will request new pads if necessary. Such pads need to
-// be released manually when unlinking. If multiple links are possible, only one
-// is established.
+// Link links src to dest. The link must be from source to destination;
+// the other direction will not be tried. The function looks for existing pads
+// that aren't linked yet. It will request new pads if necessary. Such pads
+// need to be released manually when unlinking. If multiple links are possible,
+// only one is established.
 //
 // Make sure you have added your elements to a bin or pipeline with
 // gst_bin_add() before trying to link them.
 //
 // The function takes the following parameters:
 //
-//    - dest containing the destination pad.
+//   - dest containing the destination pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the elements could be linked, FALSE otherwise.
+//   - ok: TRUE if the elements could be linked, FALSE otherwise.
 //
 func (src *Element) Link(dest Elementer) bool {
 	var _arg0 *C.GstElement // out
@@ -1947,8 +1941,8 @@ func (src *Element) Link(dest Elementer) bool {
 
 // LinkFiltered links src to dest using the given caps as filtercaps. The link
 // must be from source to destination; the other direction will not be tried.
-// The function looks for existing pads that aren't linked yet. It will request
-// new pads if necessary. If multiple links are possible, only one is
+// The function looks for existing pads that aren't linked yet. It will
+// request new pads if necessary. If multiple links are possible, only one is
 // established.
 //
 // Make sure you have added your elements to a bin or pipeline with
@@ -1956,12 +1950,12 @@ func (src *Element) Link(dest Elementer) bool {
 //
 // The function takes the following parameters:
 //
-//    - dest containing the destination pad.
-//    - filter (optional) to filter the link, or NULL for no filter.
+//   - dest containing the destination pad.
+//   - filter (optional) to filter the link, or NULL for no filter.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pads could be linked, FALSE otherwise.
+//   - ok: TRUE if the pads could be linked, FALSE otherwise.
 //
 func (src *Element) LinkFiltered(dest Elementer, filter *Caps) bool {
 	var _arg0 *C.GstElement // out
@@ -1996,15 +1990,15 @@ func (src *Element) LinkFiltered(dest Elementer, filter *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - srcpadname (optional): name of the Pad in source element or NULL for any
-//      pad.
-//    - dest containing the destination pad.
-//    - destpadname (optional): name of the Pad in destination element, or NULL
-//      for any pad.
+//   - srcpadname (optional): name of the Pad in source element or NULL for any
+//     pad.
+//   - dest containing the destination pad.
+//   - destpadname (optional): name of the Pad in destination element, or NULL
+//     for any pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pads could be linked, FALSE otherwise.
+//   - ok: TRUE if the pads could be linked, FALSE otherwise.
 //
 func (src *Element) LinkPads(srcpadname string, dest Elementer, destpadname string) bool {
 	var _arg0 *C.GstElement // out
@@ -2040,23 +2034,23 @@ func (src *Element) LinkPads(srcpadname string, dest Elementer, destpadname stri
 }
 
 // LinkPadsFiltered links the two named pads of the source and destination
-// elements. Side effect is that if one of the pads has no parent, it becomes a
-// child of the parent of the other element. If they have different parents, the
-// link fails. If caps is not NULL, makes sure that the caps of the link is a
-// subset of caps.
+// elements. Side effect is that if one of the pads has no parent, it becomes
+// a child of the parent of the other element. If they have different parents,
+// the link fails. If caps is not NULL, makes sure that the caps of the link is
+// a subset of caps.
 //
 // The function takes the following parameters:
 //
-//    - srcpadname (optional): name of the Pad in source element or NULL for any
-//      pad.
-//    - dest containing the destination pad.
-//    - destpadname (optional): name of the Pad in destination element or NULL
-//      for any pad.
-//    - filter (optional) to filter the link, or NULL for no filter.
+//   - srcpadname (optional): name of the Pad in source element or NULL for any
+//     pad.
+//   - dest containing the destination pad.
+//   - destpadname (optional): name of the Pad in destination element or NULL
+//     for any pad.
+//   - filter (optional) to filter the link, or NULL for no filter.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pads could be linked, FALSE otherwise.
+//   - ok: TRUE if the pads could be linked, FALSE otherwise.
 //
 func (src *Element) LinkPadsFiltered(srcpadname string, dest Elementer, destpadname string, filter *Caps) bool {
 	var _arg0 *C.GstElement // out
@@ -2109,16 +2103,16 @@ func (src *Element) LinkPadsFiltered(srcpadname string, dest Elementer, destpadn
 //
 // The function takes the following parameters:
 //
-//    - srcpadname (optional): name of the Pad in source element or NULL for any
-//      pad.
-//    - dest containing the destination pad.
-//    - destpadname (optional): name of the Pad in destination element, or NULL
-//      for any pad.
-//    - flags to be performed when linking pads.
+//   - srcpadname (optional): name of the Pad in source element or NULL for any
+//     pad.
+//   - dest containing the destination pad.
+//   - destpadname (optional): name of the Pad in destination element, or NULL
+//     for any pad.
+//   - flags to be performed when linking pads.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pads could be linked, FALSE otherwise.
+//   - ok: TRUE if the pads could be linked, FALSE otherwise.
 //
 func (src *Element) LinkPadsFull(srcpadname string, dest Elementer, destpadname string, flags PadLinkCheck) bool {
 	var _arg0 *C.GstElement     // out
@@ -2156,12 +2150,12 @@ func (src *Element) LinkPadsFull(srcpadname string, dest Elementer, destpadname 
 	return _ok
 }
 
-// LostState brings the element to the lost state. The current state of the
-// element is copied to the pending state so that any call to
+// LostState brings the element to the lost state. The current state
+// of the element is copied to the pending state so that any call to
 // gst_element_get_state() will return GST_STATE_CHANGE_ASYNC.
 //
-// An ASYNC_START message is posted. If the element was PLAYING, it will go to
-// PAUSED. The element will be restored to its PLAYING state by the parent
+// An ASYNC_START message is posted. If the element was PLAYING, it will go
+// to PAUSED. The element will be restored to its PLAYING state by the parent
 // pipeline when it prerolls again.
 //
 // This is mostly used for elements that lost their preroll buffer in the
@@ -2190,16 +2184,16 @@ func (element *Element) LostState() {
 //
 // The function takes the following parameters:
 //
-//    - typ: MessageType.
-//    - domain: GStreamer GError domain this message belongs to.
-//    - code: GError code belonging to the domain.
-//    - text (optional): allocated text string to be used as a replacement for
-//      the default message connected to code, or NULL.
-//    - debug (optional): allocated debug message to be used as a replacement for
-//      the default debugging information, or NULL.
-//    - file: source code file where the error was generated.
-//    - function: source code function where the error was generated.
-//    - line: source code line where the error was generated.
+//   - typ: MessageType.
+//   - domain: GStreamer GError domain this message belongs to.
+//   - code: GError code belonging to the domain.
+//   - text (optional): allocated text string to be used as a replacement for
+//     the default message connected to code, or NULL.
+//   - debug (optional): allocated debug message to be used as a replacement for
+//     the default debugging information, or NULL.
+//   - file: source code file where the error was generated.
+//   - function: source code function where the error was generated.
+//   - line: source code line where the error was generated.
 //
 func (element *Element) MessageFull(typ MessageType, domain glib.Quark, code int, text, debug, file, function string, line int) {
 	var _arg0 *C.GstElement    // out
@@ -2214,9 +2208,7 @@ func (element *Element) MessageFull(typ MessageType, domain glib.Quark, code int
 
 	_arg0 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(element).Native()))
 	_arg1 = C.GstMessageType(typ)
-	_arg2 = C.guint32(domain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg2 = C.GQuark(domain)
 	_arg3 = C.gint(code)
 	if text != "" {
 		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
@@ -2249,17 +2241,17 @@ func (element *Element) MessageFull(typ MessageType, domain glib.Quark, code int
 //
 // The function takes the following parameters:
 //
-//    - typ: MessageType.
-//    - domain: GStreamer GError domain this message belongs to.
-//    - code: GError code belonging to the domain.
-//    - text (optional): allocated text string to be used as a replacement for
-//      the default message connected to code, or NULL.
-//    - debug (optional): allocated debug message to be used as a replacement for
-//      the default debugging information, or NULL.
-//    - file: source code file where the error was generated.
-//    - function: source code function where the error was generated.
-//    - line: source code line where the error was generated.
-//    - structure: optional details structure.
+//   - typ: MessageType.
+//   - domain: GStreamer GError domain this message belongs to.
+//   - code: GError code belonging to the domain.
+//   - text (optional): allocated text string to be used as a replacement for
+//     the default message connected to code, or NULL.
+//   - debug (optional): allocated debug message to be used as a replacement for
+//     the default debugging information, or NULL.
+//   - file: source code file where the error was generated.
+//   - function: source code function where the error was generated.
+//   - line: source code line where the error was generated.
+//   - structure: optional details structure.
 //
 func (element *Element) MessageFullWithDetails(typ MessageType, domain glib.Quark, code int, text, debug, file, function string, line int, structure *Structure) {
 	var _arg0 *C.GstElement    // out
@@ -2275,9 +2267,7 @@ func (element *Element) MessageFullWithDetails(typ MessageType, domain glib.Quar
 
 	_arg0 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(element).Native()))
 	_arg1 = C.GstMessageType(typ)
-	_arg2 = C.guint32(domain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg2 = C.GQuark(domain)
 	_arg3 = C.gint(code)
 	if text != "" {
 		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
@@ -2306,9 +2296,9 @@ func (element *Element) MessageFullWithDetails(typ MessageType, domain glib.Quar
 	runtime.KeepAlive(structure)
 }
 
-// NoMorePads: use this function to signal that the element does not expect any
-// more pads to show up in the current pipeline. This function should be called
-// whenever pads have been added by the element itself. Elements with
+// NoMorePads: use this function to signal that the element does not expect
+// any more pads to show up in the current pipeline. This function should be
+// called whenever pads have been added by the element itself. Elements with
 // T_PAD_SOMETIMES pad templates use this in combination with autopluggers to
 // figure out that the element is done initializing its pads.
 //
@@ -2330,14 +2320,14 @@ func (element *Element) NoMorePads() {
 //
 // The function takes the following parameters:
 //
-//    - message to post.
+//   - message to post.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the message was successfully posted. The function returns
-//      FALSE if the element did not have a bus.
+//   - ok: TRUE if the message was successfully posted. The function returns
+//     FALSE if the element did not have a bus.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) PostMessage(message *Message) bool {
 	var _arg0 *C.GstElement // out
@@ -2367,10 +2357,10 @@ func (element *Element) PostMessage(message *Message) bool {
 //
 // The function returns the following values:
 //
-//    - clock (optional): gstClock provided by the element or NULL if no clock
-//      could be provided. Unref after usage.
+//   - clock (optional): gstClock provided by the element or NULL if no clock
+//     could be provided. Unref after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) ProvideClock() Clocker {
 	var _arg0 *C.GstElement // out
@@ -2413,13 +2403,13 @@ func (element *Element) ProvideClock() Clocker {
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
+//   - query: Query.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query could be performed.
+//   - ok: TRUE if the query could be performed.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) Query(query *Query) bool {
 	var _arg0 *C.GstElement // out
@@ -2447,14 +2437,14 @@ func (element *Element) Query(query *Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - srcFormat to convert from.
-//    - srcVal: value to convert.
-//    - destFormat to convert to.
+//   - srcFormat to convert from.
+//   - srcVal: value to convert.
+//   - destFormat to convert to.
 //
 // The function returns the following values:
 //
-//    - destVal: pointer to the result.
-//    - ok: TRUE if the query could be performed.
+//   - destVal: pointer to the result.
+//   - ok: TRUE if the query could be performed.
 //
 func (element *Element) QueryConvert(srcFormat Format, srcVal int64, destFormat Format) (int64, bool) {
 	var _arg0 *C.GstElement // out
@@ -2498,13 +2488,13 @@ func (element *Element) QueryConvert(srcFormat Format, srcVal int64, destFormat 
 //
 // The function takes the following parameters:
 //
-//    - format: Format requested.
+//   - format: Format requested.
 //
 // The function returns the following values:
 //
-//    - duration (optional): location in which to store the total duration, or
-//      NULL.
-//    - ok: TRUE if the query could be performed.
+//   - duration (optional): location in which to store the total duration,
+//     or NULL.
+//   - ok: TRUE if the query could be performed.
 //
 func (element *Element) QueryDuration(format Format) (int64, bool) {
 	var _arg0 *C.GstElement // out
@@ -2542,12 +2532,12 @@ func (element *Element) QueryDuration(format Format) (int64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - format: Format requested.
+//   - format: Format requested.
 //
 // The function returns the following values:
 //
-//    - cur (optional): location in which to store the current position, or NULL.
-//    - ok: TRUE if the query could be performed.
+//   - cur (optional): location in which to store the current position, or NULL.
+//   - ok: TRUE if the query could be performed.
 //
 func (element *Element) QueryPosition(format Format) (int64, bool) {
 	var _arg0 *C.GstElement // out
@@ -2584,7 +2574,7 @@ func (element *Element) QueryPosition(format Format) (int64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - pad to release.
+//   - pad to release.
 //
 func (element *Element) ReleaseRequestPad(pad *Pad) {
 	var _arg0 *C.GstElement // out
@@ -2601,14 +2591,14 @@ func (element *Element) ReleaseRequestPad(pad *Pad) {
 // RemovePad removes pad from element. pad will be destroyed if it has not been
 // referenced elsewhere using gst_object_unparent().
 //
-// This function is used by plugin developers and should not be used by
-// applications. Pads that were dynamically requested from elements with
-// gst_element_request_pad() should be released with the
+// This function is used by plugin developers and should not be
+// used by applications. Pads that were dynamically requested from
+// elements with gst_element_request_pad() should be released with the
 // gst_element_release_request_pad() function instead.
 //
-// Pads are not automatically deactivated so elements should perform the needed
-// steps to deactivate the pad in case this pad is removed in the PAUSED or
-// PLAYING state. See gst_pad_set_active() for more information about
+// Pads are not automatically deactivated so elements should perform the
+// needed steps to deactivate the pad in case this pad is removed in the
+// PAUSED or PLAYING state. See gst_pad_set_active() for more information about
 // deactivating pads.
 //
 // The pad and the element should be unlocked when calling this function.
@@ -2617,14 +2607,14 @@ func (element *Element) ReleaseRequestPad(pad *Pad) {
 //
 // The function takes the following parameters:
 //
-//    - pad to remove from the element.
+//   - pad to remove from the element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad could be removed. Can return FALSE if the pad does
-//      not belong to the provided element.
+//   - ok: TRUE if the pad could be removed. Can return FALSE if the pad does
+//     not belong to the provided element.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) RemovePad(pad *Pad) bool {
 	var _arg0 *C.GstElement // out
@@ -2649,7 +2639,7 @@ func (element *Element) RemovePad(pad *Pad) bool {
 
 // The function takes the following parameters:
 //
-//    - watchId: watch id to remove.
+//   - watchId: watch id to remove.
 //
 func (element *Element) RemovePropertyNotifyWatch(watchId uint32) {
 	var _arg0 *C.GstElement // out
@@ -2663,22 +2653,22 @@ func (element *Element) RemovePropertyNotifyWatch(watchId uint32) {
 	runtime.KeepAlive(watchId)
 }
 
-// RequestPad retrieves a request pad from the element according to the provided
-// template. Pad templates can be looked up using
+// RequestPad retrieves a request pad from the element according
+// to the provided template. Pad templates can be looked up using
 // gst_element_factory_get_static_pad_templates().
 //
 // The pad should be released with gst_element_release_request_pad().
 //
 // The function takes the following parameters:
 //
-//    - templ of which we want a pad of.
-//    - name (optional) of the request Pad to retrieve. Can be NULL.
-//    - caps (optional) of the pad we want to request. Can be NULL.
+//   - templ of which we want a pad of.
+//   - name (optional) of the request Pad to retrieve. Can be NULL.
+//   - caps (optional) of the pad we want to request. Can be NULL.
 //
 // The function returns the following values:
 //
-//    - pad (optional): requested Pad if found, otherwise NULL. Release after
-//      usage.
+//   - pad (optional): requested Pad if found, otherwise NULL. Release after
+//     usage.
 //
 func (element *Element) RequestPad(templ *PadTemplate, name string, caps *Caps) *Pad {
 	var _arg0 *C.GstElement     // out
@@ -2717,8 +2707,8 @@ func (element *Element) RequestPad(templ *PadTemplate, name string, caps *Caps) 
 // gst_element_release_request_pad().
 //
 // This method is slower than manually getting the pad template and calling
-// gst_element_request_pad() if the pads should have a specific name (e.g. name
-// is "src_1" instead of "src_\u").
+// gst_element_request_pad() if the pads should have a specific name (e.g.
+// name is "src_1" instead of "src_\u").
 //
 // Note that this function was introduced in GStreamer 1.20 in order to provide
 // a better name to gst_element_get_request_pad(). Prior to 1.20, users should
@@ -2726,12 +2716,12 @@ func (element *Element) RequestPad(templ *PadTemplate, name string, caps *Caps) 
 //
 // The function takes the following parameters:
 //
-//    - name of the request Pad to retrieve.
+//   - name of the request Pad to retrieve.
 //
 // The function returns the following values:
 //
-//    - pad (optional): requested Pad if found, otherwise NULL. Release after
-//      usage.
+//   - pad (optional): requested Pad if found, otherwise NULL. Release after
+//     usage.
 //
 func (element *Element) RequestPadSimple(name string) *Pad {
 	var _arg0 *C.GstElement // out
@@ -2763,18 +2753,18 @@ func (element *Element) RequestPadSimple(name string) *Pad {
 //
 // The function takes the following parameters:
 //
-//    - rate: new playback rate.
-//    - format of the seek values.
-//    - flags: optional seek flags.
-//    - startType: type and flags for the new start position.
-//    - start: value of the new start position.
-//    - stopType: type and flags for the new stop position.
-//    - stop: value of the new stop position.
+//   - rate: new playback rate.
+//   - format of the seek values.
+//   - flags: optional seek flags.
+//   - startType: type and flags for the new start position.
+//   - start: value of the new start position.
+//   - stopType: type and flags for the new stop position.
+//   - stop: value of the new stop position.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was handled. Flushing seeks will trigger a preroll,
-//      which will emit GST_MESSAGE_ASYNC_DONE.
+//   - ok: TRUE if the event was handled. Flushing seeks will trigger a preroll,
+//     which will emit GST_MESSAGE_ASYNC_DONE.
 //
 func (element *Element) Seek(rate float64, format Format, flags SeekFlags, startType SeekType, start int64, stopType SeekType, stop int64) bool {
 	var _arg0 *C.GstElement  // out
@@ -2815,11 +2805,11 @@ func (element *Element) Seek(rate float64, format Format, flags SeekFlags, start
 	return _ok
 }
 
-// SeekSimple: simple API to perform a seek on the given element, meaning it
-// just seeks to the given position relative to the start of the stream. For
-// more complex operations like segment seeks (e.g. for looping) or changing the
-// playback rate or seeking relative to the last configured playback segment you
-// should use gst_element_seek().
+// SeekSimple: simple API to perform a seek on the given element, meaning
+// it just seeks to the given position relative to the start of the stream.
+// For more complex operations like segment seeks (e.g. for looping) or changing
+// the playback rate or seeking relative to the last configured playback segment
+// you should use gst_element_seek().
 //
 // In a completely prerolled PAUSED or PLAYING pipeline, seeking is always
 // guaranteed to return TRUE on a seekable media type or FALSE when the media
@@ -2832,18 +2822,18 @@ func (element *Element) Seek(rate float64, format Format, flags SeekFlags, start
 //
 // The function takes the following parameters:
 //
-//    - format to execute the seek in, such as T_FORMAT_TIME.
-//    - seekFlags: seek options; playback applications will usually want to use
-//      GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT here.
-//    - seekPos: position to seek to (relative to the start); if you are doing a
-//      seek in T_FORMAT_TIME this value is in nanoseconds - multiply with
-//      T_SECOND to convert seconds to nanoseconds or with T_MSECOND to convert
-//      milliseconds to nanoseconds.
+//   - format to execute the seek in, such as T_FORMAT_TIME.
+//   - seekFlags: seek options; playback applications will usually want to use
+//     GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT here.
+//   - seekPos: position to seek to (relative to the start); if you are doing
+//     a seek in T_FORMAT_TIME this value is in nanoseconds - multiply with
+//     T_SECOND to convert seconds to nanoseconds or with T_MSECOND to convert
+//     milliseconds to nanoseconds.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the seek operation succeeded. Flushing seeks will trigger a
-//      preroll, which will emit GST_MESSAGE_ASYNC_DONE.
+//   - ok: TRUE if the seek operation succeeded. Flushing seeks will trigger a
+//     preroll, which will emit GST_MESSAGE_ASYNC_DONE.
 //
 func (element *Element) SeekSimple(format Format, seekFlags SeekFlags, seekPos int64) bool {
 	var _arg0 *C.GstElement  // out
@@ -2872,8 +2862,8 @@ func (element *Element) SeekSimple(format Format, seekFlags SeekFlags, seekPos i
 	return _ok
 }
 
-// SendEvent sends an event to an element. If the element doesn't implement an
-// event handler, the event will be pushed on a random linked sink pad for
+// SendEvent sends an event to an element. If the element doesn't implement
+// an event handler, the event will be pushed on a random linked sink pad for
 // downstream events or a random linked source pad for upstream events.
 //
 // This function takes ownership of the provided event so you should
@@ -2883,12 +2873,12 @@ func (element *Element) SeekSimple(format Format, seekFlags SeekFlags, seekPos i
 //
 // The function takes the following parameters:
 //
-//    - event to send to the element.
+//   - event to send to the element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was handled. Events that trigger a preroll (such as
-//      flushing seeks and steps) will emit GST_MESSAGE_ASYNC_DONE.
+//   - ok: TRUE if the event was handled. Events that trigger a preroll (such as
+//     flushing seeks and steps) will emit GST_MESSAGE_ASYNC_DONE.
 //
 func (element *Element) SendEvent(event *Event) bool {
 	var _arg0 *C.GstElement // out
@@ -2919,30 +2909,28 @@ func (element *Element) SendEvent(event *Event) bool {
 //
 // The function takes the following parameters:
 //
-//    - time: base time to set.
+//   - time: base time to set.
 //
 func (element *Element) SetBaseTime(time ClockTime) {
 	var _arg0 *C.GstElement  // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(element).Native()))
-	_arg1 = C.guint64(time)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	C.gst_element_set_base_time(_arg0, _arg1)
 	runtime.KeepAlive(element)
 	runtime.KeepAlive(time)
 }
 
-// SetBus sets the bus of the element. Increases the refcount on the bus. For
-// internal use only, unless you're testing elements.
+// SetBus sets the bus of the element. Increases the refcount on the bus.
+// For internal use only, unless you're testing elements.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - bus (optional) to set.
+//   - bus (optional) to set.
 //
 func (element *Element) SetBus(bus *Bus) {
 	var _arg0 *C.GstElement // out
@@ -2963,15 +2951,15 @@ func (element *Element) SetBus(bus *Bus) {
 //
 // The function takes the following parameters:
 //
-//    - clock (optional) to set for the element.
+//   - clock (optional) to set for the element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element accepted the clock. An element can refuse a clock
-//      when it, for example, is not able to slave its internal clock to the
-//      clock or when it requires a specific clock to operate.
+//   - ok: TRUE if the element accepted the clock. An element can refuse a clock
+//     when it, for example, is not able to slave its internal clock to the
+//     clock or when it requires a specific clock to operate.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) SetClock(clock Clocker) bool {
 	var _arg0 *C.GstElement // out
@@ -3003,7 +2991,7 @@ func (element *Element) SetClock(clock Clocker) bool {
 //
 // The function takes the following parameters:
 //
-//    - context to set.
+//   - context to set.
 //
 func (element *Element) SetContext(context *Context) {
 	var _arg0 *C.GstElement // out
@@ -3020,20 +3008,20 @@ func (element *Element) SetContext(context *Context) {
 // SetLockedState locks the state of an element, so state changes of the parent
 // don't affect this element anymore.
 //
-// Note that this is racy if the state lock of the parent bin is not taken. The
-// parent bin might've just checked the flag in another thread and as the next
-// step proceed to change the child element's state.
+// Note that this is racy if the state lock of the parent bin is not taken.
+// The parent bin might've just checked the flag in another thread and as the
+// next step proceed to change the child element's state.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - lockedState: TRUE to lock the element's state.
+//   - lockedState: TRUE to lock the element's state.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the state was changed, FALSE if bad parameters were given or
-//      the elements state-locking needed no change.
+//   - ok: TRUE if the state was changed, FALSE if bad parameters were given or
+//     the elements state-locking needed no change.
 //
 func (element *Element) SetLockedState(lockedState bool) bool {
 	var _arg0 *C.GstElement // out
@@ -3059,30 +3047,28 @@ func (element *Element) SetLockedState(lockedState bool) bool {
 }
 
 // SetStartTime: set the start time of an element. The start time of the element
-// is the running time of the element when it last went to the PAUSED state. In
-// READY or after a flushing seek, it is set to 0.
+// is the running time of the element when it last went to the PAUSED state.
+// In READY or after a flushing seek, it is set to 0.
 //
 // Toplevel elements like Pipeline will manage the start_time and base_time on
 // its children. Setting the start_time to T_CLOCK_TIME_NONE on such a toplevel
 // element will disable the distribution of the base_time to the children and
-// can be useful if the application manages the base_time itself, for example if
-// you want to synchronize capture from multiple pipelines, and you can also
+// can be useful if the application manages the base_time itself, for example
+// if you want to synchronize capture from multiple pipelines, and you can also
 // ensure that the pipelines have the same clock.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - time: base time to set.
+//   - time: base time to set.
 //
 func (element *Element) SetStartTime(time ClockTime) {
 	var _arg0 *C.GstElement  // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(element).Native()))
-	_arg1 = C.guint64(time)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	C.gst_element_set_start_time(_arg0, _arg1)
 	runtime.KeepAlive(element)
@@ -3095,8 +3081,8 @@ func (element *Element) SetStartTime(time ClockTime) {
 //
 // This function can return T_STATE_CHANGE_ASYNC, in which case the element will
 // perform the remainder of the state change asynchronously in another thread.
-// An application can use gst_element_get_state() to wait for the completion of
-// the state change or it can wait for a GST_MESSAGE_ASYNC_DONE or
+// An application can use gst_element_get_state() to wait for the completion
+// of the state change or it can wait for a GST_MESSAGE_ASYNC_DONE or
 // GST_MESSAGE_STATE_CHANGED on the bus.
 //
 // State changes to GST_STATE_READY or GST_STATE_NULL never return
@@ -3104,13 +3090,13 @@ func (element *Element) SetStartTime(time ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - state element's new State.
+//   - state element's new State.
 //
 // The function returns the following values:
 //
-//    - stateChangeReturn: result of the state change using StateChangeReturn.
+//   - stateChangeReturn: result of the state change using StateChangeReturn.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) SetState(state State) StateChangeReturn {
 	var _arg0 *C.GstElement          // out
@@ -3131,15 +3117,15 @@ func (element *Element) SetState(state State) StateChangeReturn {
 	return _stateChangeReturn
 }
 
-// SyncStateWithParent tries to change the state of the element to the same as
-// its parent. If this function returns FALSE, the state of element is
+// SyncStateWithParent tries to change the state of the element to the same
+// as its parent. If this function returns FALSE, the state of element is
 // undefined.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the element's state could be synced to the parent's state.
+//   - ok: TRUE, if the element's state could be synced to the parent's state.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) SyncStateWithParent() bool {
 	var _arg0 *C.GstElement // out
@@ -3167,7 +3153,7 @@ func (element *Element) SyncStateWithParent() bool {
 //
 // The function takes the following parameters:
 //
-//    - dest: sink Element to unlink.
+//   - dest: sink Element to unlink.
 //
 func (src *Element) Unlink(dest Elementer) {
 	var _arg0 *C.GstElement // out
@@ -3187,9 +3173,9 @@ func (src *Element) Unlink(dest Elementer) {
 //
 // The function takes the following parameters:
 //
-//    - srcpadname: name of the Pad in source element.
-//    - dest containing the destination pad.
-//    - destpadname: name of the Pad in destination element.
+//   - srcpadname: name of the Pad in source element.
+//   - dest containing the destination pad.
+//   - destpadname: name of the Pad in destination element.
 //
 func (src *Element) UnlinkPads(srcpadname string, dest Elementer, destpadname string) {
 	var _arg0 *C.GstElement // out
@@ -3218,11 +3204,11 @@ func (src *Element) UnlinkPads(srcpadname string, dest Elementer, destpadname st
 //
 // The function takes the following parameters:
 //
-//    - transition: requested transition.
+//   - transition: requested transition.
 //
 // The function returns the following values:
 //
-//    - stateChangeReturn of the state transition.
+//   - stateChangeReturn of the state transition.
 //
 func (element *Element) changeState(transition StateChange) StateChangeReturn {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3260,28 +3246,30 @@ func (element *Element) changeState(transition StateChange) StateChangeReturn {
 // This function returns GST_STATE_CHANGE_NO_PREROLL if the element successfully
 // changed its state but is not able to provide data yet. This mostly happens
 // for live sources that only produce data in GST_STATE_PLAYING. While the state
-// change return is equivalent to GST_STATE_CHANGE_SUCCESS, it is returned to
-// the application to signal that some sink elements might not be able to
+// change return is equivalent to GST_STATE_CHANGE_SUCCESS, it is returned
+// to the application to signal that some sink elements might not be able to
 // complete their state change because an element is not producing data to
 // complete the preroll. When setting the element to playing, the preroll will
 // complete and playback will start.
 //
 // The function takes the following parameters:
 //
-//    - timeout to specify the timeout for an async state change or
-//      GST_CLOCK_TIME_NONE for infinite timeout.
+//   - timeout to specify the timeout for an async state change or
+//     GST_CLOCK_TIME_NONE for infinite timeout.
 //
 // The function returns the following values:
 //
-//    - state (optional): pointer to State to hold the state. Can be NULL.
-//    - pending (optional): pointer to State to hold the pending state. Can be
-//      NULL.
-//    - stateChangeReturn: GST_STATE_CHANGE_SUCCESS if the element has no more
-//      pending state and the last state change succeeded, GST_STATE_CHANGE_ASYNC
-//      if the element is still performing a state change or
-//      GST_STATE_CHANGE_FAILURE if the last state change failed.
+//   - state (optional): pointer to State to hold the state. Can be NULL.
 //
-//      MT safe.
+//   - pending (optional): pointer to State to hold the pending state. Can be
+//     NULL.
+//
+//   - stateChangeReturn: GST_STATE_CHANGE_SUCCESS if the element
+//     has no more pending state and the last state change succeeded,
+//     GST_STATE_CHANGE_ASYNC if the element is still performing a state change
+//     or GST_STATE_CHANGE_FAILURE if the last state change failed.
+//
+//     MT safe.
 //
 func (element *Element) state(timeout ClockTime) (state, pending State, stateChangeReturn StateChangeReturn) {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3294,9 +3282,7 @@ func (element *Element) state(timeout ClockTime) (state, pending State, stateCha
 	var _cret C.GstStateChangeReturn // in
 
 	_arg0 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(element).Native()))
-	_arg3 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg3 = C.GstClockTime(timeout)
 
 	_cret = C._gotk4_gst1_Element_virtual_get_state(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, _arg3)
 	runtime.KeepAlive(element)
@@ -3313,9 +3299,9 @@ func (element *Element) state(timeout ClockTime) (state, pending State, stateCha
 	return _state, _pending, _stateChangeReturn
 }
 
-// noMorePads: use this function to signal that the element does not expect any
-// more pads to show up in the current pipeline. This function should be called
-// whenever pads have been added by the element itself. Elements with
+// noMorePads: use this function to signal that the element does not expect
+// any more pads to show up in the current pipeline. This function should be
+// called whenever pads have been added by the element itself. Elements with
 // T_PAD_SOMETIMES pad templates use this in combination with autopluggers to
 // figure out that the element is done initializing its pads.
 //
@@ -3374,14 +3360,14 @@ func (element *Element) padRemoved(pad *Pad) {
 //
 // The function takes the following parameters:
 //
-//    - message to post.
+//   - message to post.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the message was successfully posted. The function returns
-//      FALSE if the element did not have a bus.
+//   - ok: TRUE if the message was successfully posted. The function returns
+//     FALSE if the element did not have a bus.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) postMessage(message *Message) bool {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3414,10 +3400,10 @@ func (element *Element) postMessage(message *Message) bool {
 //
 // The function returns the following values:
 //
-//    - clock (optional): gstClock provided by the element or NULL if no clock
-//      could be provided. Unref after usage.
+//   - clock (optional): gstClock provided by the element or NULL if no clock
+//     could be provided. Unref after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) provideClock() Clocker {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3463,13 +3449,13 @@ func (element *Element) provideClock() Clocker {
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
+//   - query: Query.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query could be performed.
+//   - ok: TRUE if the query could be performed.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) query(query *Query) bool {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3512,22 +3498,22 @@ func (element *Element) releasePad(pad *Pad) {
 	runtime.KeepAlive(pad)
 }
 
-// requestNewPad retrieves a request pad from the element according to the
-// provided template. Pad templates can be looked up using
+// requestNewPad retrieves a request pad from the element according
+// to the provided template. Pad templates can be looked up using
 // gst_element_factory_get_static_pad_templates().
 //
 // The pad should be released with gst_element_release_request_pad().
 //
 // The function takes the following parameters:
 //
-//    - templ of which we want a pad of.
-//    - name (optional) of the request Pad to retrieve. Can be NULL.
-//    - caps (optional) of the pad we want to request. Can be NULL.
+//   - templ of which we want a pad of.
+//   - name (optional) of the request Pad to retrieve. Can be NULL.
+//   - caps (optional) of the pad we want to request. Can be NULL.
 //
 // The function returns the following values:
 //
-//    - pad (optional): requested Pad if found, otherwise NULL. Release after
-//      usage.
+//   - pad (optional): requested Pad if found, otherwise NULL. Release after
+//     usage.
 //
 func (element *Element) requestNewPad(templ *PadTemplate, name string, caps *Caps) *Pad {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3564,8 +3550,8 @@ func (element *Element) requestNewPad(templ *PadTemplate, name string, caps *Cap
 	return _pad
 }
 
-// sendEvent sends an event to an element. If the element doesn't implement an
-// event handler, the event will be pushed on a random linked sink pad for
+// sendEvent sends an event to an element. If the element doesn't implement
+// an event handler, the event will be pushed on a random linked sink pad for
 // downstream events or a random linked source pad for upstream events.
 //
 // This function takes ownership of the provided event so you should
@@ -3575,12 +3561,12 @@ func (element *Element) requestNewPad(templ *PadTemplate, name string, caps *Cap
 //
 // The function takes the following parameters:
 //
-//    - event to send to the element.
+//   - event to send to the element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was handled. Events that trigger a preroll (such as
-//      flushing seeks and steps) will emit GST_MESSAGE_ASYNC_DONE.
+//   - ok: TRUE if the event was handled. Events that trigger a preroll (such as
+//     flushing seeks and steps) will emit GST_MESSAGE_ASYNC_DONE.
 //
 func (element *Element) sendEvent(event *Event) bool {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3607,14 +3593,14 @@ func (element *Element) sendEvent(event *Event) bool {
 	return _ok
 }
 
-// setBus sets the bus of the element. Increases the refcount on the bus. For
-// internal use only, unless you're testing elements.
+// setBus sets the bus of the element. Increases the refcount on the bus.
+// For internal use only, unless you're testing elements.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - bus (optional) to set.
+//   - bus (optional) to set.
 //
 func (element *Element) setBus(bus *Bus) {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3638,15 +3624,15 @@ func (element *Element) setBus(bus *Bus) {
 //
 // The function takes the following parameters:
 //
-//    - clock (optional) to set for the element.
+//   - clock (optional) to set for the element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element accepted the clock. An element can refuse a clock
-//      when it, for example, is not able to slave its internal clock to the
-//      clock or when it requires a specific clock to operate.
+//   - ok: TRUE if the element accepted the clock. An element can refuse a clock
+//     when it, for example, is not able to slave its internal clock to the
+//     clock or when it requires a specific clock to operate.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) setClock(clock Clocker) bool {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3681,7 +3667,7 @@ func (element *Element) setClock(clock Clocker) bool {
 //
 // The function takes the following parameters:
 //
-//    - context to set.
+//   - context to set.
 //
 func (element *Element) setContext(context *Context) {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3704,8 +3690,8 @@ func (element *Element) setContext(context *Context) {
 //
 // This function can return T_STATE_CHANGE_ASYNC, in which case the element will
 // perform the remainder of the state change asynchronously in another thread.
-// An application can use gst_element_get_state() to wait for the completion of
-// the state change or it can wait for a GST_MESSAGE_ASYNC_DONE or
+// An application can use gst_element_get_state() to wait for the completion
+// of the state change or it can wait for a GST_MESSAGE_ASYNC_DONE or
 // GST_MESSAGE_STATE_CHANGED on the bus.
 //
 // State changes to GST_STATE_READY or GST_STATE_NULL never return
@@ -3713,13 +3699,13 @@ func (element *Element) setContext(context *Context) {
 //
 // The function takes the following parameters:
 //
-//    - state element's new State.
+//   - state element's new State.
 //
 // The function returns the following values:
 //
-//    - stateChangeReturn: result of the state change using StateChangeReturn.
+//   - stateChangeReturn: result of the state change using StateChangeReturn.
 //
-//      MT safe.
+//     MT safe.
 //
 func (element *Element) setState(state State) StateChangeReturn {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3745,9 +3731,9 @@ func (element *Element) setState(state State) StateChangeReturn {
 
 // The function takes the following parameters:
 //
-//    - oldstate
-//    - newstate
-//    - pending
+//   - oldstate
+//   - newstate
+//   - pending
 //
 func (element *Element) stateChanged(oldstate, newstate, pending State) {
 	gclass := (*C.GstElementClass)(coreglib.PeekParentClass(element))
@@ -3819,8 +3805,8 @@ func (e *ElementClass) PadTemplCookie() uint32 {
 //
 // The function takes the following parameters:
 //
-//    - key to set.
-//    - value to set.
+//   - key to set.
+//   - value to set.
 //
 func (klass *ElementClass) AddMetadata(key string, value string) {
 	var _arg0 *C.GstElementClass // out
@@ -3848,7 +3834,7 @@ func (klass *ElementClass) AddMetadata(key string, value string) {
 //
 // The function takes the following parameters:
 //
-//    - templ to add to the element class.
+//   - templ to add to the element class.
 //
 func (klass *ElementClass) AddPadTemplate(templ *PadTemplate) {
 	var _arg0 *C.GstElementClass // out
@@ -3871,8 +3857,8 @@ func (klass *ElementClass) AddPadTemplate(templ *PadTemplate) {
 //
 // The function takes the following parameters:
 //
-//    - key to set.
-//    - value to set.
+//   - key to set.
+//   - value to set.
 //
 func (klass *ElementClass) AddStaticMetadata(key string, value string) {
 	var _arg0 *C.GstElementClass // out
@@ -3898,7 +3884,7 @@ func (klass *ElementClass) AddStaticMetadata(key string, value string) {
 //
 // The function takes the following parameters:
 //
-//    - staticTempl to add as pad template to the element class.
+//   - staticTempl to add as pad template to the element class.
 //
 func (klass *ElementClass) AddStaticPadTemplate(staticTempl *StaticPadTemplate) {
 	var _arg0 *C.GstElementClass      // out
@@ -3919,8 +3905,8 @@ func (klass *ElementClass) AddStaticPadTemplate(staticTempl *StaticPadTemplate) 
 //
 // The function takes the following parameters:
 //
-//    - staticTempl to add as pad template to the element class.
-//    - padType of the pad to create.
+//   - staticTempl to add as pad template to the element class.
+//   - padType of the pad to create.
 //
 func (klass *ElementClass) AddStaticPadTemplateWithGType(staticTempl *StaticPadTemplate, padType coreglib.Type) {
 	var _arg0 *C.GstElementClass      // out
@@ -3941,11 +3927,11 @@ func (klass *ElementClass) AddStaticPadTemplateWithGType(staticTempl *StaticPadT
 //
 // The function takes the following parameters:
 //
-//    - key to get.
+//   - key to get.
 //
 // The function returns the following values:
 //
-//    - utf8: metadata for key.
+//   - utf8: metadata for key.
 //
 func (klass *ElementClass) Metadata(key string) string {
 	var _arg0 *C.GstElementClass // out
@@ -3967,18 +3953,19 @@ func (klass *ElementClass) Metadata(key string) string {
 	return _utf8
 }
 
-// PadTemplate retrieves a padtemplate from element_class with the given name. >
-// If you use this function in the InitFunc of an object class > that has
-// subclasses, make sure to pass the g_class parameter of the > InitFunc here.
+// PadTemplate retrieves a padtemplate from element_class with the given name.
+// > If you use this function in the GInstanceInitFunc of an object class
+// > that has subclasses, make sure to pass the g_class parameter of the >
+// GInstanceInitFunc here.
 //
 // The function takes the following parameters:
 //
-//    - name of the PadTemplate to get.
+//   - name of the PadTemplate to get.
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional) with the given name, or NULL if none was found. No
-//      unreferencing is necessary.
+//   - padTemplate (optional) with the given name, or NULL if none was found.
+//     No unreferencing is necessary.
 //
 func (elementClass *ElementClass) PadTemplate(name string) *PadTemplate {
 	var _arg0 *C.GstElementClass // out
@@ -4003,13 +3990,14 @@ func (elementClass *ElementClass) PadTemplate(name string) *PadTemplate {
 }
 
 // PadTemplateList retrieves a list of the pad templates associated with
-// element_class. The list must not be modified by the calling code. > If you
-// use this function in the InitFunc of an object class > that has subclasses,
-// make sure to pass the g_class parameter of the > InitFunc here.
+// element_class. The list must not be modified by the calling code.
+// > If you use this function in the GInstanceInitFunc of an object class
+// > that has subclasses, make sure to pass the g_class parameter of the >
+// GInstanceInitFunc here.
 //
 // The function returns the following values:
 //
-//    - list of pad templates.
+//   - list of pad templates.
 //
 func (elementClass *ElementClass) PadTemplateList() []*PadTemplate {
 	var _arg0 *C.GstElementClass // out
@@ -4038,14 +4026,14 @@ func (elementClass *ElementClass) PadTemplateList() []*PadTemplate {
 //
 // The function takes the following parameters:
 //
-//    - longname: long English name of the element. E.g. "File Sink".
-//    - classification: string describing the type of element, as an unordered
-//      list separated with slashes ('/'). See draft-klass.txt of the design docs
-//      for more details and common types. E.g: "Sink/File".
-//    - description: sentence describing the purpose of the element. E.g: "Write
-//      stream to a file".
-//    - author: name and contact details of the author(s). Use \n to separate
-//      multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
+//   - longname: long English name of the element. E.g. "File Sink".
+//   - classification: string describing the type of element, as an unordered
+//     list separated with slashes ('/'). See draft-klass.txt of the design docs
+//     for more details and common types. E.g: "Sink/File".
+//   - description: sentence describing the purpose of the element. E.g:
+//     "Write stream to a file".
+//   - author: name and contact details of the author(s). Use \n to separate
+//     multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
 //
 func (klass *ElementClass) SetMetadata(longname string, classification string, description string, author string) {
 	var _arg0 *C.GstElementClass // out
@@ -4078,19 +4066,19 @@ func (klass *ElementClass) SetMetadata(longname string, classification string, d
 //
 // Same as gst_element_class_set_metadata(), but longname, classification,
 // description, and author must be static strings or inlined strings, as they
-// will not be copied. (GStreamer plugins will be made resident once loaded, so
-// this function can be used even from dynamically loaded plugins.).
+// will not be copied. (GStreamer plugins will be made resident once loaded,
+// so this function can be used even from dynamically loaded plugins.).
 //
 // The function takes the following parameters:
 //
-//    - longname: long English name of the element. E.g. "File Sink".
-//    - classification: string describing the type of element, as an unordered
-//      list separated with slashes ('/'). See draft-klass.txt of the design docs
-//      for more details and common types. E.g: "Sink/File".
-//    - description: sentence describing the purpose of the element. E.g: "Write
-//      stream to a file".
-//    - author: name and contact details of the author(s). Use \n to separate
-//      multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
+//   - longname: long English name of the element. E.g. "File Sink".
+//   - classification: string describing the type of element, as an unordered
+//     list separated with slashes ('/'). See draft-klass.txt of the design docs
+//     for more details and common types. E.g: "Sink/File".
+//   - description: sentence describing the purpose of the element. E.g:
+//     "Write stream to a file".
+//   - author: name and contact details of the author(s). Use \n to separate
+//     multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
 //
 func (klass *ElementClass) SetStaticMetadata(longname string, classification string, description string, author string) {
 	var _arg0 *C.GstElementClass // out

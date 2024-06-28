@@ -36,8 +36,8 @@ func defaultTestClockOverrides(v *TestClock) TestClockOverrides {
 }
 
 // TestClock is an implementation of Clock which has different behaviour
-// compared to SystemClock. Time for SystemClock advances according to the
-// system time, while time for TestClock changes only when
+// compared to SystemClock. Time for SystemClock advances according
+// to the system time, while time for TestClock changes only when
 // gst_test_clock_set_time() or gst_test_clock_advance_time() are called.
 // TestClock provides unit tests with the possibility to precisely advance the
 // time in a deterministic manner, independent of the system time or any other
@@ -45,76 +45,76 @@ func defaultTestClockOverrides(v *TestClock) TestClockOverrides {
 //
 // Advancing the time of a TestClock
 //
-//      #include <gst/gst.h>
-//      #include <gst/check/gstcheck.h>
-//      #include <gst/check/gsttestclock.h>
+//    #include <gst/gst.h>
+//    #include <gst/check/gstcheck.h>
+//    #include <gst/check/gsttestclock.h>
 //
-//      GstClockTime latency;
-//      GstElement *element;
-//      GstPad *srcpad;
-//      GstClock *clock;
-//      GstTestClock *test_clock;
-//      GstBuffer buf;
-//      GstClockID pending_id;
-//      GstClockID processed_id;
+//    GstClockTime latency;
+//    GstElement *element;
+//    GstPad *srcpad;
+//    GstClock *clock;
+//    GstTestClock *test_clock;
+//    GstBuffer buf;
+//    GstClockID pending_id;
+//    GstClockID processed_id;
 //
-//      latency = 42 * GST_MSECOND;
-//      element = create_element (latency, ...);
-//      srcpad = get_source_pad (element);
+//    latency = 42 * GST_MSECOND;
+//    element = create_element (latency, ...);
+//    srcpad = get_source_pad (element);
 //
-//      clock = gst_test_clock_new ();
-//      test_clock = GST_TEST_CLOCK (clock);
-//      gst_element_set_clock (element, clock);
+//    clock = gst_test_clock_new ();
+//    test_clock = GST_TEST_CLOCK (clock);
+//    gst_element_set_clock (element, clock);
 //
-//      GST_INFO ("Set time, create and push the first buffer\n");
-//      gst_test_clock_set_time (test_clock, 0);
-//      buf = create_test_buffer (gst_clock_get_time (clock), ...);
-//      gst_assert_cmpint (gst_pad_push (srcpad, buf), ==, GST_FLOW_OK);
+//    GST_INFO ("Set time, create and push the first buffer\n");
+//    gst_test_clock_set_time (test_clock, 0);
+//    buf = create_test_buffer (gst_clock_get_time (clock), ...);
+//    gst_assert_cmpint (gst_pad_push (srcpad, buf), ==, GST_FLOW_OK);
 //
-//      GST_INFO ("Block until element is waiting for a clock notification\n");
-//      gst_test_clock_wait_for_next_pending_id (test_clock, &pending_id);
-//      GST_INFO ("Advance to the requested time of the clock notification\n");
-//      gst_test_clock_advance_time (test_clock, latency);
-//      GST_INFO ("Release the next blocking wait and make sure it is the one from element\n");
-//      processed_id = gst_test_clock_process_next_clock_id (test_clock);
-//      g_assert (processed_id == pending_id);
-//      g_assert_cmpint (GST_CLOCK_ENTRY_STATUS (processed_id), ==, GST_CLOCK_OK);
-//      gst_clock_id_unref (pending_id);
-//      gst_clock_id_unref (processed_id);
+//    GST_INFO ("Block until element is waiting for a clock notification\n");
+//    gst_test_clock_wait_for_next_pending_id (test_clock, &pending_id);
+//    GST_INFO ("Advance to the requested time of the clock notification\n");
+//    gst_test_clock_advance_time (test_clock, latency);
+//    GST_INFO ("Release the next blocking wait and make sure it is the one from element\n");
+//    processed_id = gst_test_clock_process_next_clock_id (test_clock);
+//    g_assert (processed_id == pending_id);
+//    g_assert_cmpint (GST_CLOCK_ENTRY_STATUS (processed_id), ==, GST_CLOCK_OK);
+//    gst_clock_id_unref (pending_id);
+//    gst_clock_id_unref (processed_id);
 //
-//      GST_INFO ("Validate that element produced an output buffer and check its timestamp\n");
-//      g_assert_cmpint (get_number_of_output_buffer (...), ==, 1);
-//      buf = get_buffer_pushed_by_element (element, ...);
-//      g_assert_cmpint (GST_BUFFER_TIMESTAMP (buf), ==, latency);
-//      gst_buffer_unref (buf);
-//      GST_INFO ("Check that element does not wait for any clock notification\n");
-//      g_assert (!gst_test_clock_peek_next_pending_id (test_clock, NULL));
+//    GST_INFO ("Validate that element produced an output buffer and check its timestamp\n");
+//    g_assert_cmpint (get_number_of_output_buffer (...), ==, 1);
+//    buf = get_buffer_pushed_by_element (element, ...);
+//    g_assert_cmpint (GST_BUFFER_TIMESTAMP (buf), ==, latency);
+//    gst_buffer_unref (buf);
+//    GST_INFO ("Check that element does not wait for any clock notification\n");
+//    g_assert (!gst_test_clock_peek_next_pending_id (test_clock, NULL));
 //
-//      GST_INFO ("Set time, create and push the second buffer\n");
-//      gst_test_clock_advance_time (test_clock, 10 * GST_SECOND);
-//      buf = create_test_buffer (gst_clock_get_time (clock), ...);
-//      gst_assert_cmpint (gst_pad_push (srcpad, buf), ==, GST_FLOW_OK);
+//    GST_INFO ("Set time, create and push the second buffer\n");
+//    gst_test_clock_advance_time (test_clock, 10 * GST_SECOND);
+//    buf = create_test_buffer (gst_clock_get_time (clock), ...);
+//    gst_assert_cmpint (gst_pad_push (srcpad, buf), ==, GST_FLOW_OK);
 //
-//      GST_INFO ("Block until element is waiting for a new clock notification\n");
-//      (gst_test_clock_wait_for_next_pending_id (test_clock, &pending_id);
-//      GST_INFO ("Advance past 7ms beyond the requested time of the clock notification\n");
-//      gst_test_clock_advance_time (test_clock, latency + 7 * GST_MSECOND);
-//      GST_INFO ("Release the next blocking wait and make sure it is the one from element\n");
-//      processed_id = gst_test_clock_process_next_clock_id (test_clock);
-//      g_assert (processed_id == pending_id);
-//      g_assert_cmpint (GST_CLOCK_ENTRY_STATUS (processed_id), ==, GST_CLOCK_OK);
-//      gst_clock_id_unref (pending_id);
-//      gst_clock_id_unref (processed_id);
+//    GST_INFO ("Block until element is waiting for a new clock notification\n");
+//    (gst_test_clock_wait_for_next_pending_id (test_clock, &pending_id);
+//    GST_INFO ("Advance past 7ms beyond the requested time of the clock notification\n");
+//    gst_test_clock_advance_time (test_clock, latency + 7 * GST_MSECOND);
+//    GST_INFO ("Release the next blocking wait and make sure it is the one from element\n");
+//    processed_id = gst_test_clock_process_next_clock_id (test_clock);
+//    g_assert (processed_id == pending_id);
+//    g_assert_cmpint (GST_CLOCK_ENTRY_STATUS (processed_id), ==, GST_CLOCK_OK);
+//    gst_clock_id_unref (pending_id);
+//    gst_clock_id_unref (processed_id);
 //
-//      GST_INFO ("Validate that element produced an output buffer and check its timestamp\n");
-//      g_assert_cmpint (get_number_of_output_buffer (...), ==, 1);
-//      buf = get_buffer_pushed_by_element (element, ...);
-//      g_assert_cmpint (GST_BUFFER_TIMESTAMP (buf), ==,
-//          10 * GST_SECOND + latency + 7 * GST_MSECOND);
-//      gst_buffer_unref (buf);
-//      GST_INFO ("Check that element does not wait for any clock notification\n");
-//      g_assert (!gst_test_clock_peek_next_pending_id (test_clock, NULL));
-//      ...
+//    GST_INFO ("Validate that element produced an output buffer and check its timestamp\n");
+//    g_assert_cmpint (get_number_of_output_buffer (...), ==, 1);
+//    buf = get_buffer_pushed_by_element (element, ...);
+//    g_assert_cmpint (GST_BUFFER_TIMESTAMP (buf), ==,
+//        10 * GST_SECOND + latency + 7 * GST_MSECOND);
+//    gst_buffer_unref (buf);
+//    GST_INFO ("Check that element does not wait for any clock notification\n");
+//    g_assert (!gst_test_clock_peek_next_pending_id (test_clock, NULL));
+//    ...
 //
 // Since TestClock is only supposed to be used in unit tests it calls
 // g_assert(), g_assert_cmpint() or g_assert_cmpuint() to validate all function
@@ -166,7 +166,7 @@ func marshalTestClock(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - testClock cast to Clock.
+//   - testClock cast to Clock.
 //
 func NewTestClock() *TestClock {
 	var _cret *C.GstClock // in
@@ -187,19 +187,17 @@ func NewTestClock() *TestClock {
 //
 // The function takes the following parameters:
 //
-//    - startTime set to the desired start time of the clock.
+//   - startTime set to the desired start time of the clock.
 //
 // The function returns the following values:
 //
-//    - testClock cast to Clock.
+//   - testClock cast to Clock.
 //
 func NewTestClockWithStartTime(startTime gst.ClockTime) *TestClock {
 	var _arg1 C.GstClockTime // out
 	var _cret *C.GstClock    // in
 
-	_arg1 = C.guint64(startTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(startTime)
 
 	_cret = C.gst_test_clock_new_with_start_time(_arg1)
 	runtime.KeepAlive(startTime)
@@ -219,16 +217,14 @@ func NewTestClockWithStartTime(startTime gst.ClockTime) *TestClock {
 //
 // The function takes the following parameters:
 //
-//    - delta: positive ClockTimeDiff to be added to the time of the clock.
+//   - delta: positive ClockTimeDiff to be added to the time of the clock.
 //
 func (testClock *TestClock) AdvanceTime(delta gst.ClockTimeDiff) {
 	var _arg0 *C.GstTestClock    // out
 	var _arg1 C.GstClockTimeDiff // out
 
 	_arg0 = (*C.GstTestClock)(unsafe.Pointer(coreglib.InternObject(testClock).Native()))
-	_arg1 = C.gint64(delta)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
+	_arg1 = C.GstClockTimeDiff(delta)
 
 	C.gst_test_clock_advance_time(_arg0, _arg1)
 	runtime.KeepAlive(testClock)
@@ -243,9 +239,9 @@ func (testClock *TestClock) AdvanceTime(delta gst.ClockTimeDiff) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the crank was successful, FALSE otherwise.
+//   - ok: TRUE if the crank was successful, FALSE otherwise.
 //
-//      MT safe.
+//     MT safe.
 //
 func (testClock *TestClock) Crank() bool {
 	var _arg0 *C.GstTestClock // out
@@ -272,9 +268,9 @@ func (testClock *TestClock) Crank() bool {
 //
 // The function returns the following values:
 //
-//    - clockTime set to the time of the next pending clock notification. If no
-//      clock notifications have been requested GST_CLOCK_TIME_NONE will be
-//      returned.
+//   - clockTime set to the time of the next pending clock notification.
+//     If no clock notifications have been requested GST_CLOCK_TIME_NONE will be
+//     returned.
 //
 func (testClock *TestClock) NextEntryTime() gst.ClockTime {
 	var _arg0 *C.GstTestClock // out
@@ -287,9 +283,7 @@ func (testClock *TestClock) NextEntryTime() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -301,12 +295,12 @@ func (testClock *TestClock) NextEntryTime() gst.ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - id clock notification.
+//   - id clock notification.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the clock has been asked to provide the given clock
-//      notification, FALSE otherwise.
+//   - ok: TRUE if the clock has been asked to provide the given clock
+//     notification, FALSE otherwise.
 //
 func (testClock *TestClock) HasID(id gst.ClockID) bool {
 	var _arg0 *C.GstTestClock // out
@@ -314,9 +308,7 @@ func (testClock *TestClock) HasID(id gst.ClockID) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GstTestClock)(unsafe.Pointer(coreglib.InternObject(testClock).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = gst.ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 
 	_cret = C.gst_test_clock_has_id(_arg0, _arg1)
 	runtime.KeepAlive(testClock)
@@ -338,7 +330,7 @@ func (testClock *TestClock) HasID(id gst.ClockID) bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of pending clock notifications.
+//   - guint: number of pending clock notifications.
 //
 func (testClock *TestClock) PeekIDCount() uint {
 	var _arg0 *C.GstTestClock // out
@@ -363,9 +355,9 @@ func (testClock *TestClock) PeekIDCount() uint {
 //
 // The function returns the following values:
 //
-//    - pendingId (optional) clock notification to look for.
-//    - ok: TRUE if pending_id is the next clock notification to be triggered,
-//      FALSE otherwise.
+//   - pendingId (optional) clock notification to look for.
+//   - ok: TRUE if pending_id is the next clock notification to be triggered,
+//     FALSE otherwise.
 //
 func (testClock *TestClock) PeekNextPendingID() (gst.ClockID, bool) {
 	var _arg0 *C.GstTestClock // out
@@ -380,9 +372,7 @@ func (testClock *TestClock) PeekNextPendingID() (gst.ClockID, bool) {
 	var _pendingId gst.ClockID // out
 	var _ok bool               // out
 
-	_pendingId = (unsafe.Pointer)(unsafe.Pointer(_arg1))
-	type _ = gst.ClockID
-	type _ = unsafe.Pointer
+	_pendingId = (gst.ClockID)(unsafe.Pointer(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -396,7 +386,7 @@ func (testClock *TestClock) PeekNextPendingID() (gst.ClockID, bool) {
 //
 // The function takes the following parameters:
 //
-//    - pendingId: ClockID.
+//   - pendingId: ClockID.
 //
 // The function returns the following values:
 //
@@ -406,9 +396,7 @@ func (testClock *TestClock) ProcessID(pendingId gst.ClockID) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GstTestClock)(unsafe.Pointer(coreglib.InternObject(testClock).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(pendingId))
-	type _ = gst.ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(pendingId))
 
 	_cret = C.gst_test_clock_process_id(_arg0, _arg1)
 	runtime.KeepAlive(testClock)
@@ -429,7 +417,7 @@ func (testClock *TestClock) ProcessID(pendingId gst.ClockID) bool {
 //
 // The function takes the following parameters:
 //
-//    - pendingList (optional): list of pending ClockIDs.
+//   - pendingList (optional): list of pending ClockIDs.
 //
 // The function returns the following values:
 //
@@ -442,10 +430,8 @@ func (testClock *TestClock) ProcessIDList(pendingList []gst.ClockID) uint {
 	if pendingList != nil {
 		for i := len(pendingList) - 1; i >= 0; i-- {
 			src := pendingList[i]
-			var dst *C.GstClockID // out
-			dst = (C.gpointer)(unsafe.Pointer(src))
-			type _ = gst.ClockID
-			type _ = unsafe.Pointer
+			var dst C.GstClockID // out
+			dst = (C.GstClockID)(unsafe.Pointer(src))
 			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_list_free(_arg1)
@@ -466,7 +452,7 @@ func (testClock *TestClock) ProcessIDList(pendingList []gst.ClockID) uint {
 //
 // The function returns the following values:
 //
-//    - clockID (optional) containing the next pending clock notification.
+//   - clockID (optional) containing the next pending clock notification.
 //
 func (testClock *TestClock) ProcessNextClockID() gst.ClockID {
 	var _arg0 *C.GstTestClock // out
@@ -479,32 +465,28 @@ func (testClock *TestClock) ProcessNextClockID() gst.ClockID {
 
 	var _clockID gst.ClockID // out
 
-	_clockID = (unsafe.Pointer)(unsafe.Pointer(_cret))
-	type _ = gst.ClockID
-	type _ = unsafe.Pointer
+	_clockID = (gst.ClockID)(unsafe.Pointer(_cret))
 
 	return _clockID
 }
 
-// SetTime sets the time of test_clock to the time given by new_time. The time
-// of test_clock is monotonically increasing, therefore providing a new_time
-// which is earlier or equal to the time of the clock as given by
+// SetTime sets the time of test_clock to the time given by new_time.
+// The time of test_clock is monotonically increasing, therefore providing
+// a new_time which is earlier or equal to the time of the clock as given by
 // gst_clock_get_time() is a programming error.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - newTime later than that returned by gst_clock_get_time().
+//   - newTime later than that returned by gst_clock_get_time().
 //
 func (testClock *TestClock) SetTime(newTime gst.ClockTime) {
 	var _arg0 *C.GstTestClock // out
 	var _arg1 C.GstClockTime  // out
 
 	_arg0 = (*C.GstTestClock)(unsafe.Pointer(coreglib.InternObject(testClock).Native()))
-	_arg1 = C.guint64(newTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(newTime)
 
 	C.gst_test_clock_set_time(_arg0, _arg1)
 	runtime.KeepAlive(testClock)
@@ -518,15 +500,15 @@ func (testClock *TestClock) SetTime(newTime gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - count: number of pending clock notifications to wait for.
-//    - timeoutMs: timeout in milliseconds.
+//   - count: number of pending clock notifications to wait for.
+//   - timeoutMs: timeout in milliseconds.
 //
 // The function returns the following values:
 //
-//    - pendingList (optional): address of a #GList pointer variable to store the
-//      list of pending ClockIDs that expired, or NULL.
-//    - ok: gboolean TRUE if the waits have been registered, FALSE if not. (Could
-//      be that it timed out waiting or that more waits than waits was found).
+//   - pendingList (optional): address of a #GList pointer variable to store the
+//     list of pending ClockIDs that expired, or NULL.
+//   - ok: gboolean TRUE if the waits have been registered, FALSE if not. (Could
+//     be that it timed out waiting or that more waits than waits was found).
 //
 func (testClock *TestClock) TimedWaitForMultiplePendingIDs(count, timeoutMs uint) ([]gst.ClockID, bool) {
 	var _arg0 *C.GstTestClock // out
@@ -550,11 +532,9 @@ func (testClock *TestClock) TimedWaitForMultiplePendingIDs(count, timeoutMs uint
 	if _arg3 != nil {
 		_pendingList = make([]gst.ClockID, 0, gextras.ListSize(unsafe.Pointer(_arg3)))
 		gextras.MoveList(unsafe.Pointer(_arg3), true, func(v unsafe.Pointer) {
-			src := (*C.GstClockID)(v)
+			src := (C.GstClockID)(v)
 			var dst gst.ClockID // out
-			dst = (unsafe.Pointer)(unsafe.Pointer(src))
-			type _ = gst.ClockID
-			type _ = unsafe.Pointer
+			dst = (gst.ClockID)(unsafe.Pointer(src))
 			_pendingList = append(_pendingList, dst)
 		})
 	}
@@ -566,19 +546,19 @@ func (testClock *TestClock) TimedWaitForMultiplePendingIDs(count, timeoutMs uint
 }
 
 // WaitForMultiplePendingIDs blocks until at least count clock notifications
-// have been requested from test_clock. There is no timeout for this wait, see
-// the main description of TestClock.
+// have been requested from test_clock. There is no timeout for this wait,
+// see the main description of TestClock.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - count: number of pending clock notifications to wait for.
+//   - count: number of pending clock notifications to wait for.
 //
 // The function returns the following values:
 //
-//    - pendingList (optional): address of a #GList pointer variable to store the
-//      list of pending ClockIDs that expired, or NULL.
+//   - pendingList (optional): address of a #GList pointer variable to store the
+//     list of pending ClockIDs that expired, or NULL.
 //
 func (testClock *TestClock) WaitForMultiplePendingIDs(count uint) []gst.ClockID {
 	var _arg0 *C.GstTestClock // out
@@ -597,11 +577,9 @@ func (testClock *TestClock) WaitForMultiplePendingIDs(count uint) []gst.ClockID 
 	if _arg2 != nil {
 		_pendingList = make([]gst.ClockID, 0, gextras.ListSize(unsafe.Pointer(_arg2)))
 		gextras.MoveList(unsafe.Pointer(_arg2), true, func(v unsafe.Pointer) {
-			src := (*C.GstClockID)(v)
+			src := (C.GstClockID)(v)
 			var dst gst.ClockID // out
-			dst = (unsafe.Pointer)(unsafe.Pointer(src))
-			type _ = gst.ClockID
-			type _ = unsafe.Pointer
+			dst = (gst.ClockID)(unsafe.Pointer(src))
 			_pendingList = append(_pendingList, dst)
 		})
 	}
@@ -610,15 +588,15 @@ func (testClock *TestClock) WaitForMultiplePendingIDs(count uint) []gst.ClockID 
 }
 
 // WaitForNextPendingID waits until a clock notification is requested from
-// test_clock. There is no timeout for this wait, see the main description of
-// TestClock. A reference to the pending clock notification is stored in
+// test_clock. There is no timeout for this wait, see the main description
+// of TestClock. A reference to the pending clock notification is stored in
 // pending_id.
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - pendingId (optional) information about the pending clock notification.
+//   - pendingId (optional) information about the pending clock notification.
 //
 func (testClock *TestClock) WaitForNextPendingID() gst.ClockID {
 	var _arg0 *C.GstTestClock // out
@@ -631,9 +609,7 @@ func (testClock *TestClock) WaitForNextPendingID() gst.ClockID {
 
 	var _pendingId gst.ClockID // out
 
-	_pendingId = (unsafe.Pointer)(unsafe.Pointer(_arg1))
-	type _ = gst.ClockID
-	type _ = unsafe.Pointer
+	_pendingId = (gst.ClockID)(unsafe.Pointer(_arg1))
 
 	return _pendingId
 }
@@ -646,7 +622,7 @@ func (testClock *TestClock) WaitForNextPendingID() gst.ClockID {
 //
 // The function takes the following parameters:
 //
-//    - count: number of pending clock notifications to wait for.
+//   - count: number of pending clock notifications to wait for.
 //
 func (testClock *TestClock) WaitForPendingIDCount(count uint) {
 	var _arg0 *C.GstTestClock // out

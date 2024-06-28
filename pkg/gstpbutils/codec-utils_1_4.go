@@ -14,19 +14,19 @@ import (
 // #include <gst/pbutils/pbutils.h>
 import "C"
 
-// CodecUtilsH265CapsSetLevelTierAndProfile sets the level, tier and profile in
-// caps if it can be determined from profile_tier_level. See
-// gst_codec_utils_h265_get_level(), gst_codec_utils_h265_get_tier() and
+// CodecUtilsH265CapsSetLevelTierAndProfile sets the level, tier and
+// profile in caps if it can be determined from profile_tier_level.
+// See gst_codec_utils_h265_get_level(), gst_codec_utils_h265_get_tier() and
 // gst_codec_utils_h265_get_profile() for more details on the parameters.
 //
 // The function takes the following parameters:
 //
-//    - caps to which the level, tier and profile are to be added.
-//    - profileTierLevel: pointer to the profile_tier_level struct.
+//   - caps to which the level, tier and profile are to be added.
+//   - profileTierLevel: pointer to the profile_tier_level struct.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the level, tier, profile could be set, FALSE otherwise.
+//   - ok: TRUE if the level, tier, profile could be set, FALSE otherwise.
 //
 func CodecUtilsH265CapsSetLevelTierAndProfile(caps *gst.Caps, profileTierLevel []byte) bool {
 	var _arg1 *C.GstCaps // out
@@ -53,18 +53,18 @@ func CodecUtilsH265CapsSetLevelTierAndProfile(caps *gst.Caps, profileTierLevel [
 	return _ok
 }
 
-// CodecUtilsH265GetLevel converts the level indication (general_level_idc) in
-// the stream's profile_tier_level structure into a string. The
-// profiel_tier_level is expected to have the same format as for
+// CodecUtilsH265GetLevel converts the level indication (general_level_idc)
+// in the stream's profile_tier_level structure into a string.
+// The profiel_tier_level is expected to have the same format as for
 // gst_codec_utils_h264_get_profile().
 //
 // The function takes the following parameters:
 //
-//    - profileTierLevel: pointer to the profile_tier_level for the stream.
+//   - profileTierLevel: pointer to the profile_tier_level for the stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): level as a const string, or NULL if there is an error.
+//   - utf8 (optional): level as a const string, or NULL if there is an error.
 //
 func CodecUtilsH265GetLevel(profileTierLevel []byte) string {
 	var _arg1 *C.guint8 // out
@@ -93,11 +93,11 @@ func CodecUtilsH265GetLevel(profileTierLevel []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - level string from caps.
+//   - level string from caps.
 //
 // The function returns the following values:
 //
-//    - guint8: level_idc or 0 if the level is unknown.
+//   - guint8: level_idc or 0 if the level is unknown.
 //
 func CodecUtilsH265GetLevelIdc(level string) byte {
 	var _arg1 *C.gchar // out
@@ -118,25 +118,25 @@ func CodecUtilsH265GetLevelIdc(level string) byte {
 
 // CodecUtilsH265GetProfile converts the profile indication
 // (general_profile_idc) in the stream's profile_level_tier structure into a
-// string. The profile_tier_level is expected to have the following format, as
-// defined in the H.265 specification. The profile_tier_level is viewed as a
+// string. The profile_tier_level is expected to have the following format,
+// as defined in the H.265 specification. The profile_tier_level is viewed as a
 // bitstream here, with bit 0 being the most significant bit of the first byte.
 //
 // * Bit 0:1 - general_profile_space * Bit 2 - general_tier_flag * Bit 3:7 -
 // general_profile_idc * Bit 8:39 - gernal_profile_compatibility_flags * Bit 40
-// - general_progressive_source_flag * Bit 41 - general_interlaced_source_flag *
-// Bit 42 - general_non_packed_constraint_flag * Bit 43 -
+// - general_progressive_source_flag * Bit 41 - general_interlaced_source_flag
+// * Bit 42 - general_non_packed_constraint_flag * Bit 43 -
 // general_frame_only_constraint_flag * Bit 44:87 - See below * Bit 88:95 -
 // general_level_idc.
 //
 // The function takes the following parameters:
 //
-//    - profileTierLevel: pointer to the profile_tier_level structure for the
-//      stream.
+//   - profileTierLevel: pointer to the profile_tier_level structure for the
+//     stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): profile as a const string, or NULL if there is an error.
+//   - utf8 (optional): profile as a const string, or NULL if there is an error.
 //
 func CodecUtilsH265GetProfile(profileTierLevel []byte) string {
 	var _arg1 *C.guint8 // out
@@ -160,18 +160,18 @@ func CodecUtilsH265GetProfile(profileTierLevel []byte) string {
 	return _utf8
 }
 
-// CodecUtilsH265GetTier converts the tier indication (general_tier_flag) in the
-// stream's profile_tier_level structure into a string. The profile_tier_level
-// is expected to have the same format as for
+// CodecUtilsH265GetTier converts the tier indication (general_tier_flag)
+// in the stream's profile_tier_level structure into a string.
+// The profile_tier_level is expected to have the same format as for
 // gst_codec_utils_h264_get_profile().
 //
 // The function takes the following parameters:
 //
-//    - profileTierLevel: pointer to the profile_tier_level for the stream.
+//   - profileTierLevel: pointer to the profile_tier_level for the stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): tier as a const string, or NULL if there is an error.
+//   - utf8 (optional): tier as a const string, or NULL if there is an error.
 //
 func CodecUtilsH265GetTier(profileTierLevel []byte) string {
 	var _arg1 *C.guint8 // out

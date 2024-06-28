@@ -93,20 +93,19 @@ func defaultAudioCdSrcOverrides(v *AudioCdSrc) AudioCdSrcOverrides {
 	}
 }
 
-// AudioCdSrc provides a base class for CD digital audio (CDDA) sources, which
-// handles things like seeking, querying, discid calculation, tags, and buffer
-// timestamping.
+// AudioCdSrc provides a base class for CD digital audio (CDDA) sources,
+// which handles things like seeking, querying, discid calculation, tags,
+// and buffer timestamping.
 //
-//
-// Using GstAudioCdSrc-based elements in applications
+// # Using GstAudioCdSrc-based elements in applications
 //
 // GstAudioCdSrc registers two Format<!-- -->s of its own, namely the "track"
 // format and the "sector" format. Applications will usually only find the
 // "track" format interesting. You can retrieve that Format for use in seek
 // events or queries with gst_format_get_by_nick("track").
 //
-// In order to query the number of tracks, for example, an application would set
-// the CDDA source element to READY or PAUSED state and then query the the
+// In order to query the number of tracks, for example, an application would
+// set the CDDA source element to READY or PAUSED state and then query the the
 // number of tracks via gst_element_query_duration() using the track format
 // acquired above. Applications can query the currently playing track in the
 // same way.
@@ -121,12 +120,11 @@ func defaultAudioCdSrcOverrides(v *AudioCdSrc) AudioCdSrcOverrides {
 // setting a new cdda://n+1 URI on playbin (as setting a new URI on playbin
 // involves closing and re-opening the CD device, which is much much slower).
 //
+// # Tags and meta-information
 //
-// Tags and meta-information
-//
-// CDDA sources will automatically emit a number of tags, details about which
-// can be found in the libgsttag documentation. Those tags are:
-// T_TAG_CDDA_CDDB_DISCID, T_TAG_CDDA_CDDB_DISCID_FULL,
+// CDDA sources will automatically emit a number of tags,
+// details about which can be found in the libgsttag documentation.
+// Those tags are: T_TAG_CDDA_CDDB_DISCID, T_TAG_CDDA_CDDB_DISCID_FULL,
 // T_TAG_CDDA_MUSICBRAINZ_DISCID, T_TAG_CDDA_MUSICBRAINZ_DISCID_FULL, among
 // others.
 //
@@ -209,11 +207,11 @@ func marshalAudioCdSrc(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - track address of AudioCdSrcTrack to add.
+//   - track address of AudioCdSrcTrack to add.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE on error, otherwise TRUE.
+//   - ok: FALSE on error, otherwise TRUE.
 //
 func (src *AudioCdSrc) AddTrack(track *AudioCdSrcTrack) bool {
 	var _arg0 *C.GstAudioCdSrc      // out
@@ -379,6 +377,14 @@ func (a *AudioCdSrcTrack) End() uint {
 	valptr := &a.native.end
 	var _v uint // out
 	_v = uint(*valptr)
+	return _v
+}
+
+// Tags: track-specific tags (e.g. from cd-text information), or NULL.
+func (a *AudioCdSrcTrack) Tags() *gst.TagList {
+	valptr := &a.native.tags
+	var _v *gst.TagList // out
+	_v = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return _v
 }
 

@@ -40,7 +40,6 @@ func init() {
 }
 
 // The function returns the following values:
-//
 func CoreErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -48,9 +47,7 @@ func CoreErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -86,7 +83,6 @@ func (d DebugColorMode) String() string {
 }
 
 // The function returns the following values:
-//
 func LibraryErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -94,15 +90,12 @@ func LibraryErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
 
 // The function returns the following values:
-//
 func ResourceErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -110,15 +103,12 @@ func ResourceErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
 
 // The function returns the following values:
-//
 func StreamErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -126,15 +116,12 @@ func StreamErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
 
 // The function returns the following values:
-//
 func URIErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -142,9 +129,7 @@ func URIErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -302,9 +287,9 @@ const (
 	// may be used by demuxers to signal that a stream should be selected by
 	// default in a playback scenario.
 	StreamFlagSelect StreamFlags = 0b10
-	// StreamFlagUnselect: this stream should not be selected by default. This
-	// flag may be used by demuxers to signal that a stream should not be
-	// selected by default in a playback scenario, but only if explicitly
+	// StreamFlagUnselect: this stream should not be selected by default.
+	// This flag may be used by demuxers to signal that a stream should not
+	// be selected by default in a playback scenario, but only if explicitly
 	// selected by the user (e.g. an audio track for the hard of hearing or a
 	// director's commentary track).
 	StreamFlagUnselect StreamFlags = 0b100
@@ -368,8 +353,7 @@ func Deinit() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if initialization has been done, FALSE otherwise.
-//
+//   - ok: TRUE if initialization has been done, FALSE otherwise.
 func IsInitialized() bool {
 	var _cret C.gboolean // in
 
@@ -384,8 +368,8 @@ func IsInitialized() bool {
 	return _ok
 }
 
-// SegtrapIsEnabled: some functions in the GStreamer core might install a custom
-// SIGSEGV handler to better catch and report errors to the application.
+// SegtrapIsEnabled: some functions in the GStreamer core might install a
+// custom SIGSEGV handler to better catch and report errors to the application.
 // Currently this feature is enabled by default when loading plugins.
 //
 // Applications might want to disable this behaviour with the
@@ -394,8 +378,7 @@ func IsInitialized() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if GStreamer is allowed to install a custom SIGSEGV handler.
-//
+//   - ok: TRUE if GStreamer is allowed to install a custom SIGSEGV handler.
 func SegtrapIsEnabled() bool {
 	var _cret C.gboolean // in
 
@@ -416,8 +399,7 @@ func SegtrapIsEnabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - enabled: whether a custom SIGSEGV handler should be installed.
-//
+//   - enabled: whether a custom SIGSEGV handler should be installed.
 func SegtrapSetEnabled(enabled bool) {
 	var _arg1 C.gboolean // out
 
@@ -432,10 +414,10 @@ func SegtrapSetEnabled(enabled bool) {
 // UpdateRegistry forces GStreamer to re-scan its plugin paths and update the
 // default plugin registry.
 //
-// Applications will almost never need to call this function, it is only useful
-// if the application knows new plugins have been installed (or old ones
-// removed) since the start of the application (or, to be precise, the first
-// call to gst_init()) and the application wants to make use of any
+// Applications will almost never need to call this function, it is only
+// useful if the application knows new plugins have been installed (or old
+// ones removed) since the start of the application (or, to be precise,
+// the first call to gst_init()) and the application wants to make use of any
 // newly-installed plugins without restarting the application.
 //
 // Applications should assume that the registry update is neither atomic nor
@@ -447,9 +429,8 @@ func SegtrapSetEnabled(enabled bool) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the registry has been updated successfully (does not imply
-//      that there were changes), otherwise FALSE.
-//
+//   - ok: TRUE if the registry has been updated successfully (does not imply
+//     that there were changes), otherwise FALSE.
 func UpdateRegistry() bool {
 	var _cret C.gboolean // in
 
@@ -468,11 +449,10 @@ func UpdateRegistry() bool {
 //
 // The function returns the following values:
 //
-//    - major: pointer to a guint to store the major version number.
-//    - minor: pointer to a guint to store the minor version number.
-//    - micro: pointer to a guint to store the micro version number.
-//    - nano: pointer to a guint to store the nano version number.
-//
+//   - major: pointer to a guint to store the major version number.
+//   - minor: pointer to a guint to store the minor version number.
+//   - micro: pointer to a guint to store the micro version number.
+//   - nano: pointer to a guint to store the nano version number.
 func Version() (major, minor, micro, nano uint) {
 	var _arg1 C.guint // in
 	var _arg2 C.guint // in
@@ -500,8 +480,7 @@ func Version() (major, minor, micro, nano uint) {
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string describing this version of GStreamer.
-//
+//   - utf8: newly allocated string describing this version of GStreamer.
 func VersionString() string {
 	var _cret *C.gchar // in
 
@@ -524,9 +503,8 @@ func VersionString() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if GStreamer will use the child helper process when rebuilding
-//      the registry.
-//
+//   - ok: TRUE if GStreamer will use the child helper process when rebuilding
+//     the registry.
 func RegistryForkIsEnabled() bool {
 	var _cret C.gboolean // in
 
@@ -541,15 +519,14 @@ func RegistryForkIsEnabled() bool {
 	return _ok
 }
 
-// RegistryForkSetEnabled applications might want to disable/enable spawning of
-// a child helper process when rebuilding the registry. See
+// RegistryForkSetEnabled applications might want to disable/enable
+// spawning of a child helper process when rebuilding the registry. See
 // gst_registry_fork_is_enabled() for more information.
 //
 // The function takes the following parameters:
 //
-//    - enabled: whether rebuilding the registry can use a temporary child helper
-//      process.
-//
+//   - enabled: whether rebuilding the registry can use a temporary child helper
+//     process.
 func RegistryForkSetEnabled(enabled bool) {
 	var _arg1 C.gboolean // out
 

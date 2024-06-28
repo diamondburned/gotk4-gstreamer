@@ -10,10 +10,10 @@ import "C"
 const VERSION_MAJOR = 1
 
 // VERSION_MICRO: micro version of GStreamer at compile time:.
-const VERSION_MICRO = 3
+const VERSION_MICRO = 8
 
 // VERSION_MINOR: minor version of GStreamer at compile time:.
-const VERSION_MINOR = 20
+const VERSION_MINOR = 22
 
 // VERSION_NANO: nano version of GStreamer at compile time: Actual releases have
 // 0, GIT versions have 1, prerelease versions have 2-...

@@ -11,17 +11,17 @@ import (
 // #include <gst/rtsp/rtsp.h>
 import "C"
 
-// RtspOptionsFromText: convert the comma separated list options to a RTSPMethod
-// bitwise or of methods. This functions is the reverse of
+// RtspOptionsFromText: convert the comma separated list options to a
+// RTSPMethod bitwise or of methods. This functions is the reverse of
 // gst_rtsp_options_as_text().
 //
 // The function takes the following parameters:
 //
-//    - options: comma separated list of options.
+//   - options: comma separated list of options.
 //
 // The function returns the following values:
 //
-//    - rtspMethod: RTSPMethod.
+//   - rtspMethod: RTSPMethod.
 //
 func RtspOptionsFromText(options string) RTSPMethod {
 	var _arg1 *C.gchar        // out

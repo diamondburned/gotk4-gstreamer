@@ -75,21 +75,21 @@ type VideoCaptionType C.gint
 const (
 	// VideoCaptionTypeUnknown: unknown type of CC.
 	VideoCaptionTypeUnknown VideoCaptionType = iota
-	// VideoCaptionTypeCea608Raw: CEA-608 as byte pairs. Note that this format
-	// is not recommended since is does not specify to which field the caption
-	// comes from and therefore assumes it comes from the first field (and that
-	// there is no information on the second field). Use
+	// VideoCaptionTypeCea608Raw: CEA-608 as byte pairs. Note that this
+	// format is not recommended since is does not specify to which field
+	// the caption comes from and therefore assumes it comes from the first
+	// field (and that there is no information on the second field). Use
 	// GST_VIDEO_CAPTION_TYPE_CEA708_RAW if you wish to store CEA-608 from two
 	// fields and prefix each byte pair with 0xFC for the first field and 0xFD
 	// for the second field.
 	VideoCaptionTypeCea608Raw
 	// VideoCaptionTypeCea608S3341A: CEA-608 as byte triplets as defined in
-	// SMPTE S334-1 Annex A. The second and third byte of the byte triplet is
-	// the raw CEA608 data, the first byte is a bitfield: The top/7th bit is 0
-	// for the second field, 1 for the first field, bit 6 and 5 are 0 and bits 4
-	// to 0 are a 5 bit unsigned integer that represents the line offset
-	// relative to the base-line of the original image format (line 9 for
-	// 525-line field 1, line 272 for 525-line field 2, line 5 for 625-line
+	// SMPTE S334-1 Annex A. The second and third byte of the byte triplet
+	// is the raw CEA608 data, the first byte is a bitfield: The top/7th bit
+	// is 0 for the second field, 1 for the first field, bit 6 and 5 are 0
+	// and bits 4 to 0 are a 5 bit unsigned integer that represents the line
+	// offset relative to the base-line of the original image format (line 9
+	// for 525-line field 1, line 272 for 525-line field 2, line 5 for 625-line
 	// field 1 and line 318 for 625-line field 2).
 	VideoCaptionTypeCea608S3341A
 	// VideoCaptionTypeCea708Raw: CEA-708 as cc_data byte triplets. They can
@@ -129,11 +129,11 @@ func (v VideoCaptionType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - caps: fixed Caps to parse.
+//   - caps: fixed Caps to parse.
 //
 // The function returns the following values:
 //
-//    - videoCaptionType: VideoCaptionType.
+//   - videoCaptionType: VideoCaptionType.
 //
 func VideoCaptionTypeFromCaps(caps *gst.Caps) VideoCaptionType {
 	var _arg1 *C.GstCaps            // out
@@ -155,11 +155,11 @@ func VideoCaptionTypeFromCaps(caps *gst.Caps) VideoCaptionType {
 //
 // The function takes the following parameters:
 //
-//    - typ: VideoCaptionType.
+//   - typ: VideoCaptionType.
 //
 // The function returns the following values:
 //
-//    - caps: new Caps.
+//   - caps: new Caps.
 //
 func VideoCaptionTypeToCaps(typ VideoCaptionType) *gst.Caps {
 	var _arg1 C.GstVideoCaptionType // out
@@ -219,13 +219,13 @@ func (v VideoVBIParserResult) String() string {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - captionType: type of Closed Caption to add.
-//    - data: closed Caption data.
+//   - buffer: Buffer.
+//   - captionType: type of Closed Caption to add.
+//   - data: closed Caption data.
 //
 // The function returns the following values:
 //
-//    - videoCaptionMeta on buffer.
+//   - videoCaptionMeta on buffer.
 //
 func BufferAddVideoCaptionMeta(buffer *gst.Buffer, captionType VideoCaptionType, data []byte) *VideoCaptionMeta {
 	var _arg1 *C.GstBuffer          // out
@@ -255,8 +255,8 @@ func BufferAddVideoCaptionMeta(buffer *gst.Buffer, captionType VideoCaptionType,
 
 // VideoAncillary: video Ancillary data, according to SMPTE-291M specification.
 //
-// Note that the contents of the data are always stored as 8bit data (i.e. do
-// not contain the parity check bits).
+// Note that the contents of the data are always stored as 8bit data (i.e.
+// do not contain the parity check bits).
 //
 // An instance of this type is always passed by reference.
 type VideoAncillary struct {
@@ -313,13 +313,15 @@ func NewVideoVBIEncoder(format VideoFormat, pixelWidth uint32) *VideoVBIEncoder 
 
 	var _videoVBIEncoder *VideoVBIEncoder // out
 
-	_videoVBIEncoder = (*VideoVBIEncoder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoVBIEncoder)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_vbi_encoder_free((*C.GstVideoVBIEncoder)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoVBIEncoder = (*VideoVBIEncoder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoVBIEncoder)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_vbi_encoder_free((*C.GstVideoVBIEncoder)(intern.C))
+			},
+		)
+	}
 
 	return _videoVBIEncoder
 }
@@ -327,21 +329,21 @@ func NewVideoVBIEncoder(format VideoFormat, pixelWidth uint32) *VideoVBIEncoder 
 // AddAncillary stores Video Ancillary data, according to SMPTE-291M
 // specification.
 //
-// Note that the contents of the data are always read as 8bit data (i.e. do not
-// contain the parity check bits).
+// Note that the contents of the data are always read as 8bit data (i.e.
+// do not contain the parity check bits).
 //
 // The function takes the following parameters:
 //
-//    - composite: TRUE if composite ADF should be created, component otherwise.
-//    - DID: data Identifier.
-//    - SDIDBlockNumber: secondary Data Identifier (if type 2) or the Data Block
-//      Number (if type 1).
-//    - data: user data content of the Ancillary packet. Does not contain the
-//      ADF, DID, SDID nor CS.
+//   - composite: TRUE if composite ADF should be created, component otherwise.
+//   - DID: data Identifier.
+//   - SDIDBlockNumber: secondary Data Identifier (if type 2) or the Data Block
+//     Number (if type 1).
+//   - data: user data content of the Ancillary packet. Does not contain the
+//     ADF, DID, SDID nor CS.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if enough space was left in the current line, FALSE otherwise.
+//   - ok: TRUE if enough space was left in the current line, FALSE otherwise.
 //
 func (encoder *VideoVBIEncoder) AddAncillary(composite bool, DID byte, SDIDBlockNumber byte, data []byte) bool {
 	var _arg0 *C.GstVideoVBIEncoder // out
@@ -450,13 +452,15 @@ func NewVideoVBIParser(format VideoFormat, pixelWidth uint32) *VideoVBIParser {
 
 	var _videoVBIParser *VideoVBIParser // out
 
-	_videoVBIParser = (*VideoVBIParser)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoVBIParser)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_vbi_parser_free((*C.GstVideoVBIParser)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoVBIParser = (*VideoVBIParser)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoVBIParser)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_vbi_parser_free((*C.GstVideoVBIParser)(intern.C))
+			},
+		)
+	}
 
 	return _videoVBIParser
 }
@@ -490,10 +494,10 @@ func (parser *VideoVBIParser) Copy() *VideoVBIParser {
 //
 // The function returns the following values:
 //
-//    - anc to start the eventual ancillary data.
-//    - videoVBIParserResult: GST_VIDEO_VBI_PARSER_RESULT_OK if ancillary data
-//      was found and anc was filled. GST_VIDEO_VBI_PARSER_RESULT_DONE if there
-//      wasn't any data.
+//   - anc to start the eventual ancillary data.
+//   - videoVBIParserResult: GST_VIDEO_VBI_PARSER_RESULT_OK if ancillary data
+//     was found and anc was filled. GST_VIDEO_VBI_PARSER_RESULT_DONE if there
+//     wasn't any data.
 //
 func (parser *VideoVBIParser) Ancillary() (*VideoAncillary, VideoVBIParserResult) {
 	var _arg0 *C.GstVideoVBIParser      // out

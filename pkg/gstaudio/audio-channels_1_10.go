@@ -16,11 +16,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - position: GstAudioChannelPositions to convert.
+//   - position: GstAudioChannelPositions to convert.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string representing position.
+//   - utf8: newly allocated string representing position.
 //
 func AudioChannelPositionsToString(position []AudioChannelPosition) string {
 	var _arg1 *C.GstAudioChannelPosition // out

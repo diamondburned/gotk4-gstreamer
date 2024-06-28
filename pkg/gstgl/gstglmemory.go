@@ -46,7 +46,7 @@ const GL_MEMORY_VIDEO_EXT_FORMATS = ", BGR10A2_LE, RGB10A2_LE, P010_10LE, P012_L
 
 // GL_MEMORY_VIDEO_FORMATS_STR: list of video formats that are supported by
 // GLMemory.
-const GL_MEMORY_VIDEO_FORMATS_STR = "{ RGBA, BGRA, RGBx, BGRx, ARGB, ABGR, xRGB, xBGR, GBRA, GBR, RGBP, BGRP, RGB, BGR, RGB16, BGR16, AYUV, VUYA, Y410, I420, YV12, NV12, NV21, NV16, NV61, YUY2, UYVY, Y210, Y41B, Y42B, Y444, GRAY8, GRAY16_LE, GRAY16_BE, ARGB64, A420, AV12"
+const GL_MEMORY_VIDEO_FORMATS_STR = "{ RGBA, BGRA, RGBx, BGRx, ARGB, ABGR, xRGB, xBGR, GBRA, GBR, RGBP, BGRP, RGB, BGR, RGB16, BGR16, AYUV, VUYA, Y410, I420, YV12, NV12, NV21, NV16, NV61, YUY2, UYVY, Y210, Y41B, Y42B, Y444, GRAY8, GRAY16_LE, GRAY16_BE, ARGB64, A420, AV12, NV12_16L32S, NV12_4L4"
 
 // GLMemoryAllocatorOverrides contains methods that are overridable.
 type GLMemoryAllocatorOverrides struct {
@@ -250,15 +250,15 @@ func (g *GLMemory) SetTexWidth(texWidth uint) {
 //
 // The function takes the following parameters:
 //
-//    - texId: openGL texture id.
-//    - target: GLTextureTarget.
-//    - texFormat: GLFormat.
-//    - width of tex_id.
-//    - height of tex_id.
+//   - texId: openGL texture id.
+//   - target: GLTextureTarget.
+//   - texFormat: GLFormat.
+//   - width of tex_id.
+//   - height of tex_id.
 //
 // The function returns the following values:
 //
-//    - ok: whether the copy succeeded.
+//   - ok: whether the copy succeeded.
 //
 func (glMem *GLMemory) CopyInto(texId uint, target GLTextureTarget, texFormat GLFormat, width int, height int) bool {
 	var _arg0 *C.GstGLMemory       // out
@@ -298,15 +298,15 @@ func (glMem *GLMemory) CopyInto(texId uint, target GLTextureTarget, texFormat GL
 //
 // The function takes the following parameters:
 //
-//    - texId: destination texture id.
-//    - outTarget: destination GLTextureTarget.
-//    - outTexFormat: destination GLFormat.
-//    - outWidth: destination width.
-//    - outHeight: destination height.
+//   - texId: destination texture id.
+//   - outTarget: destination GLTextureTarget.
+//   - outTexFormat: destination GLFormat.
+//   - outWidth: destination width.
+//   - outHeight: destination height.
 //
 // The function returns the following values:
 //
-//    - ok: whether the copy succeeded.
+//   - ok: whether the copy succeeded.
 //
 func (src *GLMemory) CopyTeximage(texId uint, outTarget GLTextureTarget, outTexFormat GLFormat, outWidth int, outHeight int) bool {
 	var _arg0 *C.GstGLMemory       // out
@@ -343,7 +343,7 @@ func (src *GLMemory) CopyTeximage(texId uint, outTarget GLTextureTarget, outTexF
 
 // The function returns the following values:
 //
-//    - glFormat of gl_mem.
+//   - glFormat of gl_mem.
 //
 func (glMem *GLMemory) TextureFormat() GLFormat {
 	var _arg0 *C.GstGLMemory // out
@@ -363,7 +363,7 @@ func (glMem *GLMemory) TextureFormat() GLFormat {
 
 // The function returns the following values:
 //
-//    - gint: texture height of gl_mem.
+//   - gint: texture height of gl_mem.
 //
 func (glMem *GLMemory) TextureHeight() int {
 	var _arg0 *C.GstGLMemory // out
@@ -383,7 +383,7 @@ func (glMem *GLMemory) TextureHeight() int {
 
 // The function returns the following values:
 //
-//    - guint: openGL texture handle of gl_mem.
+//   - guint: openGL texture handle of gl_mem.
 //
 func (glMem *GLMemory) TextureID() uint {
 	var _arg0 *C.GstGLMemory // out
@@ -403,7 +403,7 @@ func (glMem *GLMemory) TextureID() uint {
 
 // The function returns the following values:
 //
-//    - glTextureTarget of gl_mem.
+//   - glTextureTarget of gl_mem.
 //
 func (glMem *GLMemory) TextureTarget() GLTextureTarget {
 	var _arg0 *C.GstGLMemory       // out
@@ -423,7 +423,7 @@ func (glMem *GLMemory) TextureTarget() GLTextureTarget {
 
 // The function returns the following values:
 //
-//    - gint: texture width of gl_mem.
+//   - gint: texture width of gl_mem.
 //
 func (glMem *GLMemory) TextureWidth() int {
 	var _arg0 *C.GstGLMemory // out
@@ -448,11 +448,11 @@ func (glMem *GLMemory) TextureWidth() int {
 //
 // The function takes the following parameters:
 //
-//    - writePointer (optional): data pointer to pass to glReadPixels.
+//   - writePointer (optional): data pointer to pass to glReadPixels.
 //
 // The function returns the following values:
 //
-//    - ok: whether theread operation succeeded.
+//   - ok: whether theread operation succeeded.
 //
 func (glMem *GLMemory) ReadPixels(writePointer unsafe.Pointer) bool {
 	var _arg0 *C.GstGLMemory // out
@@ -481,7 +481,7 @@ func (glMem *GLMemory) ReadPixels(writePointer unsafe.Pointer) bool {
 //
 // The function takes the following parameters:
 //
-//    - readPointer (optional): data pointer to pass to glTexSubImage.
+//   - readPointer (optional): data pointer to pass to glTexSubImage.
 //
 func (glMem *GLMemory) Texsubimage(readPointer unsafe.Pointer) {
 	var _arg0 *C.GstGLMemory // out
@@ -625,7 +625,7 @@ func (g *GLVideoAllocationParams) SetPlane(plane uint) {
 //
 // The function takes the following parameters:
 //
-//    - destVid: destination GLVideoAllocationParams to copy into.
+//   - destVid: destination GLVideoAllocationParams to copy into.
 //
 func (srcVid *GLVideoAllocationParams) CopyData(destVid *GLVideoAllocationParams) {
 	var _arg0 *C.GstGLVideoAllocationParams // out

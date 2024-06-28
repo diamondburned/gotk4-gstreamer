@@ -58,8 +58,8 @@ func init() {
 type RTPBasePayloadOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - pad
-	//    - filter
+	//   - pad
+	//   - filter
 	//
 	// The function returns the following values:
 	//
@@ -71,8 +71,8 @@ type RTPBasePayloadOverrides struct {
 	HandleBuffer func(buffer *gst.Buffer) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - pad
-	//    - query
+	//   - pad
+	//   - query
 	//
 	// The function returns the following values:
 	//
@@ -219,14 +219,14 @@ func (payload *RTPBasePayload) ConnectRequestExtension(f func(extId uint, extUri
 //
 // The function takes the following parameters:
 //
-//    - payloadLen: length of the payload.
-//    - padLen: amount of padding.
-//    - csrcCount: minimum number of CSRC entries.
+//   - payloadLen: length of the payload.
+//   - padLen: amount of padding.
+//   - csrcCount: minimum number of CSRC entries.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer that can hold an RTP packet with given
-//      parameters.
+//   - buffer: newly allocated buffer that can hold an RTP packet with given
+//     parameters.
 //
 func (payload *RTPBasePayload) AllocateOutputBuffer(payloadLen uint, padLen, csrcCount byte) *gst.Buffer {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -259,18 +259,18 @@ func (payload *RTPBasePayload) AllocateOutputBuffer(payloadLen uint, padLen, csr
 	return _buffer
 }
 
-// SourceCount: count the total number of RTP sources found in the meta of
-// buffer, which will be automically added by
+// SourceCount: count the total number of RTP sources found
+// in the meta of buffer, which will be automically added by
 // gst_rtp_base_payload_allocate_output_buffer(). If RTPBasePayload:source-info
 // is FALSE the count will be 0.
 //
 // The function takes the following parameters:
 //
-//    - buffer typically the buffer to payload.
+//   - buffer typically the buffer to payload.
 //
 // The function returns the following values:
 //
-//    - guint: number of sources.
+//   - guint: number of sources.
 //
 func (payload *RTPBasePayload) SourceCount(buffer *gst.Buffer) uint {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -296,13 +296,13 @@ func (payload *RTPBasePayload) SourceCount(buffer *gst.Buffer) uint {
 //
 // The function takes the following parameters:
 //
-//    - size of the packet.
-//    - duration of the packet.
+//   - size of the packet.
+//   - duration of the packet.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the packet of size and duration would exceed the configured
-//      MTU or max_ptime.
+//   - ok: TRUE if the packet of size and duration would exceed the configured
+//     MTU or max_ptime.
 //
 func (payload *RTPBasePayload) IsFilled(size uint, duration gst.ClockTime) bool {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -312,9 +312,7 @@ func (payload *RTPBasePayload) IsFilled(size uint, duration gst.ClockTime) bool 
 
 	_arg0 = (*C.GstRTPBasePayload)(unsafe.Pointer(coreglib.InternObject(payload).Native()))
 	_arg1 = C.guint(size)
-	_arg2 = C.guint64(duration)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(duration)
 
 	_cret = C.gst_rtp_base_payload_is_filled(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(payload)
@@ -335,7 +333,7 @@ func (payload *RTPBasePayload) IsFilled(size uint, duration gst.ClockTime) bool 
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if source-info is enabled.
+//   - ok: TRUE if source-info is enabled.
 //
 func (payload *RTPBasePayload) IsSourceInfoEnabled() bool {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -362,11 +360,11 @@ func (payload *RTPBasePayload) IsSourceInfoEnabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (payload *RTPBasePayload) Push(buffer *gst.Buffer) gst.FlowReturn {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -395,11 +393,11 @@ func (payload *RTPBasePayload) Push(buffer *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - list: BufferList.
+//   - list: BufferList.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (payload *RTPBasePayload) PushList(list *gst.BufferList) gst.FlowReturn {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -427,10 +425,10 @@ func (payload *RTPBasePayload) PushList(list *gst.BufferList) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - media type (typically "audio" or "video").
-//    - dynamic: if the payload type is dynamic.
-//    - encodingName: encoding name.
-//    - clockRate: clock rate of the media.
+//   - media type (typically "audio" or "video").
+//   - dynamic: if the payload type is dynamic.
+//   - encodingName: encoding name.
+//   - clockRate: clock rate of the media.
 //
 func (payload *RTPBasePayload) SetOptions(media string, dynamic bool, encodingName string, clockRate uint32) {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -461,11 +459,11 @@ func (payload *RTPBasePayload) SetOptions(media string, dynamic bool, encodingNa
 //
 // The function takes the following parameters:
 //
-//    - s (optional) with the caps fields.
+//   - s (optional) with the caps fields.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps could be set.
+//   - ok: TRUE if the caps could be set.
 //
 func (payload *RTPBasePayload) SetOutcapsStructure(s *gst.Structure) bool {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -495,7 +493,7 @@ func (payload *RTPBasePayload) SetOutcapsStructure(s *gst.Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - enable: whether to add contributing sources to RTP packets.
+//   - enable: whether to add contributing sources to RTP packets.
 //
 func (payload *RTPBasePayload) SetSourceInfoEnabled(enable bool) {
 	var _arg0 *C.GstRTPBasePayload // out
@@ -513,8 +511,8 @@ func (payload *RTPBasePayload) SetSourceInfoEnabled(enable bool) {
 
 // The function takes the following parameters:
 //
-//    - pad
-//    - filter
+//   - pad
+//   - filter
 //
 // The function returns the following values:
 //
@@ -577,8 +575,8 @@ func (payload *RTPBasePayload) handleBuffer(buffer *gst.Buffer) gst.FlowReturn {
 
 // The function takes the following parameters:
 //
-//    - pad
-//    - query
+//   - pad
+//   - query
 //
 // The function returns the following values:
 //

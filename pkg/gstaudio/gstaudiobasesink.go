@@ -81,13 +81,13 @@ func (a AudioBaseSinkSlaveMethod) String() string {
 
 // AudioBaseSinkOverrides contains methods that are overridable.
 type AudioBaseSinkOverrides struct {
-	// CreateRingbuffer: create and return the AudioRingBuffer for sink. This
-	// function will call the ::create_ringbuffer vmethod and will set sink as
-	// the parent of the returned buffer (see gst_object_set_parent()).
+	// CreateRingbuffer: create and return the AudioRingBuffer for sink.
+	// This function will call the ::create_ringbuffer vmethod and will set sink
+	// as the parent of the returned buffer (see gst_object_set_parent()).
 	//
 	// The function returns the following values:
 	//
-	//    - audioRingBuffer: new ringbuffer of sink.
+	//   - audioRingBuffer (optional): new ringbuffer of sink.
 	//
 	CreateRingbuffer func() AudioRingBufferer
 	// The function takes the following parameters:
@@ -167,7 +167,7 @@ func marshalAudioBaseSink(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - audioRingBuffer: new ringbuffer of sink.
+//   - audioRingBuffer (optional): new ringbuffer of sink.
 //
 func (sink *AudioBaseSink) CreateRingbuffer() AudioRingBufferer {
 	var _arg0 *C.GstAudioBaseSink   // out
@@ -180,33 +180,32 @@ func (sink *AudioBaseSink) CreateRingbuffer() AudioRingBufferer {
 
 	var _audioRingBuffer AudioRingBufferer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstaudio.AudioRingBufferer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AudioRingBufferer)
-			return ok
-		})
-		rv, ok := casted.(AudioRingBufferer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(AudioRingBufferer)
+				return ok
+			})
+			rv, ok := casted.(AudioRingBufferer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			}
+			_audioRingBuffer = rv
 		}
-		_audioRingBuffer = rv
 	}
 
 	return _audioRingBuffer
 }
 
-// AlignmentThreshold: get the current alignment threshold, in nanoseconds, used
-// by sink.
+// AlignmentThreshold: get the current alignment threshold, in nanoseconds,
+// used by sink.
 //
 // The function returns the following values:
 //
-//    - clockTime: current alignment threshold used by sink.
+//   - clockTime: current alignment threshold used by sink.
 //
 func (sink *AudioBaseSink) AlignmentThreshold() gst.ClockTime {
 	var _arg0 *C.GstAudioBaseSink // out
@@ -219,9 +218,7 @@ func (sink *AudioBaseSink) AlignmentThreshold() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -230,7 +227,7 @@ func (sink *AudioBaseSink) AlignmentThreshold() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: current discont wait used by sink.
+//   - clockTime: current discont wait used by sink.
 //
 func (sink *AudioBaseSink) DiscontWait() gst.ClockTime {
 	var _arg0 *C.GstAudioBaseSink // out
@@ -243,9 +240,7 @@ func (sink *AudioBaseSink) DiscontWait() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -255,7 +250,7 @@ func (sink *AudioBaseSink) DiscontWait() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - gint64: current drift tolerance used by sink.
+//   - gint64: current drift tolerance used by sink.
 //
 func (sink *AudioBaseSink) DriftTolerance() int64 {
 	var _arg0 *C.GstAudioBaseSink // out
@@ -278,7 +273,7 @@ func (sink *AudioBaseSink) DriftTolerance() int64 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if sink will provide a clock.
+//   - ok: TRUE if sink will provide a clock.
 //
 func (sink *AudioBaseSink) ProvideClock() bool {
 	var _arg0 *C.GstAudioBaseSink // out
@@ -302,7 +297,7 @@ func (sink *AudioBaseSink) ProvideClock() bool {
 //
 // The function returns the following values:
 //
-//    - audioBaseSinkSlaveMethod: current slave method used by sink.
+//   - audioBaseSinkSlaveMethod: current slave method used by sink.
 //
 func (sink *AudioBaseSink) SlaveMethod() AudioBaseSinkSlaveMethod {
 	var _arg0 *C.GstAudioBaseSink           // out
@@ -338,24 +333,22 @@ func (sink *AudioBaseSink) ReportDeviceFailure() {
 //
 // The function takes the following parameters:
 //
-//    - alignmentThreshold: new alignment threshold in nanoseconds.
+//   - alignmentThreshold: new alignment threshold in nanoseconds.
 //
 func (sink *AudioBaseSink) SetAlignmentThreshold(alignmentThreshold gst.ClockTime) {
 	var _arg0 *C.GstAudioBaseSink // out
 	var _arg1 C.GstClockTime      // out
 
 	_arg0 = (*C.GstAudioBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.guint64(alignmentThreshold)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(alignmentThreshold)
 
 	C.gst_audio_base_sink_set_alignment_threshold(_arg0, _arg1)
 	runtime.KeepAlive(sink)
 	runtime.KeepAlive(alignmentThreshold)
 }
 
-// SetCustomSlavingCallback sets the custom slaving callback. This callback will
-// be invoked if the slave-method property is set to
+// SetCustomSlavingCallback sets the custom slaving callback.
+// This callback will be invoked if the slave-method property is set to
 // GST_AUDIO_BASE_SINK_SLAVE_CUSTOM and the audio sink receives and plays
 // samples.
 //
@@ -364,7 +357,7 @@ func (sink *AudioBaseSink) SetAlignmentThreshold(alignmentThreshold gst.ClockTim
 //
 // The function takes the following parameters:
 //
-//    - callback: AudioBaseSinkCustomSlavingCallback.
+//   - callback: AudioBaseSinkCustomSlavingCallback.
 //
 func (sink *AudioBaseSink) SetCustomSlavingCallback(callback AudioBaseSinkCustomSlavingCallback) {
 	var _arg0 *C.GstAudioBaseSink                     // out
@@ -387,16 +380,14 @@ func (sink *AudioBaseSink) SetCustomSlavingCallback(callback AudioBaseSinkCustom
 //
 // The function takes the following parameters:
 //
-//    - discontWait: new discont wait in nanoseconds.
+//   - discontWait: new discont wait in nanoseconds.
 //
 func (sink *AudioBaseSink) SetDiscontWait(discontWait gst.ClockTime) {
 	var _arg0 *C.GstAudioBaseSink // out
 	var _arg1 C.GstClockTime      // out
 
 	_arg0 = (*C.GstAudioBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.guint64(discontWait)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(discontWait)
 
 	C.gst_audio_base_sink_set_discont_wait(_arg0, _arg1)
 	runtime.KeepAlive(sink)
@@ -407,7 +398,7 @@ func (sink *AudioBaseSink) SetDiscontWait(discontWait gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - driftTolerance: new drift tolerance in microseconds.
+//   - driftTolerance: new drift tolerance in microseconds.
 //
 func (sink *AudioBaseSink) SetDriftTolerance(driftTolerance int64) {
 	var _arg0 *C.GstAudioBaseSink // out
@@ -428,7 +419,7 @@ func (sink *AudioBaseSink) SetDriftTolerance(driftTolerance int64) {
 //
 // The function takes the following parameters:
 //
-//    - provide: new state.
+//   - provide: new state.
 //
 func (sink *AudioBaseSink) SetProvideClock(provide bool) {
 	var _arg0 *C.GstAudioBaseSink // out
@@ -448,7 +439,7 @@ func (sink *AudioBaseSink) SetProvideClock(provide bool) {
 //
 // The function takes the following parameters:
 //
-//    - method: new slave method.
+//   - method: new slave method.
 //
 func (sink *AudioBaseSink) SetSlaveMethod(method AudioBaseSinkSlaveMethod) {
 	var _arg0 *C.GstAudioBaseSink           // out
@@ -468,7 +459,7 @@ func (sink *AudioBaseSink) SetSlaveMethod(method AudioBaseSinkSlaveMethod) {
 //
 // The function returns the following values:
 //
-//    - audioRingBuffer: new ringbuffer of sink.
+//   - audioRingBuffer (optional): new ringbuffer of sink.
 //
 func (sink *AudioBaseSink) createRingbuffer() AudioRingBufferer {
 	gclass := (*C.GstAudioBaseSinkClass)(coreglib.PeekParentClass(sink))
@@ -484,22 +475,21 @@ func (sink *AudioBaseSink) createRingbuffer() AudioRingBufferer {
 
 	var _audioRingBuffer AudioRingBufferer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstaudio.AudioRingBufferer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AudioRingBufferer)
-			return ok
-		})
-		rv, ok := casted.(AudioRingBufferer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(AudioRingBufferer)
+				return ok
+			})
+			rv, ok := casted.(AudioRingBufferer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			}
+			_audioRingBuffer = rv
 		}
-		_audioRingBuffer = rv
 	}
 
 	return _audioRingBuffer

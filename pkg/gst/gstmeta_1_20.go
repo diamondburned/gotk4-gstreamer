@@ -18,8 +18,8 @@ import (
 import "C"
 
 // CustomMetaTransformFunction: function called for each meta in buffer as a
-// result of performing a transformation on transbuf. Additional type specific
-// transform data is passed to the function as data.
+// result of performing a transformation that yields transbuf. Additional type
+// specific transform data is passed to the function as data.
 //
 // Implementations should check the type of the transform and parse additional
 // type specific fields in data that should be used to update the metadata on
@@ -51,7 +51,7 @@ func (c *CustomMeta) Meta() *Meta {
 //
 // The function returns the following values:
 //
-//    - structure backing meta.
+//   - structure backing meta.
 //
 func (meta *CustomMeta) Structure() *Structure {
 	var _arg0 *C.GstCustomMeta // out
@@ -75,7 +75,7 @@ func (meta *CustomMeta) Structure() *Structure {
 //
 // The function returns the following values:
 //
-//    - ok: whether name is the name of the custom meta.
+//   - ok: whether name is the name of the custom meta.
 //
 func (meta *CustomMeta) HasName(name string) bool {
 	var _arg0 *C.GstCustomMeta // out
@@ -109,19 +109,19 @@ func (meta *CustomMeta) HasName(name string) bool {
 // its mutability is conditioned by the writability of the buffer the meta is
 // attached to.
 //
-// When transform_func is NULL, the meta and its backing Structure will always
-// be copied when the transform operation is copy, other operations are
+// When transform_func is NULL, the meta and its backing Structure will
+// always be copied when the transform operation is copy, other operations are
 // discarded, copy regions are ignored.
 //
 // The function takes the following parameters:
 //
-//    - name of the Meta implementation.
-//    - tags for api.
-//    - transformFunc (optional): MetaTransformFunction.
+//   - name of the Meta implementation.
+//   - tags for api.
+//   - transformFunc (optional): MetaTransformFunction.
 //
 // The function returns the following values:
 //
-//    - metaInfo that can be used to access metadata.
+//   - metaInfo that can be used to access metadata.
 //
 func MetaRegisterCustom(name string, tags []string, transformFunc CustomMetaTransformFunction) *MetaInfo {
 	var _arg1 *C.gchar                         // out

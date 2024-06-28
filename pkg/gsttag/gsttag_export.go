@@ -3,6 +3,7 @@
 package gsttag
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/OmegaRogue/gotk4-gstreamer/pkg/gst"
@@ -39,6 +40,74 @@ func _gotk4_gsttag1_TagDemuxClass_identify_tag(arg0 *C.GstTagDemux, arg1 *C.GstB
 	if ok {
 		cret = C.TRUE
 	}
+
+	return cret
+}
+
+//export _gotk4_gsttag1_TagDemuxClass_merge_tags
+func _gotk4_gsttag1_TagDemuxClass_merge_tags(arg0 *C.GstTagDemux, arg1 *C.GstTagList, arg2 *C.GstTagList) (cret *C.GstTagList) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[TagDemuxOverrides](instance0)
+	if overrides.MergeTags == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TagDemuxOverrides.MergeTags, got none")
+	}
+
+	var _startTags *gst.TagList // out
+	var _endTags *gst.TagList   // out
+
+	_startTags = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_endTags = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	tagList := overrides.MergeTags(_startTags, _endTags)
+
+	var _ *gst.TagList
+
+	cret = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(tagList)), nil)
+
+	return cret
+}
+
+//export _gotk4_gsttag1_TagMuxClass_render_end_tag
+func _gotk4_gsttag1_TagMuxClass_render_end_tag(arg0 *C.GstTagMux, arg1 *C.GstTagList) (cret *C.GstBuffer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[TagMuxOverrides](instance0)
+	if overrides.RenderEndTag == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TagMuxOverrides.RenderEndTag, got none")
+	}
+
+	var _tagList *gst.TagList // out
+
+	_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	buffer := overrides.RenderEndTag(_tagList)
+
+	var _ *gst.Buffer
+
+	cret = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buffer)), nil)
+
+	return cret
+}
+
+//export _gotk4_gsttag1_TagMuxClass_render_start_tag
+func _gotk4_gsttag1_TagMuxClass_render_start_tag(arg0 *C.GstTagMux, arg1 *C.GstTagList) (cret *C.GstBuffer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[TagMuxOverrides](instance0)
+	if overrides.RenderStartTag == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TagMuxOverrides.RenderStartTag, got none")
+	}
+
+	var _tagList *gst.TagList // out
+
+	_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	buffer := overrides.RenderStartTag(_tagList)
+
+	var _ *gst.Buffer
+
+	cret = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buffer)), nil)
 
 	return cret
 }

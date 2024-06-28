@@ -99,7 +99,7 @@ type GLWindowOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if window controls the GL viewport, otherwise FALSE.
+	//   - ok: TRUE if window controls the GL viewport, otherwise FALSE.
 	//
 	ControlsViewport func() bool
 	// Draw: redraw the window contents. Implementations should invoke the draw
@@ -107,12 +107,12 @@ type GLWindowOverrides struct {
 	Draw func()
 	// The function returns the following values:
 	//
-	//    - guintptr: windowing system display handle for this window.
+	//   - guintptr: windowing system display handle for this window.
 	//
 	Display func() uintptr
 	// The function returns the following values:
 	//
-	//    - guintptr: window handle we are currently rendering into.
+	//   - guintptr: window handle we are currently rendering into.
 	//
 	WindowHandle func() uintptr
 	// HandleEvents: tell a window that it should handle events from the window
@@ -123,14 +123,14 @@ type GLWindowOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - handleEvents indicating if events should be handled or not.
+	//   - handleEvents indicating if events should be handled or not.
 	//
 	HandleEvents func(handleEvents bool)
 	// HasOutputSurface: query whether window has output surface or not.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if window has useable output surface.
+	//   - ok: TRUE if window has useable output surface.
 	//
 	HasOutputSurface func() bool
 	Open             func() error
@@ -145,8 +145,8 @@ type GLWindowOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - width: new preferred width.
-	//    - height: new preferred height.
+	//   - width: new preferred width.
+	//   - height: new preferred height.
 	//
 	SetPreferredSize func(width, height int)
 	// SetRenderRectangle: tell a window that it should render into a specific
@@ -154,23 +154,23 @@ type GLWindowOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - x position.
-	//    - y position.
-	//    - width: width.
-	//    - height: height.
+	//   - x position.
+	//   - y position.
+	//   - width: width.
+	//   - height: height.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the specified region could be set.
+	//   - ok: whether the specified region could be set.
 	//
 	SetRenderRectangle func(x, y, width, height int) bool
-	// SetWindowHandle sets the window that this window should render into. Some
-	// implementations require this to be called with a valid handle before
+	// SetWindowHandle sets the window that this window should render into.
+	// Some implementations require this to be called with a valid handle before
 	// drawing can commence.
 	//
 	// The function takes the following parameters:
 	//
-	//    - handle to the window.
+	//   - handle to the window.
 	//
 	SetWindowHandle func(handle uintptr)
 	// Show: present the window to the screen.
@@ -348,11 +348,11 @@ func (window *GLWindow) ConnectWindowHandleChanged(f func()) coreglib.SignalHand
 
 // The function takes the following parameters:
 //
-//    - display: GLDisplay.
+//   - display: GLDisplay.
 //
 // The function returns the following values:
 //
-//    - glWindow: new GLWindow using display's connection.
+//   - glWindow: new GLWindow using display's connection.
 //
 func NewGLWindow(display *GLDisplay) *GLWindow {
 	var _arg1 *C.GstGLDisplay // out
@@ -374,7 +374,7 @@ func NewGLWindow(display *GLDisplay) *GLWindow {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window controls the GL viewport, otherwise FALSE.
+//   - ok: TRUE if window controls the GL viewport, otherwise FALSE.
 //
 func (window *GLWindow) ControlsViewport() bool {
 	var _arg0 *C.GstGLWindow // out
@@ -407,7 +407,7 @@ func (window *GLWindow) Draw() {
 
 // The function returns the following values:
 //
-//    - glContext associated with this window.
+//   - glContext associated with this window.
 //
 func (window *GLWindow) Context() GLContexter {
 	var _arg0 *C.GstGLWindow  // out
@@ -443,7 +443,7 @@ func (window *GLWindow) Context() GLContexter {
 
 // The function returns the following values:
 //
-//    - guintptr: windowing system display handle for this window.
+//   - guintptr: windowing system display handle for this window.
 //
 func (window *GLWindow) Display() uintptr {
 	var _arg0 *C.GstGLWindow // out
@@ -456,15 +456,15 @@ func (window *GLWindow) Display() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
 
 // The function returns the following values:
 //
-//    - width: resulting surface width.
-//    - height: resulting surface height.
+//   - width: resulting surface width.
+//   - height: resulting surface height.
 //
 func (window *GLWindow) SurfaceDimensions() (width, height uint) {
 	var _arg0 *C.GstGLWindow // out
@@ -487,7 +487,7 @@ func (window *GLWindow) SurfaceDimensions() (width, height uint) {
 
 // The function returns the following values:
 //
-//    - guintptr: window handle we are currently rendering into.
+//   - guintptr: window handle we are currently rendering into.
 //
 func (window *GLWindow) WindowHandle() uintptr {
 	var _arg0 *C.GstGLWindow // out
@@ -500,7 +500,7 @@ func (window *GLWindow) WindowHandle() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
@@ -513,7 +513,7 @@ func (window *GLWindow) WindowHandle() uintptr {
 //
 // The function takes the following parameters:
 //
-//    - handleEvents indicating if events should be handled or not.
+//   - handleEvents indicating if events should be handled or not.
 //
 func (window *GLWindow) HandleEvents(handleEvents bool) {
 	var _arg0 *C.GstGLWindow // out
@@ -533,7 +533,7 @@ func (window *GLWindow) HandleEvents(handleEvents bool) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window has useable output surface.
+//   - ok: TRUE if window has useable output surface.
 //
 func (window *GLWindow) HasOutputSurface() bool {
 	var _arg0 *C.GstGLWindow // out
@@ -577,8 +577,8 @@ func (window *GLWindow) Quit() {
 //
 // The function takes the following parameters:
 //
-//    - width: new width.
-//    - height: new height.
+//   - width: new width.
+//   - height: new height.
 //
 func (window *GLWindow) Resize(width, height uint) {
 	var _arg0 *C.GstGLWindow // out
@@ -607,8 +607,8 @@ func (window *GLWindow) Run() {
 
 // The function takes the following parameters:
 //
-//    - eventType
-//    - keyStr
+//   - eventType
+//   - keyStr
 //
 func (window *GLWindow) SendKeyEvent(eventType, keyStr string) {
 	var _arg0 *C.GstGLWindow // out
@@ -629,10 +629,10 @@ func (window *GLWindow) SendKeyEvent(eventType, keyStr string) {
 
 // The function takes the following parameters:
 //
-//    - eventType
-//    - button
-//    - posx
-//    - posy
+//   - eventType
+//   - button
+//   - posx
+//   - posy
 //
 func (window *GLWindow) SendMouseEvent(eventType string, button int, posx, posy float64) {
 	var _arg0 *C.GstGLWindow // out
@@ -661,10 +661,10 @@ func (window *GLWindow) SendMouseEvent(eventType string, button int, posx, posy 
 //
 // The function takes the following parameters:
 //
-//    - posx: x position of the mouse cursor.
-//    - posy: y position of the mouse cursor.
-//    - deltaX: x offset of the scroll event.
-//    - deltaY: y offset of the scroll event.
+//   - posx: x position of the mouse cursor.
+//   - posy: y position of the mouse cursor.
+//   - deltaX: x offset of the scroll event.
+//   - deltaY: y offset of the scroll event.
 //
 func (window *GLWindow) SendScrollEvent(posx, posy, deltaX, deltaY float64) {
 	var _arg0 *C.GstGLWindow // out
@@ -692,8 +692,8 @@ func (window *GLWindow) SendScrollEvent(posx, posy, deltaX, deltaY float64) {
 //
 // The function takes the following parameters:
 //
-//    - width: new preferred width.
-//    - height: new preferred height.
+//   - width: new preferred width.
+//   - height: new preferred height.
 //
 func (window *GLWindow) SetPreferredSize(width, height int) {
 	var _arg0 *C.GstGLWindow // out
@@ -715,14 +715,14 @@ func (window *GLWindow) SetPreferredSize(width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - x position.
-//    - y position.
-//    - width: width.
-//    - height: height.
+//   - x position.
+//   - y position.
+//   - width: width.
+//   - height: height.
 //
 // The function returns the following values:
 //
-//    - ok: whether the specified region could be set.
+//   - ok: whether the specified region could be set.
 //
 func (window *GLWindow) SetRenderRectangle(x, y, width, height int) bool {
 	var _arg0 *C.GstGLWindow // out
@@ -760,14 +760,14 @@ func (window *GLWindow) SetRenderRectangle(x, y, width, height int) bool {
 //
 // The function takes the following parameters:
 //
-//    - handle to the window.
+//   - handle to the window.
 //
 func (window *GLWindow) SetWindowHandle(handle uintptr) {
 	var _arg0 *C.GstGLWindow // out
 	var _arg1 C.guintptr     // out
 
 	_arg0 = (*C.GstGLWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (C.guintptr)(unsafe.Pointer(handle))
+	_arg1 = C.guintptr(handle)
 
 	C.gst_gl_window_set_window_handle(_arg0, _arg1)
 	runtime.KeepAlive(window)
@@ -800,7 +800,7 @@ func (window *GLWindow) close() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window controls the GL viewport, otherwise FALSE.
+//   - ok: TRUE if window controls the GL viewport, otherwise FALSE.
 //
 func (window *GLWindow) controlsViewport() bool {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -838,7 +838,7 @@ func (window *GLWindow) draw() {
 
 // The function returns the following values:
 //
-//    - guintptr: windowing system display handle for this window.
+//   - guintptr: windowing system display handle for this window.
 //
 func (window *GLWindow) display() uintptr {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -854,14 +854,14 @@ func (window *GLWindow) display() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
 
 // The function returns the following values:
 //
-//    - guintptr: window handle we are currently rendering into.
+//   - guintptr: window handle we are currently rendering into.
 //
 func (window *GLWindow) windowHandle() uintptr {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -877,7 +877,7 @@ func (window *GLWindow) windowHandle() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
@@ -890,7 +890,7 @@ func (window *GLWindow) windowHandle() uintptr {
 //
 // The function takes the following parameters:
 //
-//    - handleEvents indicating if events should be handled or not.
+//   - handleEvents indicating if events should be handled or not.
 //
 func (window *GLWindow) handleEvents(handleEvents bool) {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -913,7 +913,7 @@ func (window *GLWindow) handleEvents(handleEvents bool) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window has useable output surface.
+//   - ok: TRUE if window has useable output surface.
 //
 func (window *GLWindow) hasOutputSurface() bool {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -1001,8 +1001,8 @@ func (window *GLWindow) run() {
 //
 // The function takes the following parameters:
 //
-//    - width: new preferred width.
-//    - height: new preferred height.
+//   - width: new preferred width.
+//   - height: new preferred height.
 //
 func (window *GLWindow) setPreferredSize(width, height int) {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -1027,14 +1027,14 @@ func (window *GLWindow) setPreferredSize(width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - x position.
-//    - y position.
-//    - width: width.
-//    - height: height.
+//   - x position.
+//   - y position.
+//   - width: width.
+//   - height: height.
 //
 // The function returns the following values:
 //
-//    - ok: whether the specified region could be set.
+//   - ok: whether the specified region could be set.
 //
 func (window *GLWindow) setRenderRectangle(x, y, width, height int) bool {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -1075,7 +1075,7 @@ func (window *GLWindow) setRenderRectangle(x, y, width, height int) bool {
 //
 // The function takes the following parameters:
 //
-//    - handle to the window.
+//   - handle to the window.
 //
 func (window *GLWindow) setWindowHandle(handle uintptr) {
 	gclass := (*C.GstGLWindowClass)(coreglib.PeekParentClass(window))
@@ -1085,7 +1085,7 @@ func (window *GLWindow) setWindowHandle(handle uintptr) {
 	var _arg1 C.guintptr     // out
 
 	_arg0 = (*C.GstGLWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (C.guintptr)(unsafe.Pointer(handle))
+	_arg1 = C.guintptr(handle)
 
 	C._gotk4_gstgl1_GLWindow_virtual_set_window_handle(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(window)

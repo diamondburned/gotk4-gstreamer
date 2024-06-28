@@ -79,14 +79,14 @@ func marshalSharedTaskPool(p uintptr) (interface{}, error) {
 // NewSharedTaskPool: create a new shared task pool. The shared task pool will
 // queue tasks on a maximum number of threads, 1 by default.
 //
-// Do not use a SharedTaskPool to manage potentially inter-dependent tasks such
-// as pad tasks, as having one task waiting on another to return before
+// Do not use a SharedTaskPool to manage potentially inter-dependent tasks
+// such as pad tasks, as having one task waiting on another to return before
 // returning would cause obvious deadlocks if they happen to share the same
 // thread.
 //
 // The function returns the following values:
 //
-//    - sharedTaskPool: new SharedTaskPool. gst_object_unref() after usage.
+//   - sharedTaskPool: new SharedTaskPool. gst_object_unref() after usage.
 //
 func NewSharedTaskPool() *SharedTaskPool {
 	var _cret *C.GstTaskPool // in
@@ -102,7 +102,7 @@ func NewSharedTaskPool() *SharedTaskPool {
 
 // The function returns the following values:
 //
-//    - guint: maximum number of threads pool is configured to spawn.
+//   - guint: maximum number of threads pool is configured to spawn.
 //
 func (pool *SharedTaskPool) MaxThreads() uint {
 	var _arg0 *C.GstSharedTaskPool // out
@@ -120,15 +120,15 @@ func (pool *SharedTaskPool) MaxThreads() uint {
 	return _guint
 }
 
-// SetMaxThreads: update the maximal number of threads the pool may spawn. When
-// the maximal number of threads is reduced, existing threads are not
+// SetMaxThreads: update the maximal number of threads the pool may spawn.
+// When the maximal number of threads is reduced, existing threads are not
 // immediately shut down, see g_thread_pool_set_max_threads().
 //
 // Setting max_threads to 0 effectively freezes the pool.
 //
 // The function takes the following parameters:
 //
-//    - maxThreads: maximum number of threads to spawn.
+//   - maxThreads: maximum number of threads to spawn.
 //
 func (pool *SharedTaskPool) SetMaxThreads(maxThreads uint) {
 	var _arg0 *C.GstSharedTaskPool // out

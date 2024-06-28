@@ -111,8 +111,8 @@ type IteratorForEachFunction func(item *coreglib.Value)
 // Various GStreamer objects provide access to their internal structures using
 // an iterator.
 //
-// Note that if calling a GstIterator function results in your code receiving a
-// refcounted object (with, say, g_value_get_object()), the refcount for that
+// Note that if calling a GstIterator function results in your code receiving
+// a refcounted object (with, say, g_value_get_object()), the refcount for that
 // object will not be increased. Your code is responsible for taking a reference
 // if it wants to continue using it later.
 //
@@ -188,7 +188,7 @@ func NewIteratorSingle(typ coreglib.Type, object *coreglib.Value) *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator: new copy of it.
+//   - iterator: new copy of it.
 //
 func (it *Iterator) Copy() *Iterator {
 	var _arg0 *C.GstIterator // out
@@ -230,14 +230,14 @@ func (it *Iterator) Copy() *Iterator {
 //
 // The function takes the following parameters:
 //
-//    - fn: fold function.
-//    - ret: seed value passed to the fold function.
+//   - fn: fold function.
+//   - ret: seed value passed to the fold function.
 //
 // The function returns the following values:
 //
-//    - iteratorResult as described above.
+//   - iteratorResult as described above.
 //
-//      MT safe.
+//     MT safe.
 //
 func (it *Iterator) Fold(fn IteratorFoldFunction, ret *coreglib.Value) IteratorResult {
 	var _arg0 *C.GstIterator            // out
@@ -269,14 +269,14 @@ func (it *Iterator) Fold(fn IteratorFoldFunction, ret *coreglib.Value) IteratorR
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each element.
+//   - fn: function to call for each element.
 //
 // The function returns the following values:
 //
-//    - iteratorResult: result call to gst_iterator_fold(). The iterator will not
-//      be freed.
+//   - iteratorResult: result call to gst_iterator_fold(). The iterator will not
+//     be freed.
 //
-//      MT safe.
+//     MT safe.
 //
 func (it *Iterator) ForEach(fn IteratorForEachFunction) IteratorResult {
 	var _arg0 *C.GstIterator               // out
@@ -319,10 +319,11 @@ func (it *Iterator) ForEach(fn IteratorForEachFunction) IteratorResult {
 //
 // The function returns the following values:
 //
-//    - elem: pointer to hold next element.
-//    - iteratorResult: result of the iteration. Unset elem after usage.
+//   - elem: pointer to hold next element.
 //
-//      MT safe.
+//   - iteratorResult: result of the iteration. Unset elem after usage.
+//
+//     MT safe.
 //
 func (it *Iterator) Next() (coreglib.Value, IteratorResult) {
 	var _arg0 *C.GstIterator      // out
@@ -357,7 +358,7 @@ func (it *Iterator) Next() (coreglib.Value, IteratorResult) {
 //
 // The function takes the following parameters:
 //
-//    - other to push.
+//   - other to push.
 //
 func (it *Iterator) Push(other *Iterator) {
 	var _arg0 *C.GstIterator // out

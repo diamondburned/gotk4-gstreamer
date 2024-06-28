@@ -191,7 +191,7 @@ func (r RTPHeaderExtensionFlags) Has(other RTPHeaderExtensionFlags) bool {
 //
 // The function returns the following values:
 //
-//    - list of ElementFactory's. Use gst_plugin_feature_list_free() after use.
+//   - list of ElementFactory's. Use gst_plugin_feature_list_free() after use.
 //
 func RtpGetHeaderExtensionList() []*gst.ElementFactory {
 	var _cret *C.GList // in
@@ -233,35 +233,35 @@ type RTPHeaderExtensionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - inputMeta: Buffer.
+	//   - inputMeta: Buffer.
 	//
 	// The function returns the following values:
 	//
-	//    - gsize: maximum size of the data written by this extension.
+	//   - gsize: maximum size of the data written by this extension.
 	//
 	MaxSize func(inputMeta *gst.Buffer) uint
 	// The function returns the following values:
 	//
-	//    - rtpHeaderExtensionFlags flags supported by this instance of ext.
+	//   - rtpHeaderExtensionFlags flags supported by this instance of ext.
 	//
 	SupportedFlags func() RTPHeaderExtensionFlags
 	// Read the RTP header extension from data.
 	//
 	// The function takes the following parameters:
 	//
-	//    - readFlags for how the extension should be written.
-	//    - data: location to read the rtp header extension from.
-	//    - buffer to modify if necessary.
+	//   - readFlags for how the extension should be written.
+	//   - data: location to read the rtp header extension from.
+	//   - buffer to modify if necessary.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the extension could be read from data.
+	//   - ok: whether the extension could be read from data.
 	//
 	Read func(readFlags RTPHeaderExtensionFlags, data []byte, buffer *gst.Buffer) bool
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - attributes
+	//   - direction
+	//   - attributes
 	//
 	// The function returns the following values:
 	//
@@ -274,12 +274,12 @@ type RTPHeaderExtensionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - caps: writable Caps to modify.
+	//   - caps: writable Caps to modify.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the configured attributes on ext can successfully be set
-	//      on caps.
+	//   - ok: whether the configured attributes on ext can successfully be set
+	//     on caps.
 	//
 	SetCapsFromAttributes func(caps *gst.Caps) bool
 	// SetNonRtpSinkCaps passes RTP payloader's sink (i.e. not payloaded) caps
@@ -287,11 +287,11 @@ type RTPHeaderExtensionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - caps: sink Caps.
+	//   - caps: sink Caps.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether caps could be read successfully.
+	//   - ok: whether caps could be read successfully.
 	//
 	SetNonRtpSinkCaps func(caps *gst.Caps) bool
 	// UpdateNonRtpSrcCaps updates depayloader src caps based on the information
@@ -300,11 +300,11 @@ type RTPHeaderExtensionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - caps: src Caps to modify.
+	//   - caps: src Caps to modify.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether caps were modified successfully.
+	//   - ok: whether caps were modified successfully.
 	//
 	UpdateNonRtpSrcCaps func(caps *gst.Caps) bool
 	// Write writes the RTP header extension to data using information available
@@ -313,14 +313,14 @@ type RTPHeaderExtensionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - inputMeta: input Buffer to read information from if necessary.
-	//    - writeFlags for how the extension should be written.
-	//    - output RTP Buffer.
-	//    - data: location to write the rtp header extension into.
+	//   - inputMeta: input Buffer to read information from if necessary.
+	//   - writeFlags for how the extension should be written.
+	//   - output RTP Buffer.
+	//   - data: location to write the rtp header extension into.
 	//
 	// The function returns the following values:
 	//
-	//    - gssize: size of the data written, < 0 on failure.
+	//   - gssize: size of the data written, < 0 on failure.
 	//
 	Write func(inputMeta *gst.Buffer, writeFlags RTPHeaderExtensionFlags, output *gst.Buffer, data []byte) int
 }
@@ -438,7 +438,7 @@ func BaseRTPHeaderExtension(obj RTPHeaderExtensioner) *RTPHeaderExtension {
 //
 // The function returns the following values:
 //
-//    - rtpHeaderExtensionDirection: direction.
+//   - rtpHeaderExtensionDirection: direction.
 //
 func (ext *RTPHeaderExtension) Direction() RTPHeaderExtensionDirection {
 	var _arg0 *C.GstRTPHeaderExtension         // out
@@ -458,7 +458,7 @@ func (ext *RTPHeaderExtension) Direction() RTPHeaderExtensionDirection {
 
 // The function returns the following values:
 //
-//    - guint: RTP extension id configured on ext.
+//   - guint: RTP extension id configured on ext.
 //
 func (ext *RTPHeaderExtension) ID() uint {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -485,11 +485,11 @@ func (ext *RTPHeaderExtension) ID() uint {
 //
 // The function takes the following parameters:
 //
-//    - inputMeta: Buffer.
+//   - inputMeta: Buffer.
 //
 // The function returns the following values:
 //
-//    - gsize: maximum size of the data written by this extension.
+//   - gsize: maximum size of the data written by this extension.
 //
 func (ext *RTPHeaderExtension) MaxSize(inputMeta *gst.Buffer) uint {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -512,7 +512,7 @@ func (ext *RTPHeaderExtension) MaxSize(inputMeta *gst.Buffer) uint {
 
 // The function returns the following values:
 //
-//    - utf8 field name used in SDP-like Caps for this ext configuration.
+//   - utf8 field name used in SDP-like Caps for this ext configuration.
 //
 func (ext *RTPHeaderExtension) SdpCapsFieldName() string {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -533,7 +533,7 @@ func (ext *RTPHeaderExtension) SdpCapsFieldName() string {
 
 // The function returns the following values:
 //
-//    - rtpHeaderExtensionFlags flags supported by this instance of ext.
+//   - rtpHeaderExtensionFlags flags supported by this instance of ext.
 //
 func (ext *RTPHeaderExtension) SupportedFlags() RTPHeaderExtensionFlags {
 	var _arg0 *C.GstRTPHeaderExtension     // out
@@ -553,7 +553,7 @@ func (ext *RTPHeaderExtension) SupportedFlags() RTPHeaderExtensionFlags {
 
 // The function returns the following values:
 //
-//    - utf8: RTP extension URI for this object.
+//   - utf8 (optional): RTP extension URI for this object.
 //
 func (ext *RTPHeaderExtension) URI() string {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -566,7 +566,9 @@ func (ext *RTPHeaderExtension) URI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -575,13 +577,13 @@ func (ext *RTPHeaderExtension) URI() string {
 //
 // The function takes the following parameters:
 //
-//    - readFlags for how the extension should be written.
-//    - data: location to read the rtp header extension from.
-//    - buffer to modify if necessary.
+//   - readFlags for how the extension should be written.
+//   - data: location to read the rtp header extension from.
+//   - buffer to modify if necessary.
 //
 // The function returns the following values:
 //
-//    - ok: whether the extension could be read from data.
+//   - ok: whether the extension could be read from data.
 //
 func (ext *RTPHeaderExtension) Read(readFlags RTPHeaderExtensionFlags, data []byte, buffer *gst.Buffer) bool {
 	var _arg0 *C.GstRTPHeaderExtension     // out
@@ -622,11 +624,11 @@ func (ext *RTPHeaderExtension) Read(readFlags RTPHeaderExtensionFlags, data []by
 //
 // The function takes the following parameters:
 //
-//    - caps to configure this extension with.
+//   - caps to configure this extension with.
 //
 // The function returns the following values:
 //
-//    - ok: whether the caps could be successfully set on ext.
+//   - ok: whether the caps could be successfully set on ext.
 //
 func (ext *RTPHeaderExtension) SetAttributesFromCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -657,12 +659,12 @@ func (ext *RTPHeaderExtension) SetAttributesFromCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps: writable Caps to modify.
+//   - caps: writable Caps to modify.
 //
 // The function returns the following values:
 //
-//    - ok: whether the configured attributes on ext can successfully be set on
-//      caps.
+//   - ok: whether the configured attributes on ext can successfully be set on
+//     caps.
 //
 func (ext *RTPHeaderExtension) SetCapsFromAttributes(caps *gst.Caps) bool {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -694,12 +696,12 @@ func (ext *RTPHeaderExtension) SetCapsFromAttributes(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps to write fields into.
-//    - attributes
+//   - caps to write fields into.
+//   - attributes
 //
 // The function returns the following values:
 //
-//    - ok: whether the ext attributes could be set on caps.
+//   - ok: whether the ext attributes could be set on caps.
 //
 func (ext *RTPHeaderExtension) SetCapsFromAttributesHelper(caps *gst.Caps, attributes string) bool {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -733,7 +735,7 @@ func (ext *RTPHeaderExtension) SetCapsFromAttributesHelper(caps *gst.Caps, attri
 //
 // The function takes the following parameters:
 //
-//    - direction: direction.
+//   - direction: direction.
 //
 func (ext *RTPHeaderExtension) SetDirection(direction RTPHeaderExtensionDirection) {
 	var _arg0 *C.GstRTPHeaderExtension         // out
@@ -751,7 +753,7 @@ func (ext *RTPHeaderExtension) SetDirection(direction RTPHeaderExtensionDirectio
 //
 // The function takes the following parameters:
 //
-//    - extId: id of this extension.
+//   - extId: id of this extension.
 //
 func (ext *RTPHeaderExtension) SetID(extId uint) {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -770,11 +772,11 @@ func (ext *RTPHeaderExtension) SetID(extId uint) {
 //
 // The function takes the following parameters:
 //
-//    - caps: sink Caps.
+//   - caps: sink Caps.
 //
 // The function returns the following values:
 //
-//    - ok: whether caps could be read successfully.
+//   - ok: whether caps could be read successfully.
 //
 func (ext *RTPHeaderExtension) SetNonRtpSinkCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -798,16 +800,16 @@ func (ext *RTPHeaderExtension) SetNonRtpSinkCaps(caps *gst.Caps) bool {
 }
 
 // SetWantsUpdateNonRtpSrcCaps: call this function in a subclass from
-// RTPHeaderExtensionClass::read to tell the depayloader whether the data just
-// parsed from RTP packet require updating its src (non-RTP) caps. If state is
-// TRUE, RTPBaseDepayload will eventually invoke
+// RTPHeaderExtensionClass::read to tell the depayloader whether the
+// data just parsed from RTP packet require updating its src (non-RTP)
+// caps. If state is TRUE, RTPBaseDepayload will eventually invoke
 // gst_rtp_header_extension_update_non_rtp_src_caps() to have the caps update
 // applied. Applying the update also flips the internal "wants update" flag back
 // to FALSE.
 //
 // The function takes the following parameters:
 //
-//    - state: TRUE if caps update is needed.
+//   - state: TRUE if caps update is needed.
 //
 func (ext *RTPHeaderExtension) SetWantsUpdateNonRtpSrcCaps(state bool) {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -829,11 +831,11 @@ func (ext *RTPHeaderExtension) SetWantsUpdateNonRtpSrcCaps(state bool) {
 //
 // The function takes the following parameters:
 //
-//    - caps: src Caps to modify.
+//   - caps: src Caps to modify.
 //
 // The function returns the following values:
 //
-//    - ok: whether caps were modified successfully.
+//   - ok: whether caps were modified successfully.
 //
 func (ext *RTPHeaderExtension) UpdateNonRtpSrcCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -862,7 +864,7 @@ func (ext *RTPHeaderExtension) UpdateNonRtpSrcCaps(caps *gst.Caps) bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether ext wants to update depayloader's src caps.
+//   - ok: whether ext wants to update depayloader's src caps.
 //
 func (ext *RTPHeaderExtension) WantsUpdateNonRtpSrcCaps() bool {
 	var _arg0 *C.GstRTPHeaderExtension // out
@@ -888,14 +890,14 @@ func (ext *RTPHeaderExtension) WantsUpdateNonRtpSrcCaps() bool {
 //
 // The function takes the following parameters:
 //
-//    - inputMeta: input Buffer to read information from if necessary.
-//    - writeFlags for how the extension should be written.
-//    - output RTP Buffer.
-//    - data: location to write the rtp header extension into.
+//   - inputMeta: input Buffer to read information from if necessary.
+//   - writeFlags for how the extension should be written.
+//   - output RTP Buffer.
+//   - data: location to write the rtp header extension into.
 //
 // The function returns the following values:
 //
-//    - gssize: size of the data written, < 0 on failure.
+//   - gssize: size of the data written, < 0 on failure.
 //
 func (ext *RTPHeaderExtension) Write(inputMeta *gst.Buffer, writeFlags RTPHeaderExtensionFlags, output *gst.Buffer, data []byte) int {
 	var _arg0 *C.GstRTPHeaderExtension     // out
@@ -938,11 +940,11 @@ func (ext *RTPHeaderExtension) Write(inputMeta *gst.Buffer, writeFlags RTPHeader
 //
 // The function takes the following parameters:
 //
-//    - inputMeta: Buffer.
+//   - inputMeta: Buffer.
 //
 // The function returns the following values:
 //
-//    - gsize: maximum size of the data written by this extension.
+//   - gsize: maximum size of the data written by this extension.
 //
 func (ext *RTPHeaderExtension) maxSize(inputMeta *gst.Buffer) uint {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -968,7 +970,7 @@ func (ext *RTPHeaderExtension) maxSize(inputMeta *gst.Buffer) uint {
 
 // The function returns the following values:
 //
-//    - rtpHeaderExtensionFlags flags supported by this instance of ext.
+//   - rtpHeaderExtensionFlags flags supported by this instance of ext.
 //
 func (ext *RTPHeaderExtension) supportedFlags() RTPHeaderExtensionFlags {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -993,13 +995,13 @@ func (ext *RTPHeaderExtension) supportedFlags() RTPHeaderExtensionFlags {
 //
 // The function takes the following parameters:
 //
-//    - readFlags for how the extension should be written.
-//    - data: location to read the rtp header extension from.
-//    - buffer to modify if necessary.
+//   - readFlags for how the extension should be written.
+//   - data: location to read the rtp header extension from.
+//   - buffer to modify if necessary.
 //
 // The function returns the following values:
 //
-//    - ok: whether the extension could be read from data.
+//   - ok: whether the extension could be read from data.
 //
 func (ext *RTPHeaderExtension) read(readFlags RTPHeaderExtensionFlags, data []byte, buffer *gst.Buffer) bool {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -1037,8 +1039,8 @@ func (ext *RTPHeaderExtension) read(readFlags RTPHeaderExtensionFlags, data []by
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - attributes
+//   - direction
+//   - attributes
 //
 // The function returns the following values:
 //
@@ -1078,12 +1080,12 @@ func (ext *RTPHeaderExtension) setAttributes(direction RTPHeaderExtensionDirecti
 //
 // The function takes the following parameters:
 //
-//    - caps: writable Caps to modify.
+//   - caps: writable Caps to modify.
 //
 // The function returns the following values:
 //
-//    - ok: whether the configured attributes on ext can successfully be set on
-//      caps.
+//   - ok: whether the configured attributes on ext can successfully be set on
+//     caps.
 //
 func (ext *RTPHeaderExtension) setCapsFromAttributes(caps *gst.Caps) bool {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -1114,11 +1116,11 @@ func (ext *RTPHeaderExtension) setCapsFromAttributes(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps: sink Caps.
+//   - caps: sink Caps.
 //
 // The function returns the following values:
 //
-//    - ok: whether caps could be read successfully.
+//   - ok: whether caps could be read successfully.
 //
 func (ext *RTPHeaderExtension) setNonRtpSinkCaps(caps *gst.Caps) bool {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -1150,11 +1152,11 @@ func (ext *RTPHeaderExtension) setNonRtpSinkCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps: src Caps to modify.
+//   - caps: src Caps to modify.
 //
 // The function returns the following values:
 //
-//    - ok: whether caps were modified successfully.
+//   - ok: whether caps were modified successfully.
 //
 func (ext *RTPHeaderExtension) updateNonRtpSrcCaps(caps *gst.Caps) bool {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -1186,14 +1188,14 @@ func (ext *RTPHeaderExtension) updateNonRtpSrcCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - inputMeta: input Buffer to read information from if necessary.
-//    - writeFlags for how the extension should be written.
-//    - output RTP Buffer.
-//    - data: location to write the rtp header extension into.
+//   - inputMeta: input Buffer to read information from if necessary.
+//   - writeFlags for how the extension should be written.
+//   - output RTP Buffer.
+//   - data: location to write the rtp header extension into.
 //
 // The function returns the following values:
 //
-//    - gssize: size of the data written, < 0 on failure.
+//   - gssize: size of the data written, < 0 on failure.
 //
 func (ext *RTPHeaderExtension) write(inputMeta *gst.Buffer, writeFlags RTPHeaderExtensionFlags, output *gst.Buffer, data []byte) int {
 	gclass := (*C.GstRTPHeaderExtensionClass)(coreglib.PeekParentClass(ext))
@@ -1232,11 +1234,11 @@ func (ext *RTPHeaderExtension) write(inputMeta *gst.Buffer, writeFlags RTPHeader
 
 // The function takes the following parameters:
 //
-//    - uri: rtp header extension URI to search for.
+//   - uri: rtp header extension URI to search for.
 //
 // The function returns the following values:
 //
-//    - rtpHeaderExtension (optional) for uri or NULL.
+//   - rtpHeaderExtension (optional) for uri or NULL.
 //
 func RTPHeaderExtensionCreateFromURI(uri string) RTPHeaderExtensioner {
 	var _arg1 *C.gchar                 // out
@@ -1294,7 +1296,7 @@ func (r *RTPHeaderExtensionClass) ParentClass() *gst.ElementClass {
 //
 // The function takes the following parameters:
 //
-//    - uri: RTP Header extension uri for klass.
+//   - uri: RTP Header extension uri for klass.
 //
 func (klass *RTPHeaderExtensionClass) SetURI(uri string) {
 	var _arg0 *C.GstRTPHeaderExtensionClass // out

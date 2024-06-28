@@ -6,8 +6,8 @@ package gst
 // #include <gst/gst.h>
 import "C"
 
-// PARAM_CONTROLLABLE: use this flag on GObject properties to signal they can
-// make sense to be. controlled over time. This hint is used by the
+// PARAM_CONTROLLABLE: use this flag on GObject properties to signal they
+// can make sense to be. controlled over time. This hint is used by the
 // GstController.
 const PARAM_CONTROLLABLE = 512
 

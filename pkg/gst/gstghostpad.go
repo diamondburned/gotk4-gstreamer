@@ -37,15 +37,15 @@ func defaultGhostPadOverrides(v *GhostPad) GhostPadOverrides {
 }
 
 // GhostPad ghostPads are useful when organizing pipelines with Bin like
-// elements. The idea here is to create hierarchical element graphs. The bin
-// element contains a sub-graph. Now one would like to treat the bin-element
-// like any other Element. This is where GhostPads come into play. A GhostPad
-// acts as a proxy for another pad. Thus the bin can have sink and source
-// ghost-pads that are associated with sink and source pads of the child
+// elements. The idea here is to create hierarchical element graphs.
+// The bin element contains a sub-graph. Now one would like to treat the
+// bin-element like any other Element. This is where GhostPads come into play.
+// A GhostPad acts as a proxy for another pad. Thus the bin can have sink and
+// source ghost-pads that are associated with sink and source pads of the child
 // elements.
 //
-// If the target pad is known at creation time, gst_ghost_pad_new() is the
-// function to use to get a ghost-pad. Otherwise one can use
+// If the target pad is known at creation time, gst_ghost_pad_new()
+// is the function to use to get a ghost-pad. Otherwise one can use
 // gst_ghost_pad_new_no_target() to create the ghost-pad and use
 // gst_ghost_pad_set_target() to establish the association later on.
 //
@@ -100,12 +100,12 @@ func marshalGhostPad(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the new pad, or NULL to assign a default name.
-//    - target: pad to ghost.
+//   - name (optional) of the new pad, or NULL to assign a default name.
+//   - target: pad to ghost.
 //
 // The function returns the following values:
 //
-//    - ghostPad (optional): new Pad, or NULL in case of an error.
+//   - ghostPad (optional): new Pad, or NULL in case of an error.
 //
 func NewGhostPad(name string, target *Pad) *GhostPad {
 	var _arg1 *C.gchar  // out
@@ -131,21 +131,21 @@ func NewGhostPad(name string, target *Pad) *GhostPad {
 	return _ghostPad
 }
 
-// NewGhostPadFromTemplate: create a new ghostpad with target as the target. The
-// direction will be taken from the target pad. The template used on the
+// NewGhostPadFromTemplate: create a new ghostpad with target as the target.
+// The direction will be taken from the target pad. The template used on the
 // ghostpad will be template.
 //
 // Will ref the target.
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the new pad, or NULL to assign a default name.
-//    - target: pad to ghost.
-//    - templ to use on the ghostpad.
+//   - name (optional) of the new pad, or NULL to assign a default name.
+//   - target: pad to ghost.
+//   - templ to use on the ghostpad.
 //
 // The function returns the following values:
 //
-//    - ghostPad (optional): new Pad, or NULL in case of an error.
+//   - ghostPad (optional): new Pad, or NULL in case of an error.
 //
 func NewGhostPadFromTemplate(name string, target *Pad, templ *PadTemplate) *GhostPad {
 	var _arg1 *C.gchar          // out
@@ -174,20 +174,20 @@ func NewGhostPadFromTemplate(name string, target *Pad, templ *PadTemplate) *Ghos
 	return _ghostPad
 }
 
-// NewGhostPadNoTarget: create a new ghostpad without a target with the given
-// direction. A target can be set on the ghostpad later with the
+// NewGhostPadNoTarget: create a new ghostpad without a target with the
+// given direction. A target can be set on the ghostpad later with the
 // gst_ghost_pad_set_target() function.
 //
 // The created ghostpad will not have a padtemplate.
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the new pad, or NULL to assign a default name.
-//    - dir: direction of the ghostpad.
+//   - name (optional) of the new pad, or NULL to assign a default name.
+//   - dir: direction of the ghostpad.
 //
 // The function returns the following values:
 //
-//    - ghostPad (optional): new Pad, or NULL in case of an error.
+//   - ghostPad (optional): new Pad, or NULL in case of an error.
 //
 func NewGhostPadNoTarget(name string, dir PadDirection) *GhostPad {
 	var _arg1 *C.gchar          // out
@@ -218,12 +218,12 @@ func NewGhostPadNoTarget(name string, dir PadDirection) *GhostPad {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the new pad, or NULL to assign a default name.
-//    - templ to create the ghostpad from.
+//   - name (optional) of the new pad, or NULL to assign a default name.
+//   - templ to create the ghostpad from.
 //
 // The function returns the following values:
 //
-//    - ghostPad (optional): new Pad, or NULL in case of an error.
+//   - ghostPad (optional): new Pad, or NULL in case of an error.
 //
 func NewGhostPadNoTargetFromTemplate(name string, templ *PadTemplate) *GhostPad {
 	var _arg1 *C.gchar          // out
@@ -260,7 +260,7 @@ func NewGhostPadNoTargetFromTemplate(name string, templ *PadTemplate) *GhostPad 
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the construction succeeds, FALSE otherwise.
+//   - ok: TRUE if the construction succeeds, FALSE otherwise.
 //
 func (gpad *GhostPad) Construct() bool {
 	var _arg0 *C.GstGhostPad // out
@@ -284,8 +284,8 @@ func (gpad *GhostPad) Construct() bool {
 //
 // The function returns the following values:
 //
-//    - pad (optional): target Pad, can be NULL if the ghostpad has no target
-//      set. Unref target pad after usage.
+//   - pad (optional): target Pad, can be NULL if the ghostpad has no target
+//     set. Unref target pad after usage.
 //
 func (gpad *GhostPad) Target() *Pad {
 	var _arg0 *C.GstGhostPad // out
@@ -311,12 +311,12 @@ func (gpad *GhostPad) Target() *Pad {
 //
 // The function takes the following parameters:
 //
-//    - newtarget (optional): new pad target.
+//   - newtarget (optional): new pad target.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the new target could be set. This function can return FALSE
-//      when the internal pads could not be linked.
+//   - ok: TRUE if the new target could be set. This function can return FALSE
+//     when the internal pads could not be linked.
 //
 func (gpad *GhostPad) SetTarget(newtarget *Pad) bool {
 	var _arg0 *C.GstGhostPad // out
@@ -346,14 +346,14 @@ func (gpad *GhostPad) SetTarget(newtarget *Pad) bool {
 //
 // The function takes the following parameters:
 //
-//    - pad to activate or deactivate.
-//    - parent (optional) of pad or NULL.
-//    - mode: requested activation mode.
-//    - active: whether the pad should be active or not.
+//   - pad to activate or deactivate.
+//   - parent (optional) of pad or NULL.
+//   - mode: requested activation mode.
+//   - active: whether the pad should be active or not.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the operation was successful.
+//   - ok: TRUE if the operation was successful.
 //
 func GhostPadActivateModeDefault(pad *Pad, parent GstObjector, mode PadMode, active bool) bool {
 	var _arg1 *C.GstPad    // out
@@ -391,14 +391,14 @@ func GhostPadActivateModeDefault(pad *Pad, parent GstObjector, mode PadMode, act
 //
 // The function takes the following parameters:
 //
-//    - pad to activate or deactivate.
-//    - parent (optional) of pad or NULL.
-//    - mode: requested activation mode.
-//    - active: whether the pad should be active or not.
+//   - pad to activate or deactivate.
+//   - parent (optional) of pad or NULL.
+//   - mode: requested activation mode.
+//   - active: whether the pad should be active or not.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the operation was successful.
+//   - ok: TRUE if the operation was successful.
 //
 func GhostPadInternalActivateModeDefault(pad *Pad, parent GstObjector, mode PadMode, active bool) bool {
 	var _arg1 *C.GstPad    // out
@@ -487,8 +487,8 @@ func marshalProxyPad(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - proxyPad (optional): target ProxyPad, can be NULL. Unref target pad after
-//      usage.
+//   - proxyPad (optional): target ProxyPad, can be NULL. Unref target pad after
+//     usage.
 //
 func (pad *ProxyPad) Internal() *ProxyPad {
 	var _arg0 *C.GstProxyPad // out
@@ -512,13 +512,13 @@ func (pad *ProxyPad) Internal() *ProxyPad {
 //
 // The function takes the following parameters:
 //
-//    - pad: sink Pad, returns GST_FLOW_ERROR if not.
-//    - parent (optional) of pad or NULL.
-//    - buffer to send, return GST_FLOW_ERROR if not.
+//   - pad: sink Pad, returns GST_FLOW_ERROR if not.
+//   - parent (optional) of pad or NULL.
+//   - buffer to send, return GST_FLOW_ERROR if not.
 //
 // The function returns the following values:
 //
-//    - flowReturn from the pad.
+//   - flowReturn from the pad.
 //
 func ProxyPadChainDefault(pad *Pad, parent GstObjector, buffer *Buffer) FlowReturn {
 	var _arg1 *C.GstPad       // out
@@ -550,13 +550,13 @@ func ProxyPadChainDefault(pad *Pad, parent GstObjector, buffer *Buffer) FlowRetu
 //
 // The function takes the following parameters:
 //
-//    - pad: sink Pad, returns GST_FLOW_ERROR if not.
-//    - parent (optional) of pad or NULL.
-//    - list to send, return GST_FLOW_ERROR if not.
+//   - pad: sink Pad, returns GST_FLOW_ERROR if not.
+//   - parent (optional) of pad or NULL.
+//   - list to send, return GST_FLOW_ERROR if not.
 //
 // The function returns the following values:
 //
-//    - flowReturn from the pad.
+//   - flowReturn from the pad.
 //
 func ProxyPadChainListDefault(pad *Pad, parent GstObjector, list *BufferList) FlowReturn {
 	var _arg1 *C.GstPad        // out
@@ -588,15 +588,15 @@ func ProxyPadChainListDefault(pad *Pad, parent GstObjector, list *BufferList) Fl
 //
 // The function takes the following parameters:
 //
-//    - pad: src Pad, returns T_FLOW_ERROR if not.
-//    - parent of pad.
-//    - offset: start offset of the buffer.
-//    - size: length of the buffer.
+//   - pad: src Pad, returns T_FLOW_ERROR if not.
+//   - parent of pad.
+//   - offset: start offset of the buffer.
+//   - size: length of the buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: pointer to hold the Buffer, returns T_FLOW_ERROR if NULL.
-//    - flowReturn from the pad.
+//   - buffer: pointer to hold the Buffer, returns T_FLOW_ERROR if NULL.
+//   - flowReturn from the pad.
 //
 func ProxyPadGetrangeDefault(pad *Pad, parent GstObjector, offset uint64, size uint) (*Buffer, FlowReturn) {
 	var _arg1 *C.GstPad       // out
@@ -637,13 +637,13 @@ func ProxyPadGetrangeDefault(pad *Pad, parent GstObjector, offset uint64, size u
 //
 // The function takes the following parameters:
 //
-//    - pad to get the internal links of.
-//    - parent (optional) of pad or NULL.
+//   - pad to get the internal links of.
+//   - parent (optional) of pad or NULL.
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Pad, or NULL if pad has no parent. Unref each
-//      returned pad with gst_object_unref().
+//   - iterator (optional) of Pad, or NULL if pad has no parent. Unref each
+//     returned pad with gst_object_unref().
 //
 func ProxyPadIterateInternalLinksDefault(pad *Pad, parent GstObjector) *Iterator {
 	var _arg1 *C.GstPad      // out

@@ -15,12 +15,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - s: chromasite string.
+//   - s: chromasite string.
 //
 // The function returns the following values:
 //
-//    - videoChromaSite or GST_VIDEO_CHROMA_SITE_UNKNOWN when s does not contain
-//      a valid chroma-site description.
+//   - videoChromaSite or GST_VIDEO_CHROMA_SITE_UNKNOWN when s does not contain
+//     a valid chroma-site description.
 //
 func VideoChromaSiteFromString(s string) VideoChromaSite {
 	var _arg1 *C.gchar             // out
@@ -43,12 +43,12 @@ func VideoChromaSiteFromString(s string) VideoChromaSite {
 //
 // The function takes the following parameters:
 //
-//    - site: VideoChromaSite.
+//   - site: VideoChromaSite.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string representation of site or NULL if site contains
-//      undefined value or is equal to GST_VIDEO_CHROMA_SITE_UNKNOWN.
+//   - utf8 (optional): string representation of site or NULL if site contains
+//     undefined value or is equal to GST_VIDEO_CHROMA_SITE_UNKNOWN.
 //
 func VideoChromaSiteToString(site VideoChromaSite) string {
 	var _arg1 C.GstVideoChromaSite // out

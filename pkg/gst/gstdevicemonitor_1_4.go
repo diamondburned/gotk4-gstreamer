@@ -44,54 +44,54 @@ func defaultDeviceMonitorOverrides(v *DeviceMonitor) DeviceMonitorOverrides {
 //
 // The basic use pattern of a device monitor is as follows:
 //
-//      static gboolean
-//      my_bus_func (GstBus * bus, GstMessage * message, gpointer user_data)
-//      {
-//         GstDevice *device;
-//         gchar *name;
+//    static gboolean
+//    my_bus_func (GstBus * bus, GstMessage * message, gpointer user_data)
+//    {
+//       GstDevice *device;
+//       gchar *name;
 //
-//         switch (GST_MESSAGE_TYPE (message)) {
-//           case GST_MESSAGE_DEVICE_ADDED:
-//             gst_message_parse_device_added (message, &device);
-//             name = gst_device_get_display_name (device);
-//             g_print("Device added: s\n", name);
-//             g_free (name);
-//             gst_object_unref (device);
-//             break;
-//           case GST_MESSAGE_DEVICE_REMOVED:
-//             gst_message_parse_device_removed (message, &device);
-//             name = gst_device_get_display_name (device);
-//             g_print("Device removed: s\n", name);
-//             g_free (name);
-//             gst_object_unref (device);
-//             break;
-//           default:
-//             break;
-//         }
+//       switch (GST_MESSAGE_TYPE (message)) {
+//         case GST_MESSAGE_DEVICE_ADDED:
+//           gst_message_parse_device_added (message, &device);
+//           name = gst_device_get_display_name (device);
+//           g_print("Device added: s\n", name);
+//           g_free (name);
+//           gst_object_unref (device);
+//           break;
+//         case GST_MESSAGE_DEVICE_REMOVED:
+//           gst_message_parse_device_removed (message, &device);
+//           name = gst_device_get_display_name (device);
+//           g_print("Device removed: s\n", name);
+//           g_free (name);
+//           gst_object_unref (device);
+//           break;
+//         default:
+//           break;
+//       }
 //
-//         return G_SOURCE_CONTINUE;
-//      }
+//       return G_SOURCE_CONTINUE;
+//    }
 //
-//      GstDeviceMonitor *
-//      setup_raw_video_source_device_monitor (void) {
-//         GstDeviceMonitor *monitor;
-//         GstBus *bus;
-//         GstCaps *caps;
+//    GstDeviceMonitor *
+//    setup_raw_video_source_device_monitor (void) {
+//       GstDeviceMonitor *monitor;
+//       GstBus *bus;
+//       GstCaps *caps;
 //
-//         monitor = gst_device_monitor_new ();
+//       monitor = gst_device_monitor_new ();
 //
-//         bus = gst_device_monitor_get_bus (monitor);
-//         gst_bus_add_watch (bus, my_bus_func, NULL);
-//         gst_object_unref (bus);
+//       bus = gst_device_monitor_get_bus (monitor);
+//       gst_bus_add_watch (bus, my_bus_func, NULL);
+//       gst_object_unref (bus);
 //
-//         caps = gst_caps_new_empty_simple ("video/x-raw");
-//         gst_device_monitor_add_filter (monitor, "Video/Source", caps);
-//         gst_caps_unref (caps);
+//       caps = gst_caps_new_empty_simple ("video/x-raw");
+//       gst_device_monitor_add_filter (monitor, "Video/Source", caps);
+//       gst_caps_unref (caps);
 //
-//         gst_device_monitor_start (monitor);
+//       gst_device_monitor_start (monitor);
 //
-//         return monitor;
-//      }.
+//       return monitor;
+//    }.
 type DeviceMonitor struct {
 	_ [0]func() // equal guard
 	GstObject
@@ -135,7 +135,7 @@ func marshalDeviceMonitor(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - deviceMonitor: new device monitor.
+//   - deviceMonitor: new device monitor.
 //
 func NewDeviceMonitor() *DeviceMonitor {
 	var _cret *C.GstDeviceMonitor // in
@@ -163,14 +163,14 @@ func NewDeviceMonitor() *DeviceMonitor {
 //
 // The function takes the following parameters:
 //
-//    - classes (optional): device classes to use as filter or NULL for any
-//      class.
-//    - caps (optional) to filter or NULL for ANY.
+//   - classes (optional): device classes to use as filter or NULL for any
+//     class.
+//   - caps (optional) to filter or NULL for ANY.
 //
 // The function returns the following values:
 //
-//    - guint: id of the new filter or 0 if no provider matched the filter's
-//      classes.
+//   - guint: id of the new filter or 0 if no provider matched the filter's
+//     classes.
 //
 func (monitor *DeviceMonitor) AddFilter(classes string, caps *Caps) uint {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -203,7 +203,7 @@ func (monitor *DeviceMonitor) AddFilter(classes string, caps *Caps) uint {
 //
 // The function returns the following values:
 //
-//    - bus: Bus.
+//   - bus: Bus.
 //
 func (monitor *DeviceMonitor) Bus() *Bus {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -226,7 +226,7 @@ func (monitor *DeviceMonitor) Bus() *Bus {
 //
 // The function returns the following values:
 //
-//    - list (optional) of Device.
+//   - list (optional) of Device.
 //
 func (monitor *DeviceMonitor) Devices() []Devicer {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -274,8 +274,8 @@ func (monitor *DeviceMonitor) Devices() []Devicer {
 //
 // The function returns the following values:
 //
-//    - utf8s: A list of device provider factory names that are currently being
-//      monitored by monitor or NULL when nothing is being monitored.
+//   - utf8s: A list of device provider factory names that are currently being
+//     monitored by monitor or NULL when nothing is being monitored.
 //
 func (monitor *DeviceMonitor) Providers() []string {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -312,7 +312,7 @@ func (monitor *DeviceMonitor) Providers() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when all devices will be shown.
+//   - ok: TRUE when all devices will be shown.
 //
 func (monitor *DeviceMonitor) ShowAllDevices() bool {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -337,11 +337,11 @@ func (monitor *DeviceMonitor) ShowAllDevices() bool {
 //
 // The function takes the following parameters:
 //
-//    - filterId: id of the filter.
+//   - filterId: id of the filter.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE of the filter id was valid, FALSE otherwise.
+//   - ok: TRUE of the filter id was valid, FALSE otherwise.
 //
 func (monitor *DeviceMonitor) RemoveFilter(filterId uint) bool {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -370,7 +370,7 @@ func (monitor *DeviceMonitor) RemoveFilter(filterId uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - showAll: show all devices.
+//   - showAll: show all devices.
 //
 func (monitor *DeviceMonitor) SetShowAllDevices(showAll bool) {
 	var _arg0 *C.GstDeviceMonitor // out
@@ -392,8 +392,8 @@ func (monitor *DeviceMonitor) SetShowAllDevices(showAll bool) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device monitoring could be started, i.e. at least a
-//      single device provider was started successfully.
+//   - ok: TRUE if the device monitoring could be started, i.e. at least a
+//     single device provider was started successfully.
 //
 func (monitor *DeviceMonitor) Start() bool {
 	var _arg0 *C.GstDeviceMonitor // out

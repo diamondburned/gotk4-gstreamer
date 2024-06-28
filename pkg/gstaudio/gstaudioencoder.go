@@ -124,7 +124,7 @@ type AudioEncoderOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the negotiation succeeded, else FALSE.
+	//   - ok: TRUE if the negotiation succeeded, else FALSE.
 	//
 	Negotiate func() bool
 	// The function returns the following values:
@@ -168,9 +168,9 @@ type AudioEncoderOverrides struct {
 	Stop func() bool
 	// The function takes the following parameters:
 	//
-	//    - outbuf
-	//    - meta
-	//    - inbuf
+	//   - outbuf
+	//   - meta
+	//   - inbuf
 	//
 	// The function returns the following values:
 	//
@@ -205,17 +205,17 @@ func defaultAudioEncoderOverrides(v *AudioEncoder) AudioEncoderOverrides {
 //
 // Configuration
 //
-//    * Initially, GstAudioEncoder calls start when the encoder element
-//      is activated, which allows subclass to perform any global setup.
+//   - Initially, GstAudioEncoder calls start when the encoder element is
+//     activated, which allows subclass to perform any global setup.
 //
-//    * GstAudioEncoder calls set_format to inform subclass of the format
-//      of input audio data that it is about to receive.  Subclass should
-//      setup for encoding and configure various base class parameters
-//      appropriately, notably those directing desired input data handling.
-//      While unlikely, it might be called more than once, if changing input
-//      parameters require reconfiguration.
+//   - GstAudioEncoder calls set_format to inform subclass of the format of
+//     input audio data that it is about to receive. Subclass should setup for
+//     encoding and configure various base class parameters appropriately,
+//     notably those directing desired input data handling. While unlikely,
+//     it might be called more than once, if changing input parameters require
+//     reconfiguration.
 //
-//    * GstAudioEncoder calls stop at end of all processing.
+//   - GstAudioEncoder calls stop at end of all processing.
 //
 // As of configuration stage, and throughout processing, GstAudioEncoder
 // maintains various parameters that provide required context, e.g. describing
@@ -225,23 +225,23 @@ func defaultAudioEncoderOverrides(v *AudioEncoder) AudioEncoderOverrides {
 //
 // Data processing
 //
-//    * Base class gathers input sample data (as directed by the context's
-//      frame_samples and frame_max) and provides this to subclass' handle_frame.
-//    * If codec processing results in encoded data, subclass should call
-//      gst_audio_encoder_finish_frame() to have encoded data pushed
-//      downstream. Alternatively, it might also call
-//      gst_audio_encoder_finish_frame() (with a NULL buffer and some number of
-//      dropped samples) to indicate dropped (non-encoded) samples.
-//    * Just prior to actually pushing a buffer downstream,
-//      it is passed to pre_push.
-//    * During the parsing process GstAudioEncoderClass will handle both
-//      srcpad and sinkpad events. Sink events will be passed to subclass
-//      if event callback has been provided.
+//   - Base class gathers input sample data (as directed by the context's
+//     frame_samples and frame_max) and provides this to subclass' handle_frame.
+//   - If codec processing results in encoded data, subclass should call
+//     gst_audio_encoder_finish_frame() to have encoded data pushed downstream.
+//     Alternatively, it might also call gst_audio_encoder_finish_frame() (with
+//     a NULL buffer and some number of dropped samples) to indicate dropped
+//     (non-encoded) samples.
+//   - Just prior to actually pushing a buffer downstream, it is passed to
+//     pre_push.
+//   - During the parsing process GstAudioEncoderClass will handle both srcpad
+//     and sinkpad events. Sink events will be passed to subclass if event
+//     callback has been provided.
 //
 // Shutdown phase
 //
-//    * GstAudioEncoder class calls stop to inform the subclass that data
-//      parsing will be stopped.
+//   - GstAudioEncoder class calls stop to inform the subclass that data parsing
+//     will be stopped.
 //
 // Subclass is responsible for providing pad template caps for source and sink
 // pads. The pads need to be named "sink" and "src". It also needs to set the
@@ -254,21 +254,21 @@ func defaultAudioEncoderOverrides(v *AudioEncoder) AudioEncoderOverrides {
 // timestamp handling. While it may exert more control in this area (see e.g.
 // pre_push), it is very much not recommended.
 //
-// In particular, base class will either favor tracking upstream timestamps (at
-// the possible expense of jitter) or aim to arrange for a perfect stream of
-// output timestamps, depending on AudioEncoder:perfect-timestamp. However, in
-// the latter case, the input may not be so perfect or ideal, which is handled
-// as follows. An input timestamp is compared with the expected timestamp as
-// dictated by input sample stream and if the deviation is less than
-// AudioEncoder:tolerance, the deviation is discarded. Otherwise, it is
-// considered a discontuinity and subsequent output timestamp is resynced to the
-// new position after performing configured discontinuity processing. In the
-// non-perfect-timestamp case, an upstream variation exceeding tolerance only
-// leads to marking DISCONT on subsequent outgoing (while timestamps are
-// adjusted to upstream regardless of variation). While DISCONT is also marked
-// in the perfect-timestamp case, this one optionally (see
-// AudioEncoder:hard-resync) performs some additional steps, such as clipping of
-// (early) input samples or draining all currently remaining input data,
+// In particular, base class will either favor tracking upstream timestamps
+// (at the possible expense of jitter) or aim to arrange for a perfect
+// stream of output timestamps, depending on AudioEncoder:perfect-timestamp.
+// However, in the latter case, the input may not be so perfect or ideal,
+// which is handled as follows. An input timestamp is compared with the
+// expected timestamp as dictated by input sample stream and if the deviation
+// is less than AudioEncoder:tolerance, the deviation is discarded. Otherwise,
+// it is considered a discontuinity and subsequent output timestamp is resynced
+// to the new position after performing configured discontinuity processing.
+// In the non-perfect-timestamp case, an upstream variation exceeding
+// tolerance only leads to marking DISCONT on subsequent outgoing (while
+// timestamps are adjusted to upstream regardless of variation). While DISCONT
+// is also marked in the perfect-timestamp case, this one optionally (see
+// AudioEncoder:hard-resync) performs some additional steps, such as clipping
+// of (early) input samples or draining all currently remaining input data,
 // depending on the direction of the discontuinity.
 //
 // If perfect timestamps are arranged, it is also possible to request baseclass
@@ -280,15 +280,15 @@ func defaultAudioEncoderOverrides(v *AudioEncoder) AudioEncoderOverrides {
 //
 // Things that subclass need to take care of:
 //
-//    * Provide pad templates
-//    * Set source pad caps when appropriate
-//    * Inform base class of buffer processing needs using context's
-//       frame_samples and frame_bytes.
-//    * Set user-configurable properties to sane defaults for format and
-//       implementing codec at hand, e.g. those controlling timestamp behaviour
-//       and discontinuity processing.
-//    * Accept data in handle_frame and provide encoded results to
-//       gst_audio_encoder_finish_frame().
+//   - Provide pad templates
+//   - Set source pad caps when appropriate
+//   - Inform base class of buffer processing needs using context's
+//     frame_samples and frame_bytes.
+//   - Set user-configurable properties to sane defaults for format and
+//     implementing codec at hand, e.g. those controlling timestamp behaviour
+//     and discontinuity processing.
+//   - Accept data in handle_frame and provide encoded results to
+//     gst_audio_encoder_finish_frame().
 type AudioEncoder struct {
 	_ [0]func() // equal guard
 	gst.Element
@@ -426,11 +426,11 @@ func BaseAudioEncoder(obj AudioEncoderer) *AudioEncoder {
 //
 // The function takes the following parameters:
 //
-//    - size of the buffer.
+//   - size of the buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: allocated buffer.
+//   - buffer: allocated buffer.
 //
 func (enc *AudioEncoder) AllocateOutputBuffer(size uint) *gst.Buffer {
 	var _arg0 *C.GstAudioEncoder // out
@@ -457,25 +457,25 @@ func (enc *AudioEncoder) AllocateOutputBuffer(size uint) *gst.Buffer {
 	return _buffer
 }
 
-// FinishFrame collects encoded data and pushes encoded data downstream. Source
-// pad caps must be set when this is called.
+// FinishFrame collects encoded data and pushes encoded data downstream.
+// Source pad caps must be set when this is called.
 //
 // If samples < 0, then best estimate is all samples provided to encoder
-// (subclass) so far. buf may be NULL, in which case next number of samples are
-// considered discarded, e.g. as a result of discontinuous transmission, and a
-// discontinuity is marked.
+// (subclass) so far. buf may be NULL, in which case next number of samples
+// are considered discarded, e.g. as a result of discontinuous transmission,
+// and a discontinuity is marked.
 //
 // Note that samples received in AudioEncoderClass.handle_frame() may be
 // invalidated by a call to this function.
 //
 // The function takes the following parameters:
 //
-//    - buffer (optional): encoded data.
-//    - samples: number of samples (per channel) represented by encoded data.
+//   - buffer (optional): encoded data.
+//   - samples: number of samples (per channel) represented by encoded data.
 //
 // The function returns the following values:
 //
-//    - flowReturn that should be escalated to caller (of caller).
+//   - flowReturn that should be escalated to caller (of caller).
 //
 func (enc *AudioEncoder) FinishFrame(buffer *gst.Buffer, samples int) gst.FlowReturn {
 	var _arg0 *C.GstAudioEncoder // out
@@ -509,8 +509,8 @@ func (enc *AudioEncoder) FinishFrame(buffer *gst.Buffer, samples int) gst.FlowRe
 //
 // The function returns the following values:
 //
-//    - allocator (optional): Allocator used.
-//    - params (optional) the AllocationParams of allocator.
+//   - allocator (optional): Allocator used.
+//   - params (optional) the AllocationParams of allocator.
 //
 func (enc *AudioEncoder) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 	var _arg0 *C.GstAudioEncoder    // out
@@ -554,7 +554,7 @@ func (enc *AudioEncoder) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 
 // The function returns the following values:
 //
-//    - audioInfo describing the input audio format.
+//   - audioInfo describing the input audio format.
 //
 func (enc *AudioEncoder) AudioInfo() *AudioInfo {
 	var _arg0 *C.GstAudioEncoder // out
@@ -576,9 +576,9 @@ func (enc *AudioEncoder) AudioInfo() *AudioInfo {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drainable handling is enabled.
+//   - ok: TRUE if drainable handling is enabled.
 //
-//      MT safe.
+//     MT safe.
 //
 func (enc *AudioEncoder) Drainable() bool {
 	var _arg0 *C.GstAudioEncoder // out
@@ -600,7 +600,7 @@ func (enc *AudioEncoder) Drainable() bool {
 
 // The function returns the following values:
 //
-//    - gint: currently configured maximum handled frames.
+//   - gint: currently configured maximum handled frames.
 //
 func (enc *AudioEncoder) FrameMax() int {
 	var _arg0 *C.GstAudioEncoder // out
@@ -620,7 +620,7 @@ func (enc *AudioEncoder) FrameMax() int {
 
 // The function returns the following values:
 //
-//    - gint: currently maximum requested samples per frame.
+//   - gint: currently maximum requested samples per frame.
 //
 func (enc *AudioEncoder) FrameSamplesMax() int {
 	var _arg0 *C.GstAudioEncoder // out
@@ -640,7 +640,7 @@ func (enc *AudioEncoder) FrameSamplesMax() int {
 
 // The function returns the following values:
 //
-//    - gint: currently minimum requested samples per frame.
+//   - gint: currently minimum requested samples per frame.
 //
 func (enc *AudioEncoder) FrameSamplesMin() int {
 	var _arg0 *C.GstAudioEncoder // out
@@ -662,9 +662,9 @@ func (enc *AudioEncoder) FrameSamplesMin() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if hard minimum handling is enabled.
+//   - ok: TRUE if hard minimum handling is enabled.
 //
-//      MT safe.
+//     MT safe.
 //
 func (enc *AudioEncoder) HardMin() bool {
 	var _arg0 *C.GstAudioEncoder // out
@@ -709,8 +709,8 @@ func (enc *AudioEncoder) HardResync() bool {
 //
 // The function returns the following values:
 //
-//    - min (optional): pointer to storage to hold minimum latency.
-//    - max (optional): pointer to storage to hold maximum latency.
+//   - min (optional): pointer to storage to hold minimum latency.
+//   - max (optional): pointer to storage to hold maximum latency.
 //
 func (enc *AudioEncoder) Latency() (min, max gst.ClockTime) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -725,19 +725,15 @@ func (enc *AudioEncoder) Latency() (min, max gst.ClockTime) {
 	var _min gst.ClockTime // out
 	var _max gst.ClockTime // out
 
-	_min = uint64(_arg1)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_max = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_min = gst.ClockTime(_arg1)
+	_max = gst.ClockTime(_arg2)
 
 	return _min, _max
 }
 
 // The function returns the following values:
 //
-//    - gint: currently configured encoder lookahead.
+//   - gint: currently configured encoder lookahead.
 //
 func (enc *AudioEncoder) Lookahead() int {
 	var _arg0 *C.GstAudioEncoder // out
@@ -759,9 +755,9 @@ func (enc *AudioEncoder) Lookahead() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if granule marking is enabled.
+//   - ok: TRUE if granule marking is enabled.
 //
-//      MT safe.
+//     MT safe.
 //
 func (enc *AudioEncoder) MarkGranule() bool {
 	var _arg0 *C.GstAudioEncoder // out
@@ -785,9 +781,9 @@ func (enc *AudioEncoder) MarkGranule() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if perfect timestamp setting enabled.
+//   - ok: TRUE if perfect timestamp setting enabled.
 //
-//      MT safe.
+//     MT safe.
 //
 func (enc *AudioEncoder) PerfectTimestamp() bool {
 	var _arg0 *C.GstAudioEncoder // out
@@ -811,9 +807,9 @@ func (enc *AudioEncoder) PerfectTimestamp() bool {
 //
 // The function returns the following values:
 //
-//    - clockTime: encoder audio jitter tolerance threshold.
+//   - clockTime: encoder audio jitter tolerance threshold.
 //
-//      MT safe.
+//     MT safe.
 //
 func (enc *AudioEncoder) Tolerance() gst.ClockTime {
 	var _arg0 *C.GstAudioEncoder // out
@@ -826,11 +822,40 @@ func (enc *AudioEncoder) Tolerance() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
+}
+
+// MergeTags sets the audio encoder tags and how they should be merged with
+// any upstream stream tags. This will override any tags previously-set with
+// gst_audio_encoder_merge_tags().
+//
+// Note that this is provided for convenience, and the subclass is not required
+// to use this and can still do tag handling on its own.
+//
+// MT safe.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) to merge, or NULL to unset previously-set tags.
+//   - mode to use, usually T_TAG_MERGE_REPLACE.
+//
+func (enc *AudioEncoder) MergeTags(tags *gst.TagList, mode gst.TagMergeMode) {
+	var _arg0 *C.GstAudioEncoder // out
+	var _arg1 *C.GstTagList      // out
+	var _arg2 C.GstTagMergeMode  // out
+
+	_arg0 = (*C.GstAudioEncoder)(unsafe.Pointer(coreglib.InternObject(enc).Native()))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+	}
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_audio_encoder_merge_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(enc)
+	runtime.KeepAlive(tags)
+	runtime.KeepAlive(mode)
 }
 
 // Negotiate with downstream elements to currently configured Caps. Unmark
@@ -839,7 +864,7 @@ func (enc *AudioEncoder) Tolerance() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (enc *AudioEncoder) Negotiate() bool {
 	var _arg0 *C.GstAudioEncoder // out
@@ -859,18 +884,18 @@ func (enc *AudioEncoder) Negotiate() bool {
 	return _ok
 }
 
-// ProxyGetcaps returns caps that express caps (or sink template caps if caps ==
-// NULL) restricted to channel/rate combinations supported by downstream
+// ProxyGetcaps returns caps that express caps (or sink template caps if caps
+// == NULL) restricted to channel/rate combinations supported by downstream
 // elements (e.g. muxers).
 //
 // The function takes the following parameters:
 //
-//    - caps (optional): initial caps.
-//    - filter (optional) caps.
+//   - caps (optional): initial caps.
+//   - filter (optional) caps.
 //
 // The function returns the following values:
 //
-//    - ret owned by caller.
+//   - ret owned by caller.
 //
 func (enc *AudioEncoder) ProxyGetcaps(caps, filter *gst.Caps) *gst.Caps {
 	var _arg0 *C.GstAudioEncoder // out
@@ -904,14 +929,14 @@ func (enc *AudioEncoder) ProxyGetcaps(caps, filter *gst.Caps) *gst.Caps {
 	return _ret
 }
 
-// SetAllocationCaps sets a caps in allocation query which are different from
-// the set pad's caps. Use this function before calling
+// SetAllocationCaps sets a caps in allocation query which are
+// different from the set pad's caps. Use this function before calling
 // gst_audio_encoder_negotiate(). Setting to NULL the allocation query will use
 // the caps from the pad.
 //
 // The function takes the following parameters:
 //
-//    - allocationCaps (optional) or NULL.
+//   - allocationCaps (optional) or NULL.
 //
 func (enc *AudioEncoder) SetAllocationCaps(allocationCaps *gst.Caps) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -927,8 +952,8 @@ func (enc *AudioEncoder) SetAllocationCaps(allocationCaps *gst.Caps) {
 	runtime.KeepAlive(allocationCaps)
 }
 
-// SetDrainable configures encoder drain handling. If drainable, subclass might
-// be handed a NULL buffer to have it return any leftover encoded data.
+// SetDrainable configures encoder drain handling. If drainable, subclass
+// might be handed a NULL buffer to have it return any leftover encoded data.
 // Otherwise, it is not considered so capable and will only ever be passed real
 // data.
 //
@@ -936,7 +961,7 @@ func (enc *AudioEncoder) SetAllocationCaps(allocationCaps *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (enc *AudioEncoder) SetDrainable(enabled bool) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -960,7 +985,7 @@ func (enc *AudioEncoder) SetDrainable(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - num: number of frames.
+//   - num: number of frames.
 //
 func (enc *AudioEncoder) SetFrameMax(num int) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -986,7 +1011,7 @@ func (enc *AudioEncoder) SetFrameMax(num int) {
 //
 // The function takes the following parameters:
 //
-//    - num: number of samples per frame.
+//   - num: number of samples per frame.
 //
 func (enc *AudioEncoder) SetFrameSamplesMax(num int) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1012,7 +1037,7 @@ func (enc *AudioEncoder) SetFrameSamplesMax(num int) {
 //
 // The function takes the following parameters:
 //
-//    - num: number of samples per frame.
+//   - num: number of samples per frame.
 //
 func (enc *AudioEncoder) SetFrameSamplesMin(num int) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1035,7 +1060,7 @@ func (enc *AudioEncoder) SetFrameSamplesMin(num int) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (enc *AudioEncoder) SetHardMin(enabled bool) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1071,7 +1096,7 @@ func (enc *AudioEncoder) SetHardResync(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - headers: list of Buffer containing the codec header.
+//   - headers: list of Buffer containing the codec header.
 //
 func (enc *AudioEncoder) SetHeaders(headers []*gst.Buffer) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1091,12 +1116,14 @@ func (enc *AudioEncoder) SetHeaders(headers []*gst.Buffer) {
 	runtime.KeepAlive(headers)
 }
 
-// SetLatency sets encoder latency.
+// SetLatency sets encoder latency. If the provided values changed from
+// previously provided ones, this will also post a LATENCY message on the bus so
+// the pipeline can reconfigure its global latency.
 //
 // The function takes the following parameters:
 //
-//    - min: minimum latency.
-//    - max: maximum latency.
+//   - min: minimum latency.
+//   - max: maximum latency.
 //
 func (enc *AudioEncoder) SetLatency(min, max gst.ClockTime) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1104,12 +1131,8 @@ func (enc *AudioEncoder) SetLatency(min, max gst.ClockTime) {
 	var _arg2 C.GstClockTime     // out
 
 	_arg0 = (*C.GstAudioEncoder)(unsafe.Pointer(coreglib.InternObject(enc).Native()))
-	_arg1 = C.guint64(min)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(max)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(min)
+	_arg2 = C.GstClockTime(max)
 
 	C.gst_audio_encoder_set_latency(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(enc)
@@ -1124,7 +1147,7 @@ func (enc *AudioEncoder) SetLatency(min, max gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - num: lookahead.
+//   - num: lookahead.
 //
 func (enc *AudioEncoder) SetLookahead(num int) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1144,7 +1167,7 @@ func (enc *AudioEncoder) SetLookahead(num int) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (enc *AudioEncoder) SetMarkGranule(enabled bool) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1164,11 +1187,11 @@ func (enc *AudioEncoder) SetMarkGranule(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
 func (enc *AudioEncoder) SetOutputFormat(caps *gst.Caps) bool {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1198,7 +1221,7 @@ func (enc *AudioEncoder) SetOutputFormat(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (enc *AudioEncoder) SetPerfectTimestamp(enabled bool) {
 	var _arg0 *C.GstAudioEncoder // out
@@ -1220,16 +1243,14 @@ func (enc *AudioEncoder) SetPerfectTimestamp(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - tolerance: new tolerance.
+//   - tolerance: new tolerance.
 //
 func (enc *AudioEncoder) SetTolerance(tolerance gst.ClockTime) {
 	var _arg0 *C.GstAudioEncoder // out
 	var _arg1 C.GstClockTime     // out
 
 	_arg0 = (*C.GstAudioEncoder)(unsafe.Pointer(coreglib.InternObject(enc).Native()))
-	_arg1 = C.guint64(tolerance)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(tolerance)
 
 	C.gst_audio_encoder_set_tolerance(_arg0, _arg1)
 	runtime.KeepAlive(enc)
@@ -1363,7 +1384,7 @@ func (enc *AudioEncoder) handleFrame(buffer *gst.Buffer) gst.FlowReturn {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (enc *AudioEncoder) negotiate() bool {
 	gclass := (*C.GstAudioEncoderClass)(coreglib.PeekParentClass(enc))
@@ -1625,9 +1646,9 @@ func (enc *AudioEncoder) stop() bool {
 
 // The function takes the following parameters:
 //
-//    - outbuf
-//    - meta
-//    - inbuf
+//   - outbuf
+//   - meta
+//   - inbuf
 //
 // The function returns the following values:
 //

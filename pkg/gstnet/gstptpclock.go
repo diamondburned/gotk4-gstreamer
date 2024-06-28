@@ -41,14 +41,14 @@ const PTP_STATISTICS_TIME_UPDATED = "GstPtpStatisticsTimeUpdated"
 // messages
 //
 // GST_PTP_STATISTICS_TIME_UPDATED: "domain" G_TYPE_UINT The domain identifier
-// of the domain "mean-path-delay-avg" GST_TYPE_CLOCK_TIME Average mean path
-// delay "local-time" GST_TYPE_CLOCK_TIME Local time that corresponds to
-// ptp-time "ptp-time" GST_TYPE_CLOCK_TIME Newly measured PTP time at local-time
-// "estimated-ptp-time" GST_TYPE_CLOCK_TIME Estimated PTP time based on previous
-// measurements "discontinuity" G_TYPE_INT64 Difference between estimated and
-// measured PTP time "synced" G_TYPE_BOOLEAN Currently synced to the remote
-// clock "r-squared" G_TYPE_DOUBLE R² of clock estimation regression
-// "internal-time" GST_TYPE_CLOCK_TIME Internal time clock parameter
+// of the domain "mean-path-delay-avg" GST_TYPE_CLOCK_TIME Average mean
+// path delay "local-time" GST_TYPE_CLOCK_TIME Local time that corresponds
+// to ptp-time "ptp-time" GST_TYPE_CLOCK_TIME Newly measured PTP time at
+// local-time "estimated-ptp-time" GST_TYPE_CLOCK_TIME Estimated PTP time
+// based on previous measurements "discontinuity" G_TYPE_INT64 Difference
+// between estimated and measured PTP time "synced" G_TYPE_BOOLEAN Currently
+// synced to the remote clock "r-squared" G_TYPE_DOUBLE R² of clock estimation
+// regression "internal-time" GST_TYPE_CLOCK_TIME Internal time clock parameter
 // "external-time" GST_TYPE_CLOCK_TIME External time clock parameter "rate-num"
 // G_TYPE_UINT64 Internal/external rate numerator "rate-den" G_TYPE_UINT64
 // Internal/external rate denominator "rate" G_TYPE_DOUBLE Internal/external

@@ -171,8 +171,8 @@ func (tc *VideoTimeCodeInterval) Clear() {
 
 // The function returns the following values:
 //
-//    - videoTimeCodeInterval: new VideoTimeCodeInterval with the same values as
-//      tc.
+//   - videoTimeCodeInterval: new VideoTimeCodeInterval with the same values as
+//     tc.
 //
 func (tc *VideoTimeCodeInterval) Copy() *VideoTimeCodeInterval {
 	var _arg0 *C.GstVideoTimeCodeInterval // out
@@ -200,10 +200,10 @@ func (tc *VideoTimeCodeInterval) Copy() *VideoTimeCodeInterval {
 //
 // The function takes the following parameters:
 //
-//    - hours field of VideoTimeCodeInterval.
-//    - minutes field of VideoTimeCodeInterval.
-//    - seconds field of VideoTimeCodeInterval.
-//    - frames field of VideoTimeCodeInterval.
+//   - hours field of VideoTimeCodeInterval.
+//   - minutes field of VideoTimeCodeInterval.
+//   - seconds field of VideoTimeCodeInterval.
+//   - frames field of VideoTimeCodeInterval.
 //
 func (tc *VideoTimeCodeInterval) Init(hours uint, minutes uint, seconds uint, frames uint) {
 	var _arg0 *C.GstVideoTimeCodeInterval // out

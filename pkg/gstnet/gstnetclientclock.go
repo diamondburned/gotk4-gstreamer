@@ -107,14 +107,14 @@ func marshalNetClientClock(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name for the clock.
-//    - remoteAddress address or hostname of the remote clock provider.
-//    - remotePort: port of the remote clock provider.
-//    - baseTime: initial time of the clock.
+//   - name (optional) for the clock.
+//   - remoteAddress address or hostname of the remote clock provider.
+//   - remotePort: port of the remote clock provider.
+//   - baseTime: initial time of the clock.
 //
 // The function returns the following values:
 //
-//    - netClientClock: new Clock that receives a time from the remote clock.
+//   - netClientClock: new Clock that receives a time from the remote clock.
 //
 func NewNetClientClock(name, remoteAddress string, remotePort int, baseTime gst.ClockTime) *NetClientClock {
 	var _arg1 *C.gchar       // out
@@ -123,14 +123,14 @@ func NewNetClientClock(name, remoteAddress string, remotePort int, baseTime gst.
 	var _arg4 C.GstClockTime // out
 	var _cret *C.GstClock    // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(remoteAddress)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(remotePort)
-	_arg4 = C.guint64(baseTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg4 = C.GstClockTime(baseTime)
 
 	_cret = C.gst_net_client_clock_new(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(name)
@@ -203,14 +203,14 @@ func marshalNtpClock(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name for the clock.
-//    - remoteAddress address or hostname of the remote clock provider.
-//    - remotePort: port of the remote clock provider.
-//    - baseTime: initial time of the clock.
+//   - name (optional) for the clock.
+//   - remoteAddress address or hostname of the remote clock provider.
+//   - remotePort: port of the remote clock provider.
+//   - baseTime: initial time of the clock.
 //
 // The function returns the following values:
 //
-//    - ntpClock: new Clock that receives a time from the remote clock.
+//   - ntpClock: new Clock that receives a time from the remote clock.
 //
 func NewNtpClock(name, remoteAddress string, remotePort int, baseTime gst.ClockTime) *NtpClock {
 	var _arg1 *C.gchar       // out
@@ -219,14 +219,14 @@ func NewNtpClock(name, remoteAddress string, remotePort int, baseTime gst.ClockT
 	var _arg4 C.GstClockTime // out
 	var _cret *C.GstClock    // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(remoteAddress)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(remotePort)
-	_arg4 = C.guint64(baseTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg4 = C.GstClockTime(baseTime)
 
 	_cret = C.gst_ntp_clock_new(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(name)

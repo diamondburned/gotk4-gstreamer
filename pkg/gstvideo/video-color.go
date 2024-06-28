@@ -215,13 +215,13 @@ func (v VideoColorRange) String() string {
 //
 // The function takes the following parameters:
 //
-//    - range: VideoColorRange.
-//    - info: VideoFormatInfo.
+//   - range: VideoColorRange.
+//   - info: VideoFormatInfo.
 //
 // The function returns the following values:
 //
-//    - offset: output offsets.
-//    - scale: output scale.
+//   - offset: output offsets.
+//   - scale: output scale.
 //
 func VideoColorRangeOffsets(_range VideoColorRange, info *VideoFormatInfo) (offset, scale [4]int) {
 	var _arg1 C.GstVideoColorRange  // out
@@ -404,11 +404,11 @@ func (v *VideoColorimetry) Primaries() VideoColorPrimaries {
 //
 // The function takes the following parameters:
 //
-//    - color: colorimetry string.
+//   - color: colorimetry string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if color points to valid colorimetry info.
+//   - ok: TRUE if color points to valid colorimetry info.
 //
 func (cinfo *VideoColorimetry) FromString(color string) bool {
 	var _arg0 *C.GstVideoColorimetry // out
@@ -436,11 +436,11 @@ func (cinfo *VideoColorimetry) FromString(color string) bool {
 //
 // The function takes the following parameters:
 //
-//    - other VideoColorimetry.
+//   - other VideoColorimetry.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if cinfo and other are equal.
+//   - ok: TRUE if cinfo and other are equal.
 //
 func (cinfo *VideoColorimetry) IsEqual(other *VideoColorimetry) bool {
 	var _arg0 *C.GstVideoColorimetry // out
@@ -463,17 +463,56 @@ func (cinfo *VideoColorimetry) IsEqual(other *VideoColorimetry) bool {
 	return _ok
 }
 
+// IsEquivalent: compare the 2 colorimetry sets for functionally equality.
+//
+// The function takes the following parameters:
+//
+//   - bitdepth of a format associated with cinfo.
+//   - other VideoColorimetry.
+//   - otherBitdepth: bitdepth of a format associated with other.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if cinfo and other are equivalent.
+//
+func (cinfo *VideoColorimetry) IsEquivalent(bitdepth uint, other *VideoColorimetry, otherBitdepth uint) bool {
+	var _arg0 *C.GstVideoColorimetry // out
+	var _arg1 C.guint                // out
+	var _arg2 *C.GstVideoColorimetry // out
+	var _arg3 C.guint                // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GstVideoColorimetry)(gextras.StructNative(unsafe.Pointer(cinfo)))
+	_arg1 = C.guint(bitdepth)
+	_arg2 = (*C.GstVideoColorimetry)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg3 = C.guint(otherBitdepth)
+
+	_cret = C.gst_video_colorimetry_is_equivalent(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(cinfo)
+	runtime.KeepAlive(bitdepth)
+	runtime.KeepAlive(other)
+	runtime.KeepAlive(otherBitdepth)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Matches: check if the colorimetry information in info matches that of the
 // string color.
 //
 // The function takes the following parameters:
 //
-//    - color: colorimetry string.
+//   - color: colorimetry string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if color conveys the same colorimetry info as the color
-//      information in info.
+//   - ok: TRUE if color conveys the same colorimetry info as the color
+//     information in info.
 //
 func (cinfo *VideoColorimetry) Matches(color string) bool {
 	var _arg0 *C.GstVideoColorimetry // out
@@ -501,8 +540,8 @@ func (cinfo *VideoColorimetry) Matches(color string) bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string representation of cinfo or NULL if all the
-//      entries of cinfo are unknown values.
+//   - utf8 (optional): string representation of cinfo or NULL if all the
+//     entries of cinfo are unknown values.
 //
 func (cinfo *VideoColorimetry) String() string {
 	var _arg0 *C.GstVideoColorimetry // out

@@ -41,8 +41,8 @@ type Format C.gint
 const (
 	// FormatUndefined: undefined format.
 	FormatUndefined Format = iota
-	// FormatDefault: default format of the pad/element. This can be samples for
-	// raw audio, frames/fields for raw video (some, but not all, elements
+	// FormatDefault: default format of the pad/element. This can be samples
+	// for raw audio, frames/fields for raw video (some, but not all, elements
 	// support this; use GST_FORMAT_TIME if you don't have a good reason to
 	// query for samples/frames).
 	FormatDefault
@@ -86,12 +86,12 @@ func (f Format) String() string {
 //
 // The function takes the following parameters:
 //
-//    - nick of the format.
+//   - nick of the format.
 //
 // The function returns the following values:
 //
-//    - format with nick or GST_FORMAT_UNDEFINED if the format was not
-//      registered.
+//   - format with nick or GST_FORMAT_UNDEFINED if the format was not
+//     registered.
 //
 func FormatGetByNick(nick string) Format {
 	var _arg1 *C.gchar    // out
@@ -114,13 +114,13 @@ func FormatGetByNick(nick string) Format {
 //
 // The function takes the following parameters:
 //
-//    - format to get details of.
+//   - format to get details of.
 //
 // The function returns the following values:
 //
-//    - formatDefinition (optional) for format or NULL on failure.
+//   - formatDefinition (optional) for format or NULL on failure.
 //
-//      MT safe.
+//     MT safe.
 //
 func FormatGetDetails(format Format) *FormatDefinition {
 	var _arg1 C.GstFormat            // out
@@ -145,12 +145,12 @@ func FormatGetDetails(format Format) *FormatDefinition {
 //
 // The function takes the following parameters:
 //
-//    - format: Format.
+//   - format: Format.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): reference to the static name of the format or NULL if
-//      the format is unknown.
+//   - utf8 (optional): reference to the static name of the format or NULL if
+//     the format is unknown.
 //
 func FormatGetName(format Format) string {
 	var _arg1 C.GstFormat // out
@@ -175,7 +175,7 @@ func FormatGetName(format Format) string {
 //
 // The function returns the following values:
 //
-//    - iterator: gstIterator of FormatDefinition.
+//   - iterator: gstIterator of FormatDefinition.
 //
 func FormatIterateDefinitions() *Iterator {
 	var _cret *C.GstIterator // in
@@ -200,14 +200,14 @@ func FormatIterateDefinitions() *Iterator {
 //
 // The function takes the following parameters:
 //
-//    - nick of the new format.
-//    - description of the new format.
+//   - nick of the new format.
+//   - description of the new format.
 //
 // The function returns the following values:
 //
-//    - format: new GstFormat or an already registered format with the same nick.
+//   - format: new GstFormat or an already registered format with the same nick.
 //
-//      MT safe.
+//     MT safe.
 //
 func FormatRegister(nick, description string) Format {
 	var _arg1 *C.gchar    // out
@@ -234,11 +234,11 @@ func FormatRegister(nick, description string) Format {
 //
 // The function takes the following parameters:
 //
-//    - format: Format.
+//   - format: Format.
 //
 // The function returns the following values:
 //
-//    - quark associated with the format or 0 if the format is unknown.
+//   - quark associated with the format or 0 if the format is unknown.
 //
 func FormatToQuark(format Format) glib.Quark {
 	var _arg1 C.GstFormat // out
@@ -251,9 +251,7 @@ func FormatToQuark(format Format) glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -262,12 +260,12 @@ func FormatToQuark(format Format) glib.Quark {
 //
 // The function takes the following parameters:
 //
-//    - formats: format array to search.
-//    - format to find.
+//   - formats: format array to search.
+//   - format to find.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the format is found inside the array.
+//   - ok: TRUE if the format is found inside the array.
 //
 func FormatsContains(formats []Format, format Format) bool {
 	var _arg1 *C.GstFormat // out
@@ -334,8 +332,6 @@ func (f *FormatDefinition) Description() string {
 func (f *FormatDefinition) Quark() glib.Quark {
 	valptr := &f.native.quark
 	var _v glib.Quark // out
-	_v = uint32(*valptr)
-	type _ = glib.Quark
-	type _ = uint32
+	_v = glib.Quark(*valptr)
 	return _v
 }

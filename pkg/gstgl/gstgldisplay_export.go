@@ -49,8 +49,10 @@ func _gotk4_gstgl1_GLDisplay_ConnectCreateContext(arg0 C.gpointer, arg1 *C.GstGL
 
 	var _ GLContexter
 
-	cret = (*C.GstGLContext)(unsafe.Pointer(coreglib.InternObject(glContext).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(glContext).Native()))
+	if glContext != nil {
+		cret = (*C.GstGLContext)(unsafe.Pointer(coreglib.InternObject(glContext).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(glContext).Native()))
+	}
 
 	return cret
 }

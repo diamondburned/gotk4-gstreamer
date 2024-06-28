@@ -115,8 +115,8 @@ type CollectPadsClipFunction func(pads *CollectPads, data *CollectData, inbuffer
 type CollectPadsCompareFunction func(pads *CollectPads, data1 *CollectData, timestamp1 gst.ClockTime, data2 *CollectData, timestamp2 gst.ClockTime) (gint int)
 
 // CollectPadsEventFunction: function that will be called while processing an
-// event. It takes ownership of the event and is responsible for chaining up (to
-// gst_collect_pads_event_default()) or dropping events (such typical cases
+// event. It takes ownership of the event and is responsible for chaining up
+// (to gst_collect_pads_event_default()) or dropping events (such typical cases
 // being handled by the default handler).
 type CollectPadsEventFunction func(pads *CollectPads, pad *CollectData, event *gst.Event) (ok bool)
 
@@ -140,39 +140,42 @@ func defaultCollectPadsOverrides(v *CollectPads) CollectPadsOverrides {
 // CollectPads manages a set of pads that operate in collect mode. This means
 // that control is given to the manager of this object when all pads have data.
 //
-//    * Collectpads are created with gst_collect_pads_new(). A callback should then
-//      be installed with gst_collect_pads_set_function ().
+//   - Collectpads are created with gst_collect_pads_new(). A callback should
+//     then be installed with gst_collect_pads_set_function ().
 //
-//    * Pads are added to the collection with gst_collect_pads_add_pad()/
-//      gst_collect_pads_remove_pad(). The pad has to be a sinkpad. When added,
-//      the chain, event and query functions of the pad are overridden. The
-//      element_private of the pad is used to store private information for the
-//      collectpads.
+//   - Pads are added to the collection with gst_collect_pads_add_pad()/
+//     gst_collect_pads_remove_pad(). The pad has to be a sinkpad. When added,
+//     the chain, event and query functions of the pad are overridden.
+//     The element_private of the pad is used to store private information for
+//     the collectpads.
 //
-//    * For each pad, data is queued in the _chain function or by
-//      performing a pull_range.
+//   - For each pad, data is queued in the _chain function or by performing a
+//     pull_range.
 //
-//    * When data is queued on all pads in waiting mode, the callback function is called.
+//   - When data is queued on all pads in waiting mode, the callback function is
+//     called.
 //
-//    * Data can be dequeued from the pad with the gst_collect_pads_pop() method.
-//      One can peek at the data with the gst_collect_pads_peek() function.
-//      These functions will return NULL if the pad received an EOS event. When all
-//      pads return NULL from a gst_collect_pads_peek(), the element can emit an EOS
-//      event itself.
+//   - Data can be dequeued from the pad with the gst_collect_pads_pop() method.
+//     One can peek at the data with the gst_collect_pads_peek() function.
+//     These functions will return NULL if the pad received an EOS event.
+//     When all pads return NULL from a gst_collect_pads_peek(), the element can
+//     emit an EOS event itself.
 //
-//    * Data can also be dequeued in byte units using the gst_collect_pads_available(),
-//      gst_collect_pads_read_buffer() and gst_collect_pads_flush() calls.
+//   - Data can also be dequeued in byte units using the
+//     gst_collect_pads_available(), gst_collect_pads_read_buffer() and
+//     gst_collect_pads_flush() calls.
 //
-//    * Elements should call gst_collect_pads_start() and gst_collect_pads_stop() in
-//      their state change functions to start and stop the processing of the collectpads.
-//      The gst_collect_pads_stop() call should be called before calling the parent
-//      element state change function in the PAUSED_TO_READY state change to ensure
-//      no pad is blocked and the element can finish streaming.
+//   - Elements should call gst_collect_pads_start() and gst_collect_pads_stop()
+//     in their state change functions to start and stop the processing of the
+//     collectpads. The gst_collect_pads_stop() call should be called before
+//     calling the parent element state change function in the PAUSED_TO_READY
+//     state change to ensure no pad is blocked and the element can finish
+//     streaming.
 //
-//    * gst_collect_pads_set_waiting() sets a pad to waiting or non-waiting mode.
-//      CollectPads element is not waiting for data to be collected on non-waiting pads.
-//      Thus these pads may but need not have data when the callback is called.
-//      All pads are in waiting mode by default.
+//   - gst_collect_pads_set_waiting() sets a pad to waiting or non-waiting mode.
+//     CollectPads element is not waiting for data to be collected on
+//     non-waiting pads. Thus these pads may but need not have data when the
+//     callback is called. All pads are in waiting mode by default.
 type CollectPads struct {
 	_ [0]func() // equal guard
 	gst.GstObject
@@ -218,7 +221,7 @@ func marshalCollectPads(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - collectPads: new CollectPads, or NULL in case of an error.
+//   - collectPads: new CollectPads, or NULL in case of an error.
 //
 func NewCollectPads() *CollectPads {
 	var _cret *C.GstCollectPads // in
@@ -243,8 +246,8 @@ func NewCollectPads() *CollectPads {
 //
 // The function returns the following values:
 //
-//    - guint: maximum number of bytes queued on all pads. This function returns
-//      0 if a pad has no queued buffer.
+//   - guint: maximum number of bytes queued on all pads. This function returns
+//     0 if a pad has no queued buffer.
 //
 func (pads *CollectPads) Available() uint {
 	var _arg0 *C.GstCollectPads // out
@@ -272,14 +275,14 @@ func (pads *CollectPads) Available() uint {
 //
 // The function takes the following parameters:
 //
-//    - cdata: collect data of corresponding pad.
-//    - buf: buffer being clipped.
-//    - userData (optional): user data (unused).
+//   - cdata: collect data of corresponding pad.
+//   - buf: buffer being clipped.
+//   - userData (optional): user data (unused).
 //
 // The function returns the following values:
 //
-//    - outbuf (optional): output buffer with running time, or NULL if clipped.
-//    - flowReturn
+//   - outbuf (optional): output buffer with running time, or NULL if clipped.
+//   - flowReturn
 //
 func (pads *CollectPads) ClipRunningTime(cdata *CollectData, buf *gst.Buffer, userData unsafe.Pointer) (*gst.Buffer, gst.FlowReturn) {
 	var _arg0 *C.GstCollectPads // out
@@ -323,9 +326,9 @@ func (pads *CollectPads) ClipRunningTime(cdata *CollectData, buf *gst.Buffer, us
 //
 // The function takes the following parameters:
 //
-//    - data: collect data of corresponding pad.
-//    - event being processed.
-//    - discard process but do not send event downstream.
+//   - data: collect data of corresponding pad.
+//   - event being processed.
+//   - discard process but do not send event downstream.
 //
 // The function returns the following values:
 //
@@ -367,13 +370,13 @@ func (pads *CollectPads) EventDefault(data *CollectData, event *gst.Event, disca
 //
 // The function takes the following parameters:
 //
-//    - data to use.
-//    - size: number of bytes to flush.
+//   - data to use.
+//   - size: number of bytes to flush.
 //
 // The function returns the following values:
 //
-//    - guint: number of bytes flushed This can be less than size and is 0 if the
-//      pad was end-of-stream.
+//   - guint: number of bytes flushed This can be less than size and is 0 if the
+//     pad was end-of-stream.
 //
 func (pads *CollectPads) Flush(data *CollectData, size uint) uint {
 	var _arg0 *C.GstCollectPads // out
@@ -404,12 +407,12 @@ func (pads *CollectPads) Flush(data *CollectData, size uint) uint {
 //
 // The function takes the following parameters:
 //
-//    - data to use.
+//   - data to use.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) in data or NULL if no buffer is queued. should unref
-//      the buffer after usage.
+//   - buffer (optional) in data or NULL if no buffer is queued. should unref
+//     the buffer after usage.
 //
 func (pads *CollectPads) Peek(data *CollectData) *gst.Buffer {
 	var _arg0 *C.GstCollectPads // out
@@ -445,12 +448,12 @@ func (pads *CollectPads) Peek(data *CollectData) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - data to use.
+//   - data to use.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) in data or NULL if no buffer was queued. You should
-//      unref the buffer after usage.
+//   - buffer (optional) in data or NULL if no buffer was queued. You should
+//     unref the buffer after usage.
 //
 func (pads *CollectPads) Pop(data *CollectData) *gst.Buffer {
 	var _arg0 *C.GstCollectPads // out
@@ -485,9 +488,9 @@ func (pads *CollectPads) Pop(data *CollectData) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - data: collect data of corresponding pad.
-//    - query being processed.
-//    - discard process but do not send event downstream.
+//   - data: collect data of corresponding pad.
+//   - query being processed.
+//   - discard process but do not send event downstream.
 //
 // The function returns the following values:
 //
@@ -529,14 +532,14 @@ func (pads *CollectPads) QueryDefault(data *CollectData, query *gst.Query, disca
 //
 // The function takes the following parameters:
 //
-//    - data to use.
-//    - size: number of bytes to read.
+//   - data to use.
+//   - size: number of bytes to read.
 //
 // The function returns the following values:
 //
-//    - buffer (optional): sub buffer. The size of the buffer can be less that
-//      requested. A return of NULL signals that the pad is end-of-stream. Unref
-//      the buffer after use.
+//   - buffer (optional): sub buffer. The size of the buffer can be less that
+//     requested. A return of NULL signals that the pad is end-of-stream.
+//     Unref the buffer after use.
 //
 func (pads *CollectPads) ReadBuffer(data *CollectData, size uint) *gst.Buffer {
 	var _arg0 *C.GstCollectPads // out
@@ -578,11 +581,11 @@ func (pads *CollectPads) ReadBuffer(data *CollectData, size uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - pad to remove.
+//   - pad to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad could be removed.
+//   - ok: TRUE if the pad could be removed.
 //
 func (pads *CollectPads) RemovePad(pad *gst.Pad) bool {
 	var _arg0 *C.GstCollectPads // out
@@ -613,7 +616,7 @@ func (pads *CollectPads) RemovePad(pad *gst.Pad) bool {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to set.
+//   - fn: function to set.
 //
 func (pads *CollectPads) SetBufferFunction(fn CollectPadsBufferFunction) {
 	var _arg0 *C.GstCollectPads              // out
@@ -636,7 +639,7 @@ func (pads *CollectPads) SetBufferFunction(fn CollectPadsBufferFunction) {
 //
 // The function takes the following parameters:
 //
-//    - clipfunc: clip function to install.
+//   - clipfunc: clip function to install.
 //
 func (pads *CollectPads) SetClipFunction(clipfunc CollectPadsClipFunction) {
 	var _arg0 *C.GstCollectPads            // out
@@ -659,7 +662,7 @@ func (pads *CollectPads) SetClipFunction(clipfunc CollectPadsClipFunction) {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to set.
+//   - fn: function to set.
 //
 func (pads *CollectPads) SetCompareFunction(fn CollectPadsCompareFunction) {
 	var _arg0 *C.GstCollectPads               // out
@@ -676,18 +679,18 @@ func (pads *CollectPads) SetCompareFunction(fn CollectPadsCompareFunction) {
 	runtime.KeepAlive(fn)
 }
 
-// SetEventFunction: set the event callback function and user data that will be
-// called when collectpads has received an event originating from one of the
-// collected pads. If the event being processed is a serialized one, this
-// callback is called with pads STREAM_LOCK held, otherwise not. As this lock
-// should be held when calling a number of CollectPads functions, it should be
-// acquired if so (unusually) needed.
+// SetEventFunction: set the event callback function and user data that will
+// be called when collectpads has received an event originating from one of
+// the collected pads. If the event being processed is a serialized one,
+// this callback is called with pads STREAM_LOCK held, otherwise not.
+// As this lock should be held when calling a number of CollectPads functions,
+// it should be acquired if so (unusually) needed.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to set.
+//   - fn: function to set.
 //
 func (pads *CollectPads) SetEventFunction(fn CollectPadsEventFunction) {
 	var _arg0 *C.GstCollectPads             // out
@@ -705,12 +708,12 @@ func (pads *CollectPads) SetEventFunction(fn CollectPadsEventFunction) {
 }
 
 // SetFlushFunction: install a flush function that is called when the internal
-// state of all pads should be flushed as part of flushing seek handling. See
-// CollectPadsFlushFunction for more info.
+// state of all pads should be flushed as part of flushing seek handling.
+// See CollectPadsFlushFunction for more info.
 //
 // The function takes the following parameters:
 //
-//    - fn: flush function to install.
+//   - fn: flush function to install.
 //
 func (pads *CollectPads) SetFlushFunction(fn CollectPadsFlushFunction) {
 	var _arg0 *C.GstCollectPads             // out
@@ -727,17 +730,17 @@ func (pads *CollectPads) SetFlushFunction(fn CollectPadsFlushFunction) {
 	runtime.KeepAlive(fn)
 }
 
-// SetFlushing: change the flushing state of all the pads in the collection. No
-// pad is able to accept anymore data when flushing is TRUE. Calling this
-// function with flushing FALSE makes pads accept data again. Caller must ensure
-// that downstream streaming (thread) is not blocked, e.g. by sending a
+// SetFlushing: change the flushing state of all the pads in the collection.
+// No pad is able to accept anymore data when flushing is TRUE. Calling this
+// function with flushing FALSE makes pads accept data again. Caller must
+// ensure that downstream streaming (thread) is not blocked, e.g. by sending a
 // FLUSH_START downstream.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - flushing: desired state of the pads.
+//   - flushing: desired state of the pads.
 //
 func (pads *CollectPads) SetFlushing(flushing bool) {
 	var _arg0 *C.GstCollectPads // out
@@ -753,20 +756,20 @@ func (pads *CollectPads) SetFlushing(flushing bool) {
 	runtime.KeepAlive(flushing)
 }
 
-// SetFunction collectPads provides a default collection algorithm that will
-// determine the oldest buffer available on all of its pads, and then delegate
-// to a configured callback. However, if circumstances are more complicated
-// and/or more control is desired, this sets a callback that will be invoked
-// instead when all the pads added to the collection have buffers queued.
-// Evidently, this callback is not compatible with
-// gst_collect_pads_set_buffer_function() callback. If this callback is set, the
-// former will be unset.
+// SetFunction collectPads provides a default collection algorithm
+// that will determine the oldest buffer available on all of its pads,
+// and then delegate to a configured callback. However, if circumstances
+// are more complicated and/or more control is desired, this sets a callback
+// that will be invoked instead when all the pads added to the collection
+// have buffers queued. Evidently, this callback is not compatible with
+// gst_collect_pads_set_buffer_function() callback. If this callback is set,
+// the former will be unset.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to set.
+//   - fn: function to set.
 //
 func (pads *CollectPads) SetFunction(fn CollectPadsFunction) {
 	var _arg0 *C.GstCollectPads        // out
@@ -783,18 +786,18 @@ func (pads *CollectPads) SetFunction(fn CollectPadsFunction) {
 	runtime.KeepAlive(fn)
 }
 
-// SetQueryFunction: set the query callback function and user data that will be
-// called after collectpads has received a query originating from one of the
-// collected pads. If the query being processed is a serialized one, this
-// callback is called with pads STREAM_LOCK held, otherwise not. As this lock
-// should be held when calling a number of CollectPads functions, it should be
-// acquired if so (unusually) needed.
+// SetQueryFunction: set the query callback function and user data that will
+// be called after collectpads has received a query originating from one of
+// the collected pads. If the query being processed is a serialized one,
+// this callback is called with pads STREAM_LOCK held, otherwise not.
+// As this lock should be held when calling a number of CollectPads functions,
+// it should be acquired if so (unusually) needed.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - fn: function to set.
+//   - fn: function to set.
 //
 func (pads *CollectPads) SetQueryFunction(fn CollectPadsQueryFunction) {
 	var _arg0 *C.GstCollectPads             // out
@@ -811,8 +814,8 @@ func (pads *CollectPads) SetQueryFunction(fn CollectPadsQueryFunction) {
 	runtime.KeepAlive(fn)
 }
 
-// SetWaiting sets a pad to waiting or non-waiting mode, if at least this pad
-// has not been created with locked waiting state, in which case nothing
+// SetWaiting sets a pad to waiting or non-waiting mode, if at least this
+// pad has not been created with locked waiting state, in which case nothing
 // happens.
 //
 // This function should be called with pads STREAM_LOCK held, such as in the
@@ -822,9 +825,9 @@ func (pads *CollectPads) SetQueryFunction(fn CollectPadsQueryFunction) {
 //
 // The function takes the following parameters:
 //
-//    - data to use.
-//    - waiting: boolean indicating whether this pad should operate in waiting or
-//      non-waiting mode.
+//   - data to use.
+//   - waiting: boolean indicating whether this pad should operate in waiting or
+//     non-waiting mode.
 //
 func (pads *CollectPads) SetWaiting(data *CollectData, waiting bool) {
 	var _arg0 *C.GstCollectPads // out
@@ -849,8 +852,8 @@ func (pads *CollectPads) SetWaiting(data *CollectData, waiting bool) {
 //
 // The function takes the following parameters:
 //
-//    - pad: src Pad that received the event.
-//    - event being processed.
+//   - pad: src Pad that received the event.
+//   - event being processed.
 //
 // The function returns the following values:
 //
@@ -913,14 +916,14 @@ func (pads *CollectPads) Stop() {
 //
 // The function takes the following parameters:
 //
-//    - data to use.
-//    - size: number of bytes to read.
+//   - data to use.
+//   - size: number of bytes to read.
 //
 // The function returns the following values:
 //
-//    - buffer (optional): sub buffer. The size of the buffer can be less that
-//      requested. A return of NULL signals that the pad is end-of-stream. Unref
-//      the buffer after use.
+//   - buffer (optional): sub buffer. The size of the buffer can be less that
+//     requested. A return of NULL signals that the pad is end-of-stream.
+//     Unref the buffer after use.
 //
 func (pads *CollectPads) TakeBuffer(data *CollectData, size uint) *gst.Buffer {
 	var _arg0 *C.GstCollectPads // out

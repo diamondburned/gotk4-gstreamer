@@ -22,8 +22,8 @@ const VIDEO_CONVERTER_OPT_BORDER_ARGB = "GstVideoConverter.border-argb"
 // formats. Default is T_VIDEO_CHROMA_MODE_FULL.
 const VIDEO_CONVERTER_OPT_CHROMA_MODE = "GstVideoConverter.chroma-mode"
 
-// VIDEO_CONVERTER_OPT_CHROMA_RESAMPLER_METHOD The resampler method to use for
-// chroma resampling. Other options for the resampler can be used, see the
+// VIDEO_CONVERTER_OPT_CHROMA_RESAMPLER_METHOD The resampler method to use
+// for chroma resampling. Other options for the resampler can be used, see the
 // VideoResampler. Default is T_VIDEO_RESAMPLER_METHOD_LINEAR.
 const VIDEO_CONVERTER_OPT_CHROMA_RESAMPLER_METHOD = "GstVideoConverter.chroma-resampler-method"
 
@@ -49,8 +49,8 @@ const VIDEO_CONVERTER_OPT_DITHER_METHOD = "GstVideoConverter.dither-method"
 // Components will be quantized to multiples of this value. Default is 1.
 const VIDEO_CONVERTER_OPT_DITHER_QUANTIZATION = "GstVideoConverter.dither-quantization"
 
-// VIDEO_CONVERTER_OPT_FILL_BORDER if the destination rectangle does not fill
-// the complete destination image, render a border with
+// VIDEO_CONVERTER_OPT_FILL_BORDER if the destination rectangle does
+// not fill the complete destination image, render a border with
 // T_VIDEO_CONVERTER_OPT_BORDER_ARGB. Otherwise the unusded pixels in the
 // destination are untouched. Default TRUE.
 const VIDEO_CONVERTER_OPT_FILL_BORDER = "GstVideoConverter.fill-border"
@@ -59,8 +59,8 @@ const VIDEO_CONVERTER_OPT_FILL_BORDER = "GstVideoConverter.fill-border"
 // T_VIDEO_GAMMA_MODE_NONE.
 const VIDEO_CONVERTER_OPT_GAMMA_MODE = "GstVideoConverter.gamma-mode"
 
-// VIDEO_CONVERTER_OPT_MATRIX_MODE set the color matrix conversion mode for
-// converting between Y'PbPr and non-linear RGB (R'G'B'). Default is
+// VIDEO_CONVERTER_OPT_MATRIX_MODE set the color matrix conversion mode
+// for converting between Y'PbPr and non-linear RGB (R'G'B'). Default is
 // T_VIDEO_MATRIX_MODE_FULL.
 const VIDEO_CONVERTER_OPT_MATRIX_MODE = "GstVideoConverter.matrix-mode"
 
@@ -68,8 +68,8 @@ const VIDEO_CONVERTER_OPT_MATRIX_MODE = "GstVideoConverter.matrix-mode"
 // is T_VIDEO_PRIMARIES_MODE_NONE.
 const VIDEO_CONVERTER_OPT_PRIMARIES_MODE = "GstVideoConverter.primaries-mode"
 
-// VIDEO_CONVERTER_OPT_RESAMPLER_METHOD The resampler method to use for
-// resampling. Other options for the resampler can be used, see the
+// VIDEO_CONVERTER_OPT_RESAMPLER_METHOD The resampler method to use
+// for resampling. Other options for the resampler can be used, see the
 // VideoResampler. Default is T_VIDEO_RESAMPLER_METHOD_CUBIC.
 const VIDEO_CONVERTER_OPT_RESAMPLER_METHOD = "GstVideoConverter.resampler-method"
 
@@ -90,6 +90,6 @@ const VIDEO_CONVERTER_OPT_SRC_X = "GstVideoConverter.src-x"
 // VIDEO_CONVERTER_OPT_SRC_Y source y position to start conversion, default 0.
 const VIDEO_CONVERTER_OPT_SRC_Y = "GstVideoConverter.src-y"
 
-// VIDEO_CONVERTER_OPT_THREADS maximum number of threads to use. Default 1, 0
-// for the number of cores.
+// VIDEO_CONVERTER_OPT_THREADS maximum number of threads to use. Default 1,
+// 0 for the number of cores.
 const VIDEO_CONVERTER_OPT_THREADS = "GstVideoConverter.threads"

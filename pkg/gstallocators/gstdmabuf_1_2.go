@@ -19,13 +19,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - mem: memory to get the file descriptor.
+//   - mem: memory to get the file descriptor.
 //
 // The function returns the following values:
 //
-//    - gint: file descriptor associated with the memory, or -1. The file
-//      descriptor is still owned by the GstMemory. Use dup to take a copy if you
-//      intend to use it beyond the lifetime of this GstMemory.
+//   - gint: file descriptor associated with the memory, or -1. The file
+//     descriptor is still owned by the GstMemory. Use dup to take a copy if you
+//     intend to use it beyond the lifetime of this GstMemory.
 //
 func DmabufMemoryGetFd(mem *gst.Memory) int {
 	var _arg1 *C.GstMemory // out
@@ -47,11 +47,11 @@ func DmabufMemoryGetFd(mem *gst.Memory) int {
 //
 // The function takes the following parameters:
 //
-//    - mem: memory to be check.
+//   - mem: memory to be check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if mem is dmabuf memory, otherwise FALSE.
+//   - ok: TRUE if mem is dmabuf memory, otherwise FALSE.
 //
 func IsDmabufMemory(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -75,15 +75,15 @@ func IsDmabufMemory(mem *gst.Memory) bool {
 //
 // The function takes the following parameters:
 //
-//    - allocator to be used for this memory.
-//    - fd: dmabuf file descriptor.
-//    - size: memory size.
+//   - allocator to be used for this memory.
+//   - fd: dmabuf file descriptor.
+//   - size: memory size.
 //
 // The function returns the following values:
 //
-//    - memory: gstMemory based on allocator. When the buffer will be released
-//      dmabuf allocator will close the fd. The memory is only mmapped on
-//      gst_buffer_map() request.
+//   - memory (optional): gstMemory based on allocator. When the buffer will be
+//     released dmabuf allocator will close the fd. The memory is only mmapped
+//     on gst_buffer_map() request.
 //
 func DmaBufAllocatorAlloc(allocator gst.Allocatorrer, fd int, size uint) *gst.Memory {
 	var _arg1 *C.GstAllocator // out
@@ -102,13 +102,15 @@ func DmaBufAllocatorAlloc(allocator gst.Allocatorrer, fd int, size uint) *gst.Me
 
 	var _memory *gst.Memory // out
 
-	_memory = (*gst.Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_memory)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_memory = (*gst.Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_memory)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _memory
 }

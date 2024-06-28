@@ -39,6 +39,8 @@ type VideoCodecFrameFlags C.guint
 const (
 	// VideoCodecFrameFlagDecodeOnly is the frame only meant to be decoded.
 	VideoCodecFrameFlagDecodeOnly VideoCodecFrameFlags = 0b1
+	// VideoCodecFrameFlagCorrupted: buffer data is corrupted.
+	VideoCodecFrameFlagCorrupted VideoCodecFrameFlags = 0b10000
 	// VideoCodecFrameFlagSyncPoint is the frame a synchronization point
 	// (keyframe).
 	VideoCodecFrameFlagSyncPoint VideoCodecFrameFlags = 0b10
@@ -48,8 +50,6 @@ const (
 	// VideoCodecFrameFlagForceKeyframeHeaders: should the encoder output stream
 	// headers.
 	VideoCodecFrameFlagForceKeyframeHeaders VideoCodecFrameFlags = 0b1000
-	// VideoCodecFrameFlagCorrupted: buffer data is corrupted.
-	VideoCodecFrameFlagCorrupted VideoCodecFrameFlags = 0b10000
 )
 
 func marshalVideoCodecFrameFlags(p uintptr) (interface{}, error) {
@@ -72,14 +72,14 @@ func (v VideoCodecFrameFlags) String() string {
 		switch bit {
 		case VideoCodecFrameFlagDecodeOnly:
 			builder.WriteString("DecodeOnly|")
+		case VideoCodecFrameFlagCorrupted:
+			builder.WriteString("Corrupted|")
 		case VideoCodecFrameFlagSyncPoint:
 			builder.WriteString("SyncPoint|")
 		case VideoCodecFrameFlagForceKeyframe:
 			builder.WriteString("ForceKeyframe|")
 		case VideoCodecFrameFlagForceKeyframeHeaders:
 			builder.WriteString("ForceKeyframeHeaders|")
-		case VideoCodecFrameFlagCorrupted:
-			builder.WriteString("Corrupted|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoCodecFrameFlags(0b%b)|", bit))
 		}
@@ -127,9 +127,7 @@ func (v *VideoCodecFrame) SystemFrameNumber() uint32 {
 func (v *VideoCodecFrame) Dts() gst.ClockTime {
 	valptr := &v.native.dts
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -137,9 +135,7 @@ func (v *VideoCodecFrame) Dts() gst.ClockTime {
 func (v *VideoCodecFrame) Pts() gst.ClockTime {
 	valptr := &v.native.pts
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -147,9 +143,7 @@ func (v *VideoCodecFrame) Pts() gst.ClockTime {
 func (v *VideoCodecFrame) Duration() gst.ClockTime {
 	valptr := &v.native.duration
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -170,8 +164,8 @@ func (v *VideoCodecFrame) InputBuffer() *gst.Buffer {
 	return _v
 }
 
-// OutputBuffer: output Buffer. Implementations should set this either directly,
-// or by using the gst_video_decoder_allocate_output_frame() or
+// OutputBuffer: output Buffer. Implementations should set this either
+// directly, or by using the gst_video_decoder_allocate_output_frame() or
 // gst_video_decoder_allocate_output_buffer() methods. The buffer is owned by
 // the frame and references to the frame instead of the buffer should be kept.
 func (v *VideoCodecFrame) OutputBuffer() *gst.Buffer {
@@ -185,9 +179,7 @@ func (v *VideoCodecFrame) OutputBuffer() *gst.Buffer {
 func (v *VideoCodecFrame) Deadline() gst.ClockTime {
 	valptr := &v.native.deadline
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -211,7 +203,7 @@ func (v *VideoCodecFrame) SetDistanceFromSync(distanceFromSync int) {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): previously set user_data.
+//   - gpointer (optional): previously set user_data.
 //
 func (frame *VideoCodecFrame) UserData() unsafe.Pointer {
 	var _arg0 *C.GstVideoCodecFrame // out

@@ -6,16 +6,16 @@ package gst
 // #include <gst/gst.h>
 import "C"
 
-// STIMEP_FORMAT: printf format type used to debug GStreamer signed time value
-// pointers. You can use this in combination with GStreamer's debug logging
-// system as well as the functions gst_info_vasprintf(),
+// STIMEP_FORMAT: printf format type used to debug GStreamer signed time
+// value pointers. You can use this in combination with GStreamer's
+// debug logging system as well as the functions gst_info_vasprintf(),
 // gst_info_strdup_vprintf() and gst_info_strdup_printf() to pretty-print signed
 // time (pointers to ClockTimeDiff or #gint64).
 const STIMEP_FORMAT = "paS"
 
 // TIMEP_FORMAT: printf format type used to debug GStreamer ClockTime pointers.
-// You can use this in combination with GStreamer's debug logging system as well
-// as the functions gst_info_vasprintf(), gst_info_strdup_vprintf() and
+// You can use this in combination with GStreamer's debug logging system as
+// well as the functions gst_info_vasprintf(), gst_info_strdup_vprintf() and
 // gst_info_strdup_printf() to pretty-print ClockTime pointers. This can only be
 // used on pointers to GstClockTime values.
 const TIMEP_FORMAT = "paT"

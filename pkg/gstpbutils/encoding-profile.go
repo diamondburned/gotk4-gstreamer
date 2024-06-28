@@ -62,16 +62,16 @@ func marshalEncodingAudioProfile(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - format: Caps.
-//    - preset (optional): preset(s) to use on the encoder, can be NULL.
-//    - restriction (optional) used to restrict the input to the encoder, can be
-//      NULL. See gst_encoding_profile_get_restriction() for more details.
-//    - presence: number of time this stream must be used. 0 means any number of
-//      times (including never).
+//   - format: Caps.
+//   - preset (optional): preset(s) to use on the encoder, can be NULL.
+//   - restriction (optional) used to restrict the input to the encoder,
+//     can be NULL. See gst_encoding_profile_get_restriction() for more details.
+//   - presence: number of time this stream must be used. 0 means any number of
+//     times (including never).
 //
 // The function returns the following values:
 //
-//    - encodingAudioProfile: newly created EncodingAudioProfile.
+//   - encodingAudioProfile: newly created EncodingAudioProfile.
 //
 func NewEncodingAudioProfile(format *gst.Caps, preset string, restriction *gst.Caps, presence uint) *EncodingAudioProfile {
 	var _arg1 *C.GstCaps                 // out
@@ -130,14 +130,14 @@ func marshalEncodingContainerProfile(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the container profile, can be NULL.
-//    - description (optional) of the container profile, can be NULL.
-//    - format to use for this profile.
-//    - preset (optional) to use for this profile.
+//   - name (optional) of the container profile, can be NULL.
+//   - description (optional) of the container profile, can be NULL.
+//   - format to use for this profile.
+//   - preset (optional) to use for this profile.
 //
 // The function returns the following values:
 //
-//    - encodingContainerProfile: newly created EncodingContainerProfile.
+//   - encodingContainerProfile: newly created EncodingContainerProfile.
 //
 func NewEncodingContainerProfile(name, description string, format *gst.Caps, preset string) *EncodingContainerProfile {
 	var _arg1 *C.gchar                       // out
@@ -181,11 +181,11 @@ func NewEncodingContainerProfile(name, description string, format *gst.Caps, pre
 //
 // The function takes the following parameters:
 //
-//    - profile to add.
+//   - profile to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream was properly added, else FALSE.
+//   - ok: TRUE if the stream was properly added, else FALSE.
 //
 func (container *EncodingContainerProfile) AddProfile(profile *EncodingProfile) bool {
 	var _arg0 *C.GstEncodingContainerProfile // out
@@ -214,12 +214,12 @@ func (container *EncodingContainerProfile) AddProfile(profile *EncodingProfile) 
 //
 // The function takes the following parameters:
 //
-//    - profile: EncodingProfile.
+//   - profile: EncodingProfile.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if container contains a EncodingProfile identical to profile,
-//      else FALSE.
+//   - ok: TRUE if container contains a EncodingProfile identical to profile,
+//     else FALSE.
 //
 func (container *EncodingContainerProfile) ContainsProfile(profile *EncodingProfile) bool {
 	var _arg0 *C.GstEncodingContainerProfile // out
@@ -244,7 +244,7 @@ func (container *EncodingContainerProfile) ContainsProfile(profile *EncodingProf
 
 // The function returns the following values:
 //
-//    - list: the list of contained EncodingProfile.
+//   - list: the list of contained EncodingProfile.
 //
 func (profile *EncodingContainerProfile) Profiles() []*EncodingProfile {
 	var _arg0 *C.GstEncodingContainerProfile // out
@@ -293,7 +293,7 @@ func marshalEncodingProfile(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - encodingProfile: copy of self.
+//   - encodingProfile: copy of self.
 //
 func (self *EncodingProfile) Copy() *EncodingProfile {
 	var _arg0 *C.GstEncodingProfile // out
@@ -336,7 +336,7 @@ func (profile *EncodingProfile) AllowDynamicOutput() bool {
 
 // The function returns the following values:
 //
-//    - utf8: description of the profile, can be NULL.
+//   - utf8 (optional): description of the profile, can be NULL.
 //
 func (profile *EncodingProfile) Description() string {
 	var _arg0 *C.GstEncodingProfile // out
@@ -349,15 +349,17 @@ func (profile *EncodingProfile) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - structure (optional) properties that are going to be set on the
-//      underlying element.
+//   - structure (optional) properties that are going to be set on the
+//     underlying element.
 //
 func (self *EncodingProfile) ElementProperties() *gst.Structure {
 	var _arg0 *C.GstEncodingProfile // out
@@ -385,7 +387,7 @@ func (self *EncodingProfile) ElementProperties() *gst.Structure {
 
 // The function returns the following values:
 //
-//    - utf8: suitable file extension for profile, or NULL.
+//   - utf8 (optional): suitable file extension for profile, or NULL.
 //
 func (profile *EncodingProfile) FileExtension() string {
 	var _arg0 *C.GstEncodingProfile // out
@@ -398,15 +400,17 @@ func (profile *EncodingProfile) FileExtension() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - caps corresponding to the media format used in the profile. Unref after
-//      usage.
+//   - caps: (nullable): the Caps corresponding to the media format used in the
+//     profile. Unref after usage.
 //
 func (profile *EncodingProfile) Format() *gst.Caps {
 	var _arg0 *C.GstEncodingProfile // out
@@ -435,8 +439,8 @@ func (profile *EncodingProfile) Format() *gst.Caps {
 //
 // The function returns the following values:
 //
-//    - caps: full caps the given profile can consume. Call gst_caps_unref() when
-//      you are done with the caps.
+//   - caps: full caps the given profile can consume. Call gst_caps_unref() when
+//     you are done with the caps.
 //
 func (profile *EncodingProfile) InputCaps() *gst.Caps {
 	var _arg0 *C.GstEncodingProfile // out
@@ -462,7 +466,7 @@ func (profile *EncodingProfile) InputCaps() *gst.Caps {
 
 // The function returns the following values:
 //
-//    - utf8: name of the profile, can be NULL.
+//   - utf8 (optional): name of the profile, can be NULL.
 //
 func (profile *EncodingProfile) Name() string {
 	var _arg0 *C.GstEncodingProfile // out
@@ -475,15 +479,17 @@ func (profile *EncodingProfile) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - guint: number of times the profile is used in its parent container
-//      profile. If 0, it is not a mandatory stream.
+//   - guint: number of times the profile is used in its parent container
+//     profile. If 0, it is not a mandatory stream.
 //
 func (profile *EncodingProfile) Presence() uint {
 	var _arg0 *C.GstEncodingProfile // out
@@ -503,8 +509,8 @@ func (profile *EncodingProfile) Presence() uint {
 
 // The function returns the following values:
 //
-//    - utf8: name of the Preset to be used in the profile. This is the name that
-//      has been set when saving the preset.
+//   - utf8 (optional): name of the Preset to be used in the profile. This is
+//     the name that has been set when saving the preset.
 //
 func (profile *EncodingProfile) Preset() string {
 	var _arg0 *C.GstEncodingProfile // out
@@ -517,14 +523,16 @@ func (profile *EncodingProfile) Preset() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - utf8: name of the Preset factory to be used in the profile.
+//   - utf8 (optional): name of the Preset factory to be used in the profile.
 //
 func (profile *EncodingProfile) PresetName() string {
 	var _arg0 *C.GstEncodingProfile // out
@@ -537,19 +545,21 @@ func (profile *EncodingProfile) PresetName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - caps: restriction Caps to apply before the encoder that will be used in
-//      the profile. The fields present in restriction caps are properties of the
-//      raw stream (that is before encoding), such as height and width for video
-//      and depth and sampling rate for audio. Does not apply to
-//      EncodingContainerProfile (since there is no corresponding raw stream).
-//      Can be NULL. Unref after usage.
+//   - caps (optional): restriction Caps to apply before the encoder that
+//     will be used in the profile. The fields present in restriction caps are
+//     properties of the raw stream (that is before encoding), such as height
+//     and width for video and depth and sampling rate for audio. Does not apply
+//     to EncodingContainerProfile (since there is no corresponding raw stream).
+//     Can be NULL. Unref after usage.
 //
 func (profile *EncodingProfile) Restriction() *gst.Caps {
 	var _arg0 *C.GstEncodingProfile // out
@@ -562,22 +572,24 @@ func (profile *EncodingProfile) Restriction() *gst.Caps {
 
 	var _caps *gst.Caps // out
 
-	_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_caps)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_caps)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _caps
 }
 
 // The function returns the following values:
 //
-//    - ok if the stream represented by profile should use a single segment
-//      before the encoder, LSE otherwise. This means that buffers will be
-//      retimestamped and segments will be eat so as to appear as one segment.
+//   - ok if the stream represented by profile should use a single segment
+//     before the encoder, LSE otherwise. This means that buffers will be
+//     retimestamped and segments will be eat so as to appear as one segment.
 //
 func (profile *EncodingProfile) SingleSegment() bool {
 	var _arg0 *C.GstEncodingProfile // out
@@ -599,7 +611,7 @@ func (profile *EncodingProfile) SingleSegment() bool {
 
 // The function returns the following values:
 //
-//    - utf8: human-readable name of the type of profile.
+//   - utf8: human-readable name of the type of profile.
 //
 func (profile *EncodingProfile) TypeNick() string {
 	var _arg0 *C.GstEncodingProfile // out
@@ -641,11 +653,11 @@ func (profile *EncodingProfile) IsEnabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - b: EncodingProfile.
+//   - b: EncodingProfile.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a and b are equal, else FALSE.
+//   - ok: TRUE if a and b are equal, else FALSE.
 //
 func (a *EncodingProfile) IsEqual(b *EncodingProfile) bool {
 	var _arg0 *C.GstEncodingProfile // out
@@ -673,8 +685,8 @@ func (a *EncodingProfile) IsEqual(b *EncodingProfile) bool {
 //
 // The function takes the following parameters:
 //
-//    - allowDynamicOutput: whether the format that has been negotiated first can
-//      be renegotiated during the encoding.
+//   - allowDynamicOutput: whether the format that has been negotiated first can
+//     be renegotiated during the encoding.
 //
 func (profile *EncodingProfile) SetAllowDynamicOutput(allowDynamicOutput bool) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -690,12 +702,12 @@ func (profile *EncodingProfile) SetAllowDynamicOutput(allowDynamicOutput bool) {
 	runtime.KeepAlive(allowDynamicOutput)
 }
 
-// SetDescription: set description as the given description for the profile. A
-// copy of description will be made internally.
+// SetDescription: set description as the given description for the profile.
+// A copy of description will be made internally.
 //
 // The function takes the following parameters:
 //
-//    - description (optional) to set on the profile.
+//   - description (optional) to set on the profile.
 //
 func (profile *EncodingProfile) SetDescription(description string) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -719,25 +731,23 @@ func (profile *EncodingProfile) SetDescription(description string) {
 //
 // ` properties [element-properties, boolean-prop=true, string-prop="hi"]
 //
-//
 //      **Mapping properties with well known element factories**
 //
 //
 //
 //    properties
 //
-// element-properties-map, map = {
-//
-//        [openh264enc, gop-size=32, ],
-//        [x264enc, key-int-max=32, tune=zerolatency],
-//    }
+//    element-properties-map, map = {
+//         [openh264enc, gop-size=32, ],
+//         [x264enc, key-int-max=32, tune=zerolatency],
+//     }
 //
 // `.
 //
 // The function takes the following parameters:
 //
-//    - elementProperties defining the properties to be set to the element the
-//      profile represents.
+//   - elementProperties defining the properties to be set to the element the
+//     profile represents.
 //
 func (self *EncodingProfile) SetElementProperties(elementProperties *gst.Structure) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -756,7 +766,7 @@ func (self *EncodingProfile) SetElementProperties(elementProperties *gst.Structu
 //
 // The function takes the following parameters:
 //
-//    - enabled: FALSE to disable profile, TRUE to enable it.
+//   - enabled: FALSE to disable profile, TRUE to enable it.
 //
 func (profile *EncodingProfile) SetEnabled(enabled bool) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -776,7 +786,7 @@ func (profile *EncodingProfile) SetEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - format: media format to use in the profile.
+//   - format: media format to use in the profile.
 //
 func (profile *EncodingProfile) SetFormat(format *gst.Caps) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -795,7 +805,7 @@ func (profile *EncodingProfile) SetFormat(format *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) to set on the profile.
+//   - name (optional) to set on the profile.
 //
 func (profile *EncodingProfile) SetName(name string) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -817,7 +827,7 @@ func (profile *EncodingProfile) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - presence: number of time the profile can be used.
+//   - presence: number of time the profile can be used.
 //
 func (profile *EncodingProfile) SetPresence(presence uint) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -837,7 +847,7 @@ func (profile *EncodingProfile) SetPresence(presence uint) {
 //
 // The function takes the following parameters:
 //
-//    - preset (optional): element preset to use.
+//   - preset (optional): element preset to use.
 //
 func (profile *EncodingProfile) SetPreset(preset string) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -859,7 +869,7 @@ func (profile *EncodingProfile) SetPreset(preset string) {
 //
 // The function takes the following parameters:
 //
-//    - presetName (optional): name of the preset to use in this profile.
+//   - presetName (optional): name of the preset to use in this profile.
 //
 func (profile *EncodingProfile) SetPresetName(presetName string) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -882,7 +892,7 @@ func (profile *EncodingProfile) SetPresetName(presetName string) {
 //
 // The function takes the following parameters:
 //
-//    - restriction (optional) to apply.
+//   - restriction (optional) to apply.
 //
 func (profile *EncodingProfile) SetRestriction(restriction *gst.Caps) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -907,8 +917,8 @@ func (profile *EncodingProfile) SetRestriction(restriction *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - singleSegment if the stream represented by profile should use a single
-//      segment before the encoder, LSE otherwise.
+//   - singleSegment if the stream represented by profile should use a single
+//     segment before the encoder, LSE otherwise.
 //
 func (profile *EncodingProfile) SetSingleSegment(singleSegment bool) {
 	var _arg0 *C.GstEncodingProfile // out
@@ -929,14 +939,14 @@ func (profile *EncodingProfile) SetSingleSegment(singleSegment bool) {
 //
 // The function takes the following parameters:
 //
-//    - targetname: name of the target.
-//    - profilename (optional): name of the profile, if NULL provided, it will
-//      default to the encoding profile called default.
-//    - category (optional): target category. Can be NULL.
+//   - targetname: name of the target.
+//   - profilename (optional): name of the profile, if NULL provided, it will
+//     default to the encoding profile called default.
+//   - category (optional): target category. Can be NULL.
 //
 // The function returns the following values:
 //
-//    - encodingProfile: matching EncodingProfile or NULL.
+//   - encodingProfile (optional): matching EncodingProfile or NULL.
 //
 func EncodingProfileFind(targetname, profilename, category string) *EncodingProfile {
 	var _arg1 *C.gchar              // out
@@ -962,7 +972,9 @@ func EncodingProfileFind(targetname, profilename, category string) *EncodingProf
 
 	var _encodingProfile *EncodingProfile // out
 
-	_encodingProfile = wrapEncodingProfile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_encodingProfile = wrapEncodingProfile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _encodingProfile
 }
@@ -973,11 +985,11 @@ func EncodingProfileFind(targetname, profilename, category string) *EncodingProf
 //
 // The function takes the following parameters:
 //
-//    - info to read from.
+//   - info to read from.
 //
 // The function returns the following values:
 //
-//    - encodingProfile: new EncodingProfile or NULL.
+//   - encodingProfile (optional): new EncodingProfile or NULL.
 //
 func EncodingProfileFromDiscoverer(info *DiscovererInfo) *EncodingProfile {
 	var _arg1 *C.GstDiscovererInfo  // out
@@ -990,7 +1002,9 @@ func EncodingProfileFromDiscoverer(info *DiscovererInfo) *EncodingProfile {
 
 	var _encodingProfile *EncodingProfile // out
 
-	_encodingProfile = wrapEncodingProfile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_encodingProfile = wrapEncodingProfile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _encodingProfile
 }
@@ -1031,16 +1045,16 @@ func marshalEncodingVideoProfile(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - format: Caps.
-//    - preset (optional): preset(s) to use on the encoder, can be NULL.
-//    - restriction (optional) used to restrict the input to the encoder, can be
-//      NULL. See gst_encoding_profile_get_restriction() for more details.
-//    - presence: number of time this stream must be used. 0 means any number of
-//      times (including never).
+//   - format: Caps.
+//   - preset (optional): preset(s) to use on the encoder, can be NULL.
+//   - restriction (optional) used to restrict the input to the encoder,
+//     can be NULL. See gst_encoding_profile_get_restriction() for more details.
+//   - presence: number of time this stream must be used. 0 means any number of
+//     times (including never).
 //
 // The function returns the following values:
 //
-//    - encodingVideoProfile: newly created EncodingVideoProfile.
+//   - encodingVideoProfile: newly created EncodingVideoProfile.
 //
 func NewEncodingVideoProfile(format *gst.Caps, preset string, restriction *gst.Caps, presence uint) *EncodingVideoProfile {
 	var _arg1 *C.GstCaps                 // out
@@ -1076,8 +1090,8 @@ func NewEncodingVideoProfile(format *gst.Caps, preset string, restriction *gst.C
 //
 // The function returns the following values:
 //
-//    - guint pass number. Starts at 1 for multi-pass. 0 if this is not a
-//      multi-pass profile.
+//   - guint pass number. Starts at 1 for multi-pass. 0 if this is not a
+//     multi-pass profile.
 //
 func (prof *EncodingVideoProfile) Pass() uint {
 	var _arg0 *C.GstEncodingVideoProfile // out
@@ -1100,7 +1114,7 @@ func (prof *EncodingVideoProfile) Pass() uint {
 //
 // The function returns the following values:
 //
-//    - ok: whether non-constant video framerate is allowed for encoding.
+//   - ok: whether non-constant video framerate is allowed for encoding.
 //
 func (prof *EncodingVideoProfile) Variableframerate() bool {
 	var _arg0 *C.GstEncodingVideoProfile // out
@@ -1126,7 +1140,7 @@ func (prof *EncodingVideoProfile) Variableframerate() bool {
 //
 // The function takes the following parameters:
 //
-//    - pass number for this profile.
+//   - pass number for this profile.
 //
 func (prof *EncodingVideoProfile) SetPass(pass uint) {
 	var _arg0 *C.GstEncodingVideoProfile // out
@@ -1141,13 +1155,13 @@ func (prof *EncodingVideoProfile) SetPass(pass uint) {
 }
 
 // SetVariableframerate: if set to TRUE, then the incoming stream will be
-// allowed to have non-constant framerate. If set to FALSE (default value), then
-// the incoming stream will be normalized by dropping/duplicating frames in
+// allowed to have non-constant framerate. If set to FALSE (default value),
+// then the incoming stream will be normalized by dropping/duplicating frames in
 // order to produce a constance framerate.
 //
 // The function takes the following parameters:
 //
-//    - variableframerate: boolean.
+//   - variableframerate: boolean.
 //
 func (prof *EncodingVideoProfile) SetVariableframerate(variableframerate bool) {
 	var _arg0 *C.GstEncodingVideoProfile // out

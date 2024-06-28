@@ -19,8 +19,8 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_ARRAY.
-//    - appendValue: value to append.
+//   - value of type T_TYPE_ARRAY.
+//   - appendValue: value to append.
 //
 func ValueArrayAppendAndTakeValue(value, appendValue *coreglib.Value) {
 	var _arg1 *C.GValue // out
@@ -39,8 +39,8 @@ func ValueArrayAppendAndTakeValue(value, appendValue *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - value of type T_TYPE_LIST.
-//    - appendValue: value to append.
+//   - value of type T_TYPE_LIST.
+//   - appendValue: value to append.
 //
 func ValueListAppendAndTakeValue(value, appendValue *coreglib.Value) {
 	var _arg1 *C.GValue // out

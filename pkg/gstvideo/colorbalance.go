@@ -45,8 +45,8 @@ func init() {
 	})
 }
 
-// ColorBalanceType: enumeration indicating whether an element implements color
-// balancing operations in software or in dedicated hardware. In general,
+// ColorBalanceType: enumeration indicating whether an element implements
+// color balancing operations in software or in dedicated hardware. In general,
 // dedicated hardware implementations (such as those provided by xvimagesink)
 // are preferred.
 type ColorBalanceType C.gint
@@ -104,8 +104,8 @@ type ColorBalancer interface {
 	Value(channel *ColorBalanceChannel) int
 	// ListChannels: retrieve a list of the available channels.
 	ListChannels() []*ColorBalanceChannel
-	// SetValue sets the current value of the channel to the passed value, which
-	// must be between min_value and max_value.
+	// SetValue sets the current value of the channel to the passed value,
+	// which must be between min_value and max_value.
 	SetValue(channel *ColorBalanceChannel, value int)
 	// ValueChanged: helper function called by implementations of the
 	// GstColorBalance interface.
@@ -137,7 +137,7 @@ func (balance *ColorBalance) ConnectValueChanged(f func(channel *ColorBalanceCha
 //
 // The function returns the following values:
 //
-//    - colorBalanceType: the ColorBalanceType.
+//   - colorBalanceType: the ColorBalanceType.
 //
 func (balance *ColorBalance) BalanceType() ColorBalanceType {
 	var _arg0 *C.GstColorBalance    // out
@@ -163,11 +163,11 @@ func (balance *ColorBalance) BalanceType() ColorBalanceType {
 //
 // The function takes the following parameters:
 //
-//    - channel: ColorBalanceChannel instance.
+//   - channel: ColorBalanceChannel instance.
 //
 // The function returns the following values:
 //
-//    - gint: current value of the channel.
+//   - gint: current value of the channel.
 //
 func (balance *ColorBalance) Value(channel *ColorBalanceChannel) int {
 	var _arg0 *C.GstColorBalance        // out
@@ -192,8 +192,8 @@ func (balance *ColorBalance) Value(channel *ColorBalanceChannel) int {
 //
 // The function returns the following values:
 //
-//    - list: a GList containing pointers to ColorBalanceChannel objects. The
-//      list is owned by the ColorBalance instance and must not be freed.
+//   - list: a GList containing pointers to ColorBalanceChannel objects.
+//     The list is owned by the ColorBalance instance and must not be freed.
 //
 func (balance *ColorBalance) ListChannels() []*ColorBalanceChannel {
 	var _arg0 *C.GstColorBalance // out
@@ -225,8 +225,8 @@ func (balance *ColorBalance) ListChannels() []*ColorBalanceChannel {
 //
 // The function takes the following parameters:
 //
-//    - channel: ColorBalanceChannel instance.
-//    - value: new value for the channel.
+//   - channel: ColorBalanceChannel instance.
+//   - value: new value for the channel.
 //
 func (balance *ColorBalance) SetValue(channel *ColorBalanceChannel, value int) {
 	var _arg0 *C.GstColorBalance        // out
@@ -244,14 +244,14 @@ func (balance *ColorBalance) SetValue(channel *ColorBalanceChannel, value int) {
 }
 
 // ValueChanged: helper function called by implementations of the
-// GstColorBalance interface. It fires the ColorBalance::value-changed signal on
-// the instance, and the ColorBalanceChannel::value-changed signal on the
+// GstColorBalance interface. It fires the ColorBalance::value-changed signal
+// on the instance, and the ColorBalanceChannel::value-changed signal on the
 // channel object.
 //
 // The function takes the following parameters:
 //
-//    - channel whose value has changed.
-//    - value: new value of the channel.
+//   - channel whose value has changed.
+//   - value: new value of the channel.
 //
 func (balance *ColorBalance) ValueChanged(channel *ColorBalanceChannel, value int) {
 	var _arg0 *C.GstColorBalance        // out
@@ -272,7 +272,7 @@ func (balance *ColorBalance) ValueChanged(channel *ColorBalanceChannel, value in
 //
 // The function returns the following values:
 //
-//    - colorBalanceType: the ColorBalanceType.
+//   - colorBalanceType: the ColorBalanceType.
 //
 func (balance *ColorBalance) balanceType() ColorBalanceType {
 	gclass := (*C.GstColorBalanceInterface)(coreglib.PeekParentClass(balance))
@@ -301,11 +301,11 @@ func (balance *ColorBalance) balanceType() ColorBalanceType {
 //
 // The function takes the following parameters:
 //
-//    - channel: ColorBalanceChannel instance.
+//   - channel: ColorBalanceChannel instance.
 //
 // The function returns the following values:
 //
-//    - gint: current value of the channel.
+//   - gint: current value of the channel.
 //
 func (balance *ColorBalance) value(channel *ColorBalanceChannel) int {
 	gclass := (*C.GstColorBalanceInterface)(coreglib.PeekParentClass(balance))
@@ -333,8 +333,8 @@ func (balance *ColorBalance) value(channel *ColorBalanceChannel) int {
 //
 // The function returns the following values:
 //
-//    - list: a GList containing pointers to ColorBalanceChannel objects. The
-//      list is owned by the ColorBalance instance and must not be freed.
+//   - list: a GList containing pointers to ColorBalanceChannel objects.
+//     The list is owned by the ColorBalance instance and must not be freed.
 //
 func (balance *ColorBalance) listChannels() []*ColorBalanceChannel {
 	gclass := (*C.GstColorBalanceInterface)(coreglib.PeekParentClass(balance))
@@ -369,8 +369,8 @@ func (balance *ColorBalance) listChannels() []*ColorBalanceChannel {
 //
 // The function takes the following parameters:
 //
-//    - channel: ColorBalanceChannel instance.
-//    - value: new value for the channel.
+//   - channel: ColorBalanceChannel instance.
+//   - value: new value for the channel.
 //
 func (balance *ColorBalance) setValue(channel *ColorBalanceChannel, value int) {
 	gclass := (*C.GstColorBalanceInterface)(coreglib.PeekParentClass(balance))
@@ -391,14 +391,14 @@ func (balance *ColorBalance) setValue(channel *ColorBalanceChannel, value int) {
 }
 
 // valueChanged: helper function called by implementations of the
-// GstColorBalance interface. It fires the ColorBalance::value-changed signal on
-// the instance, and the ColorBalanceChannel::value-changed signal on the
+// GstColorBalance interface. It fires the ColorBalance::value-changed signal
+// on the instance, and the ColorBalanceChannel::value-changed signal on the
 // channel object.
 //
 // The function takes the following parameters:
 //
-//    - channel whose value has changed.
-//    - value: new value of the channel.
+//   - channel whose value has changed.
+//   - value: new value of the channel.
 //
 func (balance *ColorBalance) valueChanged(channel *ColorBalanceChannel, value int) {
 	gclass := (*C.GstColorBalanceInterface)(coreglib.PeekParentClass(balance))

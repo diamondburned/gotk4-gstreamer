@@ -13,13 +13,13 @@ import (
 // #include <gst/gst.h>
 import "C"
 
-// TracingGetActiveTracers: get a list of all active tracer objects owned by the
-// tracing framework for the entirety of the run-time of the process or till
+// TracingGetActiveTracers: get a list of all active tracer objects owned by
+// the tracing framework for the entirety of the run-time of the process or till
 // gst_deinit() is called.
 //
 // The function returns the following values:
 //
-//    - list of Tracer objects.
+//   - list of Tracer objects.
 //
 func TracingGetActiveTracers() []Tracerer {
 	var _cret *C.GList // in

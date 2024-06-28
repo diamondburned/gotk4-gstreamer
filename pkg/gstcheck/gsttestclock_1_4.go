@@ -19,7 +19,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - pendingList (optional): list of of pending ClockIDs.
+//   - pendingList (optional): list of of pending ClockIDs.
 //
 // The function returns the following values:
 //
@@ -30,10 +30,8 @@ func TestClockIDListGetLatestTime(pendingList []gst.ClockID) gst.ClockTime {
 	if pendingList != nil {
 		for i := len(pendingList) - 1; i >= 0; i-- {
 			src := pendingList[i]
-			var dst *C.GstClockID // out
-			dst = (C.gpointer)(unsafe.Pointer(src))
-			type _ = gst.ClockID
-			type _ = unsafe.Pointer
+			var dst C.GstClockID // out
+			dst = (C.GstClockID)(unsafe.Pointer(src))
 			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_list_free(_arg1)
@@ -44,9 +42,7 @@ func TestClockIDListGetLatestTime(pendingList []gst.ClockID) gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }

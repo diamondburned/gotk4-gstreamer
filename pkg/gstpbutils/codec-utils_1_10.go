@@ -15,12 +15,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - audioConfig: pointer to the AudioSpecificConfig as specified in the
-//      Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
+//   - audioConfig: pointer to the AudioSpecificConfig as specified in the
+//     Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
 //
 // The function returns the following values:
 //
-//    - guint channels or 0 if the channel could not be determined.
+//   - guint channels or 0 if the channel could not be determined.
 //
 func CodecUtilsAacGetChannels(audioConfig []byte) uint {
 	var _arg1 *C.guint8 // out
@@ -47,12 +47,12 @@ func CodecUtilsAacGetChannels(audioConfig []byte) uint {
 //
 // The function takes the following parameters:
 //
-//    - audioConfig: pointer to the AudioSpecificConfig as specified in the
-//      Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
+//   - audioConfig: pointer to the AudioSpecificConfig as specified in the
+//     Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
 //
 // The function returns the following values:
 //
-//    - guint: sample rate if sr_idx is valid, 0 otherwise.
+//   - guint: sample rate if sr_idx is valid, 0 otherwise.
 //
 func CodecUtilsAacGetSampleRate(audioConfig []byte) uint {
 	var _arg1 *C.guint8 // out

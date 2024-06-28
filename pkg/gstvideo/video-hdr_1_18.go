@@ -63,11 +63,11 @@ func (v *VideoContentLightLevel) SetMaxFrameAverageLightLevel(maxFrameAverageLig
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if linfo was successfully set to caps.
+//   - ok: TRUE if linfo was successfully set to caps.
 //
 func (linfo *VideoContentLightLevel) AddToCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstVideoContentLightLevel // out
@@ -94,11 +94,11 @@ func (linfo *VideoContentLightLevel) AddToCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: if caps has VideoContentLightLevel and could be parsed.
+//   - ok: if caps has VideoContentLightLevel and could be parsed.
 //
 func (linfo *VideoContentLightLevel) FromCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstVideoContentLightLevel // out
@@ -126,11 +126,11 @@ func (linfo *VideoContentLightLevel) FromCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - level string from caps.
+//   - level string from caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if linfo points to valid VideoContentLightLevel.
+//   - ok: TRUE if linfo points to valid VideoContentLightLevel.
 //
 func (linfo *VideoContentLightLevel) FromString(level string) bool {
 	var _arg0 *C.GstVideoContentLightLevel // out
@@ -168,11 +168,11 @@ func (linfo *VideoContentLightLevel) Init() {
 //
 // The function takes the following parameters:
 //
-//    - other: VideoContentLightLevel.
+//   - other: VideoContentLightLevel.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if linfo and other are equal.
+//   - ok: TRUE if linfo and other are equal.
 //
 func (linfo *VideoContentLightLevel) IsEqual(other *VideoContentLightLevel) bool {
 	var _arg0 *C.GstVideoContentLightLevel // out
@@ -199,7 +199,7 @@ func (linfo *VideoContentLightLevel) IsEqual(other *VideoContentLightLevel) bool
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of linfo.
+//   - utf8: string representation of linfo.
 //
 func (linfo *VideoContentLightLevel) String() string {
 	var _arg0 *C.GstVideoContentLightLevel // out
@@ -246,8 +246,8 @@ func (v *VideoMasteringDisplayInfo) DisplayPrimaries() [3]VideoMasteringDisplayI
 	return _v
 }
 
-// WhitePoint: xy coordinates of white point in the CIE 1931 color space. each
-// value is normalized to 50000 (meaning that in unit of 0.00002).
+// WhitePoint: xy coordinates of white point in the CIE 1931 color space.
+// each value is normalized to 50000 (meaning that in unit of 0.00002).
 func (v *VideoMasteringDisplayInfo) WhitePoint() *VideoMasteringDisplayInfoCoordinates {
 	valptr := &v.native.white_point
 	var _v *VideoMasteringDisplayInfoCoordinates // out
@@ -291,11 +291,11 @@ func (v *VideoMasteringDisplayInfo) SetMinDisplayMasteringLuminance(minDisplayMa
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if minfo was successfully set to caps.
+//   - ok: TRUE if minfo was successfully set to caps.
 //
 func (minfo *VideoMasteringDisplayInfo) AddToCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstVideoMasteringDisplayInfo // out
@@ -322,11 +322,11 @@ func (minfo *VideoMasteringDisplayInfo) AddToCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if caps has VideoMasteringDisplayInfo and could be parsed.
+//   - ok: TRUE if caps has VideoMasteringDisplayInfo and could be parsed.
 //
 func (minfo *VideoMasteringDisplayInfo) FromCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstVideoMasteringDisplayInfo // out
@@ -363,11 +363,11 @@ func (minfo *VideoMasteringDisplayInfo) Init() {
 //
 // The function takes the following parameters:
 //
-//    - other: VideoMasteringDisplayInfo.
+//   - other: VideoMasteringDisplayInfo.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if minfo and other are equal.
+//   - ok: TRUE if minfo and other are equal.
 //
 func (minfo *VideoMasteringDisplayInfo) IsEqual(other *VideoMasteringDisplayInfo) bool {
 	var _arg0 *C.GstVideoMasteringDisplayInfo // out
@@ -394,7 +394,7 @@ func (minfo *VideoMasteringDisplayInfo) IsEqual(other *VideoMasteringDisplayInfo
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of minfo.
+//   - utf8: string representation of minfo.
 //
 func (minfo *VideoMasteringDisplayInfo) String() string {
 	var _arg0 *C.GstVideoMasteringDisplayInfo // out
@@ -418,12 +418,12 @@ func (minfo *VideoMasteringDisplayInfo) String() string {
 //
 // The function takes the following parameters:
 //
-//    - mastering representing VideoMasteringDisplayInfo.
+//   - mastering representing VideoMasteringDisplayInfo.
 //
 // The function returns the following values:
 //
-//    - minfo: VideoMasteringDisplayInfo.
-//    - ok: TRUE if minfo was filled with mastering.
+//   - minfo: VideoMasteringDisplayInfo.
+//   - ok: TRUE if minfo was filled with mastering.
 //
 func VideoMasteringDisplayInfoFromString(mastering string) (*VideoMasteringDisplayInfo, bool) {
 	var _arg1 C.GstVideoMasteringDisplayInfo // in
@@ -447,8 +447,8 @@ func VideoMasteringDisplayInfoFromString(mastering string) (*VideoMasteringDispl
 	return _minfo, _ok
 }
 
-// VideoMasteringDisplayInfoCoordinates: used to represent display_primaries and
-// white_point of VideoMasteringDisplayInfo struct. See
+// VideoMasteringDisplayInfoCoordinates: used to represent display_primaries
+// and white_point of VideoMasteringDisplayInfo struct. See
 // VideoMasteringDisplayInfo
 //
 // An instance of this type is always passed by reference.

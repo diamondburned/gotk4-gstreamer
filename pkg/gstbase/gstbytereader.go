@@ -47,9 +47,9 @@ type byteReader struct {
 //
 // The function returns the following values:
 //
-//    - str address of a #guint16 pointer variable in which to store the result.
-//    - ok: TRUE if a string could be read, FALSE otherwise. The string put into
-//      str must be freed with g_free() when no longer needed.
+//   - str address of a #guint16 pointer variable in which to store the result.
+//   - ok: TRUE if a string could be read, FALSE otherwise. The string put into
+//     str must be freed with g_free() when no longer needed.
 //
 func (reader *ByteReader) DupStringUTF16() ([]uint16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -102,9 +102,9 @@ func (reader *ByteReader) DupStringUTF16() ([]uint16, bool) {
 //
 // The function returns the following values:
 //
-//    - str address of a #guint32 pointer variable in which to store the result.
-//    - ok: TRUE if a string could be read, FALSE otherwise. The string put into
-//      str must be freed with g_free() when no longer needed.
+//   - str address of a #guint32 pointer variable in which to store the result.
+//   - ok: TRUE if a string could be read, FALSE otherwise. The string put into
+//     str must be freed with g_free() when no longer needed.
 //
 func (reader *ByteReader) DupStringUTF32() ([]uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -145,8 +145,8 @@ func (reader *ByteReader) DupStringUTF32() ([]uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gfloat to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gfloat to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Float32Be() (float32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -174,8 +174,8 @@ func (reader *ByteReader) Float32Be() (float32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gfloat to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gfloat to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Float32LE() (float32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -203,8 +203,8 @@ func (reader *ByteReader) Float32LE() (float32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gdouble to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gdouble to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Float64Be() (float64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -232,8 +232,8 @@ func (reader *ByteReader) Float64Be() (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gdouble to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gdouble to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Float64LE() (float64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -261,8 +261,8 @@ func (reader *ByteReader) Float64LE() (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int16Be() (int16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -290,8 +290,8 @@ func (reader *ByteReader) Int16Be() (int16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int16LE() (int16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -319,8 +319,8 @@ func (reader *ByteReader) Int16LE() (int16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int24Be() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -348,8 +348,8 @@ func (reader *ByteReader) Int24Be() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int24LE() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -377,8 +377,8 @@ func (reader *ByteReader) Int24LE() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int32Be() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -406,8 +406,8 @@ func (reader *ByteReader) Int32Be() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int32LE() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -435,8 +435,8 @@ func (reader *ByteReader) Int32LE() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int64Be() (int64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -464,8 +464,8 @@ func (reader *ByteReader) Int64Be() (int64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int64LE() (int64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -492,8 +492,8 @@ func (reader *ByteReader) Int64LE() (int64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint8 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint8 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Int8() (int8, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -520,7 +520,7 @@ func (reader *ByteReader) Int8() (int8, bool) {
 //
 // The function returns the following values:
 //
-//    - guint: current position of reader in bytes.
+//   - guint: current position of reader in bytes.
 //
 func (reader *ByteReader) Pos() uint {
 	var _arg0 *C.GstByteReader // out
@@ -542,7 +542,7 @@ func (reader *ByteReader) Pos() uint {
 //
 // The function returns the following values:
 //
-//    - guint: remaining number of bytes of reader instance.
+//   - guint: remaining number of bytes of reader instance.
 //
 func (reader *ByteReader) Remaining() uint {
 	var _arg0 *C.GstByteReader // out
@@ -564,7 +564,7 @@ func (reader *ByteReader) Remaining() uint {
 //
 // The function returns the following values:
 //
-//    - guint: total number of bytes of reader instance.
+//   - guint: total number of bytes of reader instance.
 //
 func (reader *ByteReader) Size() uint {
 	var _arg0 *C.GstByteReader // out
@@ -587,8 +587,8 @@ func (reader *ByteReader) Size() uint {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint16Be() (uint16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -616,8 +616,8 @@ func (reader *ByteReader) Uint16Be() (uint16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint16LE() (uint16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -645,8 +645,8 @@ func (reader *ByteReader) Uint16LE() (uint16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint24Be() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -674,8 +674,8 @@ func (reader *ByteReader) Uint24Be() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint24LE() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -703,8 +703,8 @@ func (reader *ByteReader) Uint24LE() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint32Be() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -732,8 +732,8 @@ func (reader *ByteReader) Uint32Be() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint32LE() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -761,8 +761,8 @@ func (reader *ByteReader) Uint32LE() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint64Be() (uint64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -790,8 +790,8 @@ func (reader *ByteReader) Uint64Be() (uint64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint64LE() (uint64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -819,8 +819,8 @@ func (reader *ByteReader) Uint64LE() (uint64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint8 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint8 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) Uint8() (byte, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -848,7 +848,7 @@ func (reader *ByteReader) Uint8() (byte, bool) {
 //
 // The function takes the following parameters:
 //
-//    - data from which the ByteReader should read.
+//   - data from which the ByteReader should read.
 //
 func (reader *ByteReader) Init(data []byte) {
 	var _arg0 *C.GstByteReader // out
@@ -878,33 +878,29 @@ func (reader *ByteReader) Init(data []byte) {
 //
 // The function takes the following parameters:
 //
-//    - mask to apply to data before matching against pattern.
-//    - pattern to match (after mask is applied).
-//    - offset from which to start scanning, relative to the current position.
-//    - size: number of bytes to scan from offset.
+//   - mask to apply to data before matching against pattern.
+//   - pattern to match (after mask is applied).
+//   - offset from which to start scanning, relative to the current position.
+//   - size: number of bytes to scan from offset.
 //
 // The function returns the following values:
 //
-//    - guint: offset of the first match, or -1 if no match was found.
+//   - guint: offset of the first match, or -1 if no match was found.
 //
-//      Example:
+//     Example:
 //
-//         // Assume the reader contains 0x00 0x01 0x02 ... 0xfe 0xff
+//     // Assume the reader contains 0x00 0x01 0x02 ... 0xfe 0xff
 //
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffffffff, 0x00010203, 0, 256);
-//         // -> returns 0
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffffffff, 0x00010203, 1, 255);
-//         // -> returns -1
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffffffff, 0x01020304, 1, 255);
-//         // -> returns 1
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffff, 0x0001, 0, 256);
-//         // -> returns -1
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffff, 0x0203, 0, 256);
-//         // -> returns 0
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffff0000, 0x02030000, 0, 256);
-//         // -> returns 2
-//         gst_byte_reader_masked_scan_uint32 (reader, 0xffff0000, 0x02030000, 0, 4);
-//         // -> returns -1.
+//     gst_byte_reader_masked_scan_uint32 (reader, 0xffffffff, 0x00010203,
+//     0, 256); // -> returns 0 gst_byte_reader_masked_scan_uint32
+//     (reader, 0xffffffff, 0x00010203, 1, 255); // -> returns -1
+//     gst_byte_reader_masked_scan_uint32 (reader, 0xffffffff, 0x01020304, 1,
+//     255); // -> returns 1 gst_byte_reader_masked_scan_uint32 (reader, 0xffff,
+//     0x0001, 0, 256); // -> returns -1 gst_byte_reader_masked_scan_uint32
+//     (reader, 0xffff, 0x0203, 0, 256); // -> returns 0
+//     gst_byte_reader_masked_scan_uint32 (reader, 0xffff0000, 0x02030000,
+//     0, 256); // -> returns 2 gst_byte_reader_masked_scan_uint32 (reader,
+//     0xffff0000, 0x02030000, 0, 4); // -> returns -1.
 //
 func (reader *ByteReader) MaskedScanUint32(mask uint32, pattern uint32, offset uint, size uint) uint {
 	var _arg0 *C.GstByteReader // out
@@ -934,8 +930,8 @@ func (reader *ByteReader) MaskedScanUint32(mask uint32, pattern uint32, offset u
 	return _guint
 }
 
-// MaskedScanUint32Peek: scan for pattern pattern with applied mask mask in the
-// byte reader data, starting from offset offset relative to the current
+// MaskedScanUint32Peek: scan for pattern pattern with applied mask mask in
+// the byte reader data, starting from offset offset relative to the current
 // position.
 //
 // The bytes in pattern and mask are interpreted left-to-right, regardless of
@@ -947,15 +943,15 @@ func (reader *ByteReader) MaskedScanUint32(mask uint32, pattern uint32, offset u
 //
 // The function takes the following parameters:
 //
-//    - mask to apply to data before matching against pattern.
-//    - pattern to match (after mask is applied).
-//    - offset from which to start scanning, relative to the current position.
-//    - size: number of bytes to scan from offset.
+//   - mask to apply to data before matching against pattern.
+//   - pattern to match (after mask is applied).
+//   - offset from which to start scanning, relative to the current position.
+//   - size: number of bytes to scan from offset.
 //
 // The function returns the following values:
 //
-//    - value: pointer to uint32 to return matching data.
-//    - guint: offset of the first match, or -1 if no match was found.
+//   - value: pointer to uint32 to return matching data.
+//   - guint: offset of the first match, or -1 if no match was found.
 //
 func (reader *ByteReader) MaskedScanUint32Peek(mask uint32, pattern uint32, offset uint, size uint) (uint32, uint) {
 	var _arg0 *C.GstByteReader // out
@@ -993,8 +989,8 @@ func (reader *ByteReader) MaskedScanUint32Peek(mask uint32, pattern uint32, offs
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gfloat to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gfloat to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekFloat32Be() (float32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1022,8 +1018,8 @@ func (reader *ByteReader) PeekFloat32Be() (float32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gfloat to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gfloat to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekFloat32LE() (float32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1051,8 +1047,8 @@ func (reader *ByteReader) PeekFloat32LE() (float32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gdouble to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gdouble to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekFloat64Be() (float64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1080,8 +1076,8 @@ func (reader *ByteReader) PeekFloat64Be() (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gdouble to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gdouble to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekFloat64LE() (float64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1109,8 +1105,8 @@ func (reader *ByteReader) PeekFloat64LE() (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt16Be() (int16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1138,8 +1134,8 @@ func (reader *ByteReader) PeekInt16Be() (int16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt16LE() (int16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1167,8 +1163,8 @@ func (reader *ByteReader) PeekInt16LE() (int16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt24Be() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1196,8 +1192,8 @@ func (reader *ByteReader) PeekInt24Be() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt24LE() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1225,8 +1221,8 @@ func (reader *ByteReader) PeekInt24LE() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt32Be() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1254,8 +1250,8 @@ func (reader *ByteReader) PeekInt32Be() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt32LE() (int32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1283,8 +1279,8 @@ func (reader *ByteReader) PeekInt32LE() (int32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt64Be() (int64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1312,8 +1308,8 @@ func (reader *ByteReader) PeekInt64Be() (int64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt64LE() (int64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1340,8 +1336,8 @@ func (reader *ByteReader) PeekInt64LE() (int64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #gint8 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #gint8 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekInt8() (int8, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1369,8 +1365,8 @@ func (reader *ByteReader) PeekInt8() (int8, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint16Be() (uint16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1398,8 +1394,8 @@ func (reader *ByteReader) PeekUint16Be() (uint16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint16 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint16 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint16LE() (uint16, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1427,8 +1423,8 @@ func (reader *ByteReader) PeekUint16LE() (uint16, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint24Be() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1456,8 +1452,8 @@ func (reader *ByteReader) PeekUint24Be() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint24LE() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1485,8 +1481,8 @@ func (reader *ByteReader) PeekUint24LE() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint32Be() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1514,8 +1510,8 @@ func (reader *ByteReader) PeekUint32Be() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint32 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint32 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint32LE() (uint32, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1543,8 +1539,8 @@ func (reader *ByteReader) PeekUint32LE() (uint32, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint64Be() (uint64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1572,8 +1568,8 @@ func (reader *ByteReader) PeekUint64Be() (uint64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint64 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint64 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint64LE() (uint64, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1601,8 +1597,8 @@ func (reader *ByteReader) PeekUint64LE() (uint64, bool) {
 //
 // The function returns the following values:
 //
-//    - val: pointer to a #guint8 to store the result.
-//    - ok: TRUE if successful, FALSE otherwise.
+//   - val: pointer to a #guint8 to store the result.
+//   - ok: TRUE if successful, FALSE otherwise.
 //
 func (reader *ByteReader) PeekUint8() (byte, bool) {
 	var _arg0 *C.GstByteReader // out
@@ -1629,11 +1625,11 @@ func (reader *ByteReader) PeekUint8() (byte, bool) {
 //
 // The function takes the following parameters:
 //
-//    - pos: new position in bytes.
+//   - pos: new position in bytes.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the position could be set successfully, FALSE otherwise.
+//   - ok: TRUE if the position could be set successfully, FALSE otherwise.
 //
 func (reader *ByteReader) SetPos(pos uint) bool {
 	var _arg0 *C.GstByteReader // out
@@ -1660,11 +1656,11 @@ func (reader *ByteReader) SetPos(pos uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to skip.
+//   - nbytes: number of bytes to skip.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if nbytes bytes could be skipped, FALSE otherwise.
+//   - ok: TRUE if nbytes bytes could be skipped, FALSE otherwise.
 //
 func (reader *ByteReader) Skip(nbytes uint) bool {
 	var _arg0 *C.GstByteReader // out
@@ -1696,7 +1692,7 @@ func (reader *ByteReader) Skip(nbytes uint) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a string could be skipped, FALSE otherwise.
+//   - ok: TRUE if a string could be skipped, FALSE otherwise.
 //
 func (reader *ByteReader) SkipStringUTF16() bool {
 	var _arg0 *C.GstByteReader // out
@@ -1725,7 +1721,7 @@ func (reader *ByteReader) SkipStringUTF16() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a string could be skipped, FALSE otherwise.
+//   - ok: TRUE if a string could be skipped, FALSE otherwise.
 //
 func (reader *ByteReader) SkipStringUTF32() bool {
 	var _arg0 *C.GstByteReader // out
@@ -1754,7 +1750,7 @@ func (reader *ByteReader) SkipStringUTF32() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a string could be skipped, FALSE otherwise.
+//   - ok: TRUE if a string could be skipped, FALSE otherwise.
 //
 func (reader *ByteReader) SkipStringUTF8() bool {
 	var _arg0 *C.GstByteReader // out

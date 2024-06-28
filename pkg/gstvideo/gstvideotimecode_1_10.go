@@ -233,13 +233,15 @@ func NewVideoTimeCodeFromDateTimeFull(fpsN uint, fpsD uint, dt *glib.DateTime, f
 
 	var _videoTimeCode *VideoTimeCode // out
 
-	_videoTimeCode = (*VideoTimeCode)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_videoTimeCode)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_video_time_code_free((*C.GstVideoTimeCode)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_videoTimeCode = (*VideoTimeCode)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_videoTimeCode)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_video_time_code_free((*C.GstVideoTimeCode)(intern.C))
+			},
+		)
+	}
 
 	return _videoTimeCode
 }
@@ -353,7 +355,7 @@ func (v *VideoTimeCode) SetFieldCount(fieldCount uint) {
 //
 // The function takes the following parameters:
 //
-//    - frames: how many frames to add or subtract.
+//   - frames: how many frames to add or subtract.
 //
 func (tc *VideoTimeCode) AddFrames(frames int64) {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -367,8 +369,8 @@ func (tc *VideoTimeCode) AddFrames(frames int64) {
 	runtime.KeepAlive(frames)
 }
 
-// AddInterval: this makes a component-wise addition of tc_inter to tc. For
-// example, adding ("01:02:03:04", "00:01:00:00") will return "01:03:03:04".
+// AddInterval: this makes a component-wise addition of tc_inter to tc.
+// For example, adding ("01:02:03:04", "00:01:00:00") will return "01:03:03:04".
 // When it comes to drop-frame timecodes, adding ("00:00:00;00", "00:01:00:00")
 // will return "00:01:00;02" because of drop-frame oddities. However, adding
 // ("00:09:00;02", "00:01:00:00") will return "00:10:00;00" because this time we
@@ -376,15 +378,15 @@ func (tc *VideoTimeCode) AddFrames(frames int64) {
 //
 // The function takes the following parameters:
 //
-//    - tcInter to add to tc. The interval must contain valid values, except that
-//      for drop-frame timecode, it may also contain timecodes which would
-//      normally be dropped. These are then corrected to the next reasonable
-//      timecode.
+//   - tcInter to add to tc. The interval must contain valid values, except
+//     that for drop-frame timecode, it may also contain timecodes which would
+//     normally be dropped. These are then corrected to the next reasonable
+//     timecode.
 //
 // The function returns the following values:
 //
-//    - videoTimeCode (optional): new VideoTimeCode with tc_inter added or NULL
-//      if the interval can't be added.
+//   - videoTimeCode (optional): new VideoTimeCode with tc_inter added or NULL
+//     if the interval can't be added.
 //
 func (tc *VideoTimeCode) AddInterval(tcInter *VideoTimeCodeInterval) *VideoTimeCode {
 	var _arg0 *C.GstVideoTimeCode         // out
@@ -424,17 +426,17 @@ func (tc *VideoTimeCode) Clear() {
 	runtime.KeepAlive(tc)
 }
 
-// Compare compares tc1 and tc2. If both have latest daily jam information, it
-// is taken into account. Otherwise, it is assumed that the daily jam of both
+// Compare compares tc1 and tc2. If both have latest daily jam information,
+// it is taken into account. Otherwise, it is assumed that the daily jam of both
 // tc1 and tc2 was at the same time. Both time codes must be valid.
 //
 // The function takes the following parameters:
 //
-//    - tc2: another valid VideoTimeCode.
+//   - tc2: another valid VideoTimeCode.
 //
 // The function returns the following values:
 //
-//    - gint: 1 if tc1 is after tc2, -1 if tc1 is before tc2, 0 otherwise.
+//   - gint: 1 if tc1 is after tc2, -1 if tc1 is before tc2, 0 otherwise.
 //
 func (tc1 *VideoTimeCode) Compare(tc2 *VideoTimeCode) int {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -457,7 +459,7 @@ func (tc1 *VideoTimeCode) Compare(tc2 *VideoTimeCode) int {
 
 // The function returns the following values:
 //
-//    - videoTimeCode: new VideoTimeCode with the same values as tc.
+//   - videoTimeCode: new VideoTimeCode with the same values as tc.
 //
 func (tc *VideoTimeCode) Copy() *VideoTimeCode {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -483,7 +485,7 @@ func (tc *VideoTimeCode) Copy() *VideoTimeCode {
 
 // The function returns the following values:
 //
-//    - guint64: how many frames have passed since the daily jam of tc.
+//   - guint64: how many frames have passed since the daily jam of tc.
 //
 func (tc *VideoTimeCode) FramesSinceDailyJam() uint64 {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -514,21 +516,21 @@ func (tc *VideoTimeCode) IncrementFrame() {
 // Init: field_count is 0 for progressive, 1 or 2 for interlaced.
 // latest_daiy_jam reference is stolen from caller.
 //
-// Initializes tc with the given values. The values are not checked for being in
-// a valid range. To see if your timecode actually has valid content, use
-// gst_video_time_code_is_valid().
+// Initializes tc with the given values. The values are not checked for being
+// in a valid range. To see if your timecode actually has valid content,
+// use gst_video_time_code_is_valid().
 //
 // The function takes the following parameters:
 //
-//    - fpsN: numerator of the frame rate.
-//    - fpsD: denominator of the frame rate.
-//    - latestDailyJam (optional): latest daily jam of the VideoTimeCode.
-//    - flags: VideoTimeCodeFlags.
-//    - hours field of VideoTimeCode.
-//    - minutes field of VideoTimeCode.
-//    - seconds field of VideoTimeCode.
-//    - frames field of VideoTimeCode.
-//    - fieldCount: interlaced video field count.
+//   - fpsN: numerator of the frame rate.
+//   - fpsD: denominator of the frame rate.
+//   - latestDailyJam (optional): latest daily jam of the VideoTimeCode.
+//   - flags: VideoTimeCodeFlags.
+//   - hours field of VideoTimeCode.
+//   - minutes field of VideoTimeCode.
+//   - seconds field of VideoTimeCode.
+//   - frames field of VideoTimeCode.
+//   - fieldCount: interlaced video field count.
 //
 func (tc *VideoTimeCode) Init(fpsN uint, fpsD uint, latestDailyJam *glib.DateTime, flags VideoTimeCodeFlags, hours uint, minutes uint, seconds uint, frames uint, fieldCount uint) {
 	var _arg0 *C.GstVideoTimeCode     // out
@@ -568,8 +570,8 @@ func (tc *VideoTimeCode) Init(fpsN uint, fpsD uint, latestDailyJam *glib.DateTim
 	runtime.KeepAlive(fieldCount)
 }
 
-// InitFromDateTime: resulting config->latest_daily_jam is set to midnight, and
-// timecode is set to the given time.
+// InitFromDateTime: resulting config->latest_daily_jam is set to midnight,
+// and timecode is set to the given time.
 //
 // Will assert on invalid parameters, use
 // gst_video_time_code_init_from_date_time_full() for being able to handle
@@ -577,11 +579,11 @@ func (tc *VideoTimeCode) Init(fpsN uint, fpsD uint, latestDailyJam *glib.DateTim
 //
 // The function takes the following parameters:
 //
-//    - fpsN: numerator of the frame rate.
-//    - fpsD: denominator of the frame rate.
-//    - dt to convert.
-//    - flags: VideoTimeCodeFlags.
-//    - fieldCount: interlaced video field count.
+//   - fpsN: numerator of the frame rate.
+//   - fpsD: denominator of the frame rate.
+//   - dt to convert.
+//   - flags: VideoTimeCodeFlags.
+//   - fieldCount: interlaced video field count.
 //
 func (tc *VideoTimeCode) InitFromDateTime(fpsN uint, fpsD uint, dt *glib.DateTime, flags VideoTimeCodeFlags, fieldCount uint) {
 	var _arg0 *C.GstVideoTimeCode     // out
@@ -612,15 +614,15 @@ func (tc *VideoTimeCode) InitFromDateTime(fpsN uint, fpsD uint, dt *glib.DateTim
 //
 // The function takes the following parameters:
 //
-//    - fpsN: numerator of the frame rate.
-//    - fpsD: denominator of the frame rate.
-//    - dt to convert.
-//    - flags: VideoTimeCodeFlags.
-//    - fieldCount: interlaced video field count.
+//   - fpsN: numerator of the frame rate.
+//   - fpsD: denominator of the frame rate.
+//   - dt to convert.
+//   - flags: VideoTimeCodeFlags.
+//   - fieldCount: interlaced video field count.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if tc could be correctly initialized to a valid timecode.
+//   - ok: TRUE if tc could be correctly initialized to a valid timecode.
 //
 func (tc *VideoTimeCode) InitFromDateTimeFull(fpsN uint, fpsD uint, dt *glib.DateTime, flags VideoTimeCodeFlags, fieldCount uint) bool {
 	var _arg0 *C.GstVideoTimeCode     // out
@@ -657,8 +659,8 @@ func (tc *VideoTimeCode) InitFromDateTimeFull(fpsN uint, fpsD uint, dt *glib.Dat
 
 // The function returns the following values:
 //
-//    - ok: whether tc is a valid timecode (supported frame rate,
-//      hours/minutes/seconds/frames not overflowing).
+//   - ok: whether tc is a valid timecode (supported frame rate,
+//     hours/minutes/seconds/frames not overflowing).
 //
 func (tc *VideoTimeCode) IsValid() bool {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -680,7 +682,7 @@ func (tc *VideoTimeCode) IsValid() bool {
 
 // The function returns the following values:
 //
-//    - guint64: how many nsec have passed since the daily jam of tc.
+//   - guint64: how many nsec have passed since the daily jam of tc.
 //
 func (tc *VideoTimeCode) NsecSinceDailyJam() uint64 {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -702,7 +704,7 @@ func (tc *VideoTimeCode) NsecSinceDailyJam() uint64 {
 //
 // The function returns the following values:
 //
-//    - dateTime (optional) representation of tc or NULL if tc has no daily jam.
+//   - dateTime (optional) representation of tc or NULL if tc has no daily jam.
 //
 func (tc *VideoTimeCode) ToDateTime() *glib.DateTime {
 	var _arg0 *C.GstVideoTimeCode // out
@@ -730,14 +732,14 @@ func (tc *VideoTimeCode) ToDateTime() *glib.DateTime {
 
 // The function returns the following values:
 //
-//    - utf8: SMPTE ST 2059-1:2015 string representation of tc. That will take
-//      the form hh:mm:ss:ff. The last separator (between seconds and frames) may
-//      vary:
+//   - utf8: SMPTE ST 2059-1:2015 string representation of tc. That will take
+//     the form hh:mm:ss:ff. The last separator (between seconds and frames) may
+//     vary:
 //
-//      ';' for drop-frame, non-interlaced content and for drop-frame interlaced
-//      field 2 ',' for drop-frame interlaced field 1 ':' for non-drop-frame,
-//      non-interlaced content and for non-drop-frame interlaced field 2 '.' for
-//      non-drop-frame interlaced field 1.
+//     ';' for drop-frame, non-interlaced content and for drop-frame interlaced
+//     field 2 ',' for drop-frame interlaced field 1 ':' for non-drop-frame,
+//     non-interlaced content and for non-drop-frame interlaced field 2 '.' for
+//     non-drop-frame interlaced field 1.
 //
 func (tc *VideoTimeCode) String() string {
 	var _arg0 *C.GstVideoTimeCode // out

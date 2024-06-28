@@ -130,11 +130,11 @@ type BinOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - element to be added.
+	//   - element to be added.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the element was added.
+	//   - ok: TRUE if the element was added.
 	//
 	AddElement func(element Elementer) bool
 	// DeepElementAdded: method called when an element was added somewhere in
@@ -142,8 +142,8 @@ type BinOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - subBin to which the element was added.
-	//    - child: element that was added.
+	//   - subBin to which the element was added.
+	//   - child: element that was added.
 	//
 	DeepElementAdded func(subBin *Bin, child Elementer)
 	// DeepElementRemoved: method called when an element was removed somewhere
@@ -151,8 +151,8 @@ type BinOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - subBin from which the element was removed.
-	//    - child: element that was removed.
+	//   - subBin from which the element was removed.
+	//   - child: element that was removed.
 	//
 	DeepElementRemoved func(subBin *Bin, child Elementer)
 	// The function returns the following values:
@@ -162,32 +162,32 @@ type BinOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - child: element that was added.
+	//   - child: element that was added.
 	//
 	ElementAdded func(child Elementer)
 	// ElementRemoved: method called when an element was removed from the bin.
 	//
 	// The function takes the following parameters:
 	//
-	//    - child: element that was removed.
+	//   - child: element that was removed.
 	//
 	ElementRemoved func(child Elementer)
 	// HandleMessage: method to handle a message from the children.
 	//
 	// The function takes the following parameters:
 	//
-	//    - message to be handled.
+	//   - message to be handled.
 	//
 	HandleMessage func(message *Message)
 	// RemoveElement: method to remove an element from the bin.
 	//
 	// The function takes the following parameters:
 	//
-	//    - element to be removed.
+	//   - element to be removed.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the element was removed.
+	//   - ok: TRUE if the element was removed.
 	//
 	RemoveElement func(element Elementer) bool
 }
@@ -205,9 +205,9 @@ func defaultBinOverrides(v *Bin) BinOverrides {
 	}
 }
 
-// Bin is an element that can contain other Element, allowing them to be managed
-// as a group. Pads from the child elements can be ghosted to the bin, see
-// GhostPad. This makes the bin look like any other elements and enables
+// Bin is an element that can contain other Element, allowing them to be
+// managed as a group. Pads from the child elements can be ghosted to the bin,
+// see GhostPad. This makes the bin look like any other elements and enables
 // creation of higher-level abstraction elements.
 //
 // A new Bin is created with gst_bin_new(). Use a Pipeline instead if you want
@@ -239,49 +239,49 @@ func defaultBinOverrides(v *Bin) BinOverrides {
 // If all sinks posted the EOS message, this bin will post and EOS message
 // upwards.
 //
-// * GST_MESSAGE_SEGMENT_START: Just collected and never forwarded upwards. The
-// messages are used to decide when all elements have completed playback of
+// * GST_MESSAGE_SEGMENT_START: Just collected and never forwarded upwards.
+// The messages are used to decide when all elements have completed playback of
 // their segment.
 //
 // * GST_MESSAGE_SEGMENT_DONE: Is posted by Bin when all elements that posted a
 // SEGMENT_START have posted a SEGMENT_DONE.
 //
-// * GST_MESSAGE_DURATION_CHANGED: Is posted by an element that detected a
-// change in the stream duration. The duration change is posted to the
+// * GST_MESSAGE_DURATION_CHANGED: Is posted by an element that detected
+// a change in the stream duration. The duration change is posted to the
 // application so that it can refetch the new duration with a duration query.
 //
-//    Note that these messages can be posted before the bin is prerolled, in which
-//    case the duration query might fail.
+//	Note that these messages can be posted before the bin is prerolled, in which
+//	case the duration query might fail.
 //
-//    Note also that there might be a discrepancy (due to internal buffering/queueing)
-//    between the stream being currently displayed and the returned duration query.
+//	Note also that there might be a discrepancy (due to internal buffering/queueing)
+//	between the stream being currently displayed and the returned duration query.
 //
-//    Applications might want to also query for duration (and changes) by
-//    listening to the GST_MESSAGE_STREAM_START message, signaling the active start
-//    of a (new) stream.
+//	Applications might want to also query for duration (and changes) by
+//	listening to the GST_MESSAGE_STREAM_START message, signaling the active start
+//	of a (new) stream.
 //
 // * GST_MESSAGE_CLOCK_LOST: This message is posted by an element when it can no
 // longer provide a clock.
 //
-//    The default bin behaviour is to check if the lost clock was the one provided
-//    by the bin. If so and the bin is currently in the PLAYING state, the message
-//    is forwarded to the bin parent.
+//	The default bin behaviour is to check if the lost clock was the one provided
+//	by the bin. If so and the bin is currently in the PLAYING state, the message
+//	is forwarded to the bin parent.
 //
-//    This message is also generated when a clock provider is removed from
-//    the bin. If this message is received by the application, it should
-//    PAUSE the pipeline and set it back to PLAYING to force a new clock
-//    distribution.
+//	This message is also generated when a clock provider is removed from
+//	the bin. If this message is received by the application, it should
+//	PAUSE the pipeline and set it back to PLAYING to force a new clock
+//	distribution.
 //
 // * GST_MESSAGE_CLOCK_PROVIDE: This message is generated when an element can
 // provide a clock. This mostly happens when a new clock provider is added to
 // the bin.
 //
-//    The default behaviour of the bin is to mark the currently selected clock as
-//    dirty, which will perform a clock recalculation the next time the bin is
-//    asked to provide a clock.
+//	The default behaviour of the bin is to mark the currently selected clock as
+//	dirty, which will perform a clock recalculation the next time the bin is
+//	asked to provide a clock.
 //
-//    This message is never sent to the application but is forwarded to
-//    the parent of the bin.
+//	This message is never sent to the application but is forwarded to
+//	the parent of the bin.
 //
 // * OTHERS: posted upwards.
 //
@@ -303,8 +303,8 @@ func defaultBinOverrides(v *Bin) BinOverrides {
 // GST_EVENT_TYPE_DOWNSTREAM ) or source ( GST_EVENT_TYPE_UPSTREAM ) elements
 // depending on the event type.
 //
-// If all the elements return TRUE, the bin will also return TRUE, else FALSE is
-// returned. If no elements of the required type are in the bin, the event
+// If all the elements return TRUE, the bin will also return TRUE, else FALSE
+// is returned. If no elements of the required type are in the bin, the event
 // handler will return TRUE.
 type Bin struct {
 	_ [0]func() // equal guard
@@ -428,12 +428,11 @@ func (bin *Bin) ConnectElementRemoved(f func(element Elementer)) coreglib.Signal
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the new bin.
+//   - name (optional) of the new bin.
 //
 // The function returns the following values:
 //
-//    - bin: new Bin.
-//
+//   - bin: new Bin.
 func NewBin(name string) *Bin {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GstElement // in
@@ -459,21 +458,20 @@ func NewBin(name string) *Bin {
 // If the element's pads are linked to other pads, the pads will be unlinked
 // before the element is added to the bin.
 //
-// > When you add an element to an already-running pipeline, you will have to >
-// take care to set the state of the newly-added element to the desired > state
-// (usually PLAYING or PAUSED, same you set the pipeline to originally) > with
-// gst_element_set_state(), or use gst_element_sync_state_with_parent(). > The
-// bin or pipeline will not take care of this for you.
+// > When you add an element to an already-running pipeline, you will have to
+// > take care to set the state of the newly-added element to the desired >
+// state (usually PLAYING or PAUSED, same you set the pipeline to originally) >
+// with gst_element_set_state(), or use gst_element_sync_state_with_parent().
+// > The bin or pipeline will not take care of this for you.
 //
 // The function takes the following parameters:
 //
-//    - element to add.
+//   - element to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element could be added, FALSE if the bin does not want to
-//      accept the element.
-//
+//   - ok: TRUE if the element could be added, FALSE if the bin does not want to
+//     accept the element.
 func (bin *Bin) Add(element Elementer) bool {
 	var _arg0 *C.GstBin     // out
 	var _arg1 *C.GstElement // out
@@ -503,12 +501,11 @@ func (bin *Bin) Add(element Elementer) bool {
 //
 // The function takes the following parameters:
 //
-//    - direction: whether to look for an unlinked source or sink pad.
+//   - direction: whether to look for an unlinked source or sink pad.
 //
 // The function returns the following values:
 //
-//    - pad (optional): unlinked pad of the given direction.
-//
+//   - pad (optional): unlinked pad of the given direction.
 func (bin *Bin) FindUnlinkedPad(direction PadDirection) *Pad {
 	var _arg0 *C.GstBin         // out
 	var _arg1 C.GstPadDirection // out
@@ -532,18 +529,17 @@ func (bin *Bin) FindUnlinkedPad(direction PadDirection) *Pad {
 
 // ByInterface looks for an element inside the bin that implements the given
 // interface. If such an element is found, it returns the element. You can cast
-// this element to the given interface afterwards. If you want all elements that
-// implement the interface, use gst_bin_iterate_all_by_interface(). This
-// function recurses into child bins.
+// this element to the given interface afterwards. If you want all elements
+// that implement the interface, use gst_bin_iterate_all_by_interface().
+// This function recurses into child bins.
 //
 // The function takes the following parameters:
 //
-//    - iface of an interface.
+//   - iface of an interface.
 //
 // The function returns the following values:
 //
-//    - element (optional) inside the bin implementing the interface.
-//
+//   - element (optional) inside the bin implementing the interface.
 func (bin *Bin) ByInterface(iface coreglib.Type) Elementer {
 	var _arg0 *C.GstBin     // out
 	var _arg1 C.GType       // out
@@ -583,12 +579,11 @@ func (bin *Bin) ByInterface(iface coreglib.Type) Elementer {
 //
 // The function takes the following parameters:
 //
-//    - name: element name to search for.
+//   - name: element name to search for.
 //
 // The function returns the following values:
 //
-//    - element (optional) with the given name.
-//
+//   - element (optional) with the given name.
 func (bin *Bin) ByName(name string) Elementer {
 	var _arg0 *C.GstBin     // out
 	var _arg1 *C.gchar      // out
@@ -629,12 +624,11 @@ func (bin *Bin) ByName(name string) Elementer {
 //
 // The function takes the following parameters:
 //
-//    - name: element name to search for.
+//   - name: element name to search for.
 //
 // The function returns the following values:
 //
-//    - element (optional) with the given name.
-//
+//   - element (optional) with the given name.
 func (bin *Bin) ByNameRecurseUp(name string) Elementer {
 	var _arg0 *C.GstBin     // out
 	var _arg1 *C.gchar      // out
@@ -672,8 +666,7 @@ func (bin *Bin) ByNameRecurseUp(name string) Elementer {
 
 // The function returns the following values:
 //
-//    - elementFlags bin's suppressed ElementFlags.
-//
+//   - elementFlags bin's suppressed ElementFlags.
 func (bin *Bin) SuppressedFlags() ElementFlags {
 	var _arg0 *C.GstBin         // out
 	var _cret C.GstElementFlags // in
@@ -690,19 +683,18 @@ func (bin *Bin) SuppressedFlags() ElementFlags {
 	return _elementFlags
 }
 
-// IterateAllByElementFactoryName looks for all elements inside the bin with the
-// given element factory name. The function recurses inside child bins. The
-// iterator will yield a series of Element.
+// IterateAllByElementFactoryName looks for all elements inside the bin with
+// the given element factory name. The function recurses inside child bins.
+// The iterator will yield a series of Element.
 //
 // The function takes the following parameters:
 //
-//    - factoryName: name of the ElementFactory.
+//   - factoryName: name of the ElementFactory.
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element for all elements in the bin with the given
-//      element factory name.
-//
+//   - iterator (optional) of Element for all elements in the bin with the given
+//     element factory name.
 func (bin *Bin) IterateAllByElementFactoryName(factoryName string) *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _arg1 *C.gchar       // out
@@ -738,13 +730,12 @@ func (bin *Bin) IterateAllByElementFactoryName(factoryName string) *Iterator {
 //
 // The function takes the following parameters:
 //
-//    - iface of an interface.
+//   - iface of an interface.
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element for all elements in the bin implementing
-//      the given interface.
-//
+//   - iterator (optional) of Element for all elements in the bin implementing
+//     the given interface.
 func (bin *Bin) IterateAllByInterface(iface coreglib.Type) *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _arg1 C.GType        // out
@@ -776,8 +767,7 @@ func (bin *Bin) IterateAllByInterface(iface coreglib.Type) *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element.
-//
+//   - iterator (optional) of Element.
 func (bin *Bin) IterateElements() *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _cret *C.GstIterator // in
@@ -807,8 +797,7 @@ func (bin *Bin) IterateElements() *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element.
-//
+//   - iterator (optional) of Element.
 func (bin *Bin) IterateRecurse() *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _cret *C.GstIterator // in
@@ -838,8 +827,7 @@ func (bin *Bin) IterateRecurse() *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element.
-//
+//   - iterator (optional) of Element.
 func (bin *Bin) IterateSinks() *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _cret *C.GstIterator // in
@@ -873,8 +861,7 @@ func (bin *Bin) IterateSinks() *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element.
-//
+//   - iterator (optional) of Element.
 func (bin *Bin) IterateSorted() *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _cret *C.GstIterator // in
@@ -904,8 +891,7 @@ func (bin *Bin) IterateSorted() *Iterator {
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Element.
-//
+//   - iterator (optional) of Element.
 func (bin *Bin) IterateSources() *Iterator {
 	var _arg0 *C.GstBin      // out
 	var _cret *C.GstIterator // in
@@ -941,8 +927,7 @@ func (bin *Bin) IterateSources() *Iterator {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the latency could be queried and reconfigured.
-//
+//   - ok: TRUE if the latency could be queried and reconfigured.
 func (bin *Bin) RecalculateLatency() bool {
 	var _arg0 *C.GstBin  // out
 	var _cret C.gboolean // in
@@ -972,13 +957,12 @@ func (bin *Bin) RecalculateLatency() bool {
 //
 // The function takes the following parameters:
 //
-//    - element to remove.
+//   - element to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element could be removed, FALSE if the bin does not want
-//      to remove the element.
-//
+//   - ok: TRUE if the element could be removed, FALSE if the bin does not want
+//     to remove the element.
 func (bin *Bin) Remove(element Elementer) bool {
 	var _arg0 *C.GstBin     // out
 	var _arg1 *C.GstElement // out
@@ -1006,8 +990,7 @@ func (bin *Bin) Remove(element Elementer) bool {
 //
 // The function takes the following parameters:
 //
-//    - flags to suppress.
-//
+//   - flags to suppress.
 func (bin *Bin) SetSuppressedFlags(flags ElementFlags) {
 	var _arg0 *C.GstBin         // out
 	var _arg1 C.GstElementFlags // out
@@ -1025,9 +1008,8 @@ func (bin *Bin) SetSuppressedFlags(flags ElementFlags) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if syncing the state was successful for all children, otherwise
-//      FALSE.
-//
+//   - ok: TRUE if syncing the state was successful for all children, otherwise
+//     FALSE.
 func (bin *Bin) SyncChildrenStates() bool {
 	var _arg0 *C.GstBin  // out
 	var _cret C.gboolean // in
@@ -1050,12 +1032,11 @@ func (bin *Bin) SyncChildrenStates() bool {
 //
 // The function takes the following parameters:
 //
-//    - element to be added.
+//   - element to be added.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element was added.
-//
+//   - ok: TRUE if the element was added.
 func (bin *Bin) addElement(element Elementer) bool {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.add_element
@@ -1085,9 +1066,8 @@ func (bin *Bin) addElement(element Elementer) bool {
 //
 // The function takes the following parameters:
 //
-//    - subBin to which the element was added.
-//    - child: element that was added.
-//
+//   - subBin to which the element was added.
+//   - child: element that was added.
 func (bin *Bin) deepElementAdded(subBin *Bin, child Elementer) {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.deep_element_added
@@ -1111,9 +1091,8 @@ func (bin *Bin) deepElementAdded(subBin *Bin, child Elementer) {
 //
 // The function takes the following parameters:
 //
-//    - subBin from which the element was removed.
-//    - child: element that was removed.
-//
+//   - subBin from which the element was removed.
+//   - child: element that was removed.
 func (bin *Bin) deepElementRemoved(subBin *Bin, child Elementer) {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.deep_element_removed
@@ -1133,7 +1112,6 @@ func (bin *Bin) deepElementRemoved(subBin *Bin, child Elementer) {
 }
 
 // The function returns the following values:
-//
 func (bin *Bin) doLatency() bool {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.do_latency
@@ -1159,8 +1137,7 @@ func (bin *Bin) doLatency() bool {
 //
 // The function takes the following parameters:
 //
-//    - child: element that was added.
-//
+//   - child: element that was added.
 func (bin *Bin) elementAdded(child Elementer) {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.element_added
@@ -1180,8 +1157,7 @@ func (bin *Bin) elementAdded(child Elementer) {
 //
 // The function takes the following parameters:
 //
-//    - child: element that was removed.
-//
+//   - child: element that was removed.
 func (bin *Bin) elementRemoved(child Elementer) {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.element_removed
@@ -1201,8 +1177,7 @@ func (bin *Bin) elementRemoved(child Elementer) {
 //
 // The function takes the following parameters:
 //
-//    - message to be handled.
-//
+//   - message to be handled.
 func (bin *Bin) handleMessage(message *Message) {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.handle_message
@@ -1223,12 +1198,11 @@ func (bin *Bin) handleMessage(message *Message) {
 //
 // The function takes the following parameters:
 //
-//    - element to be removed.
+//   - element to be removed.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element was removed.
-//
+//   - ok: TRUE if the element was removed.
 func (bin *Bin) removeElement(element Elementer) bool {
 	gclass := (*C.GstBinClass)(coreglib.PeekParentClass(bin))
 	fnarg := gclass.remove_element
@@ -1259,10 +1233,10 @@ func (bin *Bin) removeElement(element Elementer) bool {
 // The BinClass::handle_message method can be overridden to implement custom
 // message handling.
 //
-// BinClass::deep_element_added will be called when a new element has been added
-// to any bin inside this bin, so it will also be called if a new child was
-// added to a sub-bin of this bin. Bin implementations that override this
-// message should chain up to the parent class implementation so the
+// BinClass::deep_element_added will be called when a new element has been
+// added to any bin inside this bin, so it will also be called if a new child
+// was added to a sub-bin of this bin. Bin implementations that override
+// this message should chain up to the parent class implementation so the
 // Bin::deep-element-added signal is emitted on all parents.
 //
 // An instance of this type is always passed by reference.

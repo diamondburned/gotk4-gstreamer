@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - value: zero-filled (uninitialized) #GValue structure.
-//    - prealloc: number of entries to pre-allocate in the array.
+//   - value: zero-filled (uninitialized) #GValue structure.
+//   - prealloc: number of entries to pre-allocate in the array.
 //
 // The function returns the following values:
 //
-//    - ret structure that has been passed in.
+//   - ret structure that has been passed in.
 //
 func ValueArrayInit(value *coreglib.Value, prealloc uint) *coreglib.Value {
 	var _arg1 *C.GValue // out
@@ -48,12 +48,12 @@ func ValueArrayInit(value *coreglib.Value, prealloc uint) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - value: zero-filled (uninitialized) #GValue structure.
-//    - prealloc: number of entries to pre-allocate in the list.
+//   - value: zero-filled (uninitialized) #GValue structure.
+//   - prealloc: number of entries to pre-allocate in the list.
 //
 // The function returns the following values:
 //
-//    - ret structure that has been passed in.
+//   - ret structure that has been passed in.
 //
 func ValueListInit(value *coreglib.Value, prealloc uint) *coreglib.Value {
 	var _arg1 *C.GValue // out

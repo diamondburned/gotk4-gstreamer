@@ -155,13 +155,13 @@ type BaseSrcOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - offset
-	//    - size
+	//   - offset
+	//   - size
 	//
 	// The function returns the following values:
 	//
-	//    - buf
-	//    - flowReturn
+	//   - buf (optional)
+	//   - flowReturn
 	//
 	Alloc func(offset uint64, size uint) (*gst.Buffer, gst.FlowReturn)
 	// The function takes the following parameters:
@@ -181,16 +181,20 @@ type BaseSrcOverrides struct {
 	Event func(event *gst.Event) bool
 	// The function takes the following parameters:
 	//
-	//    - offset
-	//    - size
-	//    - buf
+	//   - offset
+	//   - size
+	//   - buf
 	//
 	// The function returns the following values:
 	//
 	Fill func(offset uint64, size uint, buf *gst.Buffer) gst.FlowReturn
+	// Fixate: called if, in negotiation, caps need fixating.
+	//
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
+	//
+	//   - ret: fixated caps.
 	//
 	Fixate func(caps *gst.Caps) *gst.Caps
 	// Caps: called to get the caps to report.
@@ -205,8 +209,8 @@ type BaseSrcOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - size
-	//    - ok: TRUE if the size is available and has been set.
+	//   - size
+	//   - ok: TRUE if the size is available and has been set.
 	//
 	Size func() (uint64, bool)
 	// Times: given buffer, return start and end time when it should be pushed
@@ -216,8 +220,8 @@ type BaseSrcOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - start
-	//    - end
+	//   - start
+	//   - end
 	//
 	Times func(buffer *gst.Buffer) (start, end gst.ClockTime)
 	// The function returns the following values:
@@ -233,13 +237,13 @@ type BaseSrcOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the negotiation succeeded, else FALSE.
+	//   - ok: TRUE if the negotiation succeeded, else FALSE.
 	//
 	Negotiate func() bool
 	// The function takes the following parameters:
 	//
-	//    - seek
-	//    - segment
+	//   - seek
+	//   - segment
 	//
 	// The function returns the following values:
 	//
@@ -253,11 +257,11 @@ type BaseSrcOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - caps: Caps.
+	//   - caps: Caps.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the caps could be set.
+	//   - ok: TRUE if the caps could be set.
 	//
 	SetCaps func(caps *gst.Caps) bool
 	// The function returns the following values:
@@ -300,9 +304,9 @@ func defaultBaseSrcOverrides(v *BaseSrc) BaseSrcOverrides {
 // BaseSrc: this is a generic base class for source elements. The following
 // types of sources are supported:
 //
-//    * random access sources like files
-//    * seekable sources
-//    * live sources
+//   - random access sources like files
+//   - seekable sources
+//   - live sources
 //
 // The source can be configured to operate in any Format with the
 // gst_base_src_set_format() method. The currently set format determines the
@@ -312,29 +316,29 @@ func defaultBaseSrcOverrides(v *BaseSrc) BaseSrcOverrides {
 // BaseSrc always supports push mode scheduling. If the following conditions are
 // met, it also supports pull mode scheduling:
 //
-//    * The format is set to GST_FORMAT_BYTES (default).
-//    * BaseSrcClass::is_seekable returns TRUE.
+//   - The format is set to GST_FORMAT_BYTES (default).
+//   - BaseSrcClass::is_seekable returns TRUE.
 //
 // If all the conditions are met for operating in pull mode, BaseSrc is
-// automatically seekable in push mode as well. The following conditions must be
-// met to make the element seekable in push mode when the format is not
+// automatically seekable in push mode as well. The following conditions must
+// be met to make the element seekable in push mode when the format is not
 // GST_FORMAT_BYTES:
 //
-// * BaseSrcClass::is_seekable returns TRUE. * BaseSrcClass::query can convert
-// all supported seek formats to the internal format as set with
+// * BaseSrcClass::is_seekable returns TRUE. * BaseSrcClass::query can
+// convert all supported seek formats to the internal format as set with
 // gst_base_src_set_format(). * BaseSrcClass::do_seek is implemented, performs
 // the seek and returns TRUE.
 //
-// When the element does not meet the requirements to operate in pull mode, the
-// offset and length in the BaseSrcClass::create method should be ignored. It is
-// recommended to subclass PushSrc instead, in this situation. If the element
-// can operate in pull mode but only with specific offsets and lengths, it is
-// allowed to generate an error when the wrong values are passed to the
+// When the element does not meet the requirements to operate in pull mode,
+// the offset and length in the BaseSrcClass::create method should be ignored.
+// It is recommended to subclass PushSrc instead, in this situation. If the
+// element can operate in pull mode but only with specific offsets and lengths,
+// it is allowed to generate an error when the wrong values are passed to the
 // BaseSrcClass::create function.
 //
 // BaseSrc has support for live sources. Live sources are sources that when
-// paused discard data, such as audio or video capture devices. A typical live
-// source also produces data at a fixed rate and thus provides a clock to
+// paused discard data, such as audio or video capture devices. A typical
+// live source also produces data at a fixed rate and thus provides a clock to
 // publish this rate. Use gst_base_src_set_live() to activate the live source
 // mode.
 //
@@ -385,16 +389,15 @@ func defaultBaseSrcOverrides(v *BaseSrc) BaseSrcOverrides {
 //         "The author <my.sinkmy.email>");
 //    }
 //
-//
-// Controlled shutdown of live sources in applications
+// # Controlled shutdown of live sources in applications
 //
 // Applications that record from a live source may want to stop recording in a
-// controlled way, so that the recording is stopped, but the data already in the
-// pipeline is processed to the end (remember that many live sources would go on
-// recording forever otherwise). For that to happen the application needs to
-// make the source stop recording and send an EOS event down the pipeline. The
-// application would then wait for an EOS message posted on the pipeline's bus
-// to know when all data has been processed and the pipeline can safely be
+// controlled way, so that the recording is stopped, but the data already in
+// the pipeline is processed to the end (remember that many live sources would
+// go on recording forever otherwise). For that to happen the application needs
+// to make the source stop recording and send an EOS event down the pipeline.
+// The application would then wait for an EOS message posted on the pipeline's
+// bus to know when all data has been processed and the pipeline can safely be
 // stopped.
 //
 // An application may send an EOS event to a source element to make it perform
@@ -547,8 +550,8 @@ func BaseBaseSrc(obj BaseSrcer) *BaseSrc {
 //
 // The function returns the following values:
 //
-//    - allocator (optional): Allocator used.
-//    - params (optional) of allocator.
+//   - allocator (optional): Allocator used.
+//   - params (optional) of allocator.
 //
 func (src *BaseSrc) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 	var _arg0 *C.GstBaseSrc         // out
@@ -588,7 +591,7 @@ func (src *BaseSrc) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 //
 // The function returns the following values:
 //
-//    - guint: number of bytes pushed with each buffer.
+//   - guint: number of bytes pushed with each buffer.
 //
 func (src *BaseSrc) Blocksize() uint {
 	var _arg0 *C.GstBaseSrc // out
@@ -608,8 +611,8 @@ func (src *BaseSrc) Blocksize() uint {
 
 // The function returns the following values:
 //
-//    - bufferPool (optional): instance of the BufferPool used by the src; unref
-//      it after usage.
+//   - bufferPool (optional): instance of the BufferPool used by the src;
+//     unref it after usage.
 //
 func (src *BaseSrc) BufferPool() *gst.BufferPool {
 	var _arg0 *C.GstBaseSrc    // out
@@ -643,7 +646,7 @@ func (src *BaseSrc) BufferPool() *gst.BufferPool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the base class will automatically timestamp outgoing buffers.
+//   - ok: TRUE if the base class will automatically timestamp outgoing buffers.
 //
 func (src *BaseSrc) DoTimestamp() bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -668,7 +671,7 @@ func (src *BaseSrc) DoTimestamp() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if src is operating in async mode.
+//   - ok: TRUE if src is operating in async mode.
 //
 func (src *BaseSrc) IsAsync() bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -692,7 +695,7 @@ func (src *BaseSrc) IsAsync() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if element is in live mode.
+//   - ok: TRUE if element is in live mode.
 //
 func (src *BaseSrc) IsLive() bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -722,7 +725,7 @@ func (src *BaseSrc) IsLive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (src *BaseSrc) Negotiate() bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -746,20 +749,20 @@ func (src *BaseSrc) Negotiate() bool {
 // This function must only be called by derived sub-classes, and only from the
 // BaseSrcClass::create function, as the stream-lock needs to be held.
 //
-// The format for the new segment will be the current format of the source, as
-// configured with gst_base_src_set_format()
+// The format for the new segment will be the current format of the source,
+// as configured with gst_base_src_set_format()
 //
 // Deprecated: Use gst_base_src_new_segment().
 //
 // The function takes the following parameters:
 //
-//    - start: new start value for the segment.
-//    - stop: stop value for the new segment.
-//    - time: new time value for the start of the new segment.
+//   - start: new start value for the segment.
+//   - stop: stop value for the new segment.
+//   - time: new time value for the start of the new segment.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if preparation of the seamless segment succeeded.
+//   - ok: TRUE if preparation of the seamless segment succeeded.
 //
 func (src *BaseSrc) NewSeamlessSegment(start, stop, time int64) bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -800,11 +803,11 @@ func (src *BaseSrc) NewSeamlessSegment(start, stop, time int64) bool {
 //
 // The function takes the following parameters:
 //
-//    - segment: pointer to a Segment.
+//   - segment: pointer to a Segment.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if preparation of new segment succeeded.
+//   - ok: TRUE if preparation of new segment succeeded.
 //
 func (src *BaseSrc) NewSegment(segment *gst.Segment) bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -836,10 +839,10 @@ func (src *BaseSrc) NewSegment(segment *gst.Segment) bool {
 //
 // The function returns the following values:
 //
-//    - live (optional): if the source is live.
-//    - minLatency (optional): min latency of the source.
-//    - maxLatency (optional): max latency of the source.
-//    - ok: TRUE if the query succeeded.
+//   - live (optional): if the source is live.
+//   - minLatency (optional): min latency of the source.
+//   - maxLatency (optional): max latency of the source.
+//   - ok: TRUE if the query succeeded.
 //
 func (src *BaseSrc) QueryLatency() (live bool, minLatency, maxLatency gst.ClockTime, ok bool) {
 	var _arg0 *C.GstBaseSrc  // out
@@ -861,12 +864,8 @@ func (src *BaseSrc) QueryLatency() (live bool, minLatency, maxLatency gst.ClockT
 	if _arg1 != 0 {
 		_live = true
 	}
-	_minLatency = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_maxLatency = uint64(_arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_minLatency = gst.ClockTime(_arg2)
+	_maxLatency = gst.ClockTime(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -874,14 +873,14 @@ func (src *BaseSrc) QueryLatency() (live bool, minLatency, maxLatency gst.ClockT
 	return _live, _minLatency, _maxLatency, _ok
 }
 
-// SetAsync: configure async behaviour in src, no state change will block. The
-// open, close, start, stop, play and pause virtual methods will be executed in
-// a different thread and are thus allowed to perform blocking operations. Any
-// blocking operation should be unblocked with the unlock vmethod.
+// SetAsync: configure async behaviour in src, no state change will block.
+// The open, close, start, stop, play and pause virtual methods will be executed
+// in a different thread and are thus allowed to perform blocking operations.
+// Any blocking operation should be unblocked with the unlock vmethod.
 //
 // The function takes the following parameters:
 //
-//    - async: new async mode.
+//   - async: new async mode.
 //
 func (src *BaseSrc) SetAsync(async bool) {
 	var _arg0 *C.GstBaseSrc // out
@@ -909,7 +908,7 @@ func (src *BaseSrc) SetAsync(async bool) {
 //
 // The function takes the following parameters:
 //
-//    - automaticEos: automatic eos.
+//   - automaticEos: automatic eos.
 //
 func (src *BaseSrc) SetAutomaticEos(automaticEos bool) {
 	var _arg0 *C.GstBaseSrc // out
@@ -930,7 +929,7 @@ func (src *BaseSrc) SetAutomaticEos(automaticEos bool) {
 //
 // The function takes the following parameters:
 //
-//    - blocksize: new blocksize in bytes.
+//   - blocksize: new blocksize in bytes.
 //
 func (src *BaseSrc) SetBlocksize(blocksize uint) {
 	var _arg0 *C.GstBaseSrc // out
@@ -948,11 +947,11 @@ func (src *BaseSrc) SetBlocksize(blocksize uint) {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps could be set.
+//   - ok: TRUE if the caps could be set.
 //
 func (src *BaseSrc) SetCaps(caps *gst.Caps) bool {
 	var _arg0 *C.GstBaseSrc // out
@@ -981,7 +980,7 @@ func (src *BaseSrc) SetCaps(caps *gst.Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: enable or disable timestamping.
+//   - timestamp: enable or disable timestamping.
 //
 func (src *BaseSrc) SetDoTimestamp(timestamp bool) {
 	var _arg0 *C.GstBaseSrc // out
@@ -1003,7 +1002,7 @@ func (src *BaseSrc) SetDoTimestamp(timestamp bool) {
 //
 // The function takes the following parameters:
 //
-//    - dynamic: new dynamic size mode.
+//   - dynamic: new dynamic size mode.
 //
 func (src *BaseSrc) SetDynamicSize(dynamic bool) {
 	var _arg0 *C.GstBaseSrc // out
@@ -1029,7 +1028,7 @@ func (src *BaseSrc) SetDynamicSize(dynamic bool) {
 //
 // The function takes the following parameters:
 //
-//    - format to use.
+//   - format to use.
 //
 func (src *BaseSrc) SetFormat(format gst.Format) {
 	var _arg0 *C.GstBaseSrc // out
@@ -1052,7 +1051,7 @@ func (src *BaseSrc) SetFormat(format gst.Format) {
 //
 // The function takes the following parameters:
 //
-//    - live: new live-mode.
+//   - live: new live-mode.
 //
 func (src *BaseSrc) SetLive(live bool) {
 	var _arg0 *C.GstBaseSrc // out
@@ -1069,13 +1068,13 @@ func (src *BaseSrc) SetLive(live bool) {
 }
 
 // StartComplete: complete an asynchronous start operation. When the subclass
-// overrides the start method, it should call gst_base_src_start_complete() when
-// the start operation completes either from the same thread or from an
+// overrides the start method, it should call gst_base_src_start_complete()
+// when the start operation completes either from the same thread or from an
 // asynchronous helper thread.
 //
 // The function takes the following parameters:
 //
-//    - ret: FlowReturn.
+//   - ret: FlowReturn.
 //
 func (basesrc *BaseSrc) StartComplete(ret gst.FlowReturn) {
 	var _arg0 *C.GstBaseSrc   // out
@@ -1093,7 +1092,7 @@ func (basesrc *BaseSrc) StartComplete(ret gst.FlowReturn) {
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (basesrc *BaseSrc) StartWait() gst.FlowReturn {
 	var _arg0 *C.GstBaseSrc   // out
@@ -1120,8 +1119,8 @@ func (basesrc *BaseSrc) StartWait() gst.FlowReturn {
 // return larger buffers instead).
 //
 // Subclasses that use this function from their create function must return
-// GST_FLOW_OK and no buffer from their create virtual method implementation. If
-// a buffer is returned after a buffer list has also been submitted via this
+// GST_FLOW_OK and no buffer from their create virtual method implementation.
+// If a buffer is returned after a buffer list has also been submitted via this
 // function the behaviour is undefined.
 //
 // Subclasses must only call this function once per create function call and
@@ -1130,7 +1129,7 @@ func (basesrc *BaseSrc) StartWait() gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - bufferList: BufferList.
+//   - bufferList: BufferList.
 //
 func (src *BaseSrc) SubmitBufferList(bufferList *gst.BufferList) {
 	var _arg0 *C.GstBaseSrc    // out
@@ -1146,19 +1145,19 @@ func (src *BaseSrc) SubmitBufferList(bufferList *gst.BufferList) {
 }
 
 // WaitPlaying: if the BaseSrcClass::create method performs its own
-// synchronisation against the clock it must unblock when going from PLAYING to
-// the PAUSED state and call this method before continuing to produce the
+// synchronisation against the clock it must unblock when going from PLAYING
+// to the PAUSED state and call this method before continuing to produce the
 // remaining data.
 //
 // This function will block until a state change to PLAYING happens (in which
-// case this function returns GST_FLOW_OK) or the processing must be stopped due
-// to a state change to READY or a FLUSH event (in which case this function
+// case this function returns GST_FLOW_OK) or the processing must be stopped
+// due to a state change to READY or a FLUSH event (in which case this function
 // returns GST_FLOW_FLUSHING).
 //
 // The function returns the following values:
 //
-//    - flowReturn: GST_FLOW_OK if src is PLAYING and processing can continue.
-//      Any other return value should be returned from the create vmethod.
+//   - flowReturn: GST_FLOW_OK if src is PLAYING and processing can continue.
+//     Any other return value should be returned from the create vmethod.
 //
 func (src *BaseSrc) WaitPlaying() gst.FlowReturn {
 	var _arg0 *C.GstBaseSrc   // out
@@ -1181,13 +1180,13 @@ func (src *BaseSrc) WaitPlaying() gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - offset
-//    - size
+//   - offset
+//   - size
 //
 // The function returns the following values:
 //
-//    - buf
-//    - flowReturn
+//   - buf (optional)
+//   - flowReturn
 //
 func (src *BaseSrc) alloc(offset uint64, size uint) (*gst.Buffer, gst.FlowReturn) {
 	gclass := (*C.GstBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -1211,13 +1210,15 @@ func (src *BaseSrc) alloc(offset uint64, size uint) (*gst.Buffer, gst.FlowReturn
 	var _buf *gst.Buffer           // out
 	var _flowReturn gst.FlowReturn // out
 
-	_buf = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buf)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg3 != nil {
+		_buf = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	_flowReturn = gst.FlowReturn(_cret)
 
 	return _buf, _flowReturn
@@ -1309,9 +1310,9 @@ func (src *BaseSrc) event(event *gst.Event) bool {
 
 // The function takes the following parameters:
 //
-//    - offset
-//    - size
-//    - buf
+//   - offset
+//   - size
+//   - buf
 //
 // The function returns the following values:
 //
@@ -1343,9 +1344,13 @@ func (src *BaseSrc) fill(offset uint64, size uint, buf *gst.Buffer) gst.FlowRetu
 	return _flowReturn
 }
 
+// Fixate: called if, in negotiation, caps need fixating.
+//
 // The function takes the following parameters:
 //
 // The function returns the following values:
+//
+//   - ret: fixated caps.
 //
 func (src *BaseSrc) fixate(caps *gst.Caps) *gst.Caps {
 	gclass := (*C.GstBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -1357,6 +1362,7 @@ func (src *BaseSrc) fixate(caps *gst.Caps) *gst.Caps {
 
 	_arg0 = (*C.GstBaseSrc)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(caps)), nil)
 
 	_cret = C._gotk4_gstbase1_BaseSrc_virtual_fixate(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(src)
@@ -1416,8 +1422,8 @@ func (src *BaseSrc) caps(filter *gst.Caps) *gst.Caps {
 //
 // The function returns the following values:
 //
-//    - size
-//    - ok: TRUE if the size is available and has been set.
+//   - size
+//   - ok: TRUE if the size is available and has been set.
 //
 func (src *BaseSrc) size() (uint64, bool) {
 	gclass := (*C.GstBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -1450,8 +1456,8 @@ func (src *BaseSrc) size() (uint64, bool) {
 //
 // The function returns the following values:
 //
-//    - start
-//    - end
+//   - start
+//   - end
 //
 func (src *BaseSrc) times(buffer *gst.Buffer) (start, end gst.ClockTime) {
 	gclass := (*C.GstBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -1472,12 +1478,8 @@ func (src *BaseSrc) times(buffer *gst.Buffer) (start, end gst.ClockTime) {
 	var _start gst.ClockTime // out
 	var _end gst.ClockTime   // out
 
-	_start = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_end = uint64(_arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_start = gst.ClockTime(_arg2)
+	_end = gst.ClockTime(_arg3)
 
 	return _start, _end
 }
@@ -1515,7 +1517,7 @@ func (src *BaseSrc) isSeekable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (src *BaseSrc) negotiate() bool {
 	gclass := (*C.GstBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -1540,8 +1542,8 @@ func (src *BaseSrc) negotiate() bool {
 
 // The function takes the following parameters:
 //
-//    - seek
-//    - segment
+//   - seek
+//   - segment
 //
 // The function returns the following values:
 //
@@ -1604,11 +1606,11 @@ func (src *BaseSrc) query(query *gst.Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps could be set.
+//   - ok: TRUE if the caps could be set.
 //
 func (src *BaseSrc) setCaps(caps *gst.Caps) bool {
 	gclass := (*C.GstBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -1726,8 +1728,8 @@ func (src *BaseSrc) unlockStop() bool {
 	return _ok
 }
 
-// BaseSrcClass subclasses can override any of the available virtual methods or
-// not, as needed. At the minimum, the create method should be overridden to
+// BaseSrcClass subclasses can override any of the available virtual methods
+// or not, as needed. At the minimum, the create method should be overridden to
 // produce buffers.
 //
 // An instance of this type is always passed by reference.

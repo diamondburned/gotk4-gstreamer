@@ -18,11 +18,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - dest where to blend src in.
-//    - src that we want to blend into.
-//    - x offset in pixel where the src image should be blended.
-//    - y offset in pixel where the src image should be blended.
-//    - globalAlpha: global_alpha each per-pixel alpha value is multiplied with.
+//   - dest where to blend src in.
+//   - src that we want to blend into.
+//   - x offset in pixel where the src image should be blended.
+//   - y offset in pixel where the src image should be blended.
+//   - globalAlpha: global_alpha each per-pixel alpha value is multiplied with.
 //
 // The function returns the following values:
 //
@@ -63,17 +63,17 @@ func VideoBlend(dest, src *VideoFrame, x, y int, globalAlpha float32) bool {
 //
 // The function takes the following parameters:
 //
-//    - src describing the video data in src_buffer.
-//    - srcBuffer: source buffer containing video pixels to scale.
-//    - destHeight: height in pixels to scale the video data in src_buffer to.
-//    - destWidth: width in pixels to scale the video data in src_buffer to.
+//   - src describing the video data in src_buffer.
+//   - srcBuffer: source buffer containing video pixels to scale.
+//   - destHeight: height in pixels to scale the video data in src_buffer to.
+//   - destWidth: width in pixels to scale the video data in src_buffer to.
 //
 // The function returns the following values:
 //
-//    - dest: pointer to a VideoInfo structure that will be filled in with the
-//      details for dest_buffer.
-//    - destBuffer: pointer to a Buffer variable, which will be set to a
-//      newly-allocated buffer containing the scaled pixels.
+//   - dest: pointer to a VideoInfo structure that will be filled in with the
+//     details for dest_buffer.
+//   - destBuffer: pointer to a Buffer variable, which will be set to a
+//     newly-allocated buffer containing the scaled pixels.
 //
 func VideoBlendScaleLinearRGBA(src *VideoInfo, srcBuffer *gst.Buffer, destHeight, destWidth int) (*VideoInfo, *gst.Buffer) {
 	var _arg1 *C.GstVideoInfo // out

@@ -16,8 +16,8 @@ import "C"
 
 // ByteWriter provides a byte writer and reader that can write/read different
 // integer and floating point types to/from a memory buffer. It provides
-// functions for writing/reading signed/unsigned, little/big endian integers of
-// 8, 16, 24, 32 and 64 bits and functions for reading little/big endian
+// functions for writing/reading signed/unsigned, little/big endian integers
+// of 8, 16, 24, 32 and 64 bits and functions for reading little/big endian
 // floating points numbers of 32 and 64 bits. It also provides functions to
 // write/read NUL-terminated strings in various character encodings.
 //
@@ -94,11 +94,11 @@ func (b *ByteWriter) SetOwned(owned bool) {
 //
 // The function takes the following parameters:
 //
-//    - size: number of bytes that should be available.
+//   - size: number of bytes that should be available.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if at least size bytes are still available.
+//   - ok: TRUE if at least size bytes are still available.
 //
 func (writer *ByteWriter) EnsureFreeSpace(size uint) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -125,12 +125,12 @@ func (writer *ByteWriter) EnsureFreeSpace(size uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - value: value to be written.
-//    - size: number of bytes to be written.
+//   - value: value to be written.
+//   - size: number of bytes to be written.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) Fill(value byte, size uint) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -163,7 +163,7 @@ func (writer *ByteWriter) Fill(value byte, size uint) bool {
 //
 // The function returns the following values:
 //
-//    - buffer: current data as buffer. gst_buffer_unref() after usage.
+//   - buffer: current data as buffer. gst_buffer_unref() after usage.
 //
 func (writer *ByteWriter) FreeAndGetBuffer() *gst.Buffer {
 	var _arg0 *C.GstByteWriter // out
@@ -195,7 +195,7 @@ func (writer *ByteWriter) FreeAndGetBuffer() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - guint8: current data. g_free() after usage.
+//   - guint8: current data. g_free() after usage.
 //
 func (writer *ByteWriter) FreeAndGetData() *byte {
 	var _arg0 *C.GstByteWriter // out
@@ -214,12 +214,12 @@ func (writer *ByteWriter) FreeAndGetData() *byte {
 	return _guint8
 }
 
-// Remaining returns the remaining size of data that can still be written. If -1
-// is returned the remaining size is only limited by system resources.
+// Remaining returns the remaining size of data that can still be written.
+// If -1 is returned the remaining size is only limited by system resources.
 //
 // The function returns the following values:
 //
-//    - guint: remaining size of data that can still be written.
+//   - guint: remaining size of data that can still be written.
 //
 func (writer *ByteWriter) Remaining() uint {
 	var _arg0 *C.GstByteWriter // out
@@ -247,14 +247,14 @@ func (writer *ByteWriter) Init() {
 	runtime.KeepAlive(writer)
 }
 
-// InitWithData initializes writer with the given memory area. If initialized is
-// TRUE it is possible to read size bytes from the ByteWriter from the
+// InitWithData initializes writer with the given memory area. If initialized
+// is TRUE it is possible to read size bytes from the ByteWriter from the
 // beginning.
 //
 // The function takes the following parameters:
 //
-//    - data: memory area for writing.
-//    - initialized: if TRUE the complete data can be read from the beginning.
+//   - data: memory area for writing.
+//   - initialized: if TRUE the complete data can be read from the beginning.
 //
 func (writer *ByteWriter) InitWithData(data []byte, initialized bool) {
 	var _arg0 *C.GstByteWriter // out
@@ -281,8 +281,8 @@ func (writer *ByteWriter) InitWithData(data []byte, initialized bool) {
 //
 // The function takes the following parameters:
 //
-//    - size: initial size of data.
-//    - fixed: if TRUE the data can't be reallocated.
+//   - size: initial size of data.
+//   - fixed: if TRUE the data can't be reallocated.
 //
 func (writer *ByteWriter) InitWithSize(size uint, fixed bool) {
 	var _arg0 *C.GstByteWriter // out
@@ -305,13 +305,13 @@ func (writer *ByteWriter) InitWithSize(size uint, fixed bool) {
 //
 // The function takes the following parameters:
 //
-//    - buffer: source Buffer.
-//    - offset to copy from.
-//    - size: total size to copy. If -1, all data is copied.
+//   - buffer: source Buffer.
+//   - offset to copy from.
+//   - size: total size to copy. If -1, all data is copied.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the data could be written.
+//   - ok: TRUE if the data could be written.
 //
 func (writer *ByteWriter) PutBuffer(buffer *gst.Buffer, offset uint, size int) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -344,11 +344,11 @@ func (writer *ByteWriter) PutBuffer(buffer *gst.Buffer, offset uint, size int) b
 //
 // The function takes the following parameters:
 //
-//    - data: data to write.
+//   - data: data to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutData(data []byte) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -379,11 +379,11 @@ func (writer *ByteWriter) PutData(data []byte) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutFloat32Be(val float32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -410,11 +410,11 @@ func (writer *ByteWriter) PutFloat32Be(val float32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutFloat32LE(val float32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -441,11 +441,11 @@ func (writer *ByteWriter) PutFloat32LE(val float32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutFloat64Be(val float64) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -472,11 +472,11 @@ func (writer *ByteWriter) PutFloat64Be(val float64) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutFloat64LE(val float64) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -503,11 +503,11 @@ func (writer *ByteWriter) PutFloat64LE(val float64) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt16Be(val int16) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -534,11 +534,11 @@ func (writer *ByteWriter) PutInt16Be(val int16) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt16LE(val int16) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -565,11 +565,11 @@ func (writer *ByteWriter) PutInt16LE(val int16) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt24Be(val int32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -596,11 +596,11 @@ func (writer *ByteWriter) PutInt24Be(val int32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt24LE(val int32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -627,11 +627,11 @@ func (writer *ByteWriter) PutInt24LE(val int32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt32Be(val int32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -658,11 +658,11 @@ func (writer *ByteWriter) PutInt32Be(val int32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt32LE(val int32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -689,11 +689,11 @@ func (writer *ByteWriter) PutInt32LE(val int32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt64Be(val int64) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -720,11 +720,11 @@ func (writer *ByteWriter) PutInt64Be(val int64) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt64LE(val int64) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -751,11 +751,11 @@ func (writer *ByteWriter) PutInt64LE(val int64) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutInt8(val int8) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -783,11 +783,11 @@ func (writer *ByteWriter) PutInt8(val int8) bool {
 //
 // The function takes the following parameters:
 //
-//    - data: UTF16 string to write.
+//   - data: UTF16 string to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutStringUTF16(data []uint16) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -819,11 +819,11 @@ func (writer *ByteWriter) PutStringUTF16(data []uint16) bool {
 //
 // The function takes the following parameters:
 //
-//    - data: UTF32 string to write.
+//   - data: UTF32 string to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutStringUTF32(data []uint32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -855,11 +855,11 @@ func (writer *ByteWriter) PutStringUTF32(data []uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - data: UTF8 string to write.
+//   - data: UTF8 string to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutStringUTF8(data string) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -887,11 +887,11 @@ func (writer *ByteWriter) PutStringUTF8(data string) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint16Be(val uint16) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -918,11 +918,11 @@ func (writer *ByteWriter) PutUint16Be(val uint16) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint16LE(val uint16) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -949,11 +949,11 @@ func (writer *ByteWriter) PutUint16LE(val uint16) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint24Be(val uint32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -980,11 +980,11 @@ func (writer *ByteWriter) PutUint24Be(val uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint24LE(val uint32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -1011,11 +1011,11 @@ func (writer *ByteWriter) PutUint24LE(val uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint32Be(val uint32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -1042,11 +1042,11 @@ func (writer *ByteWriter) PutUint32Be(val uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint32LE(val uint32) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -1073,11 +1073,11 @@ func (writer *ByteWriter) PutUint32LE(val uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint64Be(val uint64) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -1104,11 +1104,11 @@ func (writer *ByteWriter) PutUint64Be(val uint64) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint64LE(val uint64) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -1135,11 +1135,11 @@ func (writer *ByteWriter) PutUint64LE(val uint64) bool {
 //
 // The function takes the following parameters:
 //
-//    - val: value to write.
+//   - val: value to write.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the value could be written.
+//   - ok: TRUE if the value could be written.
 //
 func (writer *ByteWriter) PutUint8(val byte) bool {
 	var _arg0 *C.GstByteWriter // out
@@ -1178,7 +1178,7 @@ func (writer *ByteWriter) Reset() {
 //
 // The function returns the following values:
 //
-//    - buffer: current data as buffer. gst_buffer_unref() after usage.
+//   - buffer: current data as buffer. gst_buffer_unref() after usage.
 //
 func (writer *ByteWriter) ResetAndGetBuffer() *gst.Buffer {
 	var _arg0 *C.GstByteWriter // out

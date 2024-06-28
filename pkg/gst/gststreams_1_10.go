@@ -98,11 +98,11 @@ func (s StreamType) Has(other StreamType) bool {
 //
 // The function takes the following parameters:
 //
-//    - stype: StreamType.
+//   - stype: StreamType.
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the stream type.
+//   - utf8: string describing the stream type.
 //
 func StreamTypeGetName(stype StreamType) string {
 	var _arg1 C.GstStreamType // out
@@ -183,15 +183,15 @@ func marshalStream(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - streamId (optional): id for the new stream. If NULL, a new one will be
-//      automatically generated.
-//    - caps (optional) of the stream.
-//    - typ of the stream.
-//    - flags of the stream.
+//   - streamId (optional): id for the new stream. If NULL, a new one will be
+//     automatically generated.
+//   - caps (optional) of the stream.
+//   - typ of the stream.
+//   - flags of the stream.
 //
 // The function returns the following values:
 //
-//    - stream: new Stream.
+//   - stream: new Stream.
 //
 func NewStream(streamId string, caps *Caps, typ StreamType, flags StreamFlags) *Stream {
 	var _arg1 *C.gchar         // out
@@ -227,7 +227,7 @@ func NewStream(streamId string, caps *Caps, typ StreamType, flags StreamFlags) *
 //
 // The function returns the following values:
 //
-//    - caps (optional) for stream.
+//   - caps (optional) for stream.
 //
 func (stream *Stream) Caps() *Caps {
 	var _arg0 *C.GstStream // out
@@ -257,7 +257,7 @@ func (stream *Stream) Caps() *Caps {
 //
 // The function returns the following values:
 //
-//    - streamFlags for stream.
+//   - streamFlags for stream.
 //
 func (stream *Stream) StreamFlags() StreamFlags {
 	var _arg0 *C.GstStream     // out
@@ -279,8 +279,8 @@ func (stream *Stream) StreamFlags() StreamFlags {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): stream ID of stream. Only valid during the lifetime of
-//      stream.
+//   - utf8 (optional): stream ID of stream. Only valid during the lifetime of
+//     stream.
 //
 func (stream *Stream) StreamID() string {
 	var _arg0 *C.GstStream // out
@@ -304,7 +304,7 @@ func (stream *Stream) StreamID() string {
 //
 // The function returns the following values:
 //
-//    - streamType for stream.
+//   - streamType for stream.
 //
 func (stream *Stream) StreamType() StreamType {
 	var _arg0 *C.GstStream    // out
@@ -322,11 +322,41 @@ func (stream *Stream) StreamType() StreamType {
 	return _streamType
 }
 
+// Tags: retrieve the tags for stream, if any.
+//
+// The function returns the following values:
+//
+//   - tagList (optional) for stream.
+//
+func (stream *Stream) Tags() *TagList {
+	var _arg0 *C.GstStream  // out
+	var _cret *C.GstTagList // in
+
+	_arg0 = (*C.GstStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+
+	_cret = C.gst_stream_get_tags(_arg0)
+	runtime.KeepAlive(stream)
+
+	var _tagList *TagList // out
+
+	if _cret != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _tagList
+}
+
 // SetCaps: set the caps for the Stream.
 //
 // The function takes the following parameters:
 //
-//    - caps (optional): Caps.
+//   - caps (optional): Caps.
 //
 func (stream *Stream) SetCaps(caps *Caps) {
 	var _arg0 *C.GstStream // out
@@ -346,7 +376,7 @@ func (stream *Stream) SetCaps(caps *Caps) {
 //
 // The function takes the following parameters:
 //
-//    - flags to set on stream.
+//   - flags to set on stream.
 //
 func (stream *Stream) SetStreamFlags(flags StreamFlags) {
 	var _arg0 *C.GstStream     // out
@@ -364,7 +394,7 @@ func (stream *Stream) SetStreamFlags(flags StreamFlags) {
 //
 // The function takes the following parameters:
 //
-//    - streamType: type to set on stream.
+//   - streamType: type to set on stream.
 //
 func (stream *Stream) SetStreamType(streamType StreamType) {
 	var _arg0 *C.GstStream    // out
@@ -376,4 +406,24 @@ func (stream *Stream) SetStreamType(streamType StreamType) {
 	C.gst_stream_set_stream_type(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(streamType)
+}
+
+// SetTags: set the tags for the Stream.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional): TagList.
+//
+func (stream *Stream) SetTags(tags *TagList) {
+	var _arg0 *C.GstStream  // out
+	var _arg1 *C.GstTagList // out
+
+	_arg0 = (*C.GstStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+	}
+
+	C.gst_stream_set_tags(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(tags)
 }

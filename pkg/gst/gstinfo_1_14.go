@@ -16,13 +16,13 @@ import "C"
 // threads after thread_timeout seconds of inactivity.
 //
 // Logs can be fetched with gst_debug_ring_buffer_logger_get_logs() and the
-// logger can be removed again with gst_debug_remove_ring_buffer_logger(). Only
-// one logger at a time is possible.
+// logger can be removed again with gst_debug_remove_ring_buffer_logger().
+// Only one logger at a time is possible.
 //
 // The function takes the following parameters:
 //
-//    - maxSizePerThread: maximum size of log per thread in bytes.
-//    - threadTimeout: timeout for threads in seconds.
+//   - maxSizePerThread: maximum size of log per thread in bytes.
+//   - threadTimeout: timeout for threads in seconds.
 //
 func DebugAddRingBufferLogger(maxSizePerThread, threadTimeout uint) {
 	var _arg1 C.guint // out
@@ -47,7 +47,7 @@ func DebugRemoveRingBufferLogger() {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings with the debug output per thread.
+//   - utf8s: NULL-terminated array of strings with the debug output per thread.
 //
 func DebugRingBufferLoggerGetLogs() []string {
 	var _cret **C.gchar // in

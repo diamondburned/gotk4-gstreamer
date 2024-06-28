@@ -83,15 +83,15 @@ func marshalProxyControlBinding(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - object: Object.
-//    - propertyName: property name in object to control.
-//    - refObject to forward all ControlBinding requests to.
-//    - refPropertyName: property_name in ref_object to control.
+//   - object: Object.
+//   - propertyName: property name in object to control.
+//   - refObject to forward all ControlBinding requests to.
+//   - refPropertyName: property_name in ref_object to control.
 //
 // The function returns the following values:
 //
-//    - proxyControlBinding: new ControlBinding that proxies the control
-//      interface between properties on different Object's.
+//   - proxyControlBinding: new ControlBinding that proxies the control
+//     interface between properties on different Object's.
 //
 func NewProxyControlBinding(object gst.GstObjector, propertyName string, refObject gst.GstObjector, refPropertyName string) *ProxyControlBinding {
 	var _arg1 *C.GstObject         // out

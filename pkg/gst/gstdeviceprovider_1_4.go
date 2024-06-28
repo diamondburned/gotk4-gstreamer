@@ -42,8 +42,8 @@ type DeviceProviderOverrides struct {
 	// T_MESSAGE_DEVICE_ADDED and T_MESSAGE_DEVICE_REMOVED messages to be posted
 	// on the provider's bus when devices are added or removed from the system.
 	//
-	// Since the DeviceProvider is a singleton, gst_device_provider_start() may
-	// already have been called by another user of the object,
+	// Since the DeviceProvider is a singleton, gst_device_provider_start()
+	// may already have been called by another user of the object,
 	// gst_device_provider_stop() needs to be called the same number of times.
 	//
 	// After this function has been called, gst_device_provider_get_devices()
@@ -52,7 +52,7 @@ type DeviceProviderOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device providering could be started.
+	//   - ok: TRUE if the device providering could be started.
 	//
 	Start func() bool
 	// Stop decreases the use-count by one. If the use count reaches zero, this
@@ -184,7 +184,7 @@ func (provider *DeviceProvider) CanMonitor() bool {
 //
 // The function takes the following parameters:
 //
-//    - device that has been added.
+//   - device that has been added.
 //
 func (provider *DeviceProvider) DeviceAdd(device Devicer) {
 	var _arg0 *C.GstDeviceProvider // out
@@ -206,8 +206,8 @@ func (provider *DeviceProvider) DeviceAdd(device Devicer) {
 //
 // The function takes the following parameters:
 //
-//    - device: new version of changed_device.
-//    - changedDevice: old version of the device that has been updated.
+//   - device: new version of changed_device.
+//   - changedDevice: old version of the device that has been updated.
 //
 func (provider *DeviceProvider) DeviceChanged(device, changedDevice Devicer) {
 	var _arg0 *C.GstDeviceProvider // out
@@ -231,7 +231,7 @@ func (provider *DeviceProvider) DeviceChanged(device, changedDevice Devicer) {
 //
 // The function takes the following parameters:
 //
-//    - device that has been removed.
+//   - device that has been removed.
 //
 func (provider *DeviceProvider) DeviceRemove(device Devicer) {
 	var _arg0 *C.GstDeviceProvider // out
@@ -249,7 +249,7 @@ func (provider *DeviceProvider) DeviceRemove(device Devicer) {
 //
 // The function returns the following values:
 //
-//    - bus: Bus.
+//   - bus: Bus.
 //
 func (provider *DeviceProvider) Bus() *Bus {
 	var _arg0 *C.GstDeviceProvider // out
@@ -275,7 +275,7 @@ func (provider *DeviceProvider) Bus() *Bus {
 //
 // The function returns the following values:
 //
-//    - list of Device.
+//   - list of Device.
 //
 func (provider *DeviceProvider) Devices() []Devicer {
 	var _arg0 *C.GstDeviceProvider // out
@@ -319,8 +319,8 @@ func (provider *DeviceProvider) Devices() []Devicer {
 //
 // The function returns the following values:
 //
-//    - deviceProviderFactory (optional) used for creating this device provider.
-//      no refcounting is needed.
+//   - deviceProviderFactory (optional) used for creating this device provider.
+//     no refcounting is needed.
 //
 func (provider *DeviceProvider) Factory() *DeviceProviderFactory {
 	var _arg0 *C.GstDeviceProvider        // out
@@ -345,8 +345,8 @@ func (provider *DeviceProvider) Factory() *DeviceProviderFactory {
 //
 // The function returns the following values:
 //
-//    - utf8s: a list of hidden providers factory names or NULL when nothing is
-//      hidden by provider. Free with g_strfreev.
+//   - utf8s: a list of hidden providers factory names or NULL when nothing is
+//     hidden by provider. Free with g_strfreev.
 //
 func (provider *DeviceProvider) HiddenProviders() []string {
 	var _arg0 *C.GstDeviceProvider // out
@@ -382,11 +382,11 @@ func (provider *DeviceProvider) HiddenProviders() []string {
 //
 // The function takes the following parameters:
 //
-//    - key to get.
+//   - key to get.
 //
 // The function returns the following values:
 //
-//    - utf8: metadata for key.
+//   - utf8: metadata for key.
 //
 func (provider *DeviceProvider) Metadata(key string) string {
 	var _arg0 *C.GstDeviceProvider // out
@@ -416,7 +416,7 @@ func (provider *DeviceProvider) Metadata(key string) string {
 //
 // The function takes the following parameters:
 //
-//    - name: provider factory name.
+//   - name: provider factory name.
 //
 func (provider *DeviceProvider) HideProvider(name string) {
 	var _arg0 *C.GstDeviceProvider // out
@@ -458,17 +458,17 @@ func (provider *DeviceProvider) IsStarted() bool {
 // and T_MESSAGE_DEVICE_REMOVED messages to be posted on the provider's bus when
 // devices are added or removed from the system.
 //
-// Since the DeviceProvider is a singleton, gst_device_provider_start() may
-// already have been called by another user of the object,
+// Since the DeviceProvider is a singleton, gst_device_provider_start()
+// may already have been called by another user of the object,
 // gst_device_provider_stop() needs to be called the same number of times.
 //
-// After this function has been called, gst_device_provider_get_devices() will
-// return the same objects that have been received from the
+// After this function has been called, gst_device_provider_get_devices()
+// will return the same objects that have been received from the
 // T_MESSAGE_DEVICE_ADDED messages and will no longer probe.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device providering could be started.
+//   - ok: TRUE if the device providering could be started.
 //
 func (provider *DeviceProvider) Start() bool {
 	var _arg0 *C.GstDeviceProvider // out
@@ -508,7 +508,7 @@ func (provider *DeviceProvider) Stop() {
 //
 // The function takes the following parameters:
 //
-//    - name: provider factory name.
+//   - name: provider factory name.
 //
 func (provider *DeviceProvider) UnhideProvider(name string) {
 	var _arg0 *C.GstDeviceProvider // out
@@ -527,17 +527,17 @@ func (provider *DeviceProvider) UnhideProvider(name string) {
 // and T_MESSAGE_DEVICE_REMOVED messages to be posted on the provider's bus when
 // devices are added or removed from the system.
 //
-// Since the DeviceProvider is a singleton, gst_device_provider_start() may
-// already have been called by another user of the object,
+// Since the DeviceProvider is a singleton, gst_device_provider_start()
+// may already have been called by another user of the object,
 // gst_device_provider_stop() needs to be called the same number of times.
 //
-// After this function has been called, gst_device_provider_get_devices() will
-// return the same objects that have been received from the
+// After this function has been called, gst_device_provider_get_devices()
+// will return the same objects that have been received from the
 // T_MESSAGE_DEVICE_ADDED messages and will no longer probe.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device providering could be started.
+//   - ok: TRUE if the device providering could be started.
 //
 func (provider *DeviceProvider) start() bool {
 	gclass := (*C.GstDeviceProviderClass)(coreglib.PeekParentClass(provider))
@@ -607,8 +607,8 @@ func (d *DeviceProviderClass) Factory() *DeviceProviderFactory {
 //
 // The function takes the following parameters:
 //
-//    - key to set.
-//    - value to set.
+//   - key to set.
+//   - value to set.
 //
 func (klass *DeviceProviderClass) AddMetadata(key string, value string) {
 	var _arg0 *C.GstDeviceProviderClass // out
@@ -636,8 +636,8 @@ func (klass *DeviceProviderClass) AddMetadata(key string, value string) {
 //
 // The function takes the following parameters:
 //
-//    - key to set.
-//    - value to set.
+//   - key to set.
+//   - value to set.
 //
 func (klass *DeviceProviderClass) AddStaticMetadata(key string, value string) {
 	var _arg0 *C.GstDeviceProviderClass // out
@@ -659,11 +659,11 @@ func (klass *DeviceProviderClass) AddStaticMetadata(key string, value string) {
 //
 // The function takes the following parameters:
 //
-//    - key to get.
+//   - key to get.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): metadata for key.
+//   - utf8 (optional): metadata for key.
 //
 func (klass *DeviceProviderClass) Metadata(key string) string {
 	var _arg0 *C.GstDeviceProviderClass // out
@@ -693,14 +693,14 @@ func (klass *DeviceProviderClass) Metadata(key string) string {
 //
 // The function takes the following parameters:
 //
-//    - longname: long English name of the device provider. E.g. "File Sink".
-//    - classification: string describing the type of device provider, as an
-//      unordered list separated with slashes ('/'). See draft-klass.txt of the
-//      design docs for more details and common types. E.g: "Sink/File".
-//    - description: sentence describing the purpose of the device provider. E.g:
-//      "Write stream to a file".
-//    - author: name and contact details of the author(s). Use \n to separate
-//      multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
+//   - longname: long English name of the device provider. E.g. "File Sink".
+//   - classification: string describing the type of device provider, as an
+//     unordered list separated with slashes ('/'). See draft-klass.txt of the
+//     design docs for more details and common types. E.g: "Sink/File".
+//   - description: sentence describing the purpose of the device provider. E.g:
+//     "Write stream to a file".
+//   - author: name and contact details of the author(s). Use \n to separate
+//     multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
 //
 func (klass *DeviceProviderClass) SetMetadata(longname string, classification string, description string, author string) {
 	var _arg0 *C.GstDeviceProviderClass // out
@@ -739,14 +739,14 @@ func (klass *DeviceProviderClass) SetMetadata(longname string, classification st
 //
 // The function takes the following parameters:
 //
-//    - longname: long English name of the element. E.g. "File Sink".
-//    - classification: string describing the type of element, as an unordered
-//      list separated with slashes ('/'). See draft-klass.txt of the design docs
-//      for more details and common types. E.g: "Sink/File".
-//    - description: sentence describing the purpose of the element. E.g: "Write
-//      stream to a file".
-//    - author: name and contact details of the author(s). Use \n to separate
-//      multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
+//   - longname: long English name of the element. E.g. "File Sink".
+//   - classification: string describing the type of element, as an unordered
+//     list separated with slashes ('/'). See draft-klass.txt of the design docs
+//     for more details and common types. E.g: "Sink/File".
+//   - description: sentence describing the purpose of the element. E.g:
+//     "Write stream to a file".
+//   - author: name and contact details of the author(s). Use \n to separate
+//     multiple author metadata. E.g: "Joe Bloggs &lt;joe.blogs at foo.com&gt;".
 //
 func (klass *DeviceProviderClass) SetStaticMetadata(longname string, classification string, description string, author string) {
 	var _arg0 *C.GstDeviceProviderClass // out

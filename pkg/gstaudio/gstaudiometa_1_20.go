@@ -20,7 +20,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - gType: #GType.
+//   - gType: #GType.
 //
 func AudioLevelMetaApiGetType() coreglib.Type {
 	var _cret C.GType // in
@@ -39,13 +39,13 @@ func AudioLevelMetaApiGetType() coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - level: -dBov from 0-127 (127 is silence).
-//    - voiceActivity: whether the buffer contains voice activity.
+//   - buffer: Buffer.
+//   - level: -dBov from 0-127 (127 is silence).
+//   - voiceActivity: whether the buffer contains voice activity.
 //
 // The function returns the following values:
 //
-//    - audioLevelMeta (optional) on buffer.
+//   - audioLevelMeta (optional) on buffer.
 //
 func BufferAddAudioLevelMeta(buffer *gst.Buffer, level byte, voiceActivity bool) *AudioLevelMeta {
 	var _arg1 *C.GstBuffer         // out
@@ -77,12 +77,12 @@ func BufferAddAudioLevelMeta(buffer *gst.Buffer, level byte, voiceActivity bool)
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - audioLevelMeta (optional) or NULL when there is no such metadata on
-//      buffer.
+//   - audioLevelMeta (optional) or NULL when there is no such metadata on
+//     buffer.
 //
 func BufferGetAudioLevelMeta(buffer *gst.Buffer) *AudioLevelMeta {
 	var _arg1 *C.GstBuffer         // out
@@ -159,7 +159,7 @@ func (a *AudioLevelMeta) SetVoiceActivity(voiceActivity bool) {
 //
 // The function returns the following values:
 //
-//    - metaInfo: MetaInfo.
+//   - metaInfo: MetaInfo.
 //
 func AudioLevelMetaGetInfo() *gst.MetaInfo {
 	var _cret *C.GstMetaInfo // in

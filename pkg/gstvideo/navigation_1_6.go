@@ -20,12 +20,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - src to set as source of the new message.
-//    - event: navigation Event.
+//   - src to set as source of the new message.
+//   - event: navigation Event.
 //
 // The function returns the following values:
 //
-//    - message: new Message.
+//   - message: new Message.
 //
 func NavigationMessageNewEvent(src gst.GstObjector, event *gst.Event) *gst.Message {
 	var _arg1 *C.GstObject  // out
@@ -58,13 +58,13 @@ func NavigationMessageNewEvent(src gst.GstObjector, event *gst.Event) *gst.Messa
 //
 // The function takes the following parameters:
 //
-//    - message to inspect.
+//   - message to inspect.
 //
 // The function returns the following values:
 //
-//    - event (optional): pointer to a Event to receive the contained navigation
-//      event.
-//    - ok: TRUE if the message could be successfully parsed. FALSE if not.
+//   - event (optional): pointer to a Event to receive the contained navigation
+//     event.
+//   - ok: TRUE if the message could be successfully parsed. FALSE if not.
 //
 func NavigationMessageParseEvent(message *gst.Message) (*gst.Event, bool) {
 	var _arg1 *C.GstMessage // out

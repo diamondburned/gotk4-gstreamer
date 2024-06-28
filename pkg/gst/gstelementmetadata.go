@@ -6,8 +6,8 @@ package gst
 // #include <gst/gst.h>
 import "C"
 
-// ELEMENT_METADATA_AUTHOR: name and contact details of the author(s). Use \n to
-// separate multiple author details. E.g: "Joe Bloggs &lt;joe.blogs at
+// ELEMENT_METADATA_AUTHOR: name and contact details of the author(s).
+// Use \n to separate multiple author details. E.g: "Joe Bloggs &lt;joe.blogs at
 // foo.com&gt;".
 const ELEMENT_METADATA_AUTHOR = "author"
 
@@ -19,8 +19,8 @@ const ELEMENT_METADATA_DESCRIPTION = "description"
 // Applications can use this to show help for e.g. effects to users.
 const ELEMENT_METADATA_DOC_URI = "doc-uri"
 
-// ELEMENT_METADATA_ICON_NAME elements that bridge to certain other products can
-// include an icon of that used product. Application can show the icon in
+// ELEMENT_METADATA_ICON_NAME elements that bridge to certain other products
+// can include an icon of that used product. Application can show the icon in
 // menus/selectors to help identifying specific elements.
 const ELEMENT_METADATA_ICON_NAME = "icon-name"
 

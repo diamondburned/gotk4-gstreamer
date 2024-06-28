@@ -30,11 +30,11 @@ func init() {
 // AudioConverter: this object is used to convert audio samples from one format
 // to another. The object can perform conversion of:
 //
-//    * audio format with optional dithering and noise shaping
+//   - audio format with optional dithering and noise shaping
 //
-//    * audio samplerate
+//   - audio samplerate
 //
-//    * audio channels and channel layout
+//   - audio channels and channel layout
 //
 // An instance of this type is always passed by reference.
 type AudioConverter struct {
@@ -75,30 +75,32 @@ func NewAudioConverter(flags AudioConverterFlags, inInfo *AudioInfo, outInfo *Au
 
 	var _audioConverter *AudioConverter // out
 
-	_audioConverter = (*AudioConverter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_audioConverter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_audio_converter_free((*C.GstAudioConverter)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_audioConverter = (*AudioConverter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_audioConverter)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_audio_converter_free((*C.GstAudioConverter)(intern.C))
+			},
+		)
+	}
 
 	return _audioConverter
 }
 
-// Convert: convenience wrapper around gst_audio_converter_samples(), which will
-// perform allocation of the output buffer based on the result from
+// Convert: convenience wrapper around gst_audio_converter_samples(),
+// which will perform allocation of the output buffer based on the result from
 // gst_audio_converter_get_out_frames().
 //
 // The function takes the following parameters:
 //
-//    - flags: extra AudioConverterFlags.
-//    - in: input data.
+//   - flags: extra AudioConverterFlags.
+//   - in: input data.
 //
 // The function returns the following values:
 //
-//    - out: pointer where the output data will be written.
-//    - ok: TRUE is the conversion could be performed.
+//   - out: pointer where the output data will be written.
+//   - ok: TRUE is the conversion could be performed.
 //
 func (convert *AudioConverter) Convert(flags AudioConverterFlags, in []byte) ([]byte, bool) {
 	var _arg0 *C.GstAudioConverter     // out
@@ -138,10 +140,10 @@ func (convert *AudioConverter) Convert(flags AudioConverterFlags, in []byte) ([]
 //
 // The function returns the following values:
 //
-//    - inRate (optional): result input rate.
-//    - outRate (optional): result output rate.
-//    - structure: a Structure that remains valid for as long as convert is valid
-//      or until gst_audio_converter_update_config() is called.
+//   - inRate (optional): result input rate.
+//   - outRate (optional): result output rate.
+//   - structure: a Structure that remains valid for as long as convert is valid
+//     or until gst_audio_converter_update_config() is called.
 //
 func (convert *AudioConverter) Config() (inRate int, outRate int, structure *gst.Structure) {
 	var _arg0 *C.GstAudioConverter // out
@@ -170,11 +172,11 @@ func (convert *AudioConverter) Config() (inRate int, outRate int, structure *gst
 //
 // The function takes the following parameters:
 //
-//    - outFrames: number of output frames.
+//   - outFrames: number of output frames.
 //
 // The function returns the following values:
 //
-//    - gsize: number of input frames.
+//   - gsize: number of input frames.
 //
 func (convert *AudioConverter) InFrames(outFrames uint) uint {
 	var _arg0 *C.GstAudioConverter // out
@@ -200,7 +202,7 @@ func (convert *AudioConverter) InFrames(outFrames uint) uint {
 //
 // The function returns the following values:
 //
-//    - gsize: latency of convert as expressed in the number of frames.
+//   - gsize: latency of convert as expressed in the number of frames.
 //
 func (convert *AudioConverter) MaxLatency() uint {
 	var _arg0 *C.GstAudioConverter // out
@@ -223,11 +225,11 @@ func (convert *AudioConverter) MaxLatency() uint {
 //
 // The function takes the following parameters:
 //
-//    - inFrames: number of input frames.
+//   - inFrames: number of input frames.
 //
 // The function returns the following values:
 //
-//    - gsize: number of output frames.
+//   - gsize: number of output frames.
 //
 func (convert *AudioConverter) OutFrames(inFrames uint) uint {
 	var _arg0 *C.GstAudioConverter // out
@@ -248,13 +250,13 @@ func (convert *AudioConverter) OutFrames(inFrames uint) uint {
 	return _gsize
 }
 
-// IsPassthrough returns whether the audio converter will operate in passthrough
-// mode. The return value would be typically input to
+// IsPassthrough returns whether the audio converter will operate
+// in passthrough mode. The return value would be typically input to
 // gst_base_transform_set_passthrough().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when no conversion will actually occur.
+//   - ok: TRUE when no conversion will actually occur.
 //
 func (convert *AudioConverter) IsPassthrough() bool {
 	var _arg0 *C.GstAudioConverter // out
@@ -297,22 +299,22 @@ func (convert *AudioConverter) Reset() {
 // in may be NULL, in which case in_frames of silence samples are processed by
 // the converter.
 //
-// This function always produces out_frames of output and consumes in_frames of
-// input. Use gst_audio_converter_get_out_frames() and
+// This function always produces out_frames of output and consumes
+// in_frames of input. Use gst_audio_converter_get_out_frames() and
 // gst_audio_converter_get_in_frames() to make sure in_frames and out_frames are
 // matching and in and out point to enough memory.
 //
 // The function takes the following parameters:
 //
-//    - flags: extra AudioConverterFlags.
-//    - in (optional): input frames.
-//    - inFrames: number of input frames.
-//    - out (optional): output frames.
-//    - outFrames: number of output frames.
+//   - flags: extra AudioConverterFlags.
+//   - in (optional): input frames.
+//   - inFrames: number of input frames.
+//   - out (optional): output frames.
+//   - outFrames: number of output frames.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is the conversion could be performed.
+//   - ok: TRUE is the conversion could be performed.
 //
 func (convert *AudioConverter) Samples(flags AudioConverterFlags, in *unsafe.Pointer, inFrames uint, out *unsafe.Pointer, outFrames uint) bool {
 	var _arg0 *C.GstAudioConverter     // out
@@ -357,7 +359,7 @@ func (convert *AudioConverter) Samples(flags AudioConverterFlags, in *unsafe.Poi
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when the conversion can be done in place.
+//   - ok: TRUE when the conversion can be done in place.
 //
 func (convert *AudioConverter) SupportsInplace() bool {
 	var _arg0 *C.GstAudioConverter // out
@@ -394,13 +396,13 @@ func (convert *AudioConverter) SupportsInplace() bool {
 //
 // The function takes the following parameters:
 //
-//    - inRate: input rate.
-//    - outRate: output rate.
-//    - config (optional) or NULL.
+//   - inRate: input rate.
+//   - outRate: output rate.
+//   - config (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when the new parameters could be set.
+//   - ok: TRUE when the new parameters could be set.
 //
 func (convert *AudioConverter) UpdateConfig(inRate int, outRate int, config *gst.Structure) bool {
 	var _arg0 *C.GstAudioConverter // out

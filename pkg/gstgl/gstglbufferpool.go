@@ -29,11 +29,11 @@ func init() {
 
 // The function takes the following parameters:
 //
-//    - config: buffer pool config.
+//   - config: buffer pool config.
 //
 // The function returns the following values:
 //
-//    - glAllocationParams: currently set GLAllocationParams or NULL.
+//   - glAllocationParams (optional): currently set GLAllocationParams or NULL.
 //
 func BufferPoolConfigGetGLAllocationParams(config *gst.Structure) *GLAllocationParams {
 	var _arg1 *C.GstStructure          // out
@@ -46,13 +46,15 @@ func BufferPoolConfigGetGLAllocationParams(config *gst.Structure) *GLAllocationP
 
 	var _glAllocationParams *GLAllocationParams // out
 
-	_glAllocationParams = (*GLAllocationParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_glAllocationParams)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_gl_allocation_params_free((*C.GstGLAllocationParams)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_glAllocationParams = (*GLAllocationParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glAllocationParams)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_gl_allocation_params_free((*C.GstGLAllocationParams)(intern.C))
+			},
+		)
+	}
 
 	return _glAllocationParams
 }
@@ -61,15 +63,17 @@ func BufferPoolConfigGetGLAllocationParams(config *gst.Structure) *GLAllocationP
 //
 // The function takes the following parameters:
 //
-//    - config: buffer pool config.
-//    - params: GLAllocationParams.
+//   - config: buffer pool config.
+//   - params (optional): GLAllocationParams.
 //
 func BufferPoolConfigSetGLAllocationParams(config *gst.Structure, params *GLAllocationParams) {
 	var _arg1 *C.GstStructure          // out
 	var _arg2 *C.GstGLAllocationParams // out
 
 	_arg1 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(config)))
-	_arg2 = (*C.GstGLAllocationParams)(gextras.StructNative(unsafe.Pointer(params)))
+	if params != nil {
+		_arg2 = (*C.GstGLAllocationParams)(gextras.StructNative(unsafe.Pointer(params)))
+	}
 
 	C.gst_buffer_pool_config_set_gl_allocation_params(_arg1, _arg2)
 	runtime.KeepAlive(config)
@@ -135,11 +139,11 @@ func marshalGLBufferPool(p uintptr) (interface{}, error) {
 
 // The function takes the following parameters:
 //
-//    - context to use.
+//   - context to use.
 //
 // The function returns the following values:
 //
-//    - glBufferPool that allocates buffers with GLMemory.
+//   - glBufferPool that allocates buffers with GLMemory.
 //
 func NewGLBufferPool(context GLContexter) *GLBufferPool {
 	var _arg1 *C.GstGLContext  // out
@@ -164,8 +168,8 @@ func NewGLBufferPool(context GLContexter) *GLBufferPool {
 //
 // The function returns the following values:
 //
-//    - glAllocationParams: copy of the GLAllocationParams being used by the
-//      pool.
+//   - glAllocationParams (optional): copy of the GLAllocationParams being used
+//     by the pool.
 //
 func (pool *GLBufferPool) GLAllocationParams() *GLAllocationParams {
 	var _arg0 *C.GstGLBufferPool       // out
@@ -178,13 +182,15 @@ func (pool *GLBufferPool) GLAllocationParams() *GLAllocationParams {
 
 	var _glAllocationParams *GLAllocationParams // out
 
-	_glAllocationParams = (*GLAllocationParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_glAllocationParams)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_gl_allocation_params_free((*C.GstGLAllocationParams)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_glAllocationParams = (*GLAllocationParams)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glAllocationParams)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_gl_allocation_params_free((*C.GstGLAllocationParams)(intern.C))
+			},
+		)
+	}
 
 	return _glAllocationParams
 }

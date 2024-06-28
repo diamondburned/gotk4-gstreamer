@@ -41,8 +41,8 @@ func init() {
 // non-fixed and during negotiation some CapsFeatures have to be selected.
 //
 // Examples for caps features would be the requirement of a specific Memory
-// types or the requirement of having a specific Meta on the buffer. Features
-// are given as a string of the format memory:GstMemoryTypeName or
+// types or the requirement of having a specific Meta on the buffer.
+// Features are given as a string of the format memory:GstMemoryTypeName or
 // meta:GstMetaAPIName.
 //
 // An instance of this type is always passed by reference.
@@ -126,7 +126,7 @@ func NewCapsFeaturesSingle(feature string) *CapsFeatures {
 //
 // The function takes the following parameters:
 //
-//    - feature: feature.
+//   - feature: feature.
 //
 func (features *CapsFeatures) Add(feature string) {
 	var _arg0 *C.GstCapsFeatures // out
@@ -145,16 +145,14 @@ func (features *CapsFeatures) Add(feature string) {
 //
 // The function takes the following parameters:
 //
-//    - feature: feature.
+//   - feature: feature.
 //
 func (features *CapsFeatures) AddID(feature glib.Quark) {
 	var _arg0 *C.GstCapsFeatures // out
 	var _arg1 C.GQuark           // out
 
 	_arg0 = (*C.GstCapsFeatures)(gextras.StructNative(unsafe.Pointer(features)))
-	_arg1 = C.guint32(feature)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(feature)
 
 	C.gst_caps_features_add_id(_arg0, _arg1)
 	runtime.KeepAlive(features)
@@ -165,11 +163,11 @@ func (features *CapsFeatures) AddID(feature glib.Quark) {
 //
 // The function takes the following parameters:
 //
-//    - feature: feature.
+//   - feature: feature.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if features contains feature.
+//   - ok: TRUE if features contains feature.
 //
 func (features *CapsFeatures) Contains(feature string) bool {
 	var _arg0 *C.GstCapsFeatures // out
@@ -197,11 +195,11 @@ func (features *CapsFeatures) Contains(feature string) bool {
 //
 // The function takes the following parameters:
 //
-//    - feature: feature.
+//   - feature: feature.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if features contains feature.
+//   - ok: TRUE if features contains feature.
 //
 func (features *CapsFeatures) ContainsID(feature glib.Quark) bool {
 	var _arg0 *C.GstCapsFeatures // out
@@ -209,9 +207,7 @@ func (features *CapsFeatures) ContainsID(feature glib.Quark) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GstCapsFeatures)(gextras.StructNative(unsafe.Pointer(features)))
-	_arg1 = C.guint32(feature)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(feature)
 
 	_cret = C.gst_caps_features_contains_id(_arg0, _arg1)
 	runtime.KeepAlive(features)
@@ -230,7 +226,7 @@ func (features *CapsFeatures) ContainsID(feature glib.Quark) bool {
 //
 // The function returns the following values:
 //
-//    - capsFeatures: new CapsFeatures.
+//   - capsFeatures: new CapsFeatures.
 //
 func (features *CapsFeatures) Copy() *CapsFeatures {
 	var _arg0 *C.GstCapsFeatures // out
@@ -258,11 +254,11 @@ func (features *CapsFeatures) Copy() *CapsFeatures {
 //
 // The function takes the following parameters:
 //
-//    - i: index of the feature.
+//   - i: index of the feature.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): i-th feature of features.
+//   - utf8 (optional): i-th feature of features.
 //
 func (features *CapsFeatures) Nth(i uint) string {
 	var _arg0 *C.GstCapsFeatures // out
@@ -289,11 +285,11 @@ func (features *CapsFeatures) Nth(i uint) string {
 //
 // The function takes the following parameters:
 //
-//    - i: index of the feature.
+//   - i: index of the feature.
 //
 // The function returns the following values:
 //
-//    - quark: i-th feature of features.
+//   - quark: i-th feature of features.
 //
 func (features *CapsFeatures) NthID(i uint) glib.Quark {
 	var _arg0 *C.GstCapsFeatures // out
@@ -309,9 +305,7 @@ func (features *CapsFeatures) NthID(i uint) glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -320,7 +314,7 @@ func (features *CapsFeatures) NthID(i uint) glib.Quark {
 //
 // The function returns the following values:
 //
-//    - guint: number of features in features.
+//   - guint: number of features in features.
 //
 func (features *CapsFeatures) Size() uint {
 	var _arg0 *C.GstCapsFeatures // out
@@ -342,7 +336,7 @@ func (features *CapsFeatures) Size() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if features is GST_CAPS_FEATURES_ANY.
+//   - ok: TRUE if features is GST_CAPS_FEATURES_ANY.
 //
 func (features *CapsFeatures) IsAny() bool {
 	var _arg0 *C.GstCapsFeatures // out
@@ -366,11 +360,11 @@ func (features *CapsFeatures) IsAny() bool {
 //
 // The function takes the following parameters:
 //
-//    - features2: CapsFeatures.
+//   - features2: CapsFeatures.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if features1 and features2 are equal.
+//   - ok: TRUE if features1 and features2 are equal.
 //
 func (features1 *CapsFeatures) IsEqual(features2 *CapsFeatures) bool {
 	var _arg0 *C.GstCapsFeatures // out
@@ -397,7 +391,7 @@ func (features1 *CapsFeatures) IsEqual(features2 *CapsFeatures) bool {
 //
 // The function takes the following parameters:
 //
-//    - feature: feature.
+//   - feature: feature.
 //
 func (features *CapsFeatures) Remove(feature string) {
 	var _arg0 *C.GstCapsFeatures // out
@@ -416,35 +410,33 @@ func (features *CapsFeatures) Remove(feature string) {
 //
 // The function takes the following parameters:
 //
-//    - feature: feature.
+//   - feature: feature.
 //
 func (features *CapsFeatures) RemoveID(feature glib.Quark) {
 	var _arg0 *C.GstCapsFeatures // out
 	var _arg1 C.GQuark           // out
 
 	_arg0 = (*C.GstCapsFeatures)(gextras.StructNative(unsafe.Pointer(features)))
-	_arg1 = C.guint32(feature)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(feature)
 
 	C.gst_caps_features_remove_id(_arg0, _arg1)
 	runtime.KeepAlive(features)
 	runtime.KeepAlive(feature)
 }
 
-// SetParentRefcount sets the parent_refcount field of CapsFeatures. This field
-// is used to determine whether a caps features is mutable or not. This function
-// should only be called by code implementing parent objects of CapsFeatures, as
-// described in the MT refcounting design document
+// SetParentRefcount sets the parent_refcount field of CapsFeatures.
+// This field is used to determine whether a caps features is mutable or not.
+// This function should only be called by code implementing parent objects
+// of CapsFeatures, as described in the MT refcounting design document
 // (additional/design/MT-refcounting.md).
 //
 // The function takes the following parameters:
 //
-//    - refcount: pointer to the parent's refcount.
+//   - refcount: pointer to the parent's refcount.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the parent refcount could be set.
+//   - ok: TRUE if the parent refcount could be set.
 //
 func (features *CapsFeatures) SetParentRefcount(refcount *int) bool {
 	var _arg0 *C.GstCapsFeatures // out
@@ -477,7 +469,7 @@ func (features *CapsFeatures) SetParentRefcount(refcount *int) bool {
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to string allocated by g_malloc().
+//   - utf8: pointer to string allocated by g_malloc().
 //
 func (features *CapsFeatures) String() string {
 	var _arg0 *C.GstCapsFeatures // out
@@ -500,12 +492,12 @@ func (features *CapsFeatures) String() string {
 //
 // The function takes the following parameters:
 //
-//    - features: string representation of a CapsFeatures.
+//   - features: string representation of a CapsFeatures.
 //
 // The function returns the following values:
 //
-//    - capsFeatures (optional): new CapsFeatures or NULL when the string could
-//      not be parsed.
+//   - capsFeatures (optional): new CapsFeatures or NULL when the string could
+//     not be parsed.
 //
 func CapsFeaturesFromString(features string) *CapsFeatures {
 	var _arg1 *C.gchar           // out

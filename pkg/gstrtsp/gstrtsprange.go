@@ -105,18 +105,18 @@ func (r RTSPTimeType) String() string {
 	}
 }
 
-// RTSPRangeConvertUnits converts the range in-place between different types of
-// units. Ranges containing the special value T_RTSP_TIME_NOW can not be
+// RTSPRangeConvertUnits converts the range in-place between different types
+// of units. Ranges containing the special value T_RTSP_TIME_NOW can not be
 // converted as these are only valid for T_RTSP_RANGE_NPT.
 //
 // The function takes the following parameters:
 //
-//    - range: RTSPTimeRange.
-//    - unit to convert the range into.
+//   - range: RTSPTimeRange.
+//   - unit to convert the range into.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the range could be converted.
+//   - ok: TRUE if the range could be converted.
 //
 func RTSPRangeConvertUnits(_range *RTSPTimeRange, unit RTSPRangeUnit) bool {
 	var _arg1 *C.GstRTSPTimeRange // out
@@ -143,12 +143,12 @@ func RTSPRangeConvertUnits(_range *RTSPTimeRange, unit RTSPRangeUnit) bool {
 //
 // The function takes the following parameters:
 //
-//    - rangestr: range string to parse.
+//   - rangestr: range string to parse.
 //
 // The function returns the following values:
 //
-//    - _range: location to hold the RTSPTimeRange result.
-//    - rtspResult on success.
+//   - _range: location to hold the RTSPTimeRange result.
+//   - rtspResult on success.
 //
 func RTSPRangeParse(rangestr string) (*RTSPTimeRange, RTSPResult) {
 	var _arg1 *C.gchar            // out
@@ -180,11 +180,11 @@ func RTSPRangeParse(rangestr string) (*RTSPTimeRange, RTSPResult) {
 //
 // The function takes the following parameters:
 //
-//    - range: RTSPTimeRange.
+//   - range: RTSPTimeRange.
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of range. g_free() after usage.
+//   - utf8: string representation of range. g_free() after usage.
 //
 func RTSPRangeToString(_range *RTSPTimeRange) string {
 	var _arg1 *C.GstRTSPTimeRange // out

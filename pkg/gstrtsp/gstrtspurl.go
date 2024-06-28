@@ -106,7 +106,7 @@ func (r *RTSPURL) Query() string {
 //
 // The function returns the following values:
 //
-//    - rtspUrl: copy of url. Free with gst_rtsp_url_free () after usage.
+//   - rtspUrl: copy of url. Free with gst_rtsp_url_free () after usage.
 //
 func (url *RTSPURL) Copy() *RTSPURL {
 	var _arg0 *C.GstRTSPUrl // out
@@ -136,8 +136,8 @@ func (url *RTSPURL) Copy() *RTSPURL {
 // The decoding performed by this routine is "URI decoding", as defined in RFC
 // 3986, commonly known as percent-decoding. For example, a string "foo\2fbar"
 // will decode to "foo/bar" -- the \2f being replaced by the corresponding byte
-// with hex value 0x2f. Note that there is no guarantee that the resulting byte
-// sequence is valid in any given encoding. As a special case, \00 is not
+// with hex value 0x2f. Note that there is no guarantee that the resulting
+// byte sequence is valid in any given encoding. As a special case, \00 is not
 // unescaped to NUL, as that would prematurely terminate the string.
 //
 // Also note that since paths usually start with a slash, the first component
@@ -145,8 +145,8 @@ func (url *RTSPURL) Copy() *RTSPURL {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of URL components. Free with g_strfreev()
-//      when no longer needed.
+//   - utf8s: NULL-terminated array of URL components. Free with g_strfreev()
+//     when no longer needed.
 //
 func (url *RTSPURL) DecodePathComponents() []string {
 	var _arg0 *C.GstRTSPUrl // out
@@ -182,8 +182,8 @@ func (url *RTSPURL) DecodePathComponents() []string {
 //
 // The function returns the following values:
 //
-//    - port: location to hold the port.
-//    - rtspResult: T_RTSP_OK.
+//   - port: location to hold the port.
+//   - rtspResult: T_RTSP_OK.
 //
 func (url *RTSPURL) Port() (uint16, RTSPResult) {
 	var _arg0 *C.GstRTSPUrl   // out
@@ -208,7 +208,7 @@ func (url *RTSPURL) Port() (uint16, RTSPResult) {
 //
 // The function returns the following values:
 //
-//    - utf8: string with the request URI. g_free() after usage.
+//   - utf8: string with the request URI. g_free() after usage.
 //
 func (url *RTSPURL) RequestURI() string {
 	var _arg0 *C.GstRTSPUrl // out
@@ -232,12 +232,12 @@ func (url *RTSPURL) RequestURI() string {
 //
 // The function takes the following parameters:
 //
-//    - controlPath: RTSP aggregate control path.
+//   - controlPath: RTSP aggregate control path.
 //
 // The function returns the following values:
 //
-//    - utf8: string with the request URI combined with the control path.
-//      g_free() after usage.
+//   - utf8: string with the request URI combined with the control path.
+//     g_free() after usage.
 //
 func (url *RTSPURL) RequestURIWithControl(controlPath string) string {
 	var _arg0 *C.GstRTSPUrl // out
@@ -264,11 +264,11 @@ func (url *RTSPURL) RequestURIWithControl(controlPath string) string {
 //
 // The function takes the following parameters:
 //
-//    - port: port.
+//   - port: port.
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (url *RTSPURL) SetPort(port uint16) RTSPResult {
 	var _arg0 *C.GstRTSPUrl   // out
@@ -294,12 +294,12 @@ func (url *RTSPURL) SetPort(port uint16) RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - urlstr: url string to parse.
+//   - urlstr: url string to parse.
 //
 // The function returns the following values:
 //
-//    - url: location to hold the result.
-//    - rtspResult: RTSPResult.
+//   - url (optional): location to hold the result.
+//   - rtspResult: RTSPResult.
 //
 func RTSPURLParse(urlstr string) (*RTSPURL, RTSPResult) {
 	var _arg1 *C.gchar        // out
@@ -315,13 +315,15 @@ func RTSPURLParse(urlstr string) (*RTSPURL, RTSPResult) {
 	var _url *RTSPURL          // out
 	var _rtspResult RTSPResult // out
 
-	_url = (*RTSPURL)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_url)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_rtsp_url_free((*C.GstRTSPUrl)(intern.C))
-		},
-	)
+	if _arg2 != nil {
+		_url = (*RTSPURL)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_url)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_rtsp_url_free((*C.GstRTSPUrl)(intern.C))
+			},
+		)
+	}
 	_rtspResult = RTSPResult(_cret)
 
 	return _url, _rtspResult

@@ -15,7 +15,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - debugColorMode: see GstDebugColorMode for possible values.
+//   - debugColorMode: see GstDebugColorMode for possible values.
 //
 func DebugGetColorMode() DebugColorMode {
 	var _cret C.GstDebugColorMode // in
@@ -35,7 +35,7 @@ func DebugGetColorMode() DebugColorMode {
 //
 // The function takes the following parameters:
 //
-//    - mode: coloring mode for debug output. See GstDebugColorMode.
+//   - mode: coloring mode for debug output. See GstDebugColorMode.
 //
 func DebugSetColorMode(mode DebugColorMode) {
 	var _arg1 C.GstDebugColorMode // out
@@ -52,8 +52,8 @@ func DebugSetColorMode(mode DebugColorMode) {
 //
 // The function takes the following parameters:
 //
-//    - mode: coloring mode for debug output. One of the following: "on", "auto",
-//      "off", "disable", "unix".
+//   - mode: coloring mode for debug output. One of the following: "on", "auto",
+//     "off", "disable", "unix".
 //
 func DebugSetColorModeFromString(mode string) {
 	var _arg1 *C.gchar // out
@@ -66,17 +66,17 @@ func DebugSetColorModeFromString(mode string) {
 }
 
 // DebugSetThresholdFromString sets the debug logging wanted in the same form as
-// with the GST_DEBUG environment variable. You can use wildcards such as '*',
-// but note that the order matters when you use wild cards, e.g.
-// "foosrc:6,*src:3,*:2" sets everything to log level 2.
+// with the GST_DEBUG environment variable. You can use wildcards such as *, but
+// note that the order matters when you use wild cards, e.g. foosrc:6,*src:3,*:2
+// sets everything to log level 2.
 //
 // The function takes the following parameters:
 //
-//    - list: comma-separated list of "category:level" pairs to be used as debug
-//      logging levels.
-//    - reset: TRUE to clear all previously-set debug levels before setting new
-//      thresholds FALSE if adding the threshold described by list to the one
-//      already set.
+//   - list: comma-separated list of "category:level" pairs to be used as debug
+//     logging levels.
+//   - reset: TRUE to clear all previously-set debug levels before setting new
+//     thresholds FALSE if adding the threshold described by list to the one
+//     already set.
 //
 func DebugSetThresholdFromString(list string, reset bool) {
 	var _arg1 *C.gchar   // out

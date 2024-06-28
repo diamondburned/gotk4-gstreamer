@@ -128,7 +128,7 @@ func marshalLFOControlSource(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - lfoControlSource: new, unbound LFOControlSource.
+//   - lfoControlSource: new, unbound LFOControlSource.
 //
 func NewLFOControlSource() *LFOControlSource {
 	var _cret *C.GstControlSource // in

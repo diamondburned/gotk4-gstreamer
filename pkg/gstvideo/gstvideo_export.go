@@ -52,6 +52,29 @@ func _gotk4_gstvideo1_VideoAggregatorClass_aggregate_frames(arg0 *C.GstVideoAggr
 	return cret
 }
 
+//export _gotk4_gstvideo1_VideoAggregatorClass_find_best_format
+func _gotk4_gstvideo1_VideoAggregatorClass_find_best_format(arg0 *C.GstVideoAggregator, arg1 *C.GstCaps, arg2 *C.GstVideoInfo, arg3 *C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[VideoAggregatorOverrides](instance0)
+	if overrides.FindBestFormat == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VideoAggregatorOverrides.FindBestFormat, got none")
+	}
+
+	var _downstreamCaps *gst.Caps // out
+	var _bestInfo *VideoInfo      // out
+
+	_downstreamCaps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_bestInfo = (*VideoInfo)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	atLeastOneAlpha := overrides.FindBestFormat(_downstreamCaps, _bestInfo)
+
+	var _ bool
+
+	if atLeastOneAlpha {
+		*arg3 = C.TRUE
+	}
+}
+
 //export _gotk4_gstvideo1_VideoAggregatorClass_update_caps
 func _gotk4_gstvideo1_VideoAggregatorClass_update_caps(arg0 *C.GstVideoAggregator, arg1 *C.GstCaps) (cret *C.GstCaps) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -417,12 +440,8 @@ func _gotk4_gstvideo1_VideoDecoderClass_handle_missing_data(arg0 *C.GstVideoDeco
 	var _timestamp gst.ClockTime // out
 	var _duration gst.ClockTime  // out
 
-	_timestamp = uint64(arg1)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_duration = uint64(arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_timestamp = gst.ClockTime(arg1)
+	_duration = gst.ClockTime(arg2)
 
 	ok := overrides.HandleMissingData(_timestamp, _duration)
 

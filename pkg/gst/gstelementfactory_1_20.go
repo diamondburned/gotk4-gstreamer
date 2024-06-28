@@ -33,7 +33,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - typ of element.
+//   - typ of element.
 //
 func ElementTypeSetSkipDocumentation(typ coreglib.Type) {
 	var _arg1 C.GType // out
@@ -50,14 +50,14 @@ func ElementTypeSetSkipDocumentation(typ coreglib.Type) {
 //
 // The function takes the following parameters:
 //
-//    - factoryname: named factory to instantiate.
-//    - names (optional): array of properties names.
-//    - values (optional): array of associated properties values.
+//   - factoryname: named factory to instantiate.
+//   - names (optional): array of properties names.
+//   - values (optional): array of associated properties values.
 //
 // The function returns the following values:
 //
-//    - element (optional): new Element or NULL if the element couldn't be
-//      created.
+//   - element (optional): new Element or NULL if the element couldn't be
+//     created.
 //
 func ElementFactoryMakeWithProperties(factoryname string, names []string, values []coreglib.Value) Elementer {
 	var _arg1 *C.gchar  // out

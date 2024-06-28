@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - channels: number of channels.
+//   - channels: number of channels.
 //
 // The function returns the following values:
 //
-//    - guint64: fallback channel-mask for channels or 0 when there is no mask
-//      and mono.
+//   - guint64: fallback channel-mask for channels or 0 when there is no mask
+//     and mono.
 //
 func AudioChannelGetFallbackMask(channels int) uint64 {
 	var _arg1 C.gint    // out

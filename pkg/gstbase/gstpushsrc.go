@@ -41,8 +41,8 @@ type PushSrcOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - buf
-	//    - flowReturn
+	//   - buf (optional)
+	//   - flowReturn
 	//
 	Alloc func() (*gst.Buffer, gst.FlowReturn)
 	// The function takes the following parameters:
@@ -67,8 +67,8 @@ func defaultPushSrcOverrides(v *PushSrc) PushSrcOverrides {
 // GST_FORMAT_BYTES format of BaseSrc.
 //
 // Classes extending this base class will usually be scheduled in a push based
-// mode. If the peer accepts to operate without offsets and within the limits of
-// the allowed block size, this class can operate in getrange based mode
+// mode. If the peer accepts to operate without offsets and within the limits
+// of the allowed block size, this class can operate in getrange based mode
 // automatically. To make this possible, the subclass should implement and
 // override the SCHEDULING query.
 //
@@ -133,8 +133,8 @@ func marshalPushSrc(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - buf
-//    - flowReturn
+//   - buf (optional)
+//   - flowReturn
 //
 func (src *PushSrc) alloc() (*gst.Buffer, gst.FlowReturn) {
 	gclass := (*C.GstPushSrcClass)(coreglib.PeekParentClass(src))
@@ -152,13 +152,15 @@ func (src *PushSrc) alloc() (*gst.Buffer, gst.FlowReturn) {
 	var _buf *gst.Buffer           // out
 	var _flowReturn gst.FlowReturn // out
 
-	_buf = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buf)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_buf = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	_flowReturn = gst.FlowReturn(_cret)
 
 	return _buf, _flowReturn
@@ -190,8 +192,8 @@ func (src *PushSrc) fill(buf *gst.Buffer) gst.FlowReturn {
 	return _flowReturn
 }
 
-// PushSrcClass subclasses can override any of the available virtual methods or
-// not, as needed. At the minimum, the fill method should be overridden to
+// PushSrcClass subclasses can override any of the available virtual methods
+// or not, as needed. At the minimum, the fill method should be overridden to
 // produce buffers.
 //
 // An instance of this type is always passed by reference.

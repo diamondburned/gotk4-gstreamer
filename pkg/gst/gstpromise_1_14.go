@@ -71,23 +71,23 @@ func (p PromiseResult) String() string {
 
 type PromiseChangeFunc func(promise *Promise)
 
-// Promise object implements the container for values that may be available
-// later. i.e. a Future or a Promise in
+// Promise object implements the container for values that
+// may be available later. i.e. a Future or a Promise in
 // <https://en.wikipedia.org/wiki/Futures_and_promises>. As with all
 // Future/Promise-like functionality, there is the concept of the producer of
 // the value and the consumer of the value.
 //
-// A Promise is created with gst_promise_new() by the consumer and passed to the
-// producer to avoid thread safety issues with the change callback. A Promise
-// can be replied to with a value (or an error) by the producer with
+// A Promise is created with gst_promise_new() by the consumer and passed
+// to the producer to avoid thread safety issues with the change callback.
+// A Promise can be replied to with a value (or an error) by the producer with
 // gst_promise_reply(). The exact value returned is defined by the API contract
-// of the producer and NULL may be a valid reply. gst_promise_interrupt() is for
-// the consumer to indicate to the producer that the value is not needed anymore
-// and producing that value can stop. The GST_PROMISE_RESULT_EXPIRED state set
-// by a call to gst_promise_expire() indicates to the consumer that a value will
-// never be produced and is intended to be called by a third party that
-// implements some notion of message handling such as Bus. A callback can also
-// be installed at Promise creation for result changes with
+// of the producer and NULL may be a valid reply. gst_promise_interrupt() is
+// for the consumer to indicate to the producer that the value is not needed
+// anymore and producing that value can stop. The GST_PROMISE_RESULT_EXPIRED
+// state set by a call to gst_promise_expire() indicates to the consumer
+// that a value will never be produced and is intended to be called by a
+// third party that implements some notion of message handling such as Bus.
+// A callback can also be installed at Promise creation for result changes with
 // gst_promise_new_with_change_func(). The change callback can be used to chain
 // Promises's together as in the following example.
 //
@@ -109,8 +109,8 @@ type PromiseChangeFunc func(promise *Promise)
 // threads with some restrictions and the final result of the promise is
 // whichever call is made first. There are two restrictions on ordering:
 //
-// 1. That gst_promise_reply() and gst_promise_interrupt() cannot be called
-// after gst_promise_expire() 2. That gst_promise_reply() and
+// 1. That gst_promise_reply() and gst_promise_interrupt() cannot be
+// called after gst_promise_expire() 2. That gst_promise_reply() and
 // gst_promise_interrupt() cannot be called twice.
 //
 // The change function set with gst_promise_new_with_change_func() is called
@@ -205,7 +205,7 @@ func (promise *Promise) Expire() {
 //
 // The function returns the following values:
 //
-//    - structure (optional): reply set on promise.
+//   - structure (optional): reply set on promise.
 //
 func (promise *Promise) GetReply() *Structure {
 	var _arg0 *C.GstPromise   // out
@@ -246,7 +246,7 @@ func (promise *Promise) Interrupt() {
 //
 // The function takes the following parameters:
 //
-//    - s (optional) with the the reply contents.
+//   - s (optional) with the the reply contents.
 //
 func (promise *Promise) Reply(s *Structure) {
 	var _arg0 *C.GstPromise   // out
@@ -271,7 +271,7 @@ func (promise *Promise) Reply(s *Structure) {
 //
 // The function returns the following values:
 //
-//    - promiseResult: result of the promise.
+//   - promiseResult: result of the promise.
 //
 func (promise *Promise) Wait() PromiseResult {
 	var _arg0 *C.GstPromise      // out

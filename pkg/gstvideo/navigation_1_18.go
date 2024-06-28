@@ -19,19 +19,19 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - event to inspect.
+//   - event to inspect.
 //
 // The function returns the following values:
 //
-//    - x (optional): pointer to a gdouble to receive the x coordinate of the
-//      mouse movement.
-//    - y (optional): pointer to a gdouble to receive the y coordinate of the
-//      mouse movement.
-//    - deltaX (optional): pointer to a gdouble to receive the delta_x coordinate
-//      of the mouse movement.
-//    - deltaY (optional): pointer to a gdouble to receive the delta_y coordinate
-//      of the mouse movement.
-//    - ok: TRUE if all coordinates could be extracted, otherwise FALSE.
+//   - x (optional): pointer to a gdouble to receive the x coordinate of the
+//     mouse movement.
+//   - y (optional): pointer to a gdouble to receive the y coordinate of the
+//     mouse movement.
+//   - deltaX (optional): pointer to a gdouble to receive the delta_x coordinate
+//     of the mouse movement.
+//   - deltaY (optional): pointer to a gdouble to receive the delta_y coordinate
+//     of the mouse movement.
+//   - ok: TRUE if all coordinates could be extracted, otherwise FALSE.
 //
 func NavigationEventParseMouseScrollEvent(event *gst.Event) (x, y, deltaX, deltaY float64, ok bool) {
 	var _arg1 *C.GstEvent // out

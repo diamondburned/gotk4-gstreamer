@@ -14,6 +14,48 @@ import (
 // #include <gst/pbutils/pbutils.h>
 import "C"
 
+// PbUtilsAddCodecDescriptionToTagList adds a codec tag describing the format
+// specified by caps to taglist.
+//
+// The function takes the following parameters:
+//
+//   - taglist: TagList.
+//   - codecTag (optional): GStreamer codec tag such as T_TAG_AUDIO_CODEC,
+//     T_TAG_VIDEO_CODEC or T_TAG_CODEC. If none is specified, the function will
+//     attempt to detect the appropriate category.
+//   - caps: (fixed) Caps for which a codec tag should be added.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if a codec tag was added, FALSE otherwise.
+//
+func PbUtilsAddCodecDescriptionToTagList(taglist *gst.TagList, codecTag string, caps *gst.Caps) bool {
+	var _arg1 *C.GstTagList // out
+	var _arg2 *C.gchar      // out
+	var _arg3 *C.GstCaps    // out
+	var _cret C.gboolean    // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(taglist)))
+	if codecTag != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(codecTag)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	_arg3 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
+
+	_cret = C.gst_pb_utils_add_codec_description_to_tag_list(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(taglist)
+	runtime.KeepAlive(codecTag)
+	runtime.KeepAlive(caps)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // PbUtilsGetCodecDescription returns a localised (as far as this is possible)
 // string describing the media format specified in caps, for use in error
 // dialogs or other messages to be seen by the user. Should never return NULL
@@ -24,12 +66,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - caps: (fixed) Caps for which an format description is needed.
+//   - caps: (fixed) Caps for which an format description is needed.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8 (optional): newly-allocated description string, or NULL on error.
+//     Free string with g_free() when not needed any longer.
 //
 func PbUtilsGetCodecDescription(caps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out
@@ -42,29 +84,30 @@ func PbUtilsGetCodecDescription(caps *gst.Caps) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
 
 // PbUtilsGetDecoderDescription returns a localised string describing an decoder
 // for the format specified in caps, for use in error dialogs or other messages
-// to be seen by the user. Should never return NULL unless factory_name or caps
-// are invalid.
+// to be seen by the user.
 //
-// This function is mainly for internal use, applications would typically use
-// gst_missing_plugin_message_get_description() to get a description of a
+// This function is mainly for internal use, applications would typically
+// use gst_missing_plugin_message_get_description() to get a description of a
 // missing feature from a missing-plugin message.
 //
 // The function takes the following parameters:
 //
-//    - caps: (fixed) Caps for which an decoder description is needed.
+//   - caps: (fixed) Caps for which an decoder description is needed.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8: newly-allocated description string. Free string with g_free() when
+//     not needed any longer.
 //
 func PbUtilsGetDecoderDescription(caps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out
@@ -85,20 +128,19 @@ func PbUtilsGetDecoderDescription(caps *gst.Caps) string {
 
 // PbUtilsGetElementDescription returns a localised string describing the given
 // element, for use in error dialogs or other messages to be seen by the user.
-// Should never return NULL unless factory_name is invalid.
 //
-// This function is mainly for internal use, applications would typically use
-// gst_missing_plugin_message_get_description() to get a description of a
+// This function is mainly for internal use, applications would typically
+// use gst_missing_plugin_message_get_description() to get a description of a
 // missing feature from a missing-plugin message.
 //
 // The function takes the following parameters:
 //
-//    - factoryName: name of the element, e.g. "giosrc".
+//   - factoryName: name of the element, e.g. "giosrc".
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8: newly-allocated description string. Free string with g_free() when
+//     not needed any longer.
 //
 func PbUtilsGetElementDescription(factoryName string) string {
 	var _arg1 *C.gchar // out
@@ -120,21 +162,20 @@ func PbUtilsGetElementDescription(factoryName string) string {
 
 // PbUtilsGetEncoderDescription returns a localised string describing an encoder
 // for the format specified in caps, for use in error dialogs or other messages
-// to be seen by the user. Should never return NULL unless factory_name or caps
-// are invalid.
+// to be seen by the user.
 //
-// This function is mainly for internal use, applications would typically use
-// gst_missing_plugin_message_get_description() to get a description of a
+// This function is mainly for internal use, applications would typically
+// use gst_missing_plugin_message_get_description() to get a description of a
 // missing feature from a missing-plugin message.
 //
 // The function takes the following parameters:
 //
-//    - caps: (fixed) Caps for which an encoder description is needed.
+//   - caps: (fixed) Caps for which an encoder description is needed.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8: newly-allocated description string. Free string with g_free() when
+//     not needed any longer.
 //
 func PbUtilsGetEncoderDescription(caps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out
@@ -155,21 +196,20 @@ func PbUtilsGetEncoderDescription(caps *gst.Caps) string {
 
 // PbUtilsGetSinkDescription returns a localised string describing a sink
 // element handling the protocol specified in protocol, for use in error dialogs
-// or other messages to be seen by the user. Should never return NULL unless
-// protocol is invalid.
+// or other messages to be seen by the user.
 //
-// This function is mainly for internal use, applications would typically use
-// gst_missing_plugin_message_get_description() to get a description of a
+// This function is mainly for internal use, applications would typically
+// use gst_missing_plugin_message_get_description() to get a description of a
 // missing feature from a missing-plugin message.
 //
 // The function takes the following parameters:
 //
-//    - protocol the sink element needs to handle, e.g. "http".
+//   - protocol the sink element needs to handle, e.g. "http".
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8: newly-allocated description string. Free string with g_free() when
+//     not needed any longer.
 //
 func PbUtilsGetSinkDescription(protocol string) string {
 	var _arg1 *C.gchar // out
@@ -191,21 +231,20 @@ func PbUtilsGetSinkDescription(protocol string) string {
 
 // PbUtilsGetSourceDescription returns a localised string describing a source
 // element handling the protocol specified in protocol, for use in error dialogs
-// or other messages to be seen by the user. Should never return NULL unless
-// protocol is invalid.
+// or other messages to be seen by the user.
 //
-// This function is mainly for internal use, applications would typically use
-// gst_missing_plugin_message_get_description() to get a description of a
+// This function is mainly for internal use, applications would typically
+// use gst_missing_plugin_message_get_description() to get a description of a
 // missing feature from a missing-plugin message.
 //
 // The function takes the following parameters:
 //
-//    - protocol the source element needs to handle, e.g. "http".
+//   - protocol the source element needs to handle, e.g. "http".
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8: newly-allocated description string. Free string with g_free() when
+//     not needed any longer.
 //
 func PbUtilsGetSourceDescription(protocol string) string {
 	var _arg1 *C.gchar // out

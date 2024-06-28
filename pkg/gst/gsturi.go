@@ -110,21 +110,21 @@ func (u URIType) String() string {
 }
 
 // FilenameToURI: similar to g_filename_to_uri(), but attempts to handle
-// relative file paths as well. Before converting filename into an URI, it will
-// be prefixed by the current working directory if it is a relative path, and
-// then the path will be canonicalised so that it doesn't contain any './' or
-// '../' segments.
+// relative file paths as well. Before converting filename into an URI, it
+// will be prefixed by the current working directory if it is a relative path,
+// and then the path will be canonicalised so that it doesn't contain any './'
+// or '../' segments.
 //
 // On Windows filename should be in UTF-8 encoding.
 //
 // The function takes the following parameters:
 //
-//    - filename: absolute or relative file name path.
+//   - filename: absolute or relative file name path.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated URI string, or NULL on error. The caller must free
-//      the URI string with g_free() when no longer needed.
+//   - utf8 (optional): newly-allocated URI string, or NULL on error. The caller
+//     must free the URI string with g_free() when no longer needed.
 //
 func FilenameToURI(filename string) (string, error) {
 	var _arg1 *C.gchar  // out
@@ -140,8 +140,10 @@ func FilenameToURI(filename string) (string, error) {
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -199,8 +201,8 @@ func marshalURIHandler(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): the supported protocols. Returns NULL if the handler
-//      isn't implemented properly, or the handler doesn't support any protocols.
+//   - utf8s (optional): the supported protocols. Returns NULL if the handler
+//     isn't implemented properly, or the handler doesn't support any protocols.
 //
 func (handler *URIHandler) Protocols() []string {
 	var _arg0 *C.GstURIHandler // out
@@ -236,9 +238,9 @@ func (handler *URIHandler) Protocols() []string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): URI currently handled by the handler. Returns NULL if
-//      there are no URI currently handled. The returned string must be freed
-//      with g_free() when no longer needed.
+//   - utf8 (optional): URI currently handled by the handler. Returns NULL if
+//     there are no URI currently handled. The returned string must be freed
+//     with g_free() when no longer needed.
 //
 func (handler *URIHandler) URI() string {
 	var _arg0 *C.GstURIHandler // out
@@ -263,8 +265,8 @@ func (handler *URIHandler) URI() string {
 //
 // The function returns the following values:
 //
-//    - uriType of the URI handler. Returns T_URI_UNKNOWN if the handler isn't
-//      implemented correctly.
+//   - uriType of the URI handler. Returns T_URI_UNKNOWN if the handler isn't
+//     implemented correctly.
 //
 func (handler *URIHandler) URIType() URIType {
 	var _arg0 *C.GstURIHandler // out
@@ -286,7 +288,7 @@ func (handler *URIHandler) URIType() URIType {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to set.
+//   - uri: URI to set.
 //
 func (handler *URIHandler) SetURI(uri string) error {
 	var _arg0 *C.GstURIHandler // out
@@ -314,9 +316,9 @@ func (handler *URIHandler) SetURI(uri string) error {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): URI currently handled by the handler. Returns NULL if
-//      there are no URI currently handled. The returned string must be freed
-//      with g_free() when no longer needed.
+//   - utf8 (optional): URI currently handled by the handler. Returns NULL if
+//     there are no URI currently handled. The returned string must be freed
+//     with g_free() when no longer needed.
 //
 func (handler *URIHandler) urI() string {
 	gclass := (*C.GstURIHandlerInterface)(coreglib.PeekParentClass(handler))
@@ -344,7 +346,7 @@ func (handler *URIHandler) urI() string {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to set.
+//   - uri: URI to set.
 //
 func (handler *URIHandler) setURI(uri string) error {
 	gclass := (*C.GstURIHandlerInterface)(coreglib.PeekParentClass(handler))
@@ -375,13 +377,13 @@ func (handler *URIHandler) setURI(uri string) error {
 //
 // The function takes the following parameters:
 //
-//    - typ: whether to create a source or a sink.
-//    - uri: URI to create an element for.
-//    - elementname (optional): name of created element, can be NULL.
+//   - typ: whether to create a source or a sink.
+//   - uri: URI to create an element for.
+//   - elementname (optional): name of created element, can be NULL.
 //
 // The function returns the following values:
 //
-//    - element: new element or NULL if none could be created.
+//   - element: new element or NULL if none could be created.
 //
 func ElementMakeFromURI(typ URIType, uri, elementname string) (Elementer, error) {
 	var _arg1 C.GstURIType  // out
@@ -526,11 +528,12 @@ func NewURI(scheme string, userinfo string, host string, port uint, path string,
 //
 // The function takes the following parameters:
 //
-//    - relativePath: relative path to append to the end of the current path.
+//   - relativePath (optional): relative path to append to the end of the
+//     current path.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the path was appended successfully.
+//   - ok: TRUE if the path was appended successfully.
 //
 func (uri *URI) AppendPath(relativePath string) bool {
 	var _arg0 *C.GstUri  // out
@@ -540,8 +543,10 @@ func (uri *URI) AppendPath(relativePath string) bool {
 	if uri != nil {
 		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
 	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(relativePath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if relativePath != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(relativePath)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gst_uri_append_path(_arg0, _arg1)
 	runtime.KeepAlive(uri)
@@ -560,11 +565,11 @@ func (uri *URI) AppendPath(relativePath string) bool {
 //
 // The function takes the following parameters:
 //
-//    - pathSegment: path segment string to append to the URI path.
+//   - pathSegment (optional): path segment string to append to the URI path.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the path was appended successfully.
+//   - ok: TRUE if the path was appended successfully.
 //
 func (uri *URI) AppendPathSegment(pathSegment string) bool {
 	var _arg0 *C.GstUri  // out
@@ -574,8 +579,10 @@ func (uri *URI) AppendPathSegment(pathSegment string) bool {
 	if uri != nil {
 		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
 	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pathSegment)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if pathSegment != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pathSegment)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gst_uri_append_path_segment(_arg0, _arg1)
 	runtime.KeepAlive(uri)
@@ -595,11 +602,11 @@ func (uri *URI) AppendPathSegment(pathSegment string) bool {
 //
 // The function takes the following parameters:
 //
-//    - second: second Uri to compare.
+//   - second: second Uri to compare.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the normalized versions of the two URI's would be equal.
+//   - ok: TRUE if the normalized versions of the two URI's would be equal.
 //
 func (first *URI) Equal(second *URI) bool {
 	var _arg0 *C.GstUri  // out
@@ -627,11 +634,11 @@ func (first *URI) Equal(second *URI) bool {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string to parse.
+//   - uri: URI string to parse.
 //
 // The function returns the following values:
 //
-//    - ret: new Uri object.
+//   - ret (optional): new Uri object.
 //
 func (base *URI) FromStringWithBase(uri string) *URI {
 	var _arg0 *C.GstUri // out
@@ -650,23 +657,25 @@ func (base *URI) FromStringWithBase(uri string) *URI {
 
 	var _ret *URI // out
 
-	_ret = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_ret = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_ret)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _ret
 }
 
-// Fragment: get the fragment name from the URI or NULL if it doesn't exist. If
-// uri is NULL then returns NULL.
+// Fragment: get the fragment name from the URI or NULL if it doesn't exist.
+// If uri is NULL then returns NULL.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): host name from the Uri object or NULL.
+//   - utf8 (optional): host name from the Uri object or NULL.
 //
 func (uri *URI) Fragment() string {
 	var _arg0 *C.GstUri // out
@@ -693,7 +702,7 @@ func (uri *URI) Fragment() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): host name from the Uri object or NULL.
+//   - utf8 (optional): host name from the Uri object or NULL.
 //
 func (uri *URI) Host() string {
 	var _arg0 *C.GstUri // out
@@ -715,13 +724,13 @@ func (uri *URI) Host() string {
 	return _utf8
 }
 
-// MediaFragmentTable: get the media fragment table from the URI, as defined by
-// "Media Fragments URI 1.0". Hash table returned by this API is a list of
+// MediaFragmentTable: get the media fragment table from the URI, as defined
+// by "Media Fragments URI 1.0". Hash table returned by this API is a list of
 // "key-value" pairs, and the each pair is generated by splitting "URI fragment"
-// per "&" sub-delims, then "key" and "value" are split by "=" sub-delims. The
-// "key" returned by this API may be undefined keyword by standard. A value may
-// be NULL to indicate that the key should appear in the fragment string in the
-// URI, but does not have a value. Free the returned Table with
+// per "&" sub-delims, then "key" and "value" are split by "=" sub-delims.
+// The "key" returned by this API may be undefined keyword by standard.
+// A value may be NULL to indicate that the key should appear in the fragment
+// string in the URI, but does not have a value. Free the returned Table with
 // #g_hash_table_unref() when it is no longer required. Modifying this hash
 // table does not affect the fragment in the URI.
 //
@@ -730,7 +739,7 @@ func (uri *URI) Host() string {
 //
 // The function returns the following values:
 //
-//    - hashTable (optional): the fragment hash table from the URI.
+//   - hashTable (optional): the fragment hash table from the URI.
 //
 func (uri *URI) MediaFragmentTable() map[string]string {
 	var _arg0 *C.GstUri     // out
@@ -767,14 +776,16 @@ func (uri *URI) MediaFragmentTable() map[string]string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): path from the URI. Once finished with the string should
-//      be g_free()'d.
+//   - utf8 (optional): path from the URI. Once finished with the string should
+//     be g_free()'d.
 //
 func (uri *URI) Path() string {
 	var _arg0 *C.GstUri // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
+	if uri != nil {
+		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
+	}
 
 	_cret = C.gst_uri_get_path(_arg0)
 	runtime.KeepAlive(uri)
@@ -793,8 +804,8 @@ func (uri *URI) Path() string {
 //
 // The function returns the following values:
 //
-//    - list of path segment strings or NULL if no path segments are available.
-//      Free the list when no longer needed with g_list_free_full(list, g_free).
+//   - list of path segment strings or NULL if no path segments are available.
+//     Free the list when no longer needed with g_list_free_full(list, g_free).
 //
 func (uri *URI) PathSegments() []string {
 	var _arg0 *C.GstUri // out
@@ -826,14 +837,16 @@ func (uri *URI) PathSegments() []string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): path from the URI. Once finished with the string should
-//      be g_free()'d.
+//   - utf8 (optional): path from the URI. Once finished with the string should
+//     be g_free()'d.
 //
 func (uri *URI) PathString() string {
 	var _arg0 *C.GstUri // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
+	if uri != nil {
+		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
+	}
 
 	_cret = C.gst_uri_get_path_string(_arg0)
 	runtime.KeepAlive(uri)
@@ -853,7 +866,7 @@ func (uri *URI) PathString() string {
 //
 // The function returns the following values:
 //
-//    - guint: port number from the Uri object or GST_URI_NO_PORT.
+//   - guint: port number from the Uri object or GST_URI_NO_PORT.
 //
 func (uri *URI) Port() uint {
 	var _arg0 *C.GstUri // out
@@ -877,7 +890,7 @@ func (uri *URI) Port() uint {
 //
 // The function returns the following values:
 //
-//    - list of keys from the URI query. Free the list with g_list_free().
+//   - list of keys from the URI query. Free the list with g_list_free().
 //
 func (uri *URI) QueryKeys() []string {
 	var _arg0 *C.GstUri // out
@@ -907,8 +920,8 @@ func (uri *URI) QueryKeys() []string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): percent encoded query string. Use g_free() when no
-//      longer needed.
+//   - utf8 (optional): percent encoded query string. Use g_free() when no
+//     longer needed.
 //
 func (uri *URI) QueryString() string {
 	var _arg0 *C.GstUri // out
@@ -939,7 +952,7 @@ func (uri *URI) QueryString() string {
 //
 // The function returns the following values:
 //
-//    - hashTable (optional): query hash table from the URI.
+//   - hashTable (optional): query hash table from the URI.
 //
 func (uri *URI) QueryTable() map[string]string {
 	var _arg0 *C.GstUri     // out
@@ -974,17 +987,17 @@ func (uri *URI) QueryTable() map[string]string {
 
 // QueryValue: get the value associated with the query_key key. Will return NULL
 // if the key has no value or if the key does not exist in the URI query table.
-// Because NULL is returned for both missing keys and keys with no value, you
-// should use gst_uri_query_has_key() to determine if a key is present in the
-// URI query.
+// Because NULL is returned for both missing keys and keys with no value,
+// you should use gst_uri_query_has_key() to determine if a key is present in
+// the URI query.
 //
 // The function takes the following parameters:
 //
-//    - queryKey: key to lookup.
+//   - queryKey: key to lookup.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value for the given key, or NULL if not found.
+//   - utf8 (optional): value for the given key, or NULL if not found.
 //
 func (uri *URI) QueryValue(queryKey string) string {
 	var _arg0 *C.GstUri // out
@@ -1010,12 +1023,12 @@ func (uri *URI) QueryValue(queryKey string) string {
 	return _utf8
 }
 
-// Scheme: get the scheme name from the URI or NULL if it doesn't exist. If uri
-// is NULL then returns NULL.
+// Scheme: get the scheme name from the URI or NULL if it doesn't exist.
+// If uri is NULL then returns NULL.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): scheme from the Uri object or NULL.
+//   - utf8 (optional): scheme from the Uri object or NULL.
 //
 func (uri *URI) Scheme() string {
 	var _arg0 *C.GstUri // out
@@ -1042,7 +1055,7 @@ func (uri *URI) Scheme() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): userinfo from the Uri object or NULL.
+//   - utf8 (optional): userinfo from the Uri object or NULL.
 //
 func (uri *URI) Userinfo() string {
 	var _arg0 *C.GstUri // out
@@ -1069,13 +1082,15 @@ func (uri *URI) Userinfo() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the URI is normalized or is NULL.
+//   - ok: TRUE if the URI is normalized or is NULL.
 //
 func (uri *URI) IsNormalized() bool {
 	var _arg0 *C.GstUri  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
+	if uri != nil {
+		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
+	}
 
 	_cret = C.gst_uri_is_normalized(_arg0)
 	runtime.KeepAlive(uri)
@@ -1099,7 +1114,7 @@ func (uri *URI) IsNormalized() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if it is safe to write to the object.
+//   - ok: TRUE if it is safe to write to the object.
 //
 func (uri *URI) IsWritable() bool {
 	var _arg0 *C.GstUri  // out
@@ -1119,18 +1134,18 @@ func (uri *URI) IsWritable() bool {
 	return _ok
 }
 
-// Join a reference URI onto a base URI using the method from RFC 3986. If
-// either URI is NULL then the other URI will be returned with the ref count
+// Join a reference URI onto a base URI using the method from RFC 3986.
+// If either URI is NULL then the other URI will be returned with the ref count
 // increased.
 //
 // The function takes the following parameters:
 //
-//    - refUri (optional): reference URI to join onto the base URI.
+//   - refUri (optional): reference URI to join onto the base URI.
 //
 // The function returns the following values:
 //
-//    - uri (optional) which represents the base with the reference URI joined
-//      on.
+//   - uri (optional) which represents the base with the reference URI joined
+//     on.
 //
 func (baseUri *URI) Join(refUri *URI) *URI {
 	var _arg0 *C.GstUri // out
@@ -1166,13 +1181,13 @@ func (baseUri *URI) Join(refUri *URI) *URI {
 // MakeWritable: make the Uri writable.
 //
 // Checks if uri is writable, and if so the original object is returned. If not,
-// then a writable copy is made and returned. This gives away the reference to
-// uri and returns a reference to the new Uri. If uri is NULL then NULL is
+// then a writable copy is made and returned. This gives away the reference
+// to uri and returns a reference to the new Uri. If uri is NULL then NULL is
 // returned.
 //
 // The function returns the following values:
 //
-//    - ret: writable version of uri.
+//   - ret: writable version of uri.
 //
 func (uri *URI) MakeWritable() *URI {
 	var _arg0 *C.GstUri // out
@@ -1201,19 +1216,19 @@ func (uri *URI) MakeWritable() *URI {
 //
 // The function takes the following parameters:
 //
-//    - scheme (optional) for the new URI.
-//    - userinfo (optional): user-info for the new URI.
-//    - host (optional) name for the new URI.
-//    - port number for the new URI or GST_URI_NO_PORT.
-//    - path (optional) for the new URI with '/' separating path elements.
-//    - query (optional) string for the new URI with '&' separating query
-//      elements. Elements containing '&' characters should encode them as
-//      "&percnt;26".
-//    - fragment (optional) name for the new URI.
+//   - scheme (optional) for the new URI.
+//   - userinfo (optional): user-info for the new URI.
+//   - host (optional) name for the new URI.
+//   - port number for the new URI or GST_URI_NO_PORT.
+//   - path (optional) for the new URI with '/' separating path elements.
+//   - query (optional) string for the new URI with '&' separating query
+//     elements. Elements containing '&' characters should encode them as
+//     "&percnt;26".
+//   - fragment (optional) name for the new URI.
 //
 // The function returns the following values:
 //
-//    - uri: new URI joined onto base.
+//   - uri: new URI joined onto base.
 //
 func (base *URI) NewWithBase(scheme string, userinfo string, host string, port uint, path string, query string, fragment string) *URI {
 	var _arg0 *C.GstUri // out
@@ -1287,7 +1302,7 @@ func (base *URI) NewWithBase(scheme string, userinfo string, host string, port u
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the URI was modified.
+//   - ok: TRUE if the URI was modified.
 //
 func (uri *URI) Normalize() bool {
 	var _arg0 *C.GstUri  // out
@@ -1311,11 +1326,11 @@ func (uri *URI) Normalize() bool {
 //
 // The function takes the following parameters:
 //
-//    - queryKey: key to lookup.
+//   - queryKey: key to lookup.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if query_key exists in the URI query table.
+//   - ok: TRUE if query_key exists in the URI query table.
 //
 func (uri *URI) QueryHasKey(queryKey string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1345,11 +1360,11 @@ func (uri *URI) QueryHasKey(queryKey string) bool {
 //
 // The function takes the following parameters:
 //
-//    - queryKey: key to remove.
+//   - queryKey: key to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key existed in the table and was removed.
+//   - ok: TRUE if the key existed in the table and was removed.
 //
 func (uri *URI) RemoveQueryKey(queryKey string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1380,11 +1395,11 @@ func (uri *URI) RemoveQueryKey(queryKey string) bool {
 //
 // The function takes the following parameters:
 //
-//    - fragment (optional) string to set.
+//   - fragment (optional) string to set.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the fragment was set/unset successfully.
+//   - ok: TRUE if the fragment was set/unset successfully.
 //
 func (uri *URI) SetFragment(fragment string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1416,11 +1431,11 @@ func (uri *URI) SetFragment(fragment string) bool {
 //
 // The function takes the following parameters:
 //
-//    - host: new host string to set or NULL to unset.
+//   - host: new host string to set or NULL to unset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the host was set/unset successfully.
+//   - ok: TRUE if the host was set/unset successfully.
 //
 func (uri *URI) SetHost(host string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1450,12 +1465,12 @@ func (uri *URI) SetHost(host string) bool {
 //
 // The function takes the following parameters:
 //
-//    - path: new path to set with path segments separated by '/', or use NULL to
-//      unset the path.
+//   - path (optional): new path to set with path segments separated by '/',
+//     or use NULL to unset the path.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the path was set successfully.
+//   - ok: TRUE if the path was set successfully.
 //
 func (uri *URI) SetPath(path string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1465,8 +1480,10 @@ func (uri *URI) SetPath(path string) bool {
 	if uri != nil {
 		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
 	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if path != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gst_uri_set_path(_arg0, _arg1)
 	runtime.KeepAlive(uri)
@@ -1485,11 +1502,11 @@ func (uri *URI) SetPath(path string) bool {
 //
 // The function takes the following parameters:
 //
-//    - pathSegments (optional): new path list to set.
+//   - pathSegments (optional): new path list to set.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the path segments were set successfully.
+//   - ok: TRUE if the path segments were set successfully.
 //
 func (uri *URI) SetPathSegments(pathSegments []string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1525,12 +1542,12 @@ func (uri *URI) SetPathSegments(pathSegments []string) bool {
 //
 // The function takes the following parameters:
 //
-//    - path: new percent encoded path to set with path segments separated by
-//      '/', or use NULL to unset the path.
+//   - path: new percent encoded path to set with path segments separated by
+//     '/', or use NULL to unset the path.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the path was set successfully.
+//   - ok: TRUE if the path was set successfully.
 //
 func (uri *URI) SetPathString(path string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1560,11 +1577,11 @@ func (uri *URI) SetPathString(path string) bool {
 //
 // The function takes the following parameters:
 //
-//    - port: new port number to set or GST_URI_NO_PORT to unset.
+//   - port: new port number to set or GST_URI_NO_PORT to unset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the port number was set/unset successfully.
+//   - ok: TRUE if the port number was set/unset successfully.
 //
 func (uri *URI) SetPort(port uint) bool {
 	var _arg0 *C.GstUri  // out
@@ -1593,12 +1610,12 @@ func (uri *URI) SetPort(port uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - query: new percent encoded query string to use to populate the query
-//      table, or use NULL to unset the query table.
+//   - query (optional): new percent encoded query string to use to populate the
+//     query table, or use NULL to unset the query table.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query table was set successfully.
+//   - ok: TRUE if the query table was set successfully.
 //
 func (uri *URI) SetQueryString(query string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1608,8 +1625,10 @@ func (uri *URI) SetQueryString(query string) bool {
 	if uri != nil {
 		_arg0 = (*C.GstUri)(gextras.StructNative(unsafe.Pointer(uri)))
 	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if query != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gst_uri_set_query_string(_arg0, _arg1)
 	runtime.KeepAlive(uri)
@@ -1630,11 +1649,11 @@ func (uri *URI) SetQueryString(query string) bool {
 //
 // The function takes the following parameters:
 //
-//    - queryTable (optional): new query table to use.
+//   - queryTable (optional): new query table to use.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the new table was successfully used for the query table.
+//   - ok: TRUE if the new table was successfully used for the query table.
 //
 func (uri *URI) SetQueryTable(queryTable map[string]string) bool {
 	var _arg0 *C.GstUri     // out
@@ -1671,18 +1690,18 @@ func (uri *URI) SetQueryTable(queryTable map[string]string) bool {
 	return _ok
 }
 
-// SetQueryValue: this inserts or replaces a key in the query table. A
-// query_value of NULL indicates that the key has no associated value, but will
-// still be present in the query string.
+// SetQueryValue: this inserts or replaces a key in the query table.
+// A query_value of NULL indicates that the key has no associated value,
+// but will still be present in the query string.
 //
 // The function takes the following parameters:
 //
-//    - queryKey: key for the query entry.
-//    - queryValue (optional): value for the key.
+//   - queryKey: key for the query entry.
+//   - queryValue (optional): value for the key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query table was successfully updated.
+//   - ok: TRUE if the query table was successfully updated.
 //
 func (uri *URI) SetQueryValue(queryKey string, queryValue string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1718,11 +1737,11 @@ func (uri *URI) SetQueryValue(queryKey string, queryValue string) bool {
 //
 // The function takes the following parameters:
 //
-//    - scheme: new scheme to set or NULL to unset the scheme.
+//   - scheme: new scheme to set or NULL to unset the scheme.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the scheme was set/unset successfully.
+//   - ok: TRUE if the scheme was set/unset successfully.
 //
 func (uri *URI) SetScheme(scheme string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1752,11 +1771,11 @@ func (uri *URI) SetScheme(scheme string) bool {
 //
 // The function takes the following parameters:
 //
-//    - userinfo: new user-information string to set or NULL to unset.
+//   - userinfo: new user-information string to set or NULL to unset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the user information was set/unset successfully.
+//   - ok: TRUE if the user information was set/unset successfully.
 //
 func (uri *URI) SetUserinfo(userinfo string) bool {
 	var _arg0 *C.GstUri  // out
@@ -1785,12 +1804,12 @@ func (uri *URI) SetUserinfo(userinfo string) bool {
 // String: convert the URI to a string.
 //
 // Returns the URI as held in this object as a #gchar* nul-terminated string.
-// The caller should g_free() the string once they are finished with it. The
-// string is put together as described in RFC 3986.
+// The caller should g_free() the string once they are finished with it.
+// The string is put together as described in RFC 3986.
 //
 // The function returns the following values:
 //
-//    - utf8: string version of the URI.
+//   - utf8: string version of the URI.
 //
 func (uri *URI) String() string {
 	var _arg0 *C.GstUri // out
@@ -1817,13 +1836,12 @@ func (uri *URI) String() string {
 //
 // The function takes the following parameters:
 //
-//    - protocol: protocol for URI.
-//    - location: location for URI.
+//   - protocol: protocol for URI.
+//   - location: location for URI.
 //
 // The function returns the following values:
 //
-//    - utf8: new string for this URI. Returns NULL if the given URI protocol is
-//      not valid, or the given location is NULL.
+//   - utf8: new string for this URI.
 //
 func URIConstruct(protocol, location string) string {
 	var _arg1 *C.gchar // out
@@ -1856,13 +1874,13 @@ func URIConstruct(protocol, location string) string {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string.
+//   - uri: URI string.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): location for this URI. Returns NULL if the URI isn't
-//      valid. If the URI does not contain a location, an empty string is
-//      returned.
+//   - utf8 (optional): location for this URI. Returns NULL if the URI isn't
+//     valid. If the URI does not contain a location, an empty string is
+//     returned.
 //
 func URIGetLocation(uri string) string {
 	var _arg1 *C.gchar // out
@@ -1889,11 +1907,11 @@ func URIGetLocation(uri string) string {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string.
+//   - uri: URI string.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): protocol for this URI.
+//   - utf8 (optional): protocol for this URI.
 //
 func URIGetProtocol(uri string) string {
 	var _arg1 *C.gchar // out
@@ -1919,12 +1937,12 @@ func URIGetProtocol(uri string) string {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string.
-//    - protocol string (e.g. "http").
+//   - uri: URI string.
+//   - protocol string (e.g. "http").
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the protocol matches.
+//   - ok: TRUE if the protocol matches.
 //
 func URIHasProtocol(uri, protocol string) bool {
 	var _arg1 *C.gchar   // out
@@ -1955,11 +1973,11 @@ func URIHasProtocol(uri, protocol string) bool {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string.
+//   - uri: URI string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the string is a valid URI.
+//   - ok: TRUE if the string is a valid URI.
 //
 func URIIsValid(uri string) bool {
 	var _arg1 *C.gchar   // out
@@ -1986,12 +2004,12 @@ func URIIsValid(uri string) bool {
 //
 // The function takes the following parameters:
 //
-//    - typ: whether to check for a source or a sink.
-//    - protocol: protocol that should be checked for (e.g. "http" or "smb").
+//   - typ: whether to check for a source or a sink.
+//   - protocol: protocol that should be checked for (e.g. "http" or "smb").
 //
 // The function returns the following values:
 //
-//    - ok: TRUE.
+//   - ok: TRUE.
 //
 func URIProtocolIsSupported(typ URIType, protocol string) bool {
 	var _arg1 C.GstURIType // out
@@ -2021,11 +2039,11 @@ func URIProtocolIsSupported(typ URIType, protocol string) bool {
 //
 // The function takes the following parameters:
 //
-//    - protocol: string.
+//   - protocol: string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the string is a valid protocol identifier, FALSE otherwise.
+//   - ok: TRUE if the string is a valid protocol identifier, FALSE otherwise.
 //
 func URIProtocolIsValid(protocol string) bool {
 	var _arg1 *C.gchar   // out

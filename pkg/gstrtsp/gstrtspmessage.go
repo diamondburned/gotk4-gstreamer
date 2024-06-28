@@ -77,8 +77,8 @@ func (r RTSPMsgType) String() string {
 //
 // The function returns the following values:
 //
-//    - msg: location for the new RTSPMessage.
-//    - rtspResult: RTSPResult.
+//   - msg: location for the new RTSPMessage.
+//   - rtspResult: RTSPResult.
 //
 func NewRtspMessage() (*RTSPMessage, RTSPResult) {
 	var _arg1 *C.GstRTSPMessage // in
@@ -106,12 +106,12 @@ func NewRtspMessage() (*RTSPMessage, RTSPResult) {
 //
 // The function takes the following parameters:
 //
-//    - channel: channel.
+//   - channel: channel.
 //
 // The function returns the following values:
 //
-//    - msg: location for the new RTSPMessage.
-//    - rtspResult: RTSPResult.
+//   - msg: location for the new RTSPMessage.
+//   - rtspResult: RTSPResult.
 //
 func RtspMessageNewData(channel byte) (*RTSPMessage, RTSPResult) {
 	var _arg1 *C.GstRTSPMessage // in
@@ -143,13 +143,13 @@ func RtspMessageNewData(channel byte) (*RTSPMessage, RTSPResult) {
 //
 // The function takes the following parameters:
 //
-//    - method: request method to use.
-//    - uri of the request.
+//   - method: request method to use.
+//   - uri of the request.
 //
 // The function returns the following values:
 //
-//    - msg: location for the new RTSPMessage.
-//    - rtspResult: RTSPResult.
+//   - msg: location for the new RTSPMessage.
+//   - rtspResult: RTSPResult.
 //
 func RtspMessageNewRequest(method RTSPMethod, uri string) (*RTSPMessage, RTSPResult) {
 	var _arg1 *C.GstRTSPMessage // in
@@ -180,8 +180,8 @@ func RtspMessageNewRequest(method RTSPMethod, uri string) (*RTSPMessage, RTSPRes
 	return _msg, _rtspResult
 }
 
-// RtspMessageNewResponse: create a new response RTSPMessage with code and
-// reason and store the result message in msg. Free with
+// RtspMessageNewResponse: create a new response RTSPMessage with
+// code and reason and store the result message in msg. Free with
 // gst_rtsp_message_free().
 //
 // When reason is NULL, the default reason for code will be used.
@@ -191,14 +191,14 @@ func RtspMessageNewRequest(method RTSPMethod, uri string) (*RTSPMessage, RTSPRes
 //
 // The function takes the following parameters:
 //
-//    - code status code.
-//    - reason (optional) status reason or NULL.
-//    - request (optional) that triggered the response or NULL.
+//   - code status code.
+//   - reason (optional) status reason or NULL.
+//   - request (optional) that triggered the response or NULL.
 //
 // The function returns the following values:
 //
-//    - msg: location for the new RTSPMessage.
-//    - rtspResult: RTSPResult.
+//   - msg: location for the new RTSPMessage.
+//   - rtspResult: RTSPResult.
 //
 func RtspMessageNewResponse(code RTSPStatusCode, reason string, request *RTSPMessage) (*RTSPMessage, RTSPResult) {
 	var _arg1 *C.GstRTSPMessage   // in
@@ -259,12 +259,12 @@ func marshalRTSPMessage(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
-//    - value of the header.
+//   - field: RTSPHeaderField.
+//   - value of the header.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) AddHeader(field RTSPHeaderField, value string) RTSPResult {
 	var _arg0 *C.GstRTSPMessage    // out
@@ -294,12 +294,12 @@ func (msg *RTSPMessage) AddHeader(field RTSPHeaderField, value string) RTSPResul
 //
 // The function takes the following parameters:
 //
-//    - header string.
-//    - value of the header.
+//   - header string.
+//   - value of the header.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) AddHeaderByName(header string, value string) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -330,8 +330,8 @@ func (msg *RTSPMessage) AddHeaderByName(header string, value string) RTSPResult 
 //
 // The function returns the following values:
 //
-//    - copy: pointer to new RTSPMessage.
-//    - rtspResult: RTSPResult.
+//   - copy (optional): pointer to new RTSPMessage.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) Copy() (*RTSPMessage, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -346,13 +346,15 @@ func (msg *RTSPMessage) Copy() (*RTSPMessage, RTSPResult) {
 	var _copy *RTSPMessage     // out
 	var _rtspResult RTSPResult // out
 
-	_copy = (*RTSPMessage)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_copy)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_rtsp_message_free((*C.GstRTSPMessage)(intern.C))
-		},
-	)
+	if _arg1 != nil {
+		_copy = (*RTSPMessage)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_copy)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_rtsp_message_free((*C.GstRTSPMessage)(intern.C))
+			},
+		)
+	}
 	_rtspResult = RTSPResult(_cret)
 
 	return _copy, _rtspResult
@@ -362,7 +364,7 @@ func (msg *RTSPMessage) Copy() (*RTSPMessage, RTSPResult) {
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) Dump() RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -383,14 +385,14 @@ func (msg *RTSPMessage) Dump() RTSPResult {
 // Body: get the body of msg. data remains valid for as long as msg is valid and
 // unchanged.
 //
-// If the message body was set as a Buffer before this will cause the data to be
-// copied and stored in the message. The Buffer will no longer be kept in the
+// If the message body was set as a Buffer before this will cause the data to
+// be copied and stored in the message. The Buffer will no longer be kept in the
 // message.
 //
 // The function returns the following values:
 //
-//    - data: location for the data.
-//    - rtspResult: T_RTSP_OK.
+//   - data: location for the data.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) Body() ([]byte, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -422,8 +424,8 @@ func (msg *RTSPMessage) Body() ([]byte, RTSPResult) {
 //
 // The function returns the following values:
 //
-//    - buffer: location for the buffer.
-//    - rtspResult: T_RTSP_OK.
+//   - buffer: location for the buffer.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) BodyBuffer() (*gst.Buffer, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -449,14 +451,14 @@ func (msg *RTSPMessage) BodyBuffer() (*gst.Buffer, RTSPResult) {
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
-//    - indx: index of the header.
+//   - field: RTSPHeaderField.
+//   - indx: index of the header.
 //
 // The function returns the following values:
 //
-//    - value: pointer to hold the result.
-//    - rtspResult when field was found, T_RTSP_ENOTIMPL if the key was not
-//      found.
+//   - value (optional): pointer to hold the result.
+//   - rtspResult when field was found, T_RTSP_ENOTIMPL if the key was not
+//     found.
 //
 func (msg *RTSPMessage) Header(field RTSPHeaderField, indx int) (string, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage    // out
@@ -477,7 +479,9 @@ func (msg *RTSPMessage) Header(field RTSPHeaderField, indx int) (string, RTSPRes
 	var _value string          // out
 	var _rtspResult RTSPResult // out
 
-	_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	if _arg2 != nil {
+		_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	}
 	_rtspResult = RTSPResult(_cret)
 
 	return _value, _rtspResult
@@ -488,14 +492,14 @@ func (msg *RTSPMessage) Header(field RTSPHeaderField, indx int) (string, RTSPRes
 //
 // The function takes the following parameters:
 //
-//    - header: RTSPHeaderField.
-//    - index of the header.
+//   - header: RTSPHeaderField.
+//   - index of the header.
 //
 // The function returns the following values:
 //
-//    - value: pointer to hold the result.
-//    - rtspResult when field was found, T_RTSP_ENOTIMPL if the key was not
-//      found.
+//   - value (optional): pointer to hold the result.
+//   - rtspResult when field was found, T_RTSP_ENOTIMPL if the key was not
+//     found.
 //
 func (msg *RTSPMessage) HeaderByName(header string, index int) (string, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -517,7 +521,9 @@ func (msg *RTSPMessage) HeaderByName(header string, index int) (string, RTSPResu
 	var _value string          // out
 	var _rtspResult RTSPResult // out
 
-	_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	if _arg2 != nil {
+		_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	}
 	_rtspResult = RTSPResult(_cret)
 
 	return _value, _rtspResult
@@ -527,7 +533,7 @@ func (msg *RTSPMessage) HeaderByName(header string, index int) (string, RTSPResu
 //
 // The function returns the following values:
 //
-//    - rtspMsgType: message type.
+//   - rtspMsgType: message type.
 //
 func (msg *RTSPMessage) Type() RTSPMsgType {
 	var _arg0 *C.GstRTSPMessage // out
@@ -549,7 +555,7 @@ func (msg *RTSPMessage) Type() RTSPMsgType {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if msg has a body and it's stored as Buffer, FALSE otherwise.
+//   - ok: TRUE if msg has a body and it's stored as Buffer, FALSE otherwise.
 //
 func (msg *RTSPMessage) HasBodyBuffer() bool {
 	var _arg0 *C.GstRTSPMessage // out
@@ -574,7 +580,7 @@ func (msg *RTSPMessage) HasBodyBuffer() bool {
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) Init() RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -596,11 +602,11 @@ func (msg *RTSPMessage) Init() RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - channel: channel.
+//   - channel: channel.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) InitData(channel byte) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -621,17 +627,17 @@ func (msg *RTSPMessage) InitData(channel byte) RTSPResult {
 	return _rtspResult
 }
 
-// InitRequest: initialize msg as a request message with method and uri. To
-// clear msg again, use gst_rtsp_message_unset().
+// InitRequest: initialize msg as a request message with method and uri.
+// To clear msg again, use gst_rtsp_message_unset().
 //
 // The function takes the following parameters:
 //
-//    - method: request method to use.
-//    - uri of the request.
+//   - method: request method to use.
+//   - uri of the request.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) InitRequest(method RTSPMethod, uri string) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -665,13 +671,13 @@ func (msg *RTSPMessage) InitRequest(method RTSPMethod, uri string) RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - code status code.
-//    - reason (optional) status reason or NULL.
-//    - request (optional) that triggered the response or NULL.
+//   - code status code.
+//   - reason (optional) status reason or NULL.
+//   - request (optional) that triggered the response or NULL.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) InitResponse(code RTSPStatusCode, reason string, request *RTSPMessage) RTSPResult {
 	var _arg0 *C.GstRTSPMessage   // out
@@ -708,12 +714,12 @@ func (msg *RTSPMessage) InitResponse(code RTSPStatusCode, reason string, request
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
+//   - field: RTSPHeaderField.
 //
 // The function returns the following values:
 //
-//    - rtspAuthCredentials: NULL-terminated array of GstRTSPAuthCredential or
-//      NULL.
+//   - rtspAuthCredentials: NULL-terminated array of GstRTSPAuthCredential or
+//     NULL.
 //
 func (msg *RTSPMessage) ParseAuthCredentials(field RTSPHeaderField) []*RTSPAuthCredential {
 	var _arg0 *C.GstRTSPMessage         // out
@@ -757,8 +763,8 @@ func (msg *RTSPMessage) ParseAuthCredentials(field RTSPHeaderField) []*RTSPAuthC
 //
 // The function returns the following values:
 //
-//    - channel: location to hold the channel.
-//    - rtspResult: RTSPResult.
+//   - channel (optional): location to hold the channel.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) ParseData() (byte, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -779,18 +785,18 @@ func (msg *RTSPMessage) ParseData() (byte, RTSPResult) {
 	return _channel, _rtspResult
 }
 
-// ParseRequest: parse the request message msg and store the values method, uri
-// and version. The result locations can be NULL if one is not interested in its
-// value.
+// ParseRequest: parse the request message msg and store the values method,
+// uri and version. The result locations can be NULL if one is not interested in
+// its value.
 //
 // uri remains valid for as long as msg is valid and unchanged.
 //
 // The function returns the following values:
 //
-//    - method (optional): location to hold the method.
-//    - uri (optional): location to hold the uri.
-//    - version (optional): location to hold the version.
-//    - rtspResult: RTSPResult.
+//   - method (optional): location to hold the method.
+//   - uri (optional): location to hold the uri.
+//   - version (optional): location to hold the version.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) ParseRequest() (RTSPMethod, string, RTSPVersion, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -827,10 +833,10 @@ func (msg *RTSPMessage) ParseRequest() (RTSPMethod, string, RTSPVersion, RTSPRes
 //
 // The function returns the following values:
 //
-//    - code (optional): location to hold the status code.
-//    - reason (optional): location to hold the status reason.
-//    - version (optional): location to hold the version.
-//    - rtspResult: RTSPResult.
+//   - code (optional): location to hold the status code.
+//   - reason (optional): location to hold the status reason.
+//   - version (optional): location to hold the version.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) ParseResponse() (RTSPStatusCode, string, RTSPVersion, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage   // out
@@ -864,12 +870,12 @@ func (msg *RTSPMessage) ParseResponse() (RTSPStatusCode, string, RTSPVersion, RT
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
-//    - indx: index of the header.
+//   - field: RTSPHeaderField.
+//   - indx: index of the header.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) RemoveHeader(field RTSPHeaderField, indx int) RTSPResult {
 	var _arg0 *C.GstRTSPMessage    // out
@@ -893,17 +899,17 @@ func (msg *RTSPMessage) RemoveHeader(field RTSPHeaderField, indx int) RTSPResult
 	return _rtspResult
 }
 
-// RemoveHeaderByName: remove the index header with key header from msg. If
-// index equals -1, all matching headers will be removed.
+// RemoveHeaderByName: remove the index header with key header from msg.
+// If index equals -1, all matching headers will be removed.
 //
 // The function takes the following parameters:
 //
-//    - header string.
-//    - index of the header.
+//   - header string.
+//   - index of the header.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) RemoveHeaderByName(header string, index int) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -933,11 +939,11 @@ func (msg *RTSPMessage) RemoveHeaderByName(header string, index int) RTSPResult 
 //
 // The function takes the following parameters:
 //
-//    - data: data.
+//   - data: data.
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) SetBody(data []byte) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -967,11 +973,11 @@ func (msg *RTSPMessage) SetBody(data []byte) RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) SetBodyBuffer(buffer *gst.Buffer) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -997,8 +1003,8 @@ func (msg *RTSPMessage) SetBodyBuffer(buffer *gst.Buffer) RTSPResult {
 //
 // The function returns the following values:
 //
-//    - data: location for the data.
-//    - rtspResult: T_RTSP_OK.
+//   - data: location for the data.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) StealBody() ([]byte, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -1031,8 +1037,8 @@ func (msg *RTSPMessage) StealBody() ([]byte, RTSPResult) {
 //
 // The function returns the following values:
 //
-//    - buffer: location for the buffer.
-//    - rtspResult: T_RTSP_OK.
+//   - buffer: location for the buffer.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) StealBodyBuffer() (*gst.Buffer, RTSPResult) {
 	var _arg0 *C.GstRTSPMessage // out
@@ -1064,11 +1070,11 @@ func (msg *RTSPMessage) StealBodyBuffer() (*gst.Buffer, RTSPResult) {
 //
 // The function takes the following parameters:
 //
-//    - data: data.
+//   - data: data.
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) TakeBody(data []byte) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -1097,11 +1103,11 @@ func (msg *RTSPMessage) TakeBody(data []byte) RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) TakeBodyBuffer(buffer *gst.Buffer) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -1128,12 +1134,12 @@ func (msg *RTSPMessage) TakeBodyBuffer(buffer *gst.Buffer) RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
-//    - value of the header.
+//   - field: RTSPHeaderField.
+//   - value of the header.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) TakeHeader(field RTSPHeaderField, value string) RTSPResult {
 	var _arg0 *C.GstRTSPMessage    // out
@@ -1162,12 +1168,12 @@ func (msg *RTSPMessage) TakeHeader(field RTSPHeaderField, value string) RTSPResu
 //
 // The function takes the following parameters:
 //
-//    - header string.
-//    - value of the header.
+//   - header string.
+//   - value of the header.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - rtspResult: RTSPResult.
 //
 func (msg *RTSPMessage) TakeHeaderByName(header string, value string) RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out
@@ -1192,14 +1198,14 @@ func (msg *RTSPMessage) TakeHeaderByName(header string, value string) RTSPResult
 	return _rtspResult
 }
 
-// Unset the contents of msg so that it becomes an uninitialized RTSPMessage
-// again. This function is mostly used in combination with
+// Unset the contents of msg so that it becomes an uninitialized
+// RTSPMessage again. This function is mostly used in combination with
 // gst_rtsp_message_init_request(), gst_rtsp_message_init_response() and
 // gst_rtsp_message_init_data() on stack allocated RTSPMessage structures.
 //
 // The function returns the following values:
 //
-//    - rtspResult: T_RTSP_OK.
+//   - rtspResult: T_RTSP_OK.
 //
 func (msg *RTSPMessage) Unset() RTSPResult {
 	var _arg0 *C.GstRTSPMessage // out

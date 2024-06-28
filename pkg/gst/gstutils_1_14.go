@@ -29,11 +29,11 @@ const SEQNUM_INVALID = 0
 //
 // The function takes the following parameters:
 //
-//    - transition to get the name of.
+//   - transition to get the name of.
 //
 // The function returns the following values:
 //
-//    - utf8: string with the name of the state result.
+//   - utf8: string with the name of the state result.
 //
 func StateChangeGetName(transition StateChange) string {
 	var _arg1 C.GstStateChange // out
@@ -56,7 +56,7 @@ func StateChangeGetName(transition StateChange) string {
 //
 // The function takes the following parameters:
 //
-//    - buf whose memory to dump.
+//   - buf whose memory to dump.
 //
 func UtilDumpBuffer(buf *Buffer) {
 	var _arg1 *C.GstBuffer // out

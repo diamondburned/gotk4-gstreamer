@@ -20,13 +20,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - plugin (optional) or NULL for a static typefind function.
-//    - name for registering.
-//    - typ: GType of tracer to register.
+//   - plugin (optional) or NULL for a static typefind function.
+//   - name for registering.
+//   - typ: GType of tracer to register.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the registering succeeded, FALSE on error.
+//   - ok: TRUE, if the registering succeeded, FALSE on error.
 //
 func TracerRegister(plugin *Plugin, name string, typ coreglib.Type) bool {
 	var _arg1 *C.GstPlugin // out

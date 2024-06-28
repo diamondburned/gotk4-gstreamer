@@ -136,8 +136,8 @@ type AggregatorOverrides struct {
 	Aggregate func(timeout bool) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - aggregatorPad
-	//    - buf
+	//   - aggregatorPad
+	//   - buf
 	//
 	// The function returns the following values:
 	//
@@ -148,23 +148,23 @@ type AggregatorOverrides struct {
 	//
 	DecideAllocation func(query *gst.Query) bool
 	// FinishBuffer: this method will push the provided output buffer
-	// downstream. If needed, mandatory events such as stream-start, caps, and
-	// segment events will be sent before pushing the buffer.
+	// downstream. If needed, mandatory events such as stream-start, caps,
+	// and segment events will be sent before pushing the buffer.
 	//
 	// The function takes the following parameters:
 	//
-	//    - buffer to push.
+	//   - buffer to push.
 	//
 	// The function returns the following values:
 	//
 	FinishBuffer func(buffer *gst.Buffer) gst.FlowReturn
 	// FinishBufferList: this method will push the provided output buffer list
-	// downstream. If needed, mandatory events such as stream-start, caps, and
-	// segment events will be sent before pushing the buffer.
+	// downstream. If needed, mandatory events such as stream-start, caps,
+	// and segment events will be sent before pushing the buffer.
 	//
 	// The function takes the following parameters:
 	//
-	//    - bufferlist to push.
+	//   - bufferlist to push.
 	//
 	// The function returns the following values:
 	//
@@ -186,7 +186,7 @@ type AggregatorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the negotiation succeeded, else FALSE.
+	//   - ok: TRUE if the negotiation succeeded, else FALSE.
 	//
 	Negotiate func() bool
 	// The function takes the following parameters:
@@ -203,57 +203,57 @@ type AggregatorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - sample (optional) that is about to be aggregated. It may hold a
-	//      Buffer or a BufferList. The contents of its info structure is
-	//      subclass-dependent, and documented on a subclass basis. The buffers
-	//      held by the sample are not writable.
+	//   - sample (optional) that is about to be aggregated. It may hold
+	//     a Buffer or a BufferList. The contents of its info structure is
+	//     subclass-dependent, and documented on a subclass basis. The buffers
+	//     held by the sample are not writable.
 	//
 	PeekNextSample func(aggregatorPad *AggregatorPad) *gst.Sample
 	// The function takes the following parameters:
 	//
-	//    - pad
-	//    - decideQuery
-	//    - query
+	//   - pad
+	//   - decideQuery
+	//   - query
 	//
 	// The function returns the following values:
 	//
 	ProposeAllocation func(pad *AggregatorPad, decideQuery, query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - aggregatorPad
-	//    - event
+	//   - aggregatorPad
+	//   - event
 	//
 	// The function returns the following values:
 	//
 	SinkEvent func(aggregatorPad *AggregatorPad, event *gst.Event) bool
 	// The function takes the following parameters:
 	//
-	//    - aggregatorPad
-	//    - event
+	//   - aggregatorPad
+	//   - event
 	//
 	// The function returns the following values:
 	//
 	SinkEventPreQueue func(aggregatorPad *AggregatorPad, event *gst.Event) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - aggregatorPad
-	//    - query
+	//   - aggregatorPad
+	//   - query
 	//
 	// The function returns the following values:
 	//
 	SinkQuery func(aggregatorPad *AggregatorPad, query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - aggregatorPad
-	//    - query
+	//   - aggregatorPad
+	//   - query
 	//
 	// The function returns the following values:
 	//
 	SinkQueryPreQueue func(aggregatorPad *AggregatorPad, query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - mode
-	//    - active
+	//   - mode
+	//   - active
 	//
 	// The function returns the following values:
 	//
@@ -278,8 +278,8 @@ type AggregatorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ret (optional)
-	//    - flowReturn
+	//   - ret (optional)
+	//   - flowReturn
 	//
 	UpdateSrcCaps func(caps *gst.Caps) (*gst.Caps, gst.FlowReturn)
 }
@@ -314,60 +314,60 @@ func defaultAggregatorOverrides(v *Aggregator) AggregatorOverrides {
 // Aggregator manages a set of pads with the purpose of aggregating their
 // buffers. Control is given to the subclass when all pads have data.
 //
-//    * Base class for mixers and muxers. Subclasses should at least implement
-//      the AggregatorClass::aggregate virtual method.
+//   - Base class for mixers and muxers. Subclasses should at least implement
+//     the AggregatorClass::aggregate virtual method.
 //
-//    * Installs a PadChainFunction, a PadEventFullFunction and a
-//      PadQueryFunction to queue all serialized data packets per sink pad.
-//      Subclasses should not overwrite those, but instead implement
-//      AggregatorClass::sink_event and AggregatorClass::sink_query as
-//      needed.
+//   - Installs a PadChainFunction, a PadEventFullFunction and a
+//     PadQueryFunction to queue all serialized data packets per sink pad.
+//     Subclasses should not overwrite those, but instead implement
+//     AggregatorClass::sink_event and AggregatorClass::sink_query as needed.
 //
-//    * When data is queued on all pads, the aggregate vmethod is called.
+//   - When data is queued on all pads, the aggregate vmethod is called.
 //
-//    * One can peek at the data on any given GstAggregatorPad with the
-//      gst_aggregator_pad_peek_buffer() method, and remove it from the pad
-//      with the gst_aggregator_pad_pop_buffer () method. When a buffer
-//      has been taken with pop_buffer (), a new buffer can be queued
-//      on that pad.
+//   - One can peek at the data on any given GstAggregatorPad with the
+//     gst_aggregator_pad_peek_buffer() method, and remove it from the pad with
+//     the gst_aggregator_pad_pop_buffer () method. When a buffer has been taken
+//     with pop_buffer (), a new buffer can be queued on that pad.
 //
-//    * When gst_aggregator_pad_peek_buffer() or gst_aggregator_pad_has_buffer()
-//      are called, a reference is taken to the returned buffer, which stays
-//      valid until either:
+//   - When gst_aggregator_pad_peek_buffer() or gst_aggregator_pad_has_buffer()
+//     are called, a reference is taken to the returned buffer, which stays
+//     valid until either:
 //
-//        - gst_aggregator_pad_pop_buffer() is called, in which case the caller
-//          is guaranteed that the buffer they receive is the same as the peeked
-//          buffer.
-//        - gst_aggregator_pad_drop_buffer() is called, in which case the caller
-//          is guaranteed that the dropped buffer is the one that was peeked.
-//        - the subclass implementation of AggregatorClass.aggregate returns.
+//   - gst_aggregator_pad_pop_buffer() is called, in which case the caller is
+//     guaranteed that the buffer they receive is the same as the peeked buffer.
 //
-//      Subsequent calls to gst_aggregator_pad_peek_buffer() or
-//      gst_aggregator_pad_has_buffer() return / check the same buffer that was
-//      returned / checked, until one of the conditions listed above is met.
+//   - gst_aggregator_pad_drop_buffer() is called, in which case the caller is
+//     guaranteed that the dropped buffer is the one that was peeked.
 //
-//      Subclasses are only allowed to call these methods from the aggregate
-//      thread.
+//   - the subclass implementation of AggregatorClass.aggregate returns.
 //
-//    * If the subclass wishes to push a buffer downstream in its aggregate
-//      implementation, it should do so through the
-//      gst_aggregator_finish_buffer() method. This method will take care
-//      of sending and ordering mandatory events such as stream start, caps
-//      and segment. Buffer lists can also be pushed out with
-//      gst_aggregator_finish_buffer_list().
+//     Subsequent calls to gst_aggregator_pad_peek_buffer() or
+//     gst_aggregator_pad_has_buffer() return / check the same buffer that was
+//     returned / checked, until one of the conditions listed above is met.
 //
-//    * Same goes for EOS events, which should not be pushed directly by the
-//      subclass, it should instead return GST_FLOW_EOS in its aggregate
-//      implementation.
+//     Subclasses are only allowed to call these methods from the aggregate
+//     thread.
 //
-//    * Note that the aggregator logic regarding gap event handling is to turn
-//      these into gap buffers with matching PTS and duration. It will also
-//      flag these buffers with GST_BUFFER_FLAG_GAP and GST_BUFFER_FLAG_DROPPABLE
-//      to ease their identification and subsequent processing.
+//   - If the subclass wishes to push a buffer downstream in
+//     its aggregate implementation, it should do so through the
+//     gst_aggregator_finish_buffer() method. This method will take care
+//     of sending and ordering mandatory events such as stream start,
+//     caps and segment. Buffer lists can also be pushed out with
+//     gst_aggregator_finish_buffer_list().
 //
-//    * Subclasses must use (a subclass of) AggregatorPad for both their
-//      sink and source pads.
-//      See gst_element_class_add_static_pad_template_with_gtype().
+//   - Same goes for EOS events, which should not be pushed directly by the
+//     subclass, it should instead return GST_FLOW_EOS in its aggregate
+//     implementation.
+//
+//   - Note that the aggregator logic regarding gap event handling is to turn
+//     these into gap buffers with matching PTS and duration. It will also flag
+//     these buffers with GST_BUFFER_FLAG_GAP and GST_BUFFER_FLAG_DROPPABLE
+//     to ease their identification and subsequent processing. In addition,
+//     if the gap event was flagged with GST_GAP_FLAG_MISSING_DATA, a custom
+//     meta is added to the resulting gap buffer (GstAggregatorMissingDataMeta).
+//
+//   - Subclasses must use (a subclass of) AggregatorPad for both their sink and
+//     source pads. See gst_element_class_add_static_pad_template_with_gtype().
 //
 // This class used to live in gst-plugins-bad and was moved to core.
 type Aggregator struct {
@@ -521,20 +521,20 @@ func BaseAggregator(obj Aggregatorrer) *Aggregator {
 	return obj.baseAggregator()
 }
 
-// ConnectSamplesSelected signals that the Aggregator subclass has selected the
-// next set of input samples it will aggregate. Handlers may call
+// ConnectSamplesSelected signals that the Aggregator subclass has selected
+// the next set of input samples it will aggregate. Handlers may call
 // gst_aggregator_peek_next_sample() at that point.
 func (aggregator *Aggregator) ConnectSamplesSelected(f func(segment *gst.Segment, pts, dts, duration uint64, info *gst.Structure)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(aggregator, "samples-selected", false, unsafe.Pointer(C._gotk4_gstbase1_Aggregator_ConnectSamplesSelected), f)
 }
 
-// FinishBuffer: this method will push the provided output buffer downstream. If
-// needed, mandatory events such as stream-start, caps, and segment events will
-// be sent before pushing the buffer.
+// FinishBuffer: this method will push the provided output buffer downstream.
+// If needed, mandatory events such as stream-start, caps, and segment events
+// will be sent before pushing the buffer.
 //
 // The function takes the following parameters:
 //
-//    - buffer to push.
+//   - buffer to push.
 //
 // The function returns the following values:
 //
@@ -564,7 +564,7 @@ func (aggregator *Aggregator) FinishBuffer(buffer *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - bufferlist to push.
+//   - bufferlist to push.
 //
 // The function returns the following values:
 //
@@ -595,8 +595,8 @@ func (aggregator *Aggregator) FinishBufferList(bufferlist *gst.BufferList) gst.F
 //
 // The function returns the following values:
 //
-//    - allocator (optional): Allocator used.
-//    - params (optional) the AllocationParams of allocator.
+//   - allocator (optional): Allocator used.
+//   - params (optional) the AllocationParams of allocator.
 //
 func (self *Aggregator) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 	var _arg0 *C.GstAggregator      // out
@@ -634,8 +634,8 @@ func (self *Aggregator) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 
 // The function returns the following values:
 //
-//    - bufferPool (optional): instance of the BufferPool used by trans; free it
-//      after use it.
+//   - bufferPool (optional): instance of the BufferPool used by trans; free it
+//     after use it.
 //
 func (self *Aggregator) BufferPool() *gst.BufferPool {
 	var _arg0 *C.GstAggregator // out
@@ -664,9 +664,34 @@ func (self *Aggregator) BufferPool() *gst.BufferPool {
 	return _bufferPool
 }
 
+// ForceLive subclasses may use the return value to inform whether they should
+// return GST_FLOW_EOS from their aggregate implementation.
+//
 // The function returns the following values:
 //
-//    - ok: whether inactive pads will not be waited on.
+//   - ok: whether live status was forced on self.
+//
+func (self *Aggregator) ForceLive() bool {
+	var _arg0 *C.GstAggregator // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GstAggregator)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gst_aggregator_get_force_live(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function returns the following values:
+//
+//   - ok: whether inactive pads will not be waited on.
 //
 func (self *Aggregator) IgnoreInactivePads() bool {
 	var _arg0 *C.GstAggregator // out
@@ -694,7 +719,7 @@ func (self *Aggregator) IgnoreInactivePads() bool {
 //
 // The function returns the following values:
 //
-//    - clockTime: latency or GST_CLOCK_TIME_NONE if the element does not sync.
+//   - clockTime: latency or GST_CLOCK_TIME_NONE if the element does not sync.
 //
 func (self *Aggregator) Latency() gst.ClockTime {
 	var _arg0 *C.GstAggregator // out
@@ -707,9 +732,7 @@ func (self *Aggregator) Latency() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -720,7 +743,7 @@ func (self *Aggregator) Latency() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (self *Aggregator) Negotiate() bool {
 	var _arg0 *C.GstAggregator // out
@@ -749,10 +772,10 @@ func (self *Aggregator) Negotiate() bool {
 //
 // The function returns the following values:
 //
-//    - sample (optional) that is about to be aggregated. It may hold a Buffer or
-//      a BufferList. The contents of its info structure is subclass-dependent,
-//      and documented on a subclass basis. The buffers held by the sample are
-//      not writable.
+//   - sample (optional) that is about to be aggregated. It may hold a Buffer or
+//     a BufferList. The contents of its info structure is subclass-dependent,
+//     and documented on a subclass basis. The buffers held by the sample are
+//     not writable.
 //
 func (self *Aggregator) PeekNextSample(pad *AggregatorPad) *gst.Sample {
 	var _arg0 *C.GstAggregator    // out
@@ -782,8 +805,8 @@ func (self *Aggregator) PeekNextSample(pad *AggregatorPad) *gst.Sample {
 }
 
 // SelectedSamples subclasses should call this when they have prepared the
-// buffers they will aggregate for each of their sink pads, but before using any
-// of the properties of the pads that govern *how* aggregation should be
+// buffers they will aggregate for each of their sink pads, but before using
+// any of the properties of the pads that govern *how* aggregation should be
 // performed, for example z-index for video aggregators.
 //
 // If gst_aggregator_update_segment() is used by the subclass, it MUST be called
@@ -794,10 +817,10 @@ func (self *Aggregator) PeekNextSample(pad *AggregatorPad) *gst.Sample {
 //
 // The function takes the following parameters:
 //
-//    - pts: presentation timestamp of the next output buffer.
-//    - dts: decoding timestamp of the next output buffer.
-//    - duration of the next output buffer.
-//    - info (optional) containing additional information.
+//   - pts: presentation timestamp of the next output buffer.
+//   - dts: decoding timestamp of the next output buffer.
+//   - duration of the next output buffer.
+//   - info (optional) containing additional information.
 //
 func (self *Aggregator) SelectedSamples(pts, dts, duration gst.ClockTime, info *gst.Structure) {
 	var _arg0 *C.GstAggregator // out
@@ -807,15 +830,9 @@ func (self *Aggregator) SelectedSamples(pts, dts, duration gst.ClockTime, info *
 	var _arg4 *C.GstStructure  // out
 
 	_arg0 = (*C.GstAggregator)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint64(pts)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(dts)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(duration)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(pts)
+	_arg2 = C.GstClockTime(dts)
+	_arg3 = C.GstClockTime(duration)
 	if info != nil {
 		_arg4 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(info)))
 	}
@@ -828,6 +845,25 @@ func (self *Aggregator) SelectedSamples(pts, dts, duration gst.ClockTime, info *
 	runtime.KeepAlive(info)
 }
 
+// SetForceLive subclasses should call this at construction time in order for
+// self to aggregate on a timeout even when no live source is connected.
+//
+// The function takes the following parameters:
+//
+func (self *Aggregator) SetForceLive(forceLive bool) {
+	var _arg0 *C.GstAggregator // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GstAggregator)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if forceLive {
+		_arg1 = C.TRUE
+	}
+
+	C.gst_aggregator_set_force_live(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(forceLive)
+}
+
 // SetIgnoreInactivePads subclasses should call this when they don't want to
 // time out waiting for a pad that hasn't yet received any buffers in live mode.
 //
@@ -836,7 +872,7 @@ func (self *Aggregator) SelectedSamples(pts, dts, duration gst.ClockTime, info *
 //
 // The function takes the following parameters:
 //
-//    - ignore: whether inactive pads should not be waited on.
+//   - ignore: whether inactive pads should not be waited on.
 //
 func (self *Aggregator) SetIgnoreInactivePads(ignore bool) {
 	var _arg0 *C.GstAggregator // out
@@ -854,12 +890,12 @@ func (self *Aggregator) SetIgnoreInactivePads(ignore bool) {
 
 // SetLatency lets Aggregator sub-classes tell the baseclass what their internal
 // latency is. Will also post a LATENCY message on the bus so the pipeline can
-// reconfigure its global latency.
+// reconfigure its global latency if the values changed.
 //
 // The function takes the following parameters:
 //
-//    - minLatency: minimum latency.
-//    - maxLatency: maximum latency.
+//   - minLatency: minimum latency.
+//   - maxLatency: maximum latency.
 //
 func (self *Aggregator) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	var _arg0 *C.GstAggregator // out
@@ -867,12 +903,8 @@ func (self *Aggregator) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	var _arg2 C.GstClockTime   // out
 
 	_arg0 = (*C.GstAggregator)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint64(minLatency)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(maxLatency)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(minLatency)
+	_arg2 = C.GstClockTime(maxLatency)
 
 	C.gst_aggregator_set_latency(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
@@ -884,7 +916,7 @@ func (self *Aggregator) SetLatency(minLatency, maxLatency gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - caps to set on the src pad.
+//   - caps to set on the src pad.
 //
 func (self *Aggregator) SetSrcCaps(caps *gst.Caps) {
 	var _arg0 *C.GstAggregator // out
@@ -907,7 +939,7 @@ func (self *Aggregator) SetSrcCaps(caps *gst.Caps) {
 //
 // The function returns the following values:
 //
-//    - clockTime: running time based on the position.
+//   - clockTime: running time based on the position.
 //
 func (self *Aggregator) SimpleGetNextTime() gst.ClockTime {
 	var _arg0 *C.GstAggregator // out
@@ -920,9 +952,7 @@ func (self *Aggregator) SimpleGetNextTime() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -977,8 +1007,8 @@ func (aggregator *Aggregator) aggregate(timeout bool) gst.FlowReturn {
 
 // The function takes the following parameters:
 //
-//    - aggregatorPad
-//    - buf
+//   - aggregatorPad
+//   - buf
 //
 // The function returns the following values:
 //
@@ -1041,13 +1071,13 @@ func (self *Aggregator) decideAllocation(query *gst.Query) bool {
 	return _ok
 }
 
-// finishBuffer: this method will push the provided output buffer downstream. If
-// needed, mandatory events such as stream-start, caps, and segment events will
-// be sent before pushing the buffer.
+// finishBuffer: this method will push the provided output buffer downstream.
+// If needed, mandatory events such as stream-start, caps, and segment events
+// will be sent before pushing the buffer.
 //
 // The function takes the following parameters:
 //
-//    - buffer to push.
+//   - buffer to push.
 //
 // The function returns the following values:
 //
@@ -1080,7 +1110,7 @@ func (aggregator *Aggregator) finishBuffer(buffer *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - bufferlist to push.
+//   - bufferlist to push.
 //
 // The function returns the following values:
 //
@@ -1176,9 +1206,7 @@ func (aggregator *Aggregator) nextTime() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1189,7 +1217,7 @@ func (aggregator *Aggregator) nextTime() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (self *Aggregator) negotiate() bool {
 	gclass := (*C.GstAggregatorClass)(coreglib.PeekParentClass(self))
@@ -1249,10 +1277,10 @@ func (self *Aggregator) negotiatedSrcCaps(caps *gst.Caps) bool {
 //
 // The function returns the following values:
 //
-//    - sample (optional) that is about to be aggregated. It may hold a Buffer or
-//      a BufferList. The contents of its info structure is subclass-dependent,
-//      and documented on a subclass basis. The buffers held by the sample are
-//      not writable.
+//   - sample (optional) that is about to be aggregated. It may hold a Buffer or
+//     a BufferList. The contents of its info structure is subclass-dependent,
+//     and documented on a subclass basis. The buffers held by the sample are
+//     not writable.
 //
 func (aggregator *Aggregator) peekNextSample(aggregatorPad *AggregatorPad) *gst.Sample {
 	gclass := (*C.GstAggregatorClass)(coreglib.PeekParentClass(aggregator))
@@ -1286,9 +1314,9 @@ func (aggregator *Aggregator) peekNextSample(aggregatorPad *AggregatorPad) *gst.
 
 // The function takes the following parameters:
 //
-//    - pad
-//    - decideQuery
-//    - query
+//   - pad
+//   - decideQuery
+//   - query
 //
 // The function returns the following values:
 //
@@ -1324,8 +1352,8 @@ func (self *Aggregator) proposeAllocation(pad *AggregatorPad, decideQuery, query
 
 // The function takes the following parameters:
 //
-//    - aggregatorPad
-//    - event
+//   - aggregatorPad
+//   - event
 //
 // The function returns the following values:
 //
@@ -1358,8 +1386,8 @@ func (aggregator *Aggregator) sinkEvent(aggregatorPad *AggregatorPad, event *gst
 
 // The function takes the following parameters:
 //
-//    - aggregatorPad
-//    - event
+//   - aggregatorPad
+//   - event
 //
 // The function returns the following values:
 //
@@ -1390,8 +1418,8 @@ func (aggregator *Aggregator) sinkEventPreQueue(aggregatorPad *AggregatorPad, ev
 
 // The function takes the following parameters:
 //
-//    - aggregatorPad
-//    - query
+//   - aggregatorPad
+//   - query
 //
 // The function returns the following values:
 //
@@ -1424,8 +1452,8 @@ func (aggregator *Aggregator) sinkQuery(aggregatorPad *AggregatorPad, query *gst
 
 // The function takes the following parameters:
 //
-//    - aggregatorPad
-//    - query
+//   - aggregatorPad
+//   - query
 //
 // The function returns the following values:
 //
@@ -1458,8 +1486,8 @@ func (aggregator *Aggregator) sinkQueryPreQueue(aggregatorPad *AggregatorPad, qu
 
 // The function takes the following parameters:
 //
-//    - mode
-//    - active
+//   - mode
+//   - active
 //
 // The function returns the following values:
 //
@@ -1598,8 +1626,8 @@ func (aggregator *Aggregator) stop() bool {
 //
 // The function returns the following values:
 //
-//    - ret (optional)
-//    - flowReturn
+//   - ret (optional)
+//   - flowReturn
 //
 func (self *Aggregator) updateSrcCaps(caps *gst.Caps) (*gst.Caps, gst.FlowReturn) {
 	gclass := (*C.GstAggregatorClass)(coreglib.PeekParentClass(self))
@@ -1643,8 +1671,8 @@ type AggregatorPadOverrides struct {
 	Flush func(aggregator Aggregatorrer) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - aggregator
-	//    - buffer
+	//   - aggregator
+	//   - buffer
 	//
 	// The function returns the following values:
 	//
@@ -1720,7 +1748,7 @@ func (pad *AggregatorPad) ConnectBufferConsumed(f func(object *gst.Buffer)) core
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a buffer queued in pad, or FALSE if not.
+//   - ok: TRUE if there was a buffer queued in pad, or FALSE if not.
 //
 func (pad *AggregatorPad) DropBuffer() bool {
 	var _arg0 *C.GstAggregatorPad // out
@@ -1740,13 +1768,13 @@ func (pad *AggregatorPad) DropBuffer() bool {
 	return _ok
 }
 
-// HasBuffer: this checks if a pad has a buffer available that will be returned
-// by a call to gst_aggregator_pad_peek_buffer() or
+// HasBuffer: this checks if a pad has a buffer available that will
+// be returned by a call to gst_aggregator_pad_peek_buffer() or
 // gst_aggregator_pad_pop_buffer().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad has a buffer available as the next thing.
+//   - ok: TRUE if the pad has a buffer available as the next thing.
 //
 func (pad *AggregatorPad) HasBuffer() bool {
 	var _arg0 *C.GstAggregatorPad // out
@@ -1768,7 +1796,7 @@ func (pad *AggregatorPad) HasBuffer() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad is EOS, otherwise FALSE.
+//   - ok: TRUE if the pad is EOS, otherwise FALSE.
 //
 func (pad *AggregatorPad) IsEos() bool {
 	var _arg0 *C.GstAggregatorPad // out
@@ -1793,8 +1821,8 @@ func (pad *AggregatorPad) IsEos() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad is inactive, FALSE otherwise. See
-//      gst_aggregator_ignore_inactive_pads() for more info.
+//   - ok: TRUE if the pad is inactive, FALSE otherwise. See
+//     gst_aggregator_ignore_inactive_pads() for more info.
 //
 func (pad *AggregatorPad) IsInactive() bool {
 	var _arg0 *C.GstAggregatorPad // out
@@ -1816,8 +1844,8 @@ func (pad *AggregatorPad) IsInactive() bool {
 
 // The function returns the following values:
 //
-//    - buffer (optional): reference to the buffer in pad or NULL if no buffer
-//      was queued. You should unref the buffer after usage.
+//   - buffer (optional): reference to the buffer in pad or NULL if no buffer
+//     was queued. You should unref the buffer after usage.
 //
 func (pad *AggregatorPad) PeekBuffer() *gst.Buffer {
 	var _arg0 *C.GstAggregatorPad // out
@@ -1847,8 +1875,8 @@ func (pad *AggregatorPad) PeekBuffer() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - buffer (optional) in pad or NULL if no buffer was queued. You should
-//      unref the buffer after usage.
+//   - buffer (optional) in pad or NULL if no buffer was queued. You should
+//     unref the buffer after usage.
 //
 func (pad *AggregatorPad) PopBuffer() *gst.Buffer {
 	var _arg0 *C.GstAggregatorPad // out
@@ -1902,8 +1930,8 @@ func (aggpad *AggregatorPad) flush(aggregator Aggregatorrer) gst.FlowReturn {
 
 // The function takes the following parameters:
 //
-//    - aggregator
-//    - buffer
+//   - aggregator
+//   - buffer
 //
 // The function returns the following values:
 //

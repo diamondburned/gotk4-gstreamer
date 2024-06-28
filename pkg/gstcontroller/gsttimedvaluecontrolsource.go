@@ -36,7 +36,7 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - self: TimedValueControlSource.
+//   - self: TimedValueControlSource.
 //
 func TimedValueControlInvalidateCache(self TimedValueControlSourcer) {
 	var _arg1 *C.GstTimedValueControlSource // out
@@ -145,8 +145,8 @@ func (self *TimedValueControlSource) ConnectValueRemoved(f func(timedValue *Cont
 //
 // The function returns the following values:
 //
-//    - list: copy of the list, or NULL if the property isn't handled by the
-//      controller.
+//   - list: copy of the list, or NULL if the property isn't handled by the
+//     controller.
 //
 func (self *TimedValueControlSource) All() []*gst.TimedValue {
 	var _arg0 *C.GstTimedValueControlSource // out
@@ -174,7 +174,7 @@ func (self *TimedValueControlSource) All() []*gst.TimedValue {
 //
 // The function returns the following values:
 //
-//    - gint: number of control points that are set.
+//   - gint: number of control points that are set.
 //
 func (self *TimedValueControlSource) Count() int {
 	var _arg0 *C.GstTimedValueControlSource // out
@@ -196,12 +196,12 @@ func (self *TimedValueControlSource) Count() int {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time the control-change is scheduled for.
-//    - value: control-value.
+//   - timestamp: time the control-change is scheduled for.
+//   - value: control-value.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the values couldn't be set, TRUE otherwise.
+//   - ok: FALSE if the values couldn't be set, TRUE otherwise.
 //
 func (self *TimedValueControlSource) Set(timestamp gst.ClockTime, value float64) bool {
 	var _arg0 *C.GstTimedValueControlSource // out
@@ -210,9 +210,7 @@ func (self *TimedValueControlSource) Set(timestamp gst.ClockTime, value float64)
 	var _cret C.gboolean                    // in
 
 	_arg0 = (*C.GstTimedValueControlSource)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
 	_arg2 = C.gdouble(value)
 
 	_cret = C.gst_timed_value_control_source_set(_arg0, _arg1, _arg2)
@@ -233,11 +231,11 @@ func (self *TimedValueControlSource) Set(timestamp gst.ClockTime, value float64)
 //
 // The function takes the following parameters:
 //
-//    - timedvalues: list with TimedValue items.
+//   - timedvalues: list with TimedValue items.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the values couldn't be set, TRUE otherwise.
+//   - ok: FALSE if the values couldn't be set, TRUE otherwise.
 //
 func (self *TimedValueControlSource) SetFromList(timedvalues []*gst.TimedValue) bool {
 	var _arg0 *C.GstTimedValueControlSource // out
@@ -271,11 +269,11 @@ func (self *TimedValueControlSource) SetFromList(timedvalues []*gst.TimedValue) 
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time the control-change should be removed from.
+//   - timestamp: time the control-change should be removed from.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the value couldn't be unset (i.e. not found, TRUE otherwise.
+//   - ok: FALSE if the value couldn't be unset (i.e. not found, TRUE otherwise.
 //
 func (self *TimedValueControlSource) Unset(timestamp gst.ClockTime) bool {
 	var _arg0 *C.GstTimedValueControlSource // out
@@ -283,9 +281,7 @@ func (self *TimedValueControlSource) Unset(timestamp gst.ClockTime) bool {
 	var _cret C.gboolean                    // in
 
 	_arg0 = (*C.GstTimedValueControlSource)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_timed_value_control_source_unset(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -333,9 +329,7 @@ func marshalControlPoint(p uintptr) (interface{}, error) {
 func (c *ControlPoint) Timestamp() gst.ClockTime {
 	valptr := &c.native.timestamp
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -357,7 +351,7 @@ func (c *ControlPoint) SetValue(value float64) {
 //
 // The function returns the following values:
 //
-//    - controlPoint: copy of cp.
+//   - controlPoint: copy of cp.
 //
 func (cp *ControlPoint) Copy() *ControlPoint {
 	var _arg0 *C.GstControlPoint // out

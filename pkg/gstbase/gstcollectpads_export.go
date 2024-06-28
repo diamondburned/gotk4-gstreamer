@@ -106,13 +106,9 @@ func _gotk4_gstbase1_CollectPadsCompareFunction(arg1 *C.GstCollectPads, arg2 *C.
 
 	_pads = wrapCollectPads(coreglib.Take(unsafe.Pointer(arg1)))
 	_data1 = (*CollectData)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_timestamp1 = uint64(arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_timestamp1 = gst.ClockTime(arg3)
 	_data2 = (*CollectData)(gextras.NewStructNative(unsafe.Pointer(arg4)))
-	_timestamp2 = uint64(arg5)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_timestamp2 = gst.ClockTime(arg5)
 
 	gint := fn(_pads, _data1, _timestamp1, _data2, _timestamp2)
 

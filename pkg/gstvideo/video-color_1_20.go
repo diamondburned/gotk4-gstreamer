@@ -23,12 +23,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - fn: VideoTransferFunction.
-//    - val: value.
+//   - fn: VideoTransferFunction.
+//   - val: value.
 //
 // The function returns the following values:
 //
-//    - gdouble: gamma decoded value of val.
+//   - gdouble: gamma decoded value of val.
 //
 func VideoTransferFunctionDecode(fn VideoTransferFunction, val float64) float64 {
 	var _arg1 C.GstVideoTransferFunction // out
@@ -61,12 +61,12 @@ func VideoTransferFunctionDecode(fn VideoTransferFunction, val float64) float64 
 //
 // The function takes the following parameters:
 //
-//    - fn: VideoTransferFunction.
-//    - val: value.
+//   - fn: VideoTransferFunction.
+//   - val: value.
 //
 // The function returns the following values:
 //
-//    - gdouble: gamma encoded value of val.
+//   - gdouble: gamma encoded value of val.
 //
 func VideoTransferFunctionEncode(fn VideoTransferFunction, val float64) float64 {
 	var _arg1 C.GstVideoTransferFunction // out

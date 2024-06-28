@@ -60,8 +60,8 @@ type TaskPoolOverrides struct {
 	Cleanup func()
 	// DisposeHandle: dispose of the handle returned by gst_task_pool_push().
 	// This does not need to be called with the default implementation as the
-	// default TaskPoolClass::push implementation always returns NULL. This does
-	// not need to be called either when calling gst_task_pool_join(), but
+	// default TaskPoolClass::push implementation always returns NULL. This
+	// does not need to be called either when calling gst_task_pool_join(), but
 	// should be called when joining is not necessary, but gst_task_pool_push()
 	// returned a non-NULL value.
 	//
@@ -70,7 +70,7 @@ type TaskPoolOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - id (optional): id.
+	//   - id (optional): id.
 	//
 	DisposeHandle func(id unsafe.Pointer)
 	// Join a task and/or return it to the pool. id is the id obtained from
@@ -82,7 +82,7 @@ type TaskPoolOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - id (optional): id.
+	//   - id (optional): id.
 	//
 	Join func(id unsafe.Pointer)
 	// Prepare the taskpool for accepting gst_task_pool_push() operations.
@@ -100,8 +100,8 @@ func defaultTaskPoolOverrides(v *TaskPool) TaskPoolOverrides {
 	}
 }
 
-// TaskPool: this object provides an abstraction for creating threads. The
-// default implementation uses a regular GThreadPool to start tasks.
+// TaskPool: this object provides an abstraction for creating threads.
+// The default implementation uses a regular GThreadPool to start tasks.
 //
 // Subclasses can be made to create custom threads.
 type TaskPool struct {
@@ -166,7 +166,7 @@ func marshalTaskPool(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - taskPool: new TaskPool. gst_object_unref() after usage.
+//   - taskPool: new TaskPool. gst_object_unref() after usage.
 //
 func NewTaskPool() *TaskPool {
 	var _cret *C.GstTaskPool // in
@@ -204,7 +204,7 @@ func (pool *TaskPool) Cleanup() {
 //
 // The function takes the following parameters:
 //
-//    - id (optional): id.
+//   - id (optional): id.
 //
 func (pool *TaskPool) DisposeHandle(id unsafe.Pointer) {
 	var _arg0 *C.GstTaskPool // out
@@ -227,7 +227,7 @@ func (pool *TaskPool) DisposeHandle(id unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - id (optional): id.
+//   - id (optional): id.
 //
 func (pool *TaskPool) Join(id unsafe.Pointer) {
 	var _arg0 *C.GstTaskPool // out
@@ -266,15 +266,15 @@ func (pool *TaskPool) Prepare() error {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call.
+//   - fn: function to call.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): pointer that should be used for the
-//      gst_task_pool_join function. This pointer can be NULL, you must check
-//      error to detect errors. If the pointer is not NULL and
-//      gst_task_pool_join() is not used, call gst_task_pool_dispose_handle()
-//      instead.
+//   - gpointer (optional): pointer that should be used for the
+//     gst_task_pool_join function. This pointer can be NULL, you must
+//     check error to detect errors. If the pointer is not NULL and
+//     gst_task_pool_join() is not used, call gst_task_pool_dispose_handle()
+//     instead.
 //
 func (pool *TaskPool) Push(fn TaskPoolFunction) (unsafe.Pointer, error) {
 	var _arg0 *C.GstTaskPool        // out
@@ -329,7 +329,7 @@ func (pool *TaskPool) cleanup() {
 //
 // The function takes the following parameters:
 //
-//    - id (optional): id.
+//   - id (optional): id.
 //
 func (pool *TaskPool) disposeHandle(id unsafe.Pointer) {
 	gclass := (*C.GstTaskPoolClass)(coreglib.PeekParentClass(pool))
@@ -355,7 +355,7 @@ func (pool *TaskPool) disposeHandle(id unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - id (optional): id.
+//   - id (optional): id.
 //
 func (pool *TaskPool) join(id unsafe.Pointer) {
 	gclass := (*C.GstTaskPoolClass)(coreglib.PeekParentClass(pool))
@@ -400,15 +400,15 @@ func (pool *TaskPool) prepare() error {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call.
+//   - fn: function to call.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): pointer that should be used for the
-//      gst_task_pool_join function. This pointer can be NULL, you must check
-//      error to detect errors. If the pointer is not NULL and
-//      gst_task_pool_join() is not used, call gst_task_pool_dispose_handle()
-//      instead.
+//   - gpointer (optional): pointer that should be used for the
+//     gst_task_pool_join function. This pointer can be NULL, you must
+//     check error to detect errors. If the pointer is not NULL and
+//     gst_task_pool_join() is not used, call gst_task_pool_dispose_handle()
+//     instead.
 //
 func (pool *TaskPool) push(fn TaskPoolFunction) (unsafe.Pointer, error) {
 	gclass := (*C.GstTaskPoolClass)(coreglib.PeekParentClass(pool))

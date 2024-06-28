@@ -17,14 +17,14 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - capsMviewMode: multiview-mode field string from caps.
+//   - capsMviewMode: multiview-mode field string from caps.
 //
 // The function returns the following values:
 //
-//    - videoMultiviewMode value
+//   - videoMultiviewMode value
 //
-//      Given a string from a caps multiview-mode field, output the corresponding
-//      VideoMultiviewMode or T_VIDEO_MULTIVIEW_MODE_NONE.
+//     Given a string from a caps multiview-mode field, output the corresponding
+//     VideoMultiviewMode or T_VIDEO_MULTIVIEW_MODE_NONE.
 //
 func VideoMultiviewModeFromCapsString(capsMviewMode string) VideoMultiviewMode {
 	var _arg1 *C.gchar                // out
@@ -43,16 +43,17 @@ func VideoMultiviewModeFromCapsString(capsMviewMode string) VideoMultiviewMode {
 	return _videoMultiviewMode
 }
 
+// VideoMultiviewModeToCapsString: given a VideoMultiviewMode returns the
+// multiview-mode caps string for insertion into a caps structure.
+//
 // The function takes the following parameters:
 //
-//    - mviewMode: VideoMultiviewMode value.
+//   - mviewMode: VideoMultiviewMode value.
 //
 // The function returns the following values:
 //
-//    - utf8 caps string representation of the mode, or NULL if invalid.
-//
-//      Given a VideoMultiviewMode returns the multiview-mode caps string for
-//      insertion into a caps structure.
+//   - utf8 (optional) caps string representation of the mode, or NULL if
+//     invalid.
 //
 func VideoMultiviewModeToCapsString(mviewMode VideoMultiviewMode) string {
 	var _arg1 C.GstVideoMultiviewMode // out
@@ -65,18 +66,20 @@ func VideoMultiviewModeToCapsString(mviewMode VideoMultiviewMode) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - value: const #GValue containing a list of stereo video modes
+//   - value: const #GValue containing a list of stereo video modes
 //
-//      Utility function that returns a #GValue with a GstList of packed stereo
-//      video modes with double the height of a single view for use in caps
-//      negotiations. Currently this is top-bottom and row-interleaved.
+//     Utility function that returns a #GValue with a GstList of packed stereo
+//     video modes with double the height of a single view for use in caps
+//     negotiations. Currently this is top-bottom and row-interleaved.
 //
 func VideoMultiviewGetDoubledHeightModes() *coreglib.Value {
 	var _cret *C.GValue // in
@@ -92,11 +95,11 @@ func VideoMultiviewGetDoubledHeightModes() *coreglib.Value {
 
 // The function returns the following values:
 //
-//    - value: const #GValue containing a list of stereo video modes
+//   - value: const #GValue containing a list of stereo video modes
 //
-//      Utility function that returns a #GValue with a GstList of packed stereo
-//      video modes that have double the width/height of a single view for use in
-//      caps negotiation. Currently this is just 'checkerboard' layout.
+//     Utility function that returns a #GValue with a GstList of packed stereo
+//     video modes that have double the width/height of a single view for use in
+//     caps negotiation. Currently this is just 'checkerboard' layout.
 //
 func VideoMultiviewGetDoubledSizeModes() *coreglib.Value {
 	var _cret *C.GValue // in
@@ -112,12 +115,12 @@ func VideoMultiviewGetDoubledSizeModes() *coreglib.Value {
 
 // The function returns the following values:
 //
-//    - value: const #GValue containing a list of stereo video modes
+//   - value: const #GValue containing a list of stereo video modes
 //
-//      Utility function that returns a #GValue with a GstList of packed stereo
-//      video modes with double the width of a single view for use in caps
-//      negotiations. Currently this is side-by-side, side-by-side-quincunx and
-//      column-interleaved.
+//     Utility function that returns a #GValue with a GstList of packed stereo
+//     video modes with double the width of a single view for use in caps
+//     negotiations. Currently this is side-by-side, side-by-side-quincunx and
+//     column-interleaved.
 //
 func VideoMultiviewGetDoubledWidthModes() *coreglib.Value {
 	var _cret *C.GValue // in
@@ -133,10 +136,10 @@ func VideoMultiviewGetDoubledWidthModes() *coreglib.Value {
 
 // The function returns the following values:
 //
-//    - value: const #GValue containing a list of mono video modes
+//   - value: const #GValue containing a list of mono video modes
 //
-//      Utility function that returns a #GValue with a GstList of mono video
-//      modes (mono/left/right) for use in caps negotiations.
+//     Utility function that returns a #GValue with a GstList of mono video
+//     modes (mono/left/right) for use in caps negotiations.
 //
 func VideoMultiviewGetMonoModes() *coreglib.Value {
 	var _cret *C.GValue // in
@@ -152,11 +155,11 @@ func VideoMultiviewGetMonoModes() *coreglib.Value {
 
 // The function returns the following values:
 //
-//    - value: const #GValue containing a list of 'unpacked' stereo video modes
+//   - value: const #GValue containing a list of 'unpacked' stereo video modes
 //
-//      Utility function that returns a #GValue with a GstList of unpacked stereo
-//      video modes (separated/frame-by-frame/frame-by-frame-multiview) for use
-//      in caps negotiations.
+//     Utility function that returns a #GValue with a GstList of unpacked stereo
+//     video modes (separated/frame-by-frame/frame-by-frame-multiview) for use
+//     in caps negotiations.
 //
 func VideoMultiviewGetUnpackedModes() *coreglib.Value {
 	var _cret *C.GValue // in
@@ -172,20 +175,20 @@ func VideoMultiviewGetUnpackedModes() *coreglib.Value {
 
 // The function takes the following parameters:
 //
-//    - mvMode: VideoMultiviewMode.
-//    - width: video frame width in pixels.
-//    - height: video frame height in pixels.
-//    - parN: numerator of the video pixel-aspect-ratio.
-//    - parD: denominator of the video pixel-aspect-ratio.
+//   - mvMode: VideoMultiviewMode.
+//   - width: video frame width in pixels.
+//   - height: video frame height in pixels.
+//   - parN: numerator of the video pixel-aspect-ratio.
+//   - parD: denominator of the video pixel-aspect-ratio.
 //
 // The function returns the following values:
 //
-//    - ok: boolean indicating whether the T_VIDEO_MULTIVIEW_FLAGS_HALF_ASPECT
-//      flag should be set.
+//   - ok: boolean indicating whether the T_VIDEO_MULTIVIEW_FLAGS_HALF_ASPECT
+//     flag should be set.
 //
-//      Utility function that heuristically guess whether a frame-packed
-//      stereoscopic video contains half width/height encoded views, or
-//      full-frame views by looking at the overall display aspect ratio.
+//     Utility function that heuristically guess whether a frame-packed
+//     stereoscopic video contains half width/height encoded views, or
+//     full-frame views by looking at the overall display aspect ratio.
 //
 func VideoMultiviewGuessHalfAspect(mvMode VideoMultiviewMode, width, height, parN, parD uint) bool {
 	var _arg1 C.GstVideoMultiviewMode // out
@@ -223,9 +226,9 @@ func VideoMultiviewGuessHalfAspect(mvMode VideoMultiviewMode, width, height, par
 //
 // The function takes the following parameters:
 //
-//    - info structure to operate on.
-//    - outMviewMode: VideoMultiviewMode value.
-//    - outMviewFlags: set of VideoMultiviewFlags.
+//   - info structure to operate on.
+//   - outMviewMode: VideoMultiviewMode value.
+//   - outMviewFlags: set of VideoMultiviewFlags.
 //
 func VideoMultiviewVideoInfoChangeMode(info *VideoInfo, outMviewMode VideoMultiviewMode, outMviewFlags VideoMultiviewFlags) {
 	var _arg1 *C.GstVideoInfo          // out

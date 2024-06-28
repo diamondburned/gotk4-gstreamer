@@ -20,18 +20,18 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - allocator to be used for this memory.
-//    - fd: dmabuf file descriptor.
-//    - size: memory size.
-//    - flags: extra FdMemoryFlags.
+//   - allocator to be used for this memory.
+//   - fd: dmabuf file descriptor.
+//   - size: memory size.
+//   - flags: extra FdMemoryFlags.
 //
 // The function returns the following values:
 //
-//    - memory: gstMemory based on allocator.
+//   - memory (optional): gstMemory based on allocator.
 //
-//      When the buffer will be released the allocator will close the fd unless
-//      the GST_FD_MEMORY_FLAG_DONT_CLOSE flag is specified. The memory is only
-//      mmapped on gst_buffer_mmap() request.
+//     When the buffer will be released the allocator will close the fd unless
+//     the GST_FD_MEMORY_FLAG_DONT_CLOSE flag is specified. The memory is only
+//     mmapped on gst_buffer_mmap() request.
 //
 func DmaBufAllocatorAllocWithFlags(allocator gst.Allocatorrer, fd int, size uint, flags FdMemoryFlags) *gst.Memory {
 	var _arg1 *C.GstAllocator    // out
@@ -53,13 +53,15 @@ func DmaBufAllocatorAllocWithFlags(allocator gst.Allocatorrer, fd int, size uint
 
 	var _memory *gst.Memory // out
 
-	_memory = (*gst.Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_memory)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_memory = (*gst.Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_memory)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _memory
 }

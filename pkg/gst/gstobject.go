@@ -116,28 +116,29 @@ func defaultGstObjectOverrides(v *GstObject) GstObjectOverrides {
 // What needs to be changed in a Element? Very little - it is just two steps to
 // make a plugin controllable!
 //
-//    * mark gobject-properties paramspecs that make sense to be controlled,
-//      by GST_PARAM_CONTROLLABLE.
+//   - mark gobject-properties paramspecs that make sense to be controlled,
+//     by GST_PARAM_CONTROLLABLE.
 //
-//    * when processing data (get, chain, loop function) at the beginning call
-//      gst_object_sync_values(element,timestamp).
-//      This will make the controller update all GObject properties that are
-//      under its control with the current values based on the timestamp.
+//   - when processing data (get, chain, loop function) at the beginning call
+//     gst_object_sync_values(element,timestamp). This will make the controller
+//     update all GObject properties that are under its control with the current
+//     values based on the timestamp.
 //
 // What needs to be done in applications? Again it's not a lot to change.
 //
-//    * create a ControlSource.
-//      csource = gst_interpolation_control_source_new ();
-//      g_object_set (csource, "mode", GST_INTERPOLATION_MODE_LINEAR, NULL);
+//   - create a ControlSource. csource = gst_interpolation_control_source_new
+//     (); g_object_set (csource, "mode", GST_INTERPOLATION_MODE_LINEAR, NULL);
 //
-//    * Attach the ControlSource on the controller to a property.
-//      gst_object_add_control_binding (object, gst_direct_control_binding_new (object, "prop1", csource));
+//   - Attach the ControlSource on the controller to a property.
+//     gst_object_add_control_binding (object, gst_direct_control_binding_new
+//     (object, "prop1", csource));
 //
-//    * Set the control values
-//      gst_timed_value_control_source_set ((GstTimedValueControlSource *)csource,0 * GST_SECOND, value1);
-//      gst_timed_value_control_source_set ((GstTimedValueControlSource *)csource,1 * GST_SECOND, value2);
+//   - Set the control values gst_timed_value_control_source_set
+//     ((GstTimedValueControlSource *)csource,0 * GST_SECOND, value1);
+//     gst_timed_value_control_source_set ((GstTimedValueControlSource
+//     *)csource,1 * GST_SECOND, value2);
 //
-//    * start your pipeline.
+//   - start your pipeline.
 type GstObject struct {
 	_ [0]func() // equal guard
 	coreglib.InitiallyUnowned
@@ -201,12 +202,12 @@ func BaseGstObject(obj GstObjector) *GstObject {
 //
 // The function takes the following parameters:
 //
-//    - binding that should be used.
+//   - binding that should be used.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the given binding has not been setup for this object or has
-//      been setup for a non suitable property, TRUE otherwise.
+//   - ok: FALSE if the given binding has not been setup for this object or has
+//     been setup for a non suitable property, TRUE otherwise.
 //
 func (object *GstObject) AddControlBinding(binding ControlBindinger) bool {
 	var _arg0 *C.GstObject         // out
@@ -236,8 +237,8 @@ func (object *GstObject) AddControlBinding(binding ControlBindinger) bool {
 //
 // The function takes the following parameters:
 //
-//    - err: GError.
-//    - debug (optional): additional debug information string, or NULL.
+//   - err: GError.
+//   - debug (optional): additional debug information string, or NULL.
 //
 func (source *GstObject) DefaultError(err error, debug string) {
 	var _arg0 *C.GstObject // out
@@ -259,17 +260,17 @@ func (source *GstObject) DefaultError(err error, debug string) {
 	runtime.KeepAlive(debug)
 }
 
-// ControlBinding gets the corresponding ControlBinding for the property. This
-// should be unreferenced again after use.
+// ControlBinding gets the corresponding ControlBinding for the property.
+// This should be unreferenced again after use.
 //
 // The function takes the following parameters:
 //
-//    - propertyName: name of the property.
+//   - propertyName: name of the property.
 //
 // The function returns the following values:
 //
-//    - controlBinding (optional) for property_name or NULL if the property is
-//      not controlled.
+//   - controlBinding (optional) for property_name or NULL if the property is
+//     not controlled.
 //
 func (object *GstObject) ControlBinding(propertyName string) ControlBindinger {
 	var _arg0 *C.GstObject         // out
@@ -319,7 +320,7 @@ func (object *GstObject) ControlBinding(propertyName string) ControlBindinger {
 //
 // The function returns the following values:
 //
-//    - clockTime: control rate in nanoseconds.
+//   - clockTime: control rate in nanoseconds.
 //
 func (object *GstObject) ControlRate() ClockTime {
 	var _arg0 *C.GstObject   // out
@@ -332,9 +333,7 @@ func (object *GstObject) ControlRate() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -348,14 +347,14 @@ func (object *GstObject) ControlRate() ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - propertyName: name of the property to get.
-//    - timestamp: time that should be processed.
-//    - interval: time spacing between subsequent values.
-//    - values: array to put control-values in.
+//   - propertyName: name of the property to get.
+//   - timestamp: time that should be processed.
+//   - interval: time spacing between subsequent values.
+//   - values: array to put control-values in.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the given array could be filled, FALSE otherwise.
+//   - ok: TRUE if the given array could be filled, FALSE otherwise.
 //
 func (object *GstObject) GValueArray(propertyName string, timestamp, interval ClockTime, values []coreglib.Value) bool {
 	var _arg0 *C.GstObject   // out
@@ -369,12 +368,8 @@ func (object *GstObject) GValueArray(propertyName string, timestamp, interval Cl
 	_arg0 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
+	_arg3 = C.GstClockTime(interval)
 	_arg4 = (C.guint)(len(values))
 	_arg5 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg5))
@@ -409,9 +404,9 @@ func (object *GstObject) GValueArray(propertyName string, timestamp, interval Cl
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of object. g_free() after usage.
+//   - utf8 (optional): name of object. g_free() after usage.
 //
-//      MT safe. This function grabs and releases object's LOCK.
+//     MT safe. This function grabs and releases object's LOCK.
 //
 func (object *GstObject) Name() string {
 	var _arg0 *C.GstObject // out
@@ -437,10 +432,10 @@ func (object *GstObject) Name() string {
 //
 // The function returns the following values:
 //
-//    - ret (optional): parent of object, this can be NULL if object has no
-//      parent. unref after usage.
+//   - ret (optional): parent of object, this can be NULL if object has no
+//     parent. unref after usage.
 //
-//      MT safe. Grabs and releases object's LOCK.
+//     MT safe. Grabs and releases object's LOCK.
 //
 func (object *GstObject) Parent() GstObjector {
 	var _arg0 *C.GstObject // out
@@ -480,11 +475,11 @@ func (object *GstObject) Parent() GstObjector {
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the path of object. You must g_free() the string
-//      after usage.
+//   - utf8: string describing the path of object. You must g_free() the string
+//     after usage.
 //
-//      MT safe. Grabs and releases the Object's LOCK for all objects in the
-//      hierarchy.
+//     MT safe. Grabs and releases the Object's LOCK for all objects in the
+//     hierarchy.
 //
 func (object *GstObject) PathString() string {
 	var _arg0 *C.GstObject // out
@@ -507,13 +502,13 @@ func (object *GstObject) PathString() string {
 //
 // The function takes the following parameters:
 //
-//    - propertyName: name of the property to get.
-//    - timestamp: time the control-change should be read from.
+//   - propertyName: name of the property to get.
+//   - timestamp: time the control-change should be read from.
 //
 // The function returns the following values:
 //
-//    - value (optional): GValue of the property at the given time, or NULL if
-//      the property isn't controlled.
+//   - value (optional): GValue of the property at the given time, or NULL if
+//     the property isn't controlled.
 //
 func (object *GstObject) Value(propertyName string, timestamp ClockTime) *coreglib.Value {
 	var _arg0 *C.GstObject   // out
@@ -524,9 +519,7 @@ func (object *GstObject) Value(propertyName string, timestamp ClockTime) *coregl
 	_arg0 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_object_get_value(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(object)
@@ -550,7 +543,7 @@ func (object *GstObject) Value(propertyName string, timestamp ClockTime) *coregl
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the object has active controlled properties.
+//   - ok: TRUE if the object has active controlled properties.
 //
 func (object *GstObject) HasActiveControlBindings() bool {
 	var _arg0 *C.GstObject // out
@@ -579,11 +572,11 @@ func (object *GstObject) HasActiveControlBindings() bool {
 //
 // The function takes the following parameters:
 //
-//    - ancestor to check as ancestor.
+//   - ancestor to check as ancestor.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if ancestor is an ancestor of object.
+//   - ok: TRUE if ancestor is an ancestor of object.
 //
 func (object *GstObject) HasAncestor(ancestor GstObjector) bool {
 	var _arg0 *C.GstObject // out
@@ -611,13 +604,13 @@ func (object *GstObject) HasAncestor(ancestor GstObjector) bool {
 //
 // The function takes the following parameters:
 //
-//    - ancestor to check as ancestor.
+//   - ancestor to check as ancestor.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if ancestor is an ancestor of object.
+//   - ok: TRUE if ancestor is an ancestor of object.
 //
-//      MT safe. Grabs and releases object's locks.
+//     MT safe. Grabs and releases object's locks.
 //
 func (object *GstObject) HasAsAncestor(ancestor GstObjector) bool {
 	var _arg0 *C.GstObject // out
@@ -645,14 +638,14 @@ func (object *GstObject) HasAsAncestor(ancestor GstObjector) bool {
 //
 // The function takes the following parameters:
 //
-//    - parent to check as parent.
+//   - parent to check as parent.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if either object or parent is NULL. TRUE if parent is the
-//      parent of object. Otherwise FALSE.
+//   - ok: FALSE if either object or parent is NULL. TRUE if parent is the
+//     parent of object. Otherwise FALSE.
 //
-//      MT safe. Grabs and releases object's locks.
+//     MT safe. Grabs and releases object's locks.
 //
 func (object *GstObject) HasAsParent(parent GstObjector) bool {
 	var _arg0 *C.GstObject // out
@@ -680,11 +673,11 @@ func (object *GstObject) HasAsParent(parent GstObjector) bool {
 //
 // The function takes the following parameters:
 //
-//    - binding: binding.
+//   - binding: binding.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the binding could be removed.
+//   - ok: TRUE if the binding could be removed.
 //
 func (object *GstObject) RemoveControlBinding(binding ControlBindinger) bool {
 	var _arg0 *C.GstObject         // out
@@ -713,9 +706,9 @@ func (object *GstObject) RemoveControlBinding(binding ControlBindinger) bool {
 //
 // The function takes the following parameters:
 //
-//    - propertyName: property to disable.
-//    - disabled: boolean that specifies whether to disable the controller or
-//      not.
+//   - propertyName: property to disable.
+//   - disabled: boolean that specifies whether to disable the controller or
+//     not.
 //
 func (object *GstObject) SetControlBindingDisabled(propertyName string, disabled bool) {
 	var _arg0 *C.GstObject // out
@@ -741,8 +734,8 @@ func (object *GstObject) SetControlBindingDisabled(propertyName string, disabled
 //
 // The function takes the following parameters:
 //
-//    - disabled: boolean that specifies whether to disable the controller or
-//      not.
+//   - disabled: boolean that specifies whether to disable the controller or
+//     not.
 //
 func (object *GstObject) SetControlBindingsDisabled(disabled bool) {
 	var _arg0 *C.GstObject // out
@@ -768,16 +761,14 @@ func (object *GstObject) SetControlBindingsDisabled(disabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - controlRate: new control-rate in nanoseconds.
+//   - controlRate: new control-rate in nanoseconds.
 //
 func (object *GstObject) SetControlRate(controlRate ClockTime) {
 	var _arg0 *C.GstObject   // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = C.guint64(controlRate)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(controlRate)
 
 	C.gst_object_set_control_rate(_arg0, _arg1)
 	runtime.KeepAlive(object)
@@ -790,14 +781,14 @@ func (object *GstObject) SetControlRate(controlRate ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): new name of object.
+//   - name (optional): new name of object.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the name could be set. Since Objects that have a parent
-//      cannot be renamed, this function returns FALSE in those cases.
+//   - ok: TRUE if the name could be set. Since Objects that have a parent
+//     cannot be renamed, this function returns FALSE in those cases.
 //
-//      MT safe. This function grabs and releases object's LOCK.
+//     MT safe. This function grabs and releases object's LOCK.
 //
 func (object *GstObject) SetName(name string) bool {
 	var _arg0 *C.GstObject // out
@@ -823,20 +814,20 @@ func (object *GstObject) SetName(name string) bool {
 	return _ok
 }
 
-// SetParent sets the parent of object to parent. The object's reference count
-// will be incremented, and any floating reference will be removed (see
+// SetParent sets the parent of object to parent. The object's reference
+// count will be incremented, and any floating reference will be removed (see
 // gst_object_ref_sink()).
 //
 // The function takes the following parameters:
 //
-//    - parent: new parent of object.
+//   - parent: new parent of object.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if parent could be set or FALSE when object already had a parent
-//      or object and parent are the same.
+//   - ok: TRUE if parent could be set or FALSE when object already had a parent
+//     or object and parent are the same.
 //
-//      MT safe. Grabs and releases object's LOCK.
+//     MT safe. Grabs and releases object's LOCK.
 //
 func (object *GstObject) SetParent(parent GstObjector) bool {
 	var _arg0 *C.GstObject // out
@@ -864,8 +855,8 @@ func (object *GstObject) SetParent(parent GstObjector) bool {
 //
 // The function returns the following values:
 //
-//    - clockTime returns the suggested timestamp or GST_CLOCK_TIME_NONE if no
-//      control-rate was set.
+//   - clockTime returns the suggested timestamp or GST_CLOCK_TIME_NONE if no
+//     control-rate was set.
 //
 func (object *GstObject) SuggestNextSync() ClockTime {
 	var _arg0 *C.GstObject   // out
@@ -878,9 +869,7 @@ func (object *GstObject) SuggestNextSync() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -893,12 +882,12 @@ func (object *GstObject) SuggestNextSync() ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time that should be processed.
+//   - timestamp: time that should be processed.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the controller values could be applied to the object
-//      properties, FALSE otherwise.
+//   - ok: TRUE if the controller values could be applied to the object
+//     properties, FALSE otherwise.
 //
 func (object *GstObject) SyncValues(timestamp ClockTime) bool {
 	var _arg0 *C.GstObject   // out
@@ -906,9 +895,7 @@ func (object *GstObject) SyncValues(timestamp ClockTime) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_object_sync_values(_arg0, _arg1)
 	runtime.KeepAlive(object)
@@ -923,8 +910,8 @@ func (object *GstObject) SyncValues(timestamp ClockTime) bool {
 	return _ok
 }
 
-// Unparent: clear the parent of object, removing the associated reference. This
-// function decreases the refcount of object.
+// Unparent: clear the parent of object, removing the associated reference.
+// This function decreases the refcount of object.
 //
 // MT safe. Grabs and releases object's lock.
 func (object *GstObject) Unparent() {
@@ -937,22 +924,22 @@ func (object *GstObject) Unparent() {
 }
 
 // ObjectCheckUniqueness checks to see if there is any object named name in
-// list. This function does not do any locking of any kind. You might want to
-// protect the provided list with the lock of the owner of the list. This
+// list. This function does not do any locking of any kind. You might want
+// to protect the provided list with the lock of the owner of the list. This
 // function will lock each Object in the list to compare the name, so be careful
 // when passing a list with a locked object.
 //
 // The function takes the following parameters:
 //
-//    - list of Object to check through.
-//    - name to search for.
+//   - list of Object to check through.
+//   - name to search for.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a Object named name does not appear in list, FALSE if it
-//      does.
+//   - ok: TRUE if a Object named name does not appear in list, FALSE if it
+//     does.
 //
-//      MT safe. Grabs and releases the LOCK of each object in the list.
+//     MT safe. Grabs and releases the LOCK of each object in the list.
 //
 func ObjectCheckUniqueness(list []GstObjector, name string) bool {
 	var _arg1 *C.GList   // out

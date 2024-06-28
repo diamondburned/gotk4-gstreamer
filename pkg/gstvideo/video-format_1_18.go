@@ -18,7 +18,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - videoFormats: array of VideoFormat.
+//   - videoFormats: array of VideoFormat.
 //
 func VideoFormatsRaw() []VideoFormat {
 	var _cret *C.GstVideoFormat // in
@@ -40,11 +40,11 @@ func VideoFormatsRaw() []VideoFormat {
 //
 // The function takes the following parameters:
 //
-//    - formats (optional): array of raw VideoFormat, or NULL.
+//   - formats (optional): array of raw VideoFormat, or NULL.
 //
 // The function returns the following values:
 //
-//    - caps: video GstCaps.
+//   - caps: video GstCaps.
 //
 func VideoMakeRawCaps(formats []VideoFormat) *gst.Caps {
 	var _arg1 *C.GstVideoFormat // out
@@ -78,12 +78,12 @@ func VideoMakeRawCaps(formats []VideoFormat) *gst.Caps {
 //
 // The function takes the following parameters:
 //
-//    - formats (optional): array of raw VideoFormat, or NULL.
-//    - features (optional) to set on the caps.
+//   - formats (optional): array of raw VideoFormat, or NULL.
+//   - features (optional) to set on the caps.
 //
 // The function returns the following values:
 //
-//    - caps: video GstCaps.
+//   - caps: video GstCaps.
 //
 func VideoMakeRawCapsWithFeatures(formats []VideoFormat, features *gst.CapsFeatures) *gst.Caps {
 	var _arg1 *C.GstVideoFormat // out

@@ -42,12 +42,12 @@ type DeviceOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - name (optional) of new element, or NULL to automatically create a
-	//      unique name.
+	//   - name (optional) of new element, or NULL to automatically create a
+	//     unique name.
 	//
 	// The function returns the following values:
 	//
-	//    - element (optional): new Element configured to use this device.
+	//   - element (optional): new Element configured to use this device.
 	//
 	CreateElement func(name string) Elementer
 	// ReconfigureElement tries to reconfigure an existing element to use the
@@ -59,12 +59,12 @@ type DeviceOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - element: Element.
+	//   - element: Element.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the element could be reconfigured to use this device,
-	//      FALSE otherwise.
+	//   - ok: TRUE if the element could be reconfigured to use this device,
+	//     FALSE otherwise.
 	//
 	ReconfigureElement func(element Elementer) bool
 }
@@ -160,12 +160,12 @@ func (device *Device) ConnectRemoved(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of new element, or NULL to automatically create a unique
-//      name.
+//   - name (optional) of new element, or NULL to automatically create a unique
+//     name.
 //
 // The function returns the following values:
 //
-//    - element (optional): new Element configured to use this device.
+//   - element (optional): new Element configured to use this device.
 //
 func (device *Device) CreateElement(name string) Elementer {
 	var _arg0 *C.GstDevice  // out
@@ -208,8 +208,8 @@ func (device *Device) CreateElement(name string) Elementer {
 //
 // The function returns the following values:
 //
-//    - caps (optional) supported by this device. Unref with gst_caps_unref()
-//      when done.
+//   - caps (optional) supported by this device. Unref with gst_caps_unref()
+//     when done.
 //
 func (device *Device) Caps() *Caps {
 	var _arg0 *C.GstDevice // out
@@ -241,7 +241,7 @@ func (device *Device) Caps() *Caps {
 //
 // The function returns the following values:
 //
-//    - utf8: device class. Free with g_free() after use.
+//   - utf8: device class. Free with g_free() after use.
 //
 func (device *Device) DeviceClass() string {
 	var _arg0 *C.GstDevice // out
@@ -264,7 +264,7 @@ func (device *Device) DeviceClass() string {
 //
 // The function returns the following values:
 //
-//    - utf8: device name. Free with g_free() after use.
+//   - utf8: device name. Free with g_free() after use.
 //
 func (device *Device) DisplayName() string {
 	var _arg0 *C.GstDevice // out
@@ -287,8 +287,8 @@ func (device *Device) DisplayName() string {
 //
 // The function returns the following values:
 //
-//    - structure (optional): extra properties or NULL when there are none. Free
-//      with gst_structure_free() after use.
+//   - structure (optional): extra properties or NULL when there are none.
+//     Free with gst_structure_free() after use.
 //
 func (device *Device) Properties() *Structure {
 	var _arg0 *C.GstDevice    // out
@@ -318,12 +318,12 @@ func (device *Device) Properties() *Structure {
 //
 // The function takes the following parameters:
 //
-//    - classes: "/"-separated list of device classes to match, only match if all
-//      classes are matched.
+//   - classes: "/"-separated list of device classes to match, only match if all
+//     classes are matched.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if device matches.
+//   - ok: TRUE if device matches.
 //
 func (device *Device) HasClasses(classes string) bool {
 	var _arg0 *C.GstDevice // out
@@ -351,12 +351,12 @@ func (device *Device) HasClasses(classes string) bool {
 //
 // The function takes the following parameters:
 //
-//    - classes: NULL terminated array of classes to match, only match if all
-//      classes are matched.
+//   - classes: NULL terminated array of classes to match, only match if all
+//     classes are matched.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if device matches.
+//   - ok: TRUE if device matches.
 //
 func (device *Device) HasClassesv(classes []string) bool {
 	var _arg0 *C.GstDevice // out
@@ -400,12 +400,12 @@ func (device *Device) HasClassesv(classes []string) bool {
 //
 // The function takes the following parameters:
 //
-//    - element: Element.
+//   - element: Element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element could be reconfigured to use this device, FALSE
-//      otherwise.
+//   - ok: TRUE if the element could be reconfigured to use this device,
+//     FALSE otherwise.
 //
 func (device *Device) ReconfigureElement(element Elementer) bool {
 	var _arg0 *C.GstDevice  // out
@@ -433,12 +433,12 @@ func (device *Device) ReconfigureElement(element Elementer) bool {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of new element, or NULL to automatically create a unique
-//      name.
+//   - name (optional) of new element, or NULL to automatically create a unique
+//     name.
 //
 // The function returns the following values:
 //
-//    - element (optional): new Element configured to use this device.
+//   - element (optional): new Element configured to use this device.
 //
 func (device *Device) createElement(name string) Elementer {
 	gclass := (*C.GstDeviceClass)(coreglib.PeekParentClass(device))
@@ -489,12 +489,12 @@ func (device *Device) createElement(name string) Elementer {
 //
 // The function takes the following parameters:
 //
-//    - element: Element.
+//   - element: Element.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the element could be reconfigured to use this device, FALSE
-//      otherwise.
+//   - ok: TRUE if the element could be reconfigured to use this device,
+//     FALSE otherwise.
 //
 func (device *Device) reconfigureElement(element Elementer) bool {
 	gclass := (*C.GstDeviceClass)(coreglib.PeekParentClass(device))

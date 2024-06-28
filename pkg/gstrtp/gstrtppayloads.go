@@ -280,12 +280,12 @@ func (r *RTPPayloadInfo) SetBitrate(bitrate uint) {
 //
 // The function takes the following parameters:
 //
-//    - media to find.
-//    - encodingName: encoding name to find.
+//   - media to find.
+//   - encodingName: encoding name to find.
 //
 // The function returns the following values:
 //
-//    - rtpPayloadInfo or NULL when no info could be found.
+//   - rtpPayloadInfo (optional) or NULL when no info could be found.
 //
 func RTPPayloadInfoForName(media, encodingName string) *RTPPayloadInfo {
 	var _arg1 *C.gchar             // out
@@ -303,7 +303,9 @@ func RTPPayloadInfoForName(media, encodingName string) *RTPPayloadInfo {
 
 	var _rtpPayloadInfo *RTPPayloadInfo // out
 
-	_rtpPayloadInfo = (*RTPPayloadInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_rtpPayloadInfo = (*RTPPayloadInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _rtpPayloadInfo
 }
@@ -314,11 +316,11 @@ func RTPPayloadInfoForName(media, encodingName string) *RTPPayloadInfo {
 //
 // The function takes the following parameters:
 //
-//    - payloadType: payload_type to find.
+//   - payloadType: payload_type to find.
 //
 // The function returns the following values:
 //
-//    - rtpPayloadInfo or NULL when no info could be found.
+//   - rtpPayloadInfo (optional) or NULL when no info could be found.
 //
 func RTPPayloadInfoForPt(payloadType byte) *RTPPayloadInfo {
 	var _arg1 C.guint8             // out
@@ -331,7 +333,9 @@ func RTPPayloadInfoForPt(payloadType byte) *RTPPayloadInfo {
 
 	var _rtpPayloadInfo *RTPPayloadInfo // out
 
-	_rtpPayloadInfo = (*RTPPayloadInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_rtpPayloadInfo = (*RTPPayloadInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _rtpPayloadInfo
 }

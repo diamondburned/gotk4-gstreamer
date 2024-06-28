@@ -19,11 +19,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - msg: Message.
+//   - msg: Message.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if msg is a missing-plugins message, otherwise FALSE.
+//   - ok: TRUE if msg is a missing-plugins message, otherwise FALSE.
 //
 func IsMissingPluginMessage(msg *gst.Message) bool {
 	var _arg1 *C.GstMessage // out
@@ -43,8 +43,8 @@ func IsMissingPluginMessage(msg *gst.Message) bool {
 	return _ok
 }
 
-// NewMissingDecoderInstallerDetail returns an opaque string containing all the
-// details about the missing element to be passed to an external installer
+// NewMissingDecoderInstallerDetail returns an opaque string containing all
+// the details about the missing element to be passed to an external installer
 // called via gst_install_plugins_async() or gst_install_plugins_sync().
 //
 // This function is mainly for applications that call external plugin
@@ -53,12 +53,12 @@ func IsMissingPluginMessage(msg *gst.Message) bool {
 //
 // The function takes the following parameters:
 //
-//    - decodeCaps: (fixed) caps for which a decoder element is needed.
+//   - decodeCaps: (fixed) caps for which a decoder element is needed.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated detail string, or NULL on error. Free string with
-//      g_free() when not needed any longer.
+//   - utf8: newly-allocated detail string. Free string with g_free() when not
+//     needed any longer.
 //
 func NewMissingDecoderInstallerDetail(decodeCaps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out
@@ -83,12 +83,12 @@ func NewMissingDecoderInstallerDetail(decodeCaps *gst.Caps) string {
 //
 // The function takes the following parameters:
 //
-//    - element posting the message.
-//    - decodeCaps: (fixed) caps for which a decoder element is needed.
+//   - element posting the message.
+//   - decodeCaps: (fixed) caps for which a decoder element is needed.
 //
 // The function returns the following values:
 //
-//    - message: new Message, or NULL on error.
+//   - message: new Message.
 //
 func NewMissingDecoderMessage(element gst.Elementer, decodeCaps *gst.Caps) *gst.Message {
 	var _arg1 *C.GstElement // out
@@ -115,8 +115,8 @@ func NewMissingDecoderMessage(element gst.Elementer, decodeCaps *gst.Caps) *gst.
 	return _message
 }
 
-// NewMissingElementInstallerDetail returns an opaque string containing all the
-// details about the missing element to be passed to an external installer
+// NewMissingElementInstallerDetail returns an opaque string containing all
+// the details about the missing element to be passed to an external installer
 // called via gst_install_plugins_async() or gst_install_plugins_sync().
 //
 // This function is mainly for applications that call external plugin
@@ -125,13 +125,13 @@ func NewMissingDecoderMessage(element gst.Elementer, decodeCaps *gst.Caps) *gst.
 //
 // The function takes the following parameters:
 //
-//    - factoryName: name of the missing element (element factory), e.g.
-//      "videoscale" or "cdparanoiasrc".
+//   - factoryName: name of the missing element (element factory), e.g.
+//     "videoscale" or "cdparanoiasrc".
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated detail string, or NULL on error. Free string with
-//      g_free() when not needed any longer.
+//   - utf8: newly-allocated detail string. Free string with g_free() when not
+//     needed any longer.
 //
 func NewMissingElementInstallerDetail(factoryName string) string {
 	var _arg1 *C.gchar // out
@@ -157,13 +157,13 @@ func NewMissingElementInstallerDetail(factoryName string) string {
 //
 // The function takes the following parameters:
 //
-//    - element posting the message.
-//    - factoryName: name of the missing element (element factory), e.g.
-//      "videoscale" or "cdparanoiasrc".
+//   - element posting the message.
+//   - factoryName: name of the missing element (element factory), e.g.
+//     "videoscale" or "cdparanoiasrc".
 //
 // The function returns the following values:
 //
-//    - message: new Message, or NULL on error.
+//   - message: new Message.
 //
 func NewMissingElementMessage(element gst.Elementer, factoryName string) *gst.Message {
 	var _arg1 *C.GstElement // out
@@ -191,8 +191,8 @@ func NewMissingElementMessage(element gst.Elementer, factoryName string) *gst.Me
 	return _message
 }
 
-// NewMissingEncoderInstallerDetail returns an opaque string containing all the
-// details about the missing element to be passed to an external installer
+// NewMissingEncoderInstallerDetail returns an opaque string containing all
+// the details about the missing element to be passed to an external installer
 // called via gst_install_plugins_async() or gst_install_plugins_sync().
 //
 // This function is mainly for applications that call external plugin
@@ -201,12 +201,12 @@ func NewMissingElementMessage(element gst.Elementer, factoryName string) *gst.Me
 //
 // The function takes the following parameters:
 //
-//    - encodeCaps: (fixed) caps for which an encoder element is needed.
+//   - encodeCaps: (fixed) caps for which an encoder element is needed.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated detail string, or NULL on error. Free string with
-//      g_free() when not needed any longer.
+//   - utf8: newly-allocated detail string. Free string with g_free() when not
+//     needed any longer.
 //
 func NewMissingEncoderInstallerDetail(encodeCaps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out
@@ -231,12 +231,12 @@ func NewMissingEncoderInstallerDetail(encodeCaps *gst.Caps) string {
 //
 // The function takes the following parameters:
 //
-//    - element posting the message.
-//    - encodeCaps: (fixed) caps for which an encoder element is needed.
+//   - element posting the message.
+//   - encodeCaps: (fixed) caps for which an encoder element is needed.
 //
 // The function returns the following values:
 //
-//    - message: new Message, or NULL on error.
+//   - message: new Message.
 //
 func NewMissingEncoderMessage(element gst.Elementer, encodeCaps *gst.Caps) *gst.Message {
 	var _arg1 *C.GstElement // out
@@ -273,12 +273,12 @@ func NewMissingEncoderMessage(element gst.Elementer, encodeCaps *gst.Caps) *gst.
 //
 // The function takes the following parameters:
 //
-//    - msg: missing-plugin Message of type T_MESSAGE_ELEMENT.
+//   - msg: missing-plugin Message of type T_MESSAGE_ELEMENT.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated description string, or NULL on error. Free string
-//      with g_free() when not needed any longer.
+//   - utf8: newly-allocated description string. Free string with g_free() when
+//     not needed any longer.
 //
 func MissingPluginMessageGetDescription(msg *gst.Message) string {
 	var _arg1 *C.GstMessage // out
@@ -297,9 +297,9 @@ func MissingPluginMessageGetDescription(msg *gst.Message) string {
 	return _utf8
 }
 
-// MissingPluginMessageGetInstallerDetail returns an opaque string containing
-// all the details about the missing element to be passed to an external
-// installer called via gst_install_plugins_async() or
+// MissingPluginMessageGetInstallerDetail returns an opaque string
+// containing all the details about the missing element to be passed
+// to an external installer called via gst_install_plugins_async() or
 // gst_install_plugins_sync().
 //
 // This function is mainly for applications that call external plugin
@@ -307,12 +307,12 @@ func MissingPluginMessageGetDescription(msg *gst.Message) string {
 //
 // The function takes the following parameters:
 //
-//    - msg: missing-plugin Message of type T_MESSAGE_ELEMENT.
+//   - msg: missing-plugin Message of type T_MESSAGE_ELEMENT.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated detail string, or NULL on error. Free string with
-//      g_free() when not needed any longer.
+//   - utf8 (optional): newly-allocated detail string, or NULL on error.
+//     Free string with g_free() when not needed any longer.
 //
 func MissingPluginMessageGetInstallerDetail(msg *gst.Message) string {
 	var _arg1 *C.GstMessage // out
@@ -325,14 +325,16 @@ func MissingPluginMessageGetInstallerDetail(msg *gst.Message) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
 
-// NewMissingURISinkInstallerDetail returns an opaque string containing all the
-// details about the missing element to be passed to an external installer
+// NewMissingURISinkInstallerDetail returns an opaque string containing all
+// the details about the missing element to be passed to an external installer
 // called via gst_install_plugins_async() or gst_install_plugins_sync().
 //
 // This function is mainly for applications that call external plugin
@@ -341,13 +343,13 @@ func MissingPluginMessageGetInstallerDetail(msg *gst.Message) string {
 //
 // The function takes the following parameters:
 //
-//    - protocol: URI protocol the missing source needs to implement, e.g. "http"
-//      or "mms".
+//   - protocol: URI protocol the missing source needs to implement, e.g.
+//     "http" or "mms".
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated detail string, or NULL on error. Free string with
-//      g_free() when not needed any longer.
+//   - utf8: newly-allocated detail string. Free string with g_free() when not
+//     needed any longer.
 //
 func NewMissingURISinkInstallerDetail(protocol string) string {
 	var _arg1 *C.gchar // out
@@ -373,13 +375,13 @@ func NewMissingURISinkInstallerDetail(protocol string) string {
 //
 // The function takes the following parameters:
 //
-//    - element posting the message.
-//    - protocol: URI protocol the missing sink needs to implement, e.g. "http"
-//      or "smb".
+//   - element posting the message.
+//   - protocol: URI protocol the missing sink needs to implement, e.g. "http"
+//     or "smb".
 //
 // The function returns the following values:
 //
-//    - message: new Message, or NULL on error.
+//   - message: new Message.
 //
 func NewMissingURISinkMessage(element gst.Elementer, protocol string) *gst.Message {
 	var _arg1 *C.GstElement // out
@@ -417,13 +419,13 @@ func NewMissingURISinkMessage(element gst.Elementer, protocol string) *gst.Messa
 //
 // The function takes the following parameters:
 //
-//    - protocol: URI protocol the missing source needs to implement, e.g. "http"
-//      or "mms".
+//   - protocol: URI protocol the missing source needs to implement, e.g.
+//     "http" or "mms".
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated detail string, or NULL on error. Free string with
-//      g_free() when not needed any longer.
+//   - utf8: newly-allocated detail string. Free string with g_free() when not
+//     needed any longer.
 //
 func NewMissingURISourceInstallerDetail(protocol string) string {
 	var _arg1 *C.gchar // out
@@ -449,13 +451,13 @@ func NewMissingURISourceInstallerDetail(protocol string) string {
 //
 // The function takes the following parameters:
 //
-//    - element posting the message.
-//    - protocol: URI protocol the missing source needs to implement, e.g. "http"
-//      or "mms".
+//   - element posting the message.
+//   - protocol: URI protocol the missing source needs to implement, e.g.
+//     "http" or "mms".
 //
 // The function returns the following values:
 //
-//    - message: new Message, or NULL on error.
+//   - message: new Message.
 //
 func NewMissingURISourceMessage(element gst.Elementer, protocol string) *gst.Message {
 	var _arg1 *C.GstElement // out

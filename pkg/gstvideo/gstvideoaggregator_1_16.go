@@ -20,6 +20,7 @@ import (
 // extern void _gotk4_gstvideo1_VideoAggregatorPadClass_prepare_frame_finish(GstVideoAggregatorPad*, GstVideoAggregator*, GstVideoFrame*);
 // extern void _gotk4_gstvideo1_VideoAggregatorPadClass_clean_frame(GstVideoAggregatorPad*, GstVideoAggregator*, GstVideoFrame*);
 // extern void _gotk4_gstvideo1_VideoAggregatorConvertPadClass_create_conversion_info(GstVideoAggregatorConvertPad*, GstVideoAggregator*, GstVideoInfo*);
+// extern void _gotk4_gstvideo1_VideoAggregatorClass_find_best_format(GstVideoAggregator*, GstCaps*, GstVideoInfo*, gboolean*);
 // extern gboolean _gotk4_gstvideo1_VideoAggregatorPadClass_prepare_frame(GstVideoAggregatorPad*, GstVideoAggregator*, GstBuffer*, GstVideoFrame*);
 // extern GstFlowReturn _gotk4_gstvideo1_VideoAggregatorClass_aggregate_frames(GstVideoAggregator*, GstBuffer*);
 // extern GstCaps* _gotk4_gstvideo1_VideoAggregatorClass_update_caps(GstVideoAggregator*, GstCaps*);
@@ -47,6 +48,9 @@ import (
 // void _gotk4_gstvideo1_VideoAggregatorPad_virtual_update_conversion_info(void* fnptr, GstVideoAggregatorPad* arg0) {
 //   ((void (*)(GstVideoAggregatorPad*))(fnptr))(arg0);
 // };
+// void _gotk4_gstvideo1_VideoAggregator_virtual_find_best_format(void* fnptr, GstVideoAggregator* arg0, GstCaps* arg1, GstVideoInfo* arg2, gboolean* arg3) {
+//   ((void (*)(GstVideoAggregator*, GstCaps*, GstVideoInfo*, gboolean*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -73,6 +77,14 @@ type VideoAggregatorOverrides struct {
 	AggregateFrames func(outbuffer *gst.Buffer) gst.FlowReturn
 	// The function takes the following parameters:
 	//
+	//   - downstreamCaps
+	//   - bestInfo
+	//
+	// The function returns the following values:
+	//
+	FindBestFormat func(downstreamCaps *gst.Caps, bestInfo *VideoInfo) bool
+	// The function takes the following parameters:
+	//
 	// The function returns the following values:
 	//
 	UpdateCaps func(caps *gst.Caps) *gst.Caps
@@ -81,13 +93,14 @@ type VideoAggregatorOverrides struct {
 func defaultVideoAggregatorOverrides(v *VideoAggregator) VideoAggregatorOverrides {
 	return VideoAggregatorOverrides{
 		AggregateFrames: v.aggregateFrames,
+		FindBestFormat:  v.findBestFormat,
 		UpdateCaps:      v.updateCaps,
 	}
 }
 
-// VideoAggregator can accept AYUV, ARGB and BGRA video streams. For each of the
-// requested sink pads it will compare the incoming geometry and framerate to
-// define the output parameters. Indeed output video frames will have the
+// VideoAggregator can accept AYUV, ARGB and BGRA video streams. For each of
+// the requested sink pads it will compare the incoming geometry and framerate
+// to define the output parameters. Indeed output video frames will have the
 // geometry of the biggest incoming video stream and the framerate of the
 // fastest incoming one.
 //
@@ -130,6 +143,10 @@ func initVideoAggregatorClass(gclass unsafe.Pointer, overrides VideoAggregatorOv
 		pclass.aggregate_frames = (*[0]byte)(C._gotk4_gstvideo1_VideoAggregatorClass_aggregate_frames)
 	}
 
+	if overrides.FindBestFormat != nil {
+		pclass.find_best_format = (*[0]byte)(C._gotk4_gstvideo1_VideoAggregatorClass_find_best_format)
+	}
+
 	if overrides.UpdateCaps != nil {
 		pclass.update_caps = (*[0]byte)(C._gotk4_gstvideo1_VideoAggregatorClass_update_caps)
 	}
@@ -167,16 +184,16 @@ func BaseVideoAggregator(obj VideoAggregatorrer) *VideoAggregator {
 	return obj.baseVideoAggregator()
 }
 
-// ExecutionTaskPool: returned TaskPool is used internally for performing
-// parallel video format conversions/scaling/etc during the
-// VideoAggregatorPadClass::prepare_frame_start() process. Subclasses can add
-// their own operation to perform using the returned TaskPool during
+// ExecutionTaskPool: returned TaskPool is used internally for
+// performing parallel video format conversions/scaling/etc during the
+// VideoAggregatorPadClass::prepare_frame_start() process. Subclasses can
+// add their own operation to perform using the returned TaskPool during
 // VideoAggregatorClass::aggregate_frames().
 //
 // The function returns the following values:
 //
-//    - taskPool that can be used by subclasses for performing concurrent
-//      operations.
+//   - taskPool that can be used by subclasses for performing concurrent
+//     operations.
 //
 func (vagg *VideoAggregator) ExecutionTaskPool() *gst.TaskPool {
 	var _arg0 *C.GstVideoAggregator // out
@@ -231,6 +248,40 @@ func (videoaggregator *VideoAggregator) aggregateFrames(outbuffer *gst.Buffer) g
 
 // The function takes the following parameters:
 //
+//   - downstreamCaps
+//   - bestInfo
+//
+// The function returns the following values:
+//
+func (vagg *VideoAggregator) findBestFormat(downstreamCaps *gst.Caps, bestInfo *VideoInfo) bool {
+	gclass := (*C.GstVideoAggregatorClass)(coreglib.PeekParentClass(vagg))
+	fnarg := gclass.find_best_format
+
+	var _arg0 *C.GstVideoAggregator // out
+	var _arg1 *C.GstCaps            // out
+	var _arg2 *C.GstVideoInfo       // out
+	var _arg3 C.gboolean            // in
+
+	_arg0 = (*C.GstVideoAggregator)(unsafe.Pointer(coreglib.InternObject(vagg).Native()))
+	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(downstreamCaps)))
+	_arg2 = (*C.GstVideoInfo)(gextras.StructNative(unsafe.Pointer(bestInfo)))
+
+	C._gotk4_gstvideo1_VideoAggregator_virtual_find_best_format(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(vagg)
+	runtime.KeepAlive(downstreamCaps)
+	runtime.KeepAlive(bestInfo)
+
+	var _atLeastOneAlpha bool // out
+
+	if _arg3 != 0 {
+		_atLeastOneAlpha = true
+	}
+
+	return _atLeastOneAlpha
+}
+
+// The function takes the following parameters:
+//
 // The function returns the following values:
 //
 func (videoaggregator *VideoAggregator) updateCaps(caps *gst.Caps) *gst.Caps {
@@ -265,8 +316,8 @@ func (videoaggregator *VideoAggregator) updateCaps(caps *gst.Caps) *gst.Caps {
 type VideoAggregatorConvertPadOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - agg
-	//    - conversionInfo
+	//   - agg
+	//   - conversionInfo
 	//
 	CreateConversionInfo func(agg VideoAggregatorrer, conversionInfo *VideoInfo)
 }
@@ -345,8 +396,8 @@ func (pad *VideoAggregatorConvertPad) UpdateConversionInfo() {
 
 // The function takes the following parameters:
 //
-//    - agg
-//    - conversionInfo
+//   - agg
+//   - conversionInfo
 //
 func (pad *VideoAggregatorConvertPad) createConversionInfo(agg VideoAggregatorrer, conversionInfo *VideoInfo) {
 	gclass := (*C.GstVideoAggregatorConvertPadClass)(coreglib.PeekParentClass(pad))
@@ -370,15 +421,15 @@ func (pad *VideoAggregatorConvertPad) createConversionInfo(agg VideoAggregatorre
 type VideoAggregatorPadOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - videoaggregator
-	//    - preparedFrame
+	//   - videoaggregator
+	//   - preparedFrame
 	//
 	CleanFrame func(videoaggregator VideoAggregatorrer, preparedFrame *VideoFrame)
 	// The function takes the following parameters:
 	//
-	//    - videoaggregator
-	//    - buffer
-	//    - preparedFrame
+	//   - videoaggregator
+	//   - buffer
+	//   - preparedFrame
 	//
 	// The function returns the following values:
 	//
@@ -389,8 +440,8 @@ type VideoAggregatorPadOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - videoaggregator: parent VideoAggregator.
-	//    - preparedFrame to prepare into.
+	//   - videoaggregator: parent VideoAggregator.
+	//   - preparedFrame to prepare into.
 	//
 	PrepareFrameFinish func(videoaggregator VideoAggregatorrer, preparedFrame *VideoFrame)
 	// PrepareFrameStart: begin preparing the frame from the pad buffer and sets
@@ -400,9 +451,9 @@ type VideoAggregatorPadOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - videoaggregator: parent VideoAggregator.
-	//    - buffer: input Buffer to prepare.
-	//    - preparedFrame to prepare into.
+	//   - videoaggregator: parent VideoAggregator.
+	//   - buffer: input Buffer to prepare.
+	//   - preparedFrame to prepare into.
 	//
 	PrepareFrameStart    func(videoaggregator VideoAggregatorrer, buffer *gst.Buffer, preparedFrame *VideoFrame)
 	UpdateConversionInfo func()
@@ -495,7 +546,7 @@ func marshalVideoAggregatorPad(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - buffer: currently queued buffer.
+//   - buffer: currently queued buffer.
 //
 func (pad *VideoAggregatorPad) CurrentBuffer() *gst.Buffer {
 	var _arg0 *C.GstVideoAggregatorPad // out
@@ -525,7 +576,7 @@ func (pad *VideoAggregatorPad) CurrentBuffer() *gst.Buffer {
 //
 // The function returns the following values:
 //
-//    - videoFrame: currently prepared video frame.
+//   - videoFrame: currently prepared video frame.
 //
 func (pad *VideoAggregatorPad) PreparedFrame() *VideoFrame {
 	var _arg0 *C.GstVideoAggregatorPad // out
@@ -552,7 +603,7 @@ func (pad *VideoAggregatorPad) PreparedFrame() *VideoFrame {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad has currently a buffer queued.
+//   - ok: TRUE if the pad has currently a buffer queued.
 //
 func (pad *VideoAggregatorPad) HasCurrentBuffer() bool {
 	var _arg0 *C.GstVideoAggregatorPad // out
@@ -577,7 +628,7 @@ func (pad *VideoAggregatorPad) HasCurrentBuffer() bool {
 //
 // The function takes the following parameters:
 //
-//    - needsAlpha: TRUE if this pad requires alpha output.
+//   - needsAlpha: TRUE if this pad requires alpha output.
 //
 func (pad *VideoAggregatorPad) SetNeedsAlpha(needsAlpha bool) {
 	var _arg0 *C.GstVideoAggregatorPad // out
@@ -595,8 +646,8 @@ func (pad *VideoAggregatorPad) SetNeedsAlpha(needsAlpha bool) {
 
 // The function takes the following parameters:
 //
-//    - videoaggregator
-//    - preparedFrame
+//   - videoaggregator
+//   - preparedFrame
 //
 func (pad *VideoAggregatorPad) cleanFrame(videoaggregator VideoAggregatorrer, preparedFrame *VideoFrame) {
 	gclass := (*C.GstVideoAggregatorPadClass)(coreglib.PeekParentClass(pad))
@@ -618,9 +669,9 @@ func (pad *VideoAggregatorPad) cleanFrame(videoaggregator VideoAggregatorrer, pr
 
 // The function takes the following parameters:
 //
-//    - videoaggregator
-//    - buffer
-//    - preparedFrame
+//   - videoaggregator
+//   - buffer
+//   - preparedFrame
 //
 // The function returns the following values:
 //
@@ -660,8 +711,8 @@ func (pad *VideoAggregatorPad) prepareFrame(videoaggregator VideoAggregatorrer, 
 //
 // The function takes the following parameters:
 //
-//    - videoaggregator: parent VideoAggregator.
-//    - preparedFrame to prepare into.
+//   - videoaggregator: parent VideoAggregator.
+//   - preparedFrame to prepare into.
 //
 func (pad *VideoAggregatorPad) prepareFrameFinish(videoaggregator VideoAggregatorrer, preparedFrame *VideoFrame) {
 	gclass := (*C.GstVideoAggregatorPadClass)(coreglib.PeekParentClass(pad))
@@ -688,9 +739,9 @@ func (pad *VideoAggregatorPad) prepareFrameFinish(videoaggregator VideoAggregato
 //
 // The function takes the following parameters:
 //
-//    - videoaggregator: parent VideoAggregator.
-//    - buffer: input Buffer to prepare.
-//    - preparedFrame to prepare into.
+//   - videoaggregator: parent VideoAggregator.
+//   - buffer: input Buffer to prepare.
+//   - preparedFrame to prepare into.
 //
 func (pad *VideoAggregatorPad) prepareFrameStart(videoaggregator VideoAggregatorrer, buffer *gst.Buffer, preparedFrame *VideoFrame) {
 	gclass := (*C.GstVideoAggregatorPadClass)(coreglib.PeekParentClass(pad))

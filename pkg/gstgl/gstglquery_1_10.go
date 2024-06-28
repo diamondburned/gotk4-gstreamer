@@ -49,8 +49,8 @@ func (query *GLQuery) End() {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - queryType: GLQueryType.
+//   - context: GLContext.
+//   - queryType: GLQueryType.
 //
 func (query *GLQuery) Init(context GLContexter, queryType GLQueryType) {
 	var _arg0 *C.GstGLQuery    // out
@@ -69,7 +69,7 @@ func (query *GLQuery) Init(context GLContexter, queryType GLQueryType) {
 
 // The function returns the following values:
 //
-//    - guint64: result of the query.
+//   - guint64: result of the query.
 //
 func (query *GLQuery) Result() uint64 {
 	var _arg0 *C.GstGLQuery // out

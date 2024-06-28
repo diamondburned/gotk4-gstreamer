@@ -126,9 +126,9 @@ func marshalSystemClock(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - clock: default clock.
+//   - clock: default clock.
 //
-//      MT safe.
+//     MT safe.
 //
 func SystemClockObtain() Clocker {
 	var _cret *C.GstClock // in

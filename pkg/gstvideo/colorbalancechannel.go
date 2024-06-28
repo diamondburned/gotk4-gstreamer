@@ -45,8 +45,8 @@ func defaultColorBalanceChannelOverrides(v *ColorBalanceChannel) ColorBalanceCha
 }
 
 // ColorBalanceChannel object represents a parameter for modifying the color
-// balance implemented by an element providing the ColorBalance interface. For
-// example, Hue or Saturation.
+// balance implemented by an element providing the ColorBalance interface.
+// For example, Hue or Saturation.
 type ColorBalanceChannel struct {
 	_ [0]func() // equal guard
 	*coreglib.Object

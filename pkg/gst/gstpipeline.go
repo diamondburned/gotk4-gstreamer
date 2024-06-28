@@ -104,19 +104,19 @@ func defaultPipelineOverrides(v *Pipeline) PipelineOverrides {
 // posts messages even if nobody listens on the Bus, which will pile up and use
 // up memory.
 //
-// By default, a Pipeline will automatically flush the pending Bus messages when
-// going to the NULL state to ensure that no circular references exist when no
-// messages are read from the Bus. This behaviour can be changed with
+// By default, a Pipeline will automatically flush the pending Bus messages
+// when going to the NULL state to ensure that no circular references exist
+// when no messages are read from the Bus. This behaviour can be changed with
 // gst_pipeline_set_auto_flush_bus().
 //
 // When the Pipeline performs the PAUSED to PLAYING state change it will select
 // a clock for the elements. The clock selection algorithm will by default
 // select a clock provided by an element that is most upstream (closest to the
-// source). For live pipelines (ones that return T_STATE_CHANGE_NO_PREROLL from
-// the gst_element_set_state() call) this will select the clock provided by the
-// live source. For normal pipelines this will select a clock provided by the
-// sinks (most likely the audio sink). If no element provides a clock, a default
-// SystemClock is used.
+// source). For live pipelines (ones that return T_STATE_CHANGE_NO_PREROLL
+// from the gst_element_set_state() call) this will select the clock provided
+// by the live source. For normal pipelines this will select a clock provided
+// by the sinks (most likely the audio sink). If no element provides a clock,
+// a default SystemClock is used.
 //
 // The clock selection can be controlled with the gst_pipeline_use_clock()
 // method, which will enforce a given clock on the pipeline. With
@@ -127,10 +127,10 @@ func defaultPipelineOverrides(v *Pipeline) PipelineOverrides {
 // defined as the difference between the current clock time and the base time.
 // When the pipeline goes to READY or a flushing seek is performed on it, the
 // running time is reset to 0. When the pipeline is set from PLAYING to PAUSED,
-// the current clock time is sampled and used to configure the base time for the
-// elements when the pipeline is set to PLAYING again. The effect is that the
-// running time (as the difference between the clock time and the base time)
-// will count how much time was spent in the PLAYING state. This default
+// the current clock time is sampled and used to configure the base time for
+// the elements when the pipeline is set to PLAYING again. The effect is that
+// the running time (as the difference between the clock time and the base
+// time) will count how much time was spent in the PLAYING state. This default
 // behaviour can be changed with the gst_element_set_start_time() method.
 type Pipeline struct {
 	_ [0]func() // equal guard
@@ -182,13 +182,13 @@ func marshalPipeline(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of new pipeline.
+//   - name (optional) of new pipeline.
 //
 // The function returns the following values:
 //
-//    - pipeline: newly created GstPipeline
+//   - pipeline: newly created GstPipeline
 //
-//      MT safe.
+//     MT safe.
 //
 func NewPipeline(name string) *Pipeline {
 	var _arg1 *C.gchar      // out
@@ -231,10 +231,10 @@ func (pipeline *Pipeline) AutoClock() {
 //
 // The function returns the following values:
 //
-//    - ok: whether the pipeline will automatically flush its bus when going from
-//      READY to NULL state or not.
+//   - ok: whether the pipeline will automatically flush its bus when going from
+//     READY to NULL state or not.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pipeline *Pipeline) AutoFlushBus() bool {
 	var _arg0 *C.GstPipeline // out
@@ -259,9 +259,9 @@ func (pipeline *Pipeline) AutoFlushBus() bool {
 //
 // The function returns the following values:
 //
-//    - bus unref after usage.
+//   - bus unref after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pipeline *Pipeline) Bus() *Bus {
 	var _arg0 *C.GstPipeline // out
@@ -283,9 +283,9 @@ func (pipeline *Pipeline) Bus() *Bus {
 //
 // The function returns the following values:
 //
-//    - clockTime: configured delay.
+//   - clockTime: configured delay.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pipeline *Pipeline) Delay() ClockTime {
 	var _arg0 *C.GstPipeline // out
@@ -298,19 +298,17 @@ func (pipeline *Pipeline) Delay() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
 
-// Latency gets the latency that should be configured on the pipeline. See
-// gst_pipeline_set_latency().
+// Latency gets the latency that should be configured on the pipeline.
+// See gst_pipeline_set_latency().
 //
 // The function returns the following values:
 //
-//    - clockTime: latency to configure on the pipeline or GST_CLOCK_TIME_NONE.
+//   - clockTime: latency to configure on the pipeline or GST_CLOCK_TIME_NONE.
 //
 func (pipeline *Pipeline) Latency() ClockTime {
 	var _arg0 *C.GstPipeline // out
@@ -323,9 +321,7 @@ func (pipeline *Pipeline) Latency() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -337,7 +333,7 @@ func (pipeline *Pipeline) Latency() ClockTime {
 //
 // The function returns the following values:
 //
-//    - clock unref after usage.
+//   - clock unref after usage.
 //
 func (pipeline *Pipeline) PipelineClock() Clocker {
 	var _arg0 *C.GstPipeline // out
@@ -371,8 +367,8 @@ func (pipeline *Pipeline) PipelineClock() Clocker {
 	return _clock
 }
 
-// SetAutoFlushBus: usually, when a pipeline goes from READY to NULL state, it
-// automatically flushes all pending messages on the bus, which is done for
+// SetAutoFlushBus: usually, when a pipeline goes from READY to NULL state,
+// it automatically flushes all pending messages on the bus, which is done for
 // refcounting purposes, to break circular references.
 //
 // This means that applications that update state using (async) bus messages
@@ -388,8 +384,8 @@ func (pipeline *Pipeline) PipelineClock() Clocker {
 //
 // The function takes the following parameters:
 //
-//    - autoFlush: whether or not to automatically flush the bus when the
-//      pipeline goes from READY to NULL state.
+//   - autoFlush: whether or not to automatically flush the bus when the
+//     pipeline goes from READY to NULL state.
 //
 func (pipeline *Pipeline) SetAutoFlushBus(autoFlush bool) {
 	var _arg0 *C.GstPipeline // out
@@ -416,16 +412,14 @@ func (pipeline *Pipeline) SetAutoFlushBus(autoFlush bool) {
 //
 // The function takes the following parameters:
 //
-//    - delay: delay.
+//   - delay: delay.
 //
 func (pipeline *Pipeline) SetDelay(delay ClockTime) {
 	var _arg0 *C.GstPipeline // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstPipeline)(unsafe.Pointer(coreglib.InternObject(pipeline).Native()))
-	_arg1 = C.guint64(delay)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(delay)
 
 	C.gst_pipeline_set_delay(_arg0, _arg1)
 	runtime.KeepAlive(pipeline)
@@ -442,16 +436,14 @@ func (pipeline *Pipeline) SetDelay(delay ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - latency to configure.
+//   - latency to configure.
 //
 func (pipeline *Pipeline) SetLatency(latency ClockTime) {
 	var _arg0 *C.GstPipeline // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstPipeline)(unsafe.Pointer(coreglib.InternObject(pipeline).Native()))
-	_arg1 = C.guint64(latency)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(latency)
 
 	C.gst_pipeline_set_latency(_arg0, _arg1)
 	runtime.KeepAlive(pipeline)
@@ -468,7 +460,7 @@ func (pipeline *Pipeline) SetLatency(latency ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - clock (optional) to use.
+//   - clock (optional) to use.
 //
 func (pipeline *Pipeline) UseClock(clock Clocker) {
 	var _arg0 *C.GstPipeline // out

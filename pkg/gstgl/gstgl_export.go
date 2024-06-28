@@ -87,8 +87,10 @@ func _gotk4_gstgl1_GLBaseMemoryAllocatorClass_alloc(arg0 *C.GstGLBaseMemoryAlloc
 
 	var _ *GLBaseMemory
 
-	cret = (*C.GstGLBaseMemory)(gextras.StructNative(unsafe.Pointer(glBaseMemory)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(glBaseMemory)), nil)
+	if glBaseMemory != nil {
+		cret = (*C.GstGLBaseMemory)(gextras.StructNative(unsafe.Pointer(glBaseMemory)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(glBaseMemory)), nil)
+	}
 
 	return cret
 }
@@ -314,7 +316,7 @@ func _gotk4_gstgl1_GLContextClass_get_gl_context(arg0 *C.GstGLContext) (cret C.g
 
 	var _ uintptr
 
-	cret = (C.guintptr)(unsafe.Pointer(guintptr))
+	cret = C.guintptr(guintptr)
 
 	return cret
 }
@@ -407,8 +409,10 @@ func _gotk4_gstgl1_GLDisplayClass_create_window(arg0 *C.GstGLDisplay) (cret *C.G
 
 	var _ GLWindower
 
-	cret = (*C.GstGLWindow)(unsafe.Pointer(coreglib.InternObject(glWindow).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(glWindow).Native()))
+	if glWindow != nil {
+		cret = (*C.GstGLWindow)(unsafe.Pointer(coreglib.InternObject(glWindow).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(glWindow).Native()))
+	}
 
 	return cret
 }
@@ -425,7 +429,7 @@ func _gotk4_gstgl1_GLDisplayClass_get_handle(arg0 *C.GstGLDisplay) (cret C.guint
 
 	var _ uintptr
 
-	cret = (C.guintptr)(unsafe.Pointer(guintptr))
+	cret = C.guintptr(guintptr)
 
 	return cret
 }
@@ -603,7 +607,7 @@ func _gotk4_gstgl1_GLWindowClass_get_display(arg0 *C.GstGLWindow) (cret C.guintp
 
 	var _ uintptr
 
-	cret = (C.guintptr)(unsafe.Pointer(guintptr))
+	cret = C.guintptr(guintptr)
 
 	return cret
 }
@@ -620,7 +624,7 @@ func _gotk4_gstgl1_GLWindowClass_get_window_handle(arg0 *C.GstGLWindow) (cret C.
 
 	var _ uintptr
 
-	cret = (C.guintptr)(unsafe.Pointer(guintptr))
+	cret = C.guintptr(guintptr)
 
 	return cret
 }
@@ -769,7 +773,7 @@ func _gotk4_gstgl1_GLWindowClass_set_window_handle(arg0 *C.GstGLWindow, arg1 C.g
 
 	var _handle uintptr // out
 
-	_handle = (uintptr)(unsafe.Pointer(arg1))
+	_handle = uintptr(arg1)
 
 	overrides.SetWindowHandle(_handle)
 }

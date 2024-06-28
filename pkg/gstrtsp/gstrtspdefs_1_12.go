@@ -19,17 +19,17 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - algorithm (optional): hash algorithm to use, or NULL for MD5.
-//    - method: request method, e.g. PLAY.
-//    - realm: realm.
-//    - username: username.
-//    - password: password.
-//    - uri: original request URI.
-//    - nonce: nonce.
+//   - algorithm (optional): hash algorithm to use, or NULL for MD5.
+//   - method: request method, e.g. PLAY.
+//   - realm: realm.
+//   - username: username.
+//   - password: password.
+//   - uri: original request URI.
+//   - nonce: nonce.
 //
 // The function returns the following values:
 //
-//    - utf8: authentication response or NULL if unsupported.
+//   - utf8 (optional): authentication response or NULL if unsupported.
 //
 func RtspGenerateDigestAuthResponse(algorithm, method, realm, username, password, uri, nonce string) string {
 	var _arg1 *C.gchar // out
@@ -69,8 +69,10 @@ func RtspGenerateDigestAuthResponse(algorithm, method, realm, username, password
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }

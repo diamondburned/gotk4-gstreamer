@@ -45,12 +45,8 @@ func _gotk4_gst1_ClockCallback(arg1 *C.GstClock, arg2 C.GstClockTime, arg3 C.Gst
 		}
 		_clock = rv
 	}
-	_time = uint64(arg2)
-	type _ = ClockTime
-	type _ = uint64
-	_id = (unsafe.Pointer)(unsafe.Pointer(arg3))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_time = ClockTime(arg2)
+	_id = (ClockID)(unsafe.Pointer(arg3))
 
 	ok := fn(_clock, _time, _id)
 

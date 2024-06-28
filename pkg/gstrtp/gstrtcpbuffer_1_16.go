@@ -25,8 +25,8 @@ func init() {
 	})
 }
 
-// RTCPXRType types of RTCP Extended Reports, those are defined in RFC 3611 and
-// other RFCs according to the IANA registry
+// RTCPXRType types of RTCP Extended Reports, those are defined
+// in RFC 3611 and other RFCs according to the IANA registry
 // (https://www.iana.org/assignments/rtcp-xr-block-types/rtcp-xr-block-types.xhtml).
 type RTCPXRType C.gint
 

@@ -79,11 +79,11 @@ func marshalGLUpload(p uintptr) (interface{}, error) {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glUpload: new GLUpload object.
+//   - glUpload: new GLUpload object.
 //
 func NewGLUpload(context GLContexter) *GLUpload {
 	var _arg1 *C.GstGLContext // out
@@ -103,8 +103,8 @@ func NewGLUpload(context GLContexter) *GLUpload {
 
 // The function returns the following values:
 //
-//    - inCaps (optional): input Caps.
-//    - outCaps (optional): output Caps.
+//   - inCaps (optional): input Caps.
+//   - outCaps (optional): output Caps.
 //
 func (upload *GLUpload) Caps() (inCaps, outCaps *gst.Caps) {
 	var _arg0 *C.GstGLUpload // out
@@ -146,12 +146,12 @@ func (upload *GLUpload) Caps() (inCaps, outCaps *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - buffer: input Buffer.
+//   - buffer: input Buffer.
 //
 // The function returns the following values:
 //
-//    - outbufPtr: resulting Buffer.
-//    - glUploadReturn: whether the upload was successful.
+//   - outbufPtr: resulting Buffer.
+//   - glUploadReturn: whether the upload was successful.
 //
 func (upload *GLUpload) PerformWithBuffer(buffer *gst.Buffer) (*gst.Buffer, GLUploadReturn) {
 	var _arg0 *C.GstGLUpload      // out
@@ -186,8 +186,8 @@ func (upload *GLUpload) PerformWithBuffer(buffer *gst.Buffer) (*gst.Buffer, GLUp
 //
 // The function takes the following parameters:
 //
-//    - decideQuery (optional) from a decide allocation.
-//    - query: proposed allocation query.
+//   - decideQuery (optional) from a decide allocation.
+//   - query: proposed allocation query.
 //
 func (upload *GLUpload) ProposeAllocation(decideQuery, query *gst.Query) {
 	var _arg0 *C.GstGLUpload // out
@@ -210,12 +210,12 @@ func (upload *GLUpload) ProposeAllocation(decideQuery, query *gst.Query) {
 //
 // The function takes the following parameters:
 //
-//    - inCaps: input Caps.
-//    - outCaps: output Caps.
+//   - inCaps: input Caps.
+//   - outCaps: output Caps.
 //
 // The function returns the following values:
 //
-//    - ok: whether in_caps and out_caps could be set on upload.
+//   - ok: whether in_caps and out_caps could be set on upload.
 //
 func (upload *GLUpload) SetCaps(inCaps, outCaps *gst.Caps) bool {
 	var _arg0 *C.GstGLUpload // out
@@ -257,10 +257,10 @@ func (upload *GLUpload) SetContext(context GLContexter) {
 
 // The function takes the following parameters:
 //
-//    - context
-//    - direction
-//    - caps
-//    - filter
+//   - context
+//   - direction
+//   - caps
+//   - filter
 //
 // The function returns the following values:
 //

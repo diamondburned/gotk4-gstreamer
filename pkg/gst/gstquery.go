@@ -118,6 +118,8 @@ const (
 	QueryContext QueryType = 48643
 	// QueryBitrate: bitrate query (since 1.16).
 	QueryBitrate QueryType = 51202
+	// QuerySelectable: query stream selection capability.
+	QuerySelectable QueryType = 53763
 )
 
 func marshalQueryType(p uintptr) (interface{}, error) {
@@ -167,6 +169,8 @@ func (q QueryType) String() string {
 		return "Context"
 	case QueryBitrate:
 		return "Bitrate"
+	case QuerySelectable:
+		return "Selectable"
 	default:
 		return fmt.Sprintf("QueryType(%d)", q)
 	}
@@ -176,11 +180,11 @@ func (q QueryType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - typ: QueryType.
+//   - typ: QueryType.
 //
 // The function returns the following values:
 //
-//    - queryTypeFlags: QueryTypeFlags.
+//   - queryTypeFlags: QueryTypeFlags.
 //
 func QueryTypeGetFlags(typ QueryType) QueryTypeFlags {
 	var _arg1 C.GstQueryType      // out
@@ -203,11 +207,11 @@ func QueryTypeGetFlags(typ QueryType) QueryTypeFlags {
 //
 // The function takes the following parameters:
 //
-//    - typ: query type.
+//   - typ: query type.
 //
 // The function returns the following values:
 //
-//    - utf8: reference to the static name of the query.
+//   - utf8: reference to the static name of the query.
 //
 func QueryTypeGetName(typ QueryType) string {
 	var _arg1 C.GstQueryType // out
@@ -229,11 +233,11 @@ func QueryTypeGetName(typ QueryType) string {
 //
 // The function takes the following parameters:
 //
-//    - typ: query type.
+//   - typ: query type.
 //
 // The function returns the following values:
 //
-//    - quark associated with the query type.
+//   - quark associated with the query type.
 //
 func QueryTypeToQuark(typ QueryType) glib.Quark {
 	var _arg1 C.GstQueryType // out
@@ -246,15 +250,13 @@ func QueryTypeToQuark(typ QueryType) glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
 
-// QueryTypeFlags indicate the aspects of the different QueryType values. You
-// can get the type flags of a QueryType with the gst_query_type_get_flags()
+// QueryTypeFlags indicate the aspects of the different QueryType values.
+// You can get the type flags of a QueryType with the gst_query_type_get_flags()
 // function.
 type QueryTypeFlags C.guint
 
@@ -426,7 +428,9 @@ func NewQueryAllocation(caps *Caps, needPool bool) *Query {
 	var _arg2 C.gboolean  // out
 	var _cret *C.GstQuery // in
 
-	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
+	if caps != nil {
+		_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
+	}
 	if needPool {
 		_arg2 = C.TRUE
 	}
@@ -584,15 +588,13 @@ func NewQueryCustom(typ QueryType, structure *Structure) *Query {
 
 	var _query *Query // out
 
-	if _cret != nil {
-		_query = (*Query)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_query)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_query = (*Query)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_query)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _query
 }
@@ -765,6 +767,25 @@ func NewQuerySegment(format Format) *Query {
 	return _query
 }
 
+// NewQuerySelectable constructs a struct Query.
+func NewQuerySelectable() *Query {
+	var _cret *C.GstQuery // in
+
+	_cret = C.gst_query_new_selectable()
+
+	var _query *Query // out
+
+	_query = (*Query)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_query)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _query
+}
+
 // NewQueryURI constructs a struct Query.
 func NewQueryURI() *Query {
 	var _cret *C.GstQuery // in
@@ -805,8 +826,8 @@ func (q *Query) Type() QueryType {
 //
 // The function takes the following parameters:
 //
-//    - api: metadata API.
-//    - params (optional): API specific parameters.
+//   - api: metadata API.
+//   - params (optional): API specific parameters.
 //
 func (query *Query) AddAllocationMeta(api coreglib.Type, params *Structure) {
 	var _arg0 *C.GstQuery     // out
@@ -830,8 +851,8 @@ func (query *Query) AddAllocationMeta(api coreglib.Type, params *Structure) {
 //
 // The function takes the following parameters:
 //
-//    - allocator (optional): memory allocator.
-//    - params (optional): AllocationParams.
+//   - allocator (optional): memory allocator.
+//   - params (optional): AllocationParams.
 //
 func (query *Query) AddAllocationParam(allocator Allocatorrer, params *AllocationParams) {
 	var _arg0 *C.GstQuery            // out
@@ -856,10 +877,10 @@ func (query *Query) AddAllocationParam(allocator Allocatorrer, params *Allocatio
 //
 // The function takes the following parameters:
 //
-//    - pool (optional): BufferPool.
-//    - size: buffer size.
-//    - minBuffers: min buffers.
-//    - maxBuffers: max buffers.
+//   - pool (optional): BufferPool.
+//   - size: buffer size.
+//   - minBuffers: min buffers.
+//   - maxBuffers: max buffers.
 //
 func (query *Query) AddAllocationPool(pool *BufferPool, size uint, minBuffers uint, maxBuffers uint) {
 	var _arg0 *C.GstQuery      // out
@@ -889,12 +910,12 @@ func (query *Query) AddAllocationPool(pool *BufferPool, size uint, minBuffers ui
 //
 // The function takes the following parameters:
 //
-//    - start position of the range.
-//    - stop position of the range.
+//   - start position of the range.
+//   - stop position of the range.
 //
 // The function returns the following values:
 //
-//    - ok indicating if the range was added or not.
+//   - ok indicating if the range was added or not.
 //
 func (query *Query) AddBufferingRange(start int64, stop int64) bool {
 	var _arg0 *C.GstQuery // out
@@ -925,7 +946,7 @@ func (query *Query) AddBufferingRange(start int64, stop int64) bool {
 //
 // The function takes the following parameters:
 //
-//    - mode: PadMode.
+//   - mode: PadMode.
 //
 func (query *Query) AddSchedulingMode(mode PadMode) {
 	var _arg0 *C.GstQuery  // out
@@ -945,12 +966,12 @@ func (query *Query) AddSchedulingMode(mode PadMode) {
 //
 // The function takes the following parameters:
 //
-//    - api: metadata API.
+//   - api: metadata API.
 //
 // The function returns the following values:
 //
-//    - index (optional): index.
-//    - ok: TRUE when api is in the list of metadata.
+//   - index (optional): index.
+//   - ok: TRUE when api is in the list of metadata.
 //
 func (query *Query) FindAllocationMeta(api coreglib.Type) (uint, bool) {
 	var _arg0 *C.GstQuery // out
@@ -981,7 +1002,7 @@ func (query *Query) FindAllocationMeta(api coreglib.Type) (uint, bool) {
 //
 // The function returns the following values:
 //
-//    - guint: metadata API array size as a #guint.
+//   - guint: metadata API array size as a #guint.
 //
 func (query *Query) NAllocationMetas() uint {
 	var _arg0 *C.GstQuery // out
@@ -1009,7 +1030,7 @@ func (query *Query) NAllocationMetas() uint {
 //
 // The function returns the following values:
 //
-//    - guint: allocator array size as a #guint.
+//   - guint: allocator array size as a #guint.
 //
 func (query *Query) NAllocationParams() uint {
 	var _arg0 *C.GstQuery // out
@@ -1032,7 +1053,7 @@ func (query *Query) NAllocationParams() uint {
 //
 // The function returns the following values:
 //
-//    - guint: pool array size as a #guint.
+//   - guint: pool array size as a #guint.
 //
 func (query *Query) NAllocationPools() uint {
 	var _arg0 *C.GstQuery // out
@@ -1055,7 +1076,7 @@ func (query *Query) NAllocationPools() uint {
 //
 // The function returns the following values:
 //
-//    - guint: range array size as a #guint.
+//   - guint: range array size as a #guint.
 //
 func (query *Query) NBufferingRanges() uint {
 	var _arg0 *C.GstQuery // out
@@ -1078,7 +1099,7 @@ func (query *Query) NBufferingRanges() uint {
 //
 // The function returns the following values:
 //
-//    - guint: scheduling mode array size as a #guint.
+//   - guint: scheduling mode array size as a #guint.
 //
 func (query *Query) NSchedulingModes() uint {
 	var _arg0 *C.GstQuery // out
@@ -1100,8 +1121,8 @@ func (query *Query) NSchedulingModes() uint {
 //
 // The function returns the following values:
 //
-//    - structure (optional) of the query. The structure is still owned by the
-//      query and will therefore be freed when the query is unreffed.
+//   - structure (optional) of the query. The structure is still owned by the
+//     query and will therefore be freed when the query is unreffed.
 //
 func (query *Query) Structure() *Structure {
 	var _arg0 *C.GstQuery     // out
@@ -1123,19 +1144,19 @@ func (query *Query) Structure() *Structure {
 
 // HasSchedulingMode: check if query has scheduling mode set.
 //
-// > When checking if upstream supports pull mode, it is usually not > enough to
-// just check for GST_PAD_MODE_PULL with this function, you > also want to check
-// whether the scheduling flags returned by > gst_query_parse_scheduling() have
-// the seeking flag set (meaning > random access is supported, not only
+// > When checking if upstream supports pull mode, it is usually not > enough
+// to just check for GST_PAD_MODE_PULL with this function, you > also want to
+// check whether the scheduling flags returned by > gst_query_parse_scheduling()
+// have the seeking flag set (meaning > random access is supported, not only
 // sequential pulls).
 //
 // The function takes the following parameters:
 //
-//    - mode: scheduling mode.
+//   - mode: scheduling mode.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when mode is in the list of scheduling modes.
+//   - ok: TRUE when mode is in the list of scheduling modes.
 //
 func (query *Query) HasSchedulingMode(mode PadMode) bool {
 	var _arg0 *C.GstQuery  // out
@@ -1163,13 +1184,13 @@ func (query *Query) HasSchedulingMode(mode PadMode) bool {
 //
 // The function takes the following parameters:
 //
-//    - mode: scheduling mode.
-//    - flags: SchedulingFlags.
+//   - mode: scheduling mode.
+//   - flags: SchedulingFlags.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when mode is in the list of scheduling modes and flags are
-//      compatible with query flags.
+//   - ok: TRUE when mode is in the list of scheduling modes and flags are
+//     compatible with query flags.
 //
 func (query *Query) HasSchedulingModeWithFlags(mode PadMode, flags SchedulingFlags) bool {
 	var _arg0 *C.GstQuery          // out
@@ -1200,7 +1221,7 @@ func (query *Query) HasSchedulingModeWithFlags(mode PadMode, flags SchedulingFla
 //
 // The function returns the following values:
 //
-//    - caps: pointer to the caps.
+//   - caps: pointer to the caps.
 //
 func (query *Query) ParseAcceptCaps() *Caps {
 	var _arg0 *C.GstQuery // out
@@ -1222,7 +1243,7 @@ func (query *Query) ParseAcceptCaps() *Caps {
 //
 // The function returns the following values:
 //
-//    - result (optional): location for the result.
+//   - result (optional): location for the result.
 //
 func (query *Query) ParseAcceptCapsResult() bool {
 	var _arg0 *C.GstQuery // out
@@ -1251,8 +1272,8 @@ func (query *Query) ParseAcceptCapsResult() bool {
 //
 // The function returns the following values:
 //
-//    - caps (optional): Caps.
-//    - needPool (optional): whether a BufferPool is needed.
+//   - caps (optional): Caps.
+//   - needPool (optional): whether a BufferPool is needed.
 //
 func (query *Query) ParseAllocation() (*Caps, bool) {
 	var _arg0 *C.GstQuery // out
@@ -1282,7 +1303,7 @@ func (query *Query) ParseAllocation() (*Caps, bool) {
 //
 // The function returns the following values:
 //
-//    - nominalBitrate (optional): resulting bitrate in bits per second.
+//   - nominalBitrate (optional): resulting bitrate in bits per second.
 //
 func (query *Query) ParseBitrate() uint {
 	var _arg0 *C.GstQuery // out
@@ -1306,8 +1327,8 @@ func (query *Query) ParseBitrate() uint {
 //
 // The function returns the following values:
 //
-//    - busy (optional): if buffering is busy, or NULL.
-//    - percent (optional): buffering percent, or NULL.
+//   - busy (optional): if buffering is busy, or NULL.
+//   - percent (optional): buffering percent, or NULL.
 //
 func (query *Query) ParseBufferingPercent() (bool, int) {
 	var _arg0 *C.GstQuery // out
@@ -1336,12 +1357,12 @@ func (query *Query) ParseBufferingPercent() (bool, int) {
 //
 // The function returns the following values:
 //
-//    - format (optional) to set for the segment_start and segment_end values, or
-//      NULL.
-//    - start (optional) to set, or NULL.
-//    - stop (optional) to set, or NULL.
-//    - estimatedTotal (optional): estimated total amount of download time
-//      remaining in milliseconds, or NULL.
+//   - format (optional) to set for the segment_start and segment_end values,
+//     or NULL.
+//   - start (optional) to set, or NULL.
+//   - stop (optional) to set, or NULL.
+//   - estimatedTotal (optional): estimated total amount of download time
+//     remaining in milliseconds, or NULL.
 //
 func (query *Query) ParseBufferingRange() (format Format, start int64, stop int64, estimatedTotal int64) {
 	var _arg0 *C.GstQuery // out
@@ -1372,11 +1393,11 @@ func (query *Query) ParseBufferingRange() (format Format, start int64, stop int6
 //
 // The function returns the following values:
 //
-//    - mode (optional): buffering mode, or NULL.
-//    - avgIn (optional): average input rate, or NULL.
-//    - avgOut (optional): average output rat, or NULL.
-//    - bufferingLeft (optional): amount of buffering time left in milliseconds,
-//      or NULL.
+//   - mode (optional): buffering mode, or NULL.
+//   - avgIn (optional): average input rate, or NULL.
+//   - avgOut (optional): average output rat, or NULL.
+//   - bufferingLeft (optional): amount of buffering time left in milliseconds,
+//     or NULL.
 //
 func (query *Query) ParseBufferingStats() (mode BufferingMode, avgIn int, avgOut int, bufferingLeft int64) {
 	var _arg0 *C.GstQuery        // out
@@ -1408,7 +1429,7 @@ func (query *Query) ParseBufferingStats() (mode BufferingMode, avgIn int, avgOut
 //
 // The function returns the following values:
 //
-//    - filter: pointer to the caps filter.
+//   - filter: pointer to the caps filter.
 //
 func (query *Query) ParseCaps() *Caps {
 	var _arg0 *C.GstQuery // out
@@ -1431,7 +1452,7 @@ func (query *Query) ParseCaps() *Caps {
 //
 // The function returns the following values:
 //
-//    - caps: pointer to the caps.
+//   - caps (optional): pointer to the caps.
 //
 func (query *Query) ParseCapsResult() *Caps {
 	var _arg0 *C.GstQuery // out
@@ -1444,7 +1465,9 @@ func (query *Query) ParseCapsResult() *Caps {
 
 	var _caps *Caps // out
 
-	_caps = (*Caps)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_caps = (*Caps)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _caps
 }
@@ -1454,7 +1477,7 @@ func (query *Query) ParseCapsResult() *Caps {
 //
 // The function returns the following values:
 //
-//    - context: pointer to store the Context.
+//   - context (optional): pointer to store the Context.
 //
 func (query *Query) ParseContext() *Context {
 	var _arg0 *C.GstQuery   // out
@@ -1467,7 +1490,9 @@ func (query *Query) ParseContext() *Context {
 
 	var _context *Context // out
 
-	_context = (*Context)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_context = (*Context)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _context
 }
@@ -1477,8 +1502,8 @@ func (query *Query) ParseContext() *Context {
 //
 // The function returns the following values:
 //
-//    - contextType (optional): context type, or NULL.
-//    - ok indicating if the parsing succeeded.
+//   - contextType (optional): context type, or NULL.
+//   - ok indicating if the parsing succeeded.
 //
 func (query *Query) ParseContextType() (string, bool) {
 	var _arg0 *C.GstQuery // out
@@ -1508,12 +1533,12 @@ func (query *Query) ParseContextType() (string, bool) {
 //
 // The function returns the following values:
 //
-//    - srcFormat (optional): storage for the Format of the source value, or
-//      NULL.
-//    - srcValue (optional): storage for the source value, or NULL.
-//    - destFormat (optional): storage for the Format of the destination value,
-//      or NULL.
-//    - destValue (optional): storage for the destination value, or NULL.
+//   - srcFormat (optional): storage for the Format of the source value,
+//     or NULL.
+//   - srcValue (optional): storage for the source value, or NULL.
+//   - destFormat (optional): storage for the Format of the destination value,
+//     or NULL.
+//   - destValue (optional): storage for the destination value, or NULL.
 //
 func (query *Query) ParseConvert() (srcFormat Format, srcValue int64, destFormat Format, destValue int64) {
 	var _arg0 *C.GstQuery // out
@@ -1546,8 +1571,8 @@ func (query *Query) ParseConvert() (srcFormat Format, srcValue int64, destFormat
 //
 // The function returns the following values:
 //
-//    - format (optional): storage for the Format of the duration value, or NULL.
-//    - duration (optional): storage for the total duration, or NULL.
+//   - format (optional): storage for the Format of the duration value, or NULL.
+//   - duration (optional): storage for the total duration, or NULL.
 //
 func (query *Query) ParseDuration() (Format, int64) {
 	var _arg0 *C.GstQuery // out
@@ -1572,9 +1597,9 @@ func (query *Query) ParseDuration() (Format, int64) {
 //
 // The function returns the following values:
 //
-//    - live (optional): storage for live or NULL.
-//    - minLatency (optional): storage for the min latency or NULL.
-//    - maxLatency (optional): storage for the max latency or NULL.
+//   - live (optional): storage for live or NULL.
+//   - minLatency (optional): storage for the min latency or NULL.
+//   - maxLatency (optional): storage for the max latency or NULL.
 //
 func (query *Query) ParseLatency() (live bool, minLatency ClockTime, maxLatency ClockTime) {
 	var _arg0 *C.GstQuery    // out
@@ -1594,12 +1619,8 @@ func (query *Query) ParseLatency() (live bool, minLatency ClockTime, maxLatency 
 	if _arg1 != 0 {
 		_live = true
 	}
-	_minLatency = uint64(_arg2)
-	type _ = ClockTime
-	type _ = uint64
-	_maxLatency = uint64(_arg3)
-	type _ = ClockTime
-	type _ = uint64
+	_minLatency = ClockTime(_arg2)
+	_maxLatency = ClockTime(_arg3)
 
 	return _live, _minLatency, _maxLatency
 }
@@ -1608,7 +1629,7 @@ func (query *Query) ParseLatency() (live bool, minLatency ClockTime, maxLatency 
 //
 // The function returns the following values:
 //
-//    - nFormats (optional): number of formats in this query.
+//   - nFormats (optional): number of formats in this query.
 //
 func (query *Query) ParseNFormats() uint {
 	var _arg0 *C.GstQuery // out
@@ -1631,12 +1652,12 @@ func (query *Query) ParseNFormats() uint {
 //
 // The function takes the following parameters:
 //
-//    - index: position in the metadata API array to read.
+//   - index: position in the metadata API array to read.
 //
 // The function returns the following values:
 //
-//    - params (optional): API specific parameters.
-//    - gType of the metadata API at index.
+//   - params (optional): API specific parameters.
+//   - gType of the metadata API at index.
 //
 func (query *Query) ParseNthAllocationMeta(index uint) (*Structure, coreglib.Type) {
 	var _arg0 *C.GstQuery     // out
@@ -1667,12 +1688,12 @@ func (query *Query) ParseNthAllocationMeta(index uint) (*Structure, coreglib.Typ
 //
 // The function takes the following parameters:
 //
-//    - index: position in the allocator array to read.
+//   - index: position in the allocator array to read.
 //
 // The function returns the following values:
 //
-//    - allocator (optional): variable to hold the result.
-//    - params (optional) parameters for the allocator.
+//   - allocator (optional): variable to hold the result.
+//   - params (optional) parameters for the allocator.
 //
 func (query *Query) ParseNthAllocationParam(index uint) (Allocatorrer, *AllocationParams) {
 	var _arg0 *C.GstQuery           // out
@@ -1717,14 +1738,14 @@ func (query *Query) ParseNthAllocationParam(index uint) (Allocatorrer, *Allocati
 //
 // The function takes the following parameters:
 //
-//    - index to parse.
+//   - index to parse.
 //
 // The function returns the following values:
 //
-//    - pool (optional): BufferPool.
-//    - size (optional): buffer size.
-//    - minBuffers (optional): min buffers.
-//    - maxBuffers (optional): max buffers.
+//   - pool (optional): BufferPool.
+//   - size (optional): buffer size.
+//   - minBuffers (optional): min buffers.
+//   - maxBuffers (optional): max buffers.
 //
 func (query *Query) ParseNthAllocationPool(index uint) (pool *BufferPool, size uint, minBuffers uint, maxBuffers uint) {
 	var _arg0 *C.GstQuery      // out
@@ -1761,13 +1782,13 @@ func (query *Query) ParseNthAllocationPool(index uint) (pool *BufferPool, size u
 //
 // The function takes the following parameters:
 //
-//    - index: position in the buffered-ranges array to read.
+//   - index: position in the buffered-ranges array to read.
 //
 // The function returns the following values:
 //
-//    - start (optional) position to set, or NULL.
-//    - stop (optional) position to set, or NULL.
-//    - ok indicating if the parsing succeeded.
+//   - start (optional) position to set, or NULL.
+//   - stop (optional) position to set, or NULL.
+//   - ok indicating if the parsing succeeded.
 //
 func (query *Query) ParseNthBufferingRange(index uint) (start int64, stop int64, ok bool) {
 	var _arg0 *C.GstQuery // out
@@ -1802,11 +1823,11 @@ func (query *Query) ParseNthBufferingRange(index uint) (start int64, stop int64,
 //
 // The function takes the following parameters:
 //
-//    - nth format to retrieve.
+//   - nth format to retrieve.
 //
 // The function returns the following values:
 //
-//    - format (optional): pointer to store the nth format.
+//   - format (optional): pointer to store the nth format.
 //
 func (query *Query) ParseNthFormat(nth uint) Format {
 	var _arg0 *C.GstQuery // out
@@ -1832,11 +1853,11 @@ func (query *Query) ParseNthFormat(nth uint) Format {
 //
 // The function takes the following parameters:
 //
-//    - index: position in the scheduling modes array to read.
+//   - index: position in the scheduling modes array to read.
 //
 // The function returns the following values:
 //
-//    - padMode of the scheduling mode at index.
+//   - padMode of the scheduling mode at index.
 //
 func (query *Query) ParseNthSchedulingMode(index uint) PadMode {
 	var _arg0 *C.GstQuery  // out
@@ -1857,14 +1878,14 @@ func (query *Query) ParseNthSchedulingMode(index uint) PadMode {
 	return _padMode
 }
 
-// ParsePosition: parse a position query, writing the format into format, and
-// the position into cur, if the respective parameters are non-NULL.
+// ParsePosition: parse a position query, writing the format into format,
+// and the position into cur, if the respective parameters are non-NULL.
 //
 // The function returns the following values:
 //
-//    - format (optional): storage for the Format of the position values (may be
-//      NULL).
-//    - cur (optional): storage for the current position (may be NULL).
+//   - format (optional): storage for the Format of the position values (may be
+//     NULL).
+//   - cur (optional): storage for the current position (may be NULL).
 //
 func (query *Query) ParsePosition() (Format, int64) {
 	var _arg0 *C.GstQuery // out
@@ -1889,10 +1910,10 @@ func (query *Query) ParsePosition() (Format, int64) {
 //
 // The function returns the following values:
 //
-//    - flags (optional): SchedulingFlags.
-//    - minsize (optional): suggested minimum size of pull requests.
-//    - maxsize (optional): suggested maximum size of pull requests:.
-//    - align (optional): suggested alignment of pull requests.
+//   - flags (optional): SchedulingFlags.
+//   - minsize (optional): suggested minimum size of pull requests.
+//   - maxsize (optional): suggested maximum size of pull requests:.
+//   - align (optional): suggested alignment of pull requests.
 //
 func (query *Query) ParseScheduling() (flags SchedulingFlags, minsize int, maxsize int, align int) {
 	var _arg0 *C.GstQuery          // out
@@ -1919,17 +1940,17 @@ func (query *Query) ParseScheduling() (flags SchedulingFlags, minsize int, maxsi
 	return _flags, _minsize, _maxsize, _align
 }
 
-// ParseSeeking: parse a seeking query, writing the format into format, and
-// other results into the passed parameters, if the respective parameters are
-// non-NULL.
+// ParseSeeking: parse a seeking query, writing the format into format,
+// and other results into the passed parameters, if the respective parameters
+// are non-NULL.
 //
 // The function returns the following values:
 //
-//    - format (optional) to set for the segment_start and segment_end values, or
-//      NULL.
-//    - seekable (optional) flag to set, or NULL.
-//    - segmentStart (optional): segment_start to set, or NULL.
-//    - segmentEnd (optional): segment_end to set, or NULL.
+//   - format (optional) to set for the segment_start and segment_end values,
+//     or NULL.
+//   - seekable (optional) flag to set, or NULL.
+//   - segmentStart (optional): segment_start to set, or NULL.
+//   - segmentEnd (optional): segment_end to set, or NULL.
 //
 func (query *Query) ParseSeeking() (format Format, seekable bool, segmentStart int64, segmentEnd int64) {
 	var _arg0 *C.GstQuery // out
@@ -1965,10 +1986,10 @@ func (query *Query) ParseSeeking() (format Format, seekable bool, segmentStart i
 //
 // The function returns the following values:
 //
-//    - rate (optional): storage for the rate of the segment, or NULL.
-//    - format (optional): storage for the Format of the values, or NULL.
-//    - startValue (optional): storage for the start value, or NULL.
-//    - stopValue (optional): storage for the stop value, or NULL.
+//   - rate (optional): storage for the rate of the segment, or NULL.
+//   - format (optional): storage for the Format of the values, or NULL.
+//   - startValue (optional): storage for the start value, or NULL.
+//   - stopValue (optional): storage for the stop value, or NULL.
 //
 func (query *Query) ParseSegment() (rate float64, format Format, startValue int64, stopValue int64) {
 	var _arg0 *C.GstQuery // out
@@ -1995,13 +2016,38 @@ func (query *Query) ParseSegment() (rate float64, format Format, startValue int6
 	return _rate, _format, _startValue, _stopValue
 }
 
+// ParseSelectable: get the results of a selectable query. See also
+// gst_query_set_selectable().
+//
+// The function returns the following values:
+//
+//   - selectable (optional): resulting stream selection capability.
+//
+func (query *Query) ParseSelectable() bool {
+	var _arg0 *C.GstQuery // out
+	var _arg1 C.gboolean  // in
+
+	_arg0 = (*C.GstQuery)(gextras.StructNative(unsafe.Pointer(query)))
+
+	C.gst_query_parse_selectable(_arg0, &_arg1)
+	runtime.KeepAlive(query)
+
+	var _selectable bool // out
+
+	if _arg1 != 0 {
+		_selectable = true
+	}
+
+	return _selectable
+}
+
 // ParseURI: parse an URI query, writing the URI into uri as a newly allocated
 // string, if the respective parameters are non-NULL. Free the string with
 // g_free() after usage.
 //
 // The function returns the following values:
 //
-//    - uri (optional): storage for the current URI (may be NULL).
+//   - uri (optional): storage for the current URI (may be NULL).
 //
 func (query *Query) ParseURI() string {
 	var _arg0 *C.GstQuery // out
@@ -2028,7 +2074,7 @@ func (query *Query) ParseURI() string {
 //
 // The function returns the following values:
 //
-//    - uri (optional): storage for the redirect URI (may be NULL).
+//   - uri (optional): storage for the redirect URI (may be NULL).
 //
 func (query *Query) ParseURIRedirection() string {
 	var _arg0 *C.GstQuery // out
@@ -2049,15 +2095,15 @@ func (query *Query) ParseURIRedirection() string {
 	return _uri
 }
 
-// ParseURIRedirectionPermanent: parse an URI query, and set permanent to TRUE
-// if there is a redirection and it should be considered permanent. If a
+// ParseURIRedirectionPermanent: parse an URI query, and set permanent to
+// TRUE if there is a redirection and it should be considered permanent. If a
 // redirection is permanent, applications should update their internal storage
 // of the URI, otherwise they should make all future requests to the original
 // URI.
 //
 // The function returns the following values:
 //
-//    - permanent (optional): if the URI redirection is permanent (may be NULL).
+//   - permanent (optional): if the URI redirection is permanent (may be NULL).
 //
 func (query *Query) ParseURIRedirectionPermanent() bool {
 	var _arg0 *C.GstQuery // out
@@ -2082,7 +2128,7 @@ func (query *Query) ParseURIRedirectionPermanent() bool {
 //
 // The function takes the following parameters:
 //
-//    - index: position in the metadata API array to remove.
+//   - index: position in the metadata API array to remove.
 //
 func (query *Query) RemoveNthAllocationMeta(index uint) {
 	var _arg0 *C.GstQuery // out
@@ -2101,7 +2147,7 @@ func (query *Query) RemoveNthAllocationMeta(index uint) {
 //
 // The function takes the following parameters:
 //
-//    - index: position in the allocation param array to remove.
+//   - index: position in the allocation param array to remove.
 //
 func (query *Query) RemoveNthAllocationParam(index uint) {
 	var _arg0 *C.GstQuery // out
@@ -2120,7 +2166,7 @@ func (query *Query) RemoveNthAllocationParam(index uint) {
 //
 // The function takes the following parameters:
 //
-//    - index: position in the allocation pool array to remove.
+//   - index: position in the allocation pool array to remove.
 //
 func (query *Query) RemoveNthAllocationPool(index uint) {
 	var _arg0 *C.GstQuery // out
@@ -2138,7 +2184,7 @@ func (query *Query) RemoveNthAllocationPool(index uint) {
 //
 // The function takes the following parameters:
 //
-//    - result to set.
+//   - result to set.
 //
 func (query *Query) SetAcceptCapsResult(result bool) {
 	var _arg0 *C.GstQuery // out
@@ -2160,7 +2206,7 @@ func (query *Query) SetAcceptCapsResult(result bool) {
 //
 // The function takes the following parameters:
 //
-//    - nominalBitrate: nominal bitrate in bits per second.
+//   - nominalBitrate: nominal bitrate in bits per second.
 //
 func (query *Query) SetBitrate(nominalBitrate uint) {
 	var _arg0 *C.GstQuery // out
@@ -2180,8 +2226,8 @@ func (query *Query) SetBitrate(nominalBitrate uint) {
 //
 // The function takes the following parameters:
 //
-//    - busy: if buffering is busy.
-//    - percent: buffering percent.
+//   - busy: if buffering is busy.
+//   - percent: buffering percent.
 //
 func (query *Query) SetBufferingPercent(busy bool, percent int) {
 	var _arg0 *C.GstQuery // out
@@ -2204,11 +2250,11 @@ func (query *Query) SetBufferingPercent(busy bool, percent int) {
 //
 // The function takes the following parameters:
 //
-//    - format to set for the start and stop values.
-//    - start to set.
-//    - stop to set.
-//    - estimatedTotal: estimated total amount of download time remaining in
-//      milliseconds.
+//   - format to set for the start and stop values.
+//   - start to set.
+//   - stop to set.
+//   - estimatedTotal: estimated total amount of download time remaining in
+//     milliseconds.
 //
 func (query *Query) SetBufferingRange(format Format, start int64, stop int64, estimatedTotal int64) {
 	var _arg0 *C.GstQuery // out
@@ -2235,10 +2281,10 @@ func (query *Query) SetBufferingRange(format Format, start int64, stop int64, es
 //
 // The function takes the following parameters:
 //
-//    - mode: buffering mode.
-//    - avgIn: average input rate.
-//    - avgOut: average output rate.
-//    - bufferingLeft: amount of buffering time left in milliseconds.
+//   - mode: buffering mode.
+//   - avgIn: average input rate.
+//   - avgOut: average output rate.
+//   - bufferingLeft: amount of buffering time left in milliseconds.
 //
 func (query *Query) SetBufferingStats(mode BufferingMode, avgIn int, avgOut int, bufferingLeft int64) {
 	var _arg0 *C.GstQuery        // out
@@ -2265,14 +2311,16 @@ func (query *Query) SetBufferingStats(mode BufferingMode, avgIn int, avgOut int,
 //
 // The function takes the following parameters:
 //
-//    - caps: pointer to the caps.
+//   - caps (optional): pointer to the caps.
 //
 func (query *Query) SetCapsResult(caps *Caps) {
 	var _arg0 *C.GstQuery // out
 	var _arg1 *C.GstCaps  // out
 
 	_arg0 = (*C.GstQuery)(gextras.StructNative(unsafe.Pointer(query)))
-	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
+	if caps != nil {
+		_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
+	}
 
 	C.gst_query_set_caps_result(_arg0, _arg1)
 	runtime.KeepAlive(query)
@@ -2283,14 +2331,16 @@ func (query *Query) SetCapsResult(caps *Caps) {
 //
 // The function takes the following parameters:
 //
-//    - context: requested Context.
+//   - context (optional): requested Context.
 //
 func (query *Query) SetContext(context *Context) {
 	var _arg0 *C.GstQuery   // out
 	var _arg1 *C.GstContext // out
 
 	_arg0 = (*C.GstQuery)(gextras.StructNative(unsafe.Pointer(query)))
-	_arg1 = (*C.GstContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg1 = (*C.GstContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 
 	C.gst_query_set_context(_arg0, _arg1)
 	runtime.KeepAlive(query)
@@ -2301,10 +2351,10 @@ func (query *Query) SetContext(context *Context) {
 //
 // The function takes the following parameters:
 //
-//    - srcFormat: source Format.
-//    - srcValue: source value.
-//    - destFormat: destination Format.
-//    - destValue: destination value.
+//   - srcFormat: source Format.
+//   - srcValue: source value.
+//   - destFormat: destination Format.
+//   - destValue: destination value.
 //
 func (query *Query) SetConvert(srcFormat Format, srcValue int64, destFormat Format, destValue int64) {
 	var _arg0 *C.GstQuery // out
@@ -2332,8 +2382,8 @@ func (query *Query) SetConvert(srcFormat Format, srcValue int64, destFormat Form
 //
 // The function takes the following parameters:
 //
-//    - format for the duration.
-//    - duration of the stream.
+//   - format for the duration.
+//   - duration of the stream.
 //
 func (query *Query) SetDuration(format Format, duration int64) {
 	var _arg0 *C.GstQuery // out
@@ -2355,7 +2405,7 @@ func (query *Query) SetDuration(format Format, duration int64) {
 //
 // The function takes the following parameters:
 //
-//    - formats: array containing n_formats GstFormat values.
+//   - formats: array containing n_formats GstFormat values.
 //
 func (query *Query) SetFormatsv(formats []Format) {
 	var _arg0 *C.GstQuery  // out
@@ -2378,9 +2428,9 @@ func (query *Query) SetFormatsv(formats []Format) {
 //
 // The function takes the following parameters:
 //
-//    - live: if there is a live element upstream.
-//    - minLatency: minimal latency of the upstream elements.
-//    - maxLatency: maximal latency of the upstream elements.
+//   - live: if there is a live element upstream.
+//   - minLatency: minimal latency of the upstream elements.
+//   - maxLatency: maximal latency of the upstream elements.
 //
 func (query *Query) SetLatency(live bool, minLatency ClockTime, maxLatency ClockTime) {
 	var _arg0 *C.GstQuery    // out
@@ -2392,12 +2442,8 @@ func (query *Query) SetLatency(live bool, minLatency ClockTime, maxLatency Clock
 	if live {
 		_arg1 = C.TRUE
 	}
-	_arg2 = C.guint64(minLatency)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(maxLatency)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(minLatency)
+	_arg3 = C.GstClockTime(maxLatency)
 
 	C.gst_query_set_latency(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(query)
@@ -2411,9 +2457,9 @@ func (query *Query) SetLatency(live bool, minLatency ClockTime, maxLatency Clock
 //
 // The function takes the following parameters:
 //
-//    - index: position in the allocator array to set.
-//    - allocator (optional): new allocator to set.
-//    - params (optional) parameters for the allocator.
+//   - index: position in the allocator array to set.
+//   - allocator (optional): new allocator to set.
+//   - params (optional) parameters for the allocator.
 //
 func (query *Query) SetNthAllocationParam(index uint, allocator Allocatorrer, params *AllocationParams) {
 	var _arg0 *C.GstQuery            // out
@@ -2441,11 +2487,11 @@ func (query *Query) SetNthAllocationParam(index uint, allocator Allocatorrer, pa
 //
 // The function takes the following parameters:
 //
-//    - index to modify.
-//    - pool (optional): BufferPool.
-//    - size: buffer size.
-//    - minBuffers: min buffers.
-//    - maxBuffers: max buffers.
+//   - index to modify.
+//   - pool (optional): BufferPool.
+//   - size: buffer size.
+//   - minBuffers: min buffers.
+//   - maxBuffers: max buffers.
 //
 func (query *Query) SetNthAllocationPool(index uint, pool *BufferPool, size uint, minBuffers uint, maxBuffers uint) {
 	var _arg0 *C.GstQuery      // out
@@ -2478,8 +2524,8 @@ func (query *Query) SetNthAllocationPool(index uint, pool *BufferPool, size uint
 //
 // The function takes the following parameters:
 //
-//    - format: requested Format.
-//    - cur: position to set.
+//   - format: requested Format.
+//   - cur: position to set.
 //
 func (query *Query) SetPosition(format Format, cur int64) {
 	var _arg0 *C.GstQuery // out
@@ -2500,10 +2546,10 @@ func (query *Query) SetPosition(format Format, cur int64) {
 //
 // The function takes the following parameters:
 //
-//    - flags: SchedulingFlags.
-//    - minsize: suggested minimum size of pull requests.
-//    - maxsize: suggested maximum size of pull requests.
-//    - align: suggested alignment of pull requests.
+//   - flags: SchedulingFlags.
+//   - minsize: suggested minimum size of pull requests.
+//   - maxsize: suggested maximum size of pull requests.
+//   - align: suggested alignment of pull requests.
 //
 func (query *Query) SetScheduling(flags SchedulingFlags, minsize int, maxsize int, align int) {
 	var _arg0 *C.GstQuery          // out
@@ -2530,10 +2576,10 @@ func (query *Query) SetScheduling(flags SchedulingFlags, minsize int, maxsize in
 //
 // The function takes the following parameters:
 //
-//    - format to set for the segment_start and segment_end values.
-//    - seekable flag to set.
-//    - segmentStart: segment_start to set.
-//    - segmentEnd: segment_end to set.
+//   - format to set for the segment_start and segment_end values.
+//   - seekable flag to set.
+//   - segmentStart: segment_start to set.
+//   - segmentEnd: segment_end to set.
 //
 func (query *Query) SetSeeking(format Format, seekable bool, segmentStart int64, segmentEnd int64) {
 	var _arg0 *C.GstQuery // out
@@ -2559,8 +2605,8 @@ func (query *Query) SetSeeking(format Format, seekable bool, segmentStart int64,
 }
 
 // SetSegment: answer a segment query by setting the requested values. The
-// normal playback segment of a pipeline is 0 to duration at the default rate of
-// 1.0. If a seek was performed on the pipeline to play a different segment,
+// normal playback segment of a pipeline is 0 to duration at the default rate
+// of 1.0. If a seek was performed on the pipeline to play a different segment,
 // this query will return the range specified in the last seek.
 //
 // start_value and stop_value will respectively contain the configured playback
@@ -2571,10 +2617,10 @@ func (query *Query) SetSeeking(format Format, seekable bool, segmentStart int64,
 //
 // The function takes the following parameters:
 //
-//    - rate of the segment.
-//    - format of the segment values (start_value and stop_value).
-//    - startValue: start value.
-//    - stopValue: stop value.
+//   - rate of the segment.
+//   - format of the segment values (start_value and stop_value).
+//   - startValue: start value.
+//   - stopValue: stop value.
 //
 func (query *Query) SetSegment(rate float64, format Format, startValue int64, stopValue int64) {
 	var _arg0 *C.GstQuery // out
@@ -2597,19 +2643,43 @@ func (query *Query) SetSegment(rate float64, format Format, startValue int64, st
 	runtime.KeepAlive(stopValue)
 }
 
+// SetSelectable: set the results of a selectable query. If the element
+// answering the query can handle stream selection, selectable should be set to
+// TRUE.
+//
+// The function takes the following parameters:
+//
+//   - selectable: whether the element can handle stream selection.
+//
+func (query *Query) SetSelectable(selectable bool) {
+	var _arg0 *C.GstQuery // out
+	var _arg1 C.gboolean  // out
+
+	_arg0 = (*C.GstQuery)(gextras.StructNative(unsafe.Pointer(query)))
+	if selectable {
+		_arg1 = C.TRUE
+	}
+
+	C.gst_query_set_selectable(_arg0, _arg1)
+	runtime.KeepAlive(query)
+	runtime.KeepAlive(selectable)
+}
+
 // SetURI: answer a URI query by setting the requested URI.
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to set.
+//   - uri (optional): URI to set.
 //
 func (query *Query) SetURI(uri string) {
 	var _arg0 *C.GstQuery // out
 	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GstQuery)(gextras.StructNative(unsafe.Pointer(query)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if uri != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gst_query_set_uri(_arg0, _arg1)
 	runtime.KeepAlive(query)
@@ -2621,15 +2691,17 @@ func (query *Query) SetURI(uri string) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to set.
+//   - uri (optional): URI to set.
 //
 func (query *Query) SetURIRedirection(uri string) {
 	var _arg0 *C.GstQuery // out
 	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GstQuery)(gextras.StructNative(unsafe.Pointer(query)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if uri != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gst_query_set_uri_redirection(_arg0, _arg1)
 	runtime.KeepAlive(query)
@@ -2641,7 +2713,7 @@ func (query *Query) SetURIRedirection(uri string) {
 //
 // The function takes the following parameters:
 //
-//    - permanent: whether the redirect is permanent or not.
+//   - permanent: whether the redirect is permanent or not.
 //
 func (query *Query) SetURIRedirectionPermanent(permanent bool) {
 	var _arg0 *C.GstQuery // out
@@ -2663,8 +2735,8 @@ func (query *Query) SetURIRedirectionPermanent(permanent bool) {
 //
 // The function returns the following values:
 //
-//    - structure of the query. The structure is still owned by the query and
-//      will therefore be freed when the query is unreffed.
+//   - structure of the query. The structure is still owned by the query and
+//     will therefore be freed when the query is unreffed.
 //
 func (query *Query) WritableStructure() *Structure {
 	var _arg0 *C.GstQuery     // out

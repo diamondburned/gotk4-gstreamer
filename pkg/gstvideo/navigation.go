@@ -18,6 +18,9 @@ import (
 // void _gotk4_gstvideo1_Navigation_virtual_send_event(void* fnptr, GstNavigation* arg0, GstStructure* arg1) {
 //   ((void (*)(GstNavigation*, GstStructure*))(fnptr))(arg0, arg1);
 // };
+// void _gotk4_gstvideo1_Navigation_virtual_send_event_simple(void* fnptr, GstNavigation* arg0, GstEvent* arg1) {
+//   ((void (*)(GstNavigation*, GstEvent*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -43,8 +46,8 @@ func init() {
 // the Navigation interface. The available commands can be queried via the
 // gst_navigation_query_new_commands() query.
 //
-// For convenience in handling DVD navigation, the MENU commands are aliased as:
-// GST_NAVIGATION_COMMAND_DVD_MENU = GST_NAVIGATION_COMMAND_MENU1
+// For convenience in handling DVD navigation, the MENU commands are aliased
+// as: GST_NAVIGATION_COMMAND_DVD_MENU = GST_NAVIGATION_COMMAND_MENU1
 // GST_NAVIGATION_COMMAND_DVD_TITLE_MENU = GST_NAVIGATION_COMMAND_MENU2
 // GST_NAVIGATION_COMMAND_DVD_ROOT_MENU = GST_NAVIGATION_COMMAND_MENU3
 // GST_NAVIGATION_COMMAND_DVD_SUBPICTURE_MENU = GST_NAVIGATION_COMMAND_MENU4
@@ -56,32 +59,32 @@ type NavigationCommand C.gint
 const (
 	// NavigationCommandInvalid: invalid command entry.
 	NavigationCommandInvalid NavigationCommand = 0
-	// NavigationCommandMenu1: execute navigation menu command 1. For DVD, this
-	// enters the DVD root menu, or exits back to the title from the menu.
+	// NavigationCommandMenu1: execute navigation menu command 1. For DVD,
+	// this enters the DVD root menu, or exits back to the title from the menu.
 	NavigationCommandMenu1 NavigationCommand = 1
-	// NavigationCommandMenu2: execute navigation menu command 2. For DVD, this
-	// jumps to the DVD title menu.
+	// NavigationCommandMenu2: execute navigation menu command 2. For DVD,
+	// this jumps to the DVD title menu.
 	NavigationCommandMenu2 NavigationCommand = 2
-	// NavigationCommandMenu3: execute navigation menu command 3. For DVD, this
-	// jumps into the DVD root menu.
+	// NavigationCommandMenu3: execute navigation menu command 3. For DVD,
+	// this jumps into the DVD root menu.
 	NavigationCommandMenu3 NavigationCommand = 3
-	// NavigationCommandMenu4: execute navigation menu command 4. For DVD, this
-	// jumps to the Subpicture menu.
+	// NavigationCommandMenu4: execute navigation menu command 4. For DVD,
+	// this jumps to the Subpicture menu.
 	NavigationCommandMenu4 NavigationCommand = 4
-	// NavigationCommandMenu5: execute navigation menu command 5. For DVD, the
-	// jumps to the audio menu.
+	// NavigationCommandMenu5: execute navigation menu command 5. For DVD,
+	// the jumps to the audio menu.
 	NavigationCommandMenu5 NavigationCommand = 5
-	// NavigationCommandMenu6: execute navigation menu command 6. For DVD, this
-	// jumps to the angles menu.
+	// NavigationCommandMenu6: execute navigation menu command 6. For DVD,
+	// this jumps to the angles menu.
 	NavigationCommandMenu6 NavigationCommand = 6
-	// NavigationCommandMenu7: execute navigation menu command 7. For DVD, this
-	// jumps to the chapter menu.
+	// NavigationCommandMenu7: execute navigation menu command 7. For DVD,
+	// this jumps to the chapter menu.
 	NavigationCommandMenu7 NavigationCommand = 7
-	// NavigationCommandLeft: select the next button to the left in a menu, if
-	// such a button exists.
+	// NavigationCommandLeft: select the next button to the left in a menu,
+	// if such a button exists.
 	NavigationCommandLeft NavigationCommand = 20
-	// NavigationCommandRight: select the next button to the right in a menu, if
-	// such a button exists.
+	// NavigationCommandRight: select the next button to the right in a menu,
+	// if such a button exists.
 	NavigationCommandRight NavigationCommand = 21
 	// NavigationCommandUp: select the button above the current one in a menu,
 	// if such a button exists.
@@ -143,7 +146,9 @@ func (n NavigationCommand) String() string {
 }
 
 // NavigationEventType: enum values for the various events that an element
-// implementing the GstNavigation interface might send up the pipeline.
+// implementing the GstNavigation interface might send up the pipeline. Touch
+// events have been inspired by the libinput API, and have the same meaning
+// here.
 type NavigationEventType C.gint
 
 const (
@@ -178,6 +183,27 @@ const (
 	// gst_navigation_event_parse_mouse_scroll_event() to extract the details
 	// from the event.
 	NavigationEventMouseScroll
+	// NavigationEventTouchDown: event describing a new touch point, which will
+	// be assigned an identifier that is unique to it for the duration of its
+	// movement on the screen. Use gst_navigation_event_parse_touch_event() to
+	// extract the details from the event.
+	NavigationEventTouchDown
+	// NavigationEventTouchMotion: event describing the
+	// movement of an active touch point across the screen. Use
+	// gst_navigation_event_parse_touch_event() to extract the details from the
+	// event.
+	NavigationEventTouchMotion
+	// NavigationEventTouchUp: event describing a removed touch point.
+	// After this event, its identifier may be reused for any new touch points.
+	// Use gst_navigation_event_parse_touch_up_event() to extract the details
+	// from the event.
+	NavigationEventTouchUp
+	// NavigationEventTouchFrame: event signaling the end of a sequence of
+	// simultaneous touch events.
+	NavigationEventTouchFrame
+	// NavigationEventTouchCancel: event cancelling all currently active touch
+	// points.
+	NavigationEventTouchCancel
 )
 
 func marshalNavigationEventType(p uintptr) (interface{}, error) {
@@ -203,6 +229,16 @@ func (n NavigationEventType) String() string {
 		return "Command"
 	case NavigationEventMouseScroll:
 		return "MouseScroll"
+	case NavigationEventTouchDown:
+		return "TouchDown"
+	case NavigationEventTouchMotion:
+		return "TouchMotion"
+	case NavigationEventTouchUp:
+		return "TouchUp"
+	case NavigationEventTouchFrame:
+		return "TouchFrame"
+	case NavigationEventTouchCancel:
+		return "TouchCancel"
 	default:
 		return fmt.Sprintf("NavigationEventType(%d)", n)
 	}
@@ -284,18 +320,18 @@ func (n NavigationQueryType) String() string {
 }
 
 // Navigation interface is used for creating and injecting navigation related
-// events such as mouse button presses, cursor motion and key presses. The
-// associated library also provides methods for parsing received events, and for
-// sending and receiving navigation related bus events. One main usecase is DVD
-// menu navigation.
+// events such as mouse button presses, cursor motion and key presses.
+// The associated library also provides methods for parsing received events,
+// and for sending and receiving navigation related bus events. One main usecase
+// is DVD menu navigation.
 //
 // The main parts of the API are:
 //
 // * The GstNavigation interface, implemented by elements which provide an
-// application with the ability to create and inject navigation events into the
-// pipeline. * GstNavigation event handling API. GstNavigation events are
-// created in response to calls on a GstNavigation interface implementation, and
-// sent in the pipeline. Upstream elements can use the navigation event API
+// application with the ability to create and inject navigation events into
+// the pipeline. * GstNavigation event handling API. GstNavigation events are
+// created in response to calls on a GstNavigation interface implementation,
+// and sent in the pipeline. Upstream elements can use the navigation event API
 // functions to parse the contents of received messages.
 //
 // * GstNavigation message handling API. GstNavigation messages may be sent on
@@ -324,6 +360,8 @@ type Navigationer interface {
 	// SendCommand sends the indicated command to the navigation interface.
 	SendCommand(command NavigationCommand)
 	SendEvent(structure *gst.Structure)
+	// SendEventSimple sends an event to the navigation interface.
+	SendEventSimple(event *gst.Event)
 	SendKeyEvent(event, key string)
 	// SendMouseEvent sends a mouse event to the navigation interface.
 	SendMouseEvent(event string, button int, x, y float64)
@@ -348,7 +386,7 @@ func marshalNavigation(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - command to issue.
+//   - command to issue.
 //
 func (navigation *Navigation) SendCommand(command NavigationCommand) {
 	var _arg0 *C.GstNavigation       // out
@@ -376,12 +414,31 @@ func (navigation *Navigation) SendEvent(structure *gst.Structure) {
 	runtime.KeepAlive(structure)
 }
 
+// SendEventSimple sends an event to the navigation interface.
+//
 // The function takes the following parameters:
 //
-//    - event: type of the key event. Recognised values are "key-press" and
-//      "key-release".
-//    - key: character representation of the key. This is typically as produced
-//      by XKeysymToString.
+//   - event to send.
+//
+func (navigation *Navigation) SendEventSimple(event *gst.Event) {
+	var _arg0 *C.GstNavigation // out
+	var _arg1 *C.GstEvent      // out
+
+	_arg0 = (*C.GstNavigation)(unsafe.Pointer(coreglib.InternObject(navigation).Native()))
+	_arg1 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(event)), nil)
+
+	C.gst_navigation_send_event_simple(_arg0, _arg1)
+	runtime.KeepAlive(navigation)
+	runtime.KeepAlive(event)
+}
+
+// The function takes the following parameters:
+//
+//   - event: type of the key event. Recognised values are "key-press" and
+//     "key-release".
+//   - key: character representation of the key. This is typically as produced
+//     by XKeysymToString.
 //
 func (navigation *Navigation) SendKeyEvent(event, key string) {
 	var _arg0 *C.GstNavigation // out
@@ -407,12 +464,12 @@ func (navigation *Navigation) SendKeyEvent(event, key string) {
 //
 // The function takes the following parameters:
 //
-//    - event: type of mouse event, as a text string. Recognised values are
-//      "mouse-button-press", "mouse-button-release" and "mouse-move".
-//    - button number of the button being pressed or released. Pass 0 for
-//      mouse-move events.
-//    - x coordinate of the mouse event.
-//    - y coordinate of the mouse event.
+//   - event: type of mouse event, as a text string. Recognised values are
+//     "mouse-button-press", "mouse-button-release" and "mouse-move".
+//   - button number of the button being pressed or released. Pass 0 for
+//     mouse-move events.
+//   - x coordinate of the mouse event.
+//   - y coordinate of the mouse event.
 //
 func (navigation *Navigation) SendMouseEvent(event string, button int, x, y float64) {
 	var _arg0 *C.GstNavigation // out
@@ -443,10 +500,10 @@ func (navigation *Navigation) SendMouseEvent(event string, button int, x, y floa
 //
 // The function takes the following parameters:
 //
-//    - x coordinate of the mouse event.
-//    - y coordinate of the mouse event.
-//    - deltaX: delta_x coordinate of the mouse event.
-//    - deltaY: delta_y coordinate of the mouse event.
+//   - x coordinate of the mouse event.
+//   - y coordinate of the mouse event.
+//   - deltaX: delta_x coordinate of the mouse event.
+//   - deltaY: delta_y coordinate of the mouse event.
 //
 func (navigation *Navigation) SendMouseScrollEvent(x, y, deltaX, deltaY float64) {
 	var _arg0 *C.GstNavigation // out
@@ -469,6 +526,10 @@ func (navigation *Navigation) SendMouseScrollEvent(x, y, deltaX, deltaY float64)
 	runtime.KeepAlive(deltaY)
 }
 
+// sendEvent: sending a navigation event.
+//
+// Deprecated: Use NavigationInterface.send_event_simple() instead.
+//
 // The function takes the following parameters:
 //
 func (navigation *Navigation) sendEvent(structure *gst.Structure) {
@@ -486,13 +547,35 @@ func (navigation *Navigation) sendEvent(structure *gst.Structure) {
 	runtime.KeepAlive(structure)
 }
 
-// NavigationEventGetType: inspect a Event and return the NavigationEventType of
-// the event, or T_NAVIGATION_EVENT_INVALID if the event is not a Navigation
+// sendEventSimple sends an event to the navigation interface.
+//
+// The function takes the following parameters:
+//
+//   - event to send.
+//
+func (navigation *Navigation) sendEventSimple(event *gst.Event) {
+	gclass := (*C.GstNavigationInterface)(coreglib.PeekParentClass(navigation))
+	fnarg := gclass.send_event_simple
+
+	var _arg0 *C.GstNavigation // out
+	var _arg1 *C.GstEvent      // out
+
+	_arg0 = (*C.GstNavigation)(unsafe.Pointer(coreglib.InternObject(navigation).Native()))
+	_arg1 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(event)), nil)
+
+	C._gotk4_gstvideo1_Navigation_virtual_send_event_simple(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(navigation)
+	runtime.KeepAlive(event)
+}
+
+// NavigationEventGetType: inspect a Event and return the NavigationEventType
+// of the event, or T_NAVIGATION_EVENT_INVALID if the event is not a Navigation
 // event.
 //
 // The function takes the following parameters:
 //
-//    - event to inspect.
+//   - event to inspect.
 //
 // The function returns the following values:
 //
@@ -517,13 +600,13 @@ func NavigationEventGetType(event *gst.Event) NavigationEventType {
 //
 // The function takes the following parameters:
 //
-//    - event to inspect.
+//   - event to inspect.
 //
 // The function returns the following values:
 //
-//    - command (optional): pointer to GstNavigationCommand to receive the type
-//      of the navigation event.
-//    - ok: TRUE if the navigation command could be extracted, otherwise FALSE.
+//   - command (optional): pointer to GstNavigationCommand to receive the type
+//     of the navigation event.
+//   - ok: TRUE if the navigation command could be extracted, otherwise FALSE.
 //
 func NavigationEventParseCommand(event *gst.Event) (NavigationCommand, bool) {
 	var _arg1 *C.GstEvent            // out
@@ -546,16 +629,21 @@ func NavigationEventParseCommand(event *gst.Event) (NavigationCommand, bool) {
 	return _command, _ok
 }
 
+// NavigationEventParseKeyEvent: note: Modifier keys (as defined in
+// NavigationModifierType) press (GST_NAVIGATION_EVENT_KEY_PRESS) and release
+// (GST_NAVIGATION_KEY_PRESS) events are generated even if those states are
+// present on all other related events.
+//
 // The function takes the following parameters:
 //
-//    - event to inspect.
+//   - event to inspect.
 //
 // The function returns the following values:
 //
-//    - key (optional): pointer to a location to receive the string identifying
-//      the key press. The returned string is owned by the event, and valid only
-//      until the event is unreffed.
-//    - ok
+//   - key (optional): pointer to a location to receive the string identifying
+//     the key press. The returned string is owned by the event, and valid only
+//     until the event is unreffed.
+//   - ok
 //
 func NavigationEventParseKeyEvent(event *gst.Event) (string, bool) {
 	var _arg1 *C.GstEvent // out
@@ -580,25 +668,25 @@ func NavigationEventParseKeyEvent(event *gst.Event) (string, bool) {
 	return _key, _ok
 }
 
-// NavigationEventParseMouseButtonEvent: retrieve the details of either a
-// Navigation mouse button press event or a mouse button release event.
+// NavigationEventParseMouseButtonEvent: retrieve the details of either
+// a Navigation mouse button press event or a mouse button release event.
 // Determine which type the event is using gst_navigation_event_get_type() to
 // retrieve the NavigationEventType.
 //
 // The function takes the following parameters:
 //
-//    - event to inspect.
+//   - event to inspect.
 //
 // The function returns the following values:
 //
-//    - button (optional): pointer to a gint that will receive the button number
-//      associated with the event.
-//    - x (optional): pointer to a gdouble to receive the x coordinate of the
-//      mouse button event.
-//    - y (optional): pointer to a gdouble to receive the y coordinate of the
-//      mouse button event.
-//    - ok: TRUE if the button number and both coordinates could be extracted,
-//      otherwise FALSE.
+//   - button (optional): pointer to a gint that will receive the button number
+//     associated with the event.
+//   - x (optional): pointer to a gdouble to receive the x coordinate of the
+//     mouse button event.
+//   - y (optional): pointer to a gdouble to receive the y coordinate of the
+//     mouse button event.
+//   - ok: TRUE if the button number and both coordinates could be extracted,
+//     otherwise FALSE.
 //
 func NavigationEventParseMouseButtonEvent(event *gst.Event) (button int, x, y float64, ok bool) {
 	var _arg1 *C.GstEvent // out
@@ -632,15 +720,15 @@ func NavigationEventParseMouseButtonEvent(event *gst.Event) (button int, x, y fl
 //
 // The function takes the following parameters:
 //
-//    - event to inspect.
+//   - event to inspect.
 //
 // The function returns the following values:
 //
-//    - x (optional): pointer to a gdouble to receive the x coordinate of the
-//      mouse movement.
-//    - y (optional): pointer to a gdouble to receive the y coordinate of the
-//      mouse movement.
-//    - ok: TRUE if both coordinates could be extracted, otherwise FALSE.
+//   - x (optional): pointer to a gdouble to receive the x coordinate of the
+//     mouse movement.
+//   - y (optional): pointer to a gdouble to receive the y coordinate of the
+//     mouse movement.
+//   - ok: TRUE if both coordinates could be extracted, otherwise FALSE.
 //
 func NavigationEventParseMouseMoveEvent(event *gst.Event) (x, y float64, ok bool) {
 	var _arg1 *C.GstEvent // out
@@ -672,13 +760,13 @@ func NavigationEventParseMouseMoveEvent(event *gst.Event) (x, y float64, ok bool
 //
 // The function takes the following parameters:
 //
-//    - message to inspect.
+//   - message to inspect.
 //
 // The function returns the following values:
 //
-//    - navigationMessageType: type of the Message, or
-//      T_NAVIGATION_MESSAGE_INVALID if the message is not a Navigation
-//      notification.
+//   - navigationMessageType: type of the Message, or
+//     T_NAVIGATION_MESSAGE_INVALID if the message is not a Navigation
+//     notification.
 //
 func NavigationMessageGetType(message *gst.Message) NavigationMessageType {
 	var _arg1 *C.GstMessage              // out
@@ -703,13 +791,13 @@ func NavigationMessageGetType(message *gst.Message) NavigationMessageType {
 //
 // The function takes the following parameters:
 //
-//    - src to set as source of the new message.
-//    - curAngle: currently selected angle.
-//    - nAngles: number of viewing angles now available.
+//   - src to set as source of the new message.
+//   - curAngle: currently selected angle.
+//   - nAngles: number of viewing angles now available.
 //
 // The function returns the following values:
 //
-//    - message: new Message.
+//   - message: new Message.
 //
 func NavigationMessageNewAnglesChanged(src gst.GstObjector, curAngle, nAngles uint) *gst.Message {
 	var _arg1 *C.GstObject  // out
@@ -744,11 +832,11 @@ func NavigationMessageNewAnglesChanged(src gst.GstObjector, curAngle, nAngles ui
 //
 // The function takes the following parameters:
 //
-//    - src to set as source of the new message.
+//   - src to set as source of the new message.
 //
 // The function returns the following values:
 //
-//    - message: new Message.
+//   - message: new Message.
 //
 func NavigationMessageNewCommandsChanged(src gst.GstObjector) *gst.Message {
 	var _arg1 *C.GstObject  // out
@@ -777,13 +865,13 @@ func NavigationMessageNewCommandsChanged(src gst.GstObjector) *gst.Message {
 //
 // The function takes the following parameters:
 //
-//    - src to set as source of the new message.
-//    - active: TRUE if the mouse has entered a clickable area of the display.
-//      FALSE if it over a non-clickable area.
+//   - src to set as source of the new message.
+//   - active: TRUE if the mouse has entered a clickable area of the display.
+//     FALSE if it over a non-clickable area.
 //
 // The function returns the following values:
 //
-//    - message: new Message.
+//   - message: new Message.
 //
 func NavigationMessageNewMouseOver(src gst.GstObjector, active bool) *gst.Message {
 	var _arg1 *C.GstObject  // out
@@ -818,15 +906,15 @@ func NavigationMessageNewMouseOver(src gst.GstObjector, active bool) *gst.Messag
 //
 // The function takes the following parameters:
 //
-//    - message to inspect.
+//   - message to inspect.
 //
 // The function returns the following values:
 //
-//    - curAngle (optional): pointer to a #guint to receive the new current angle
-//      number, or NULL.
-//    - nAngles (optional): pointer to a #guint to receive the new angle count,
-//      or NULL.
-//    - ok: TRUE if the message could be successfully parsed. FALSE if not.
+//   - curAngle (optional): pointer to a #guint to receive the new current angle
+//     number, or NULL.
+//   - nAngles (optional): pointer to a #guint to receive the new angle count,
+//     or NULL.
+//   - ok: TRUE if the message could be successfully parsed. FALSE if not.
 //
 func NavigationMessageParseAnglesChanged(message *gst.Message) (curAngle, nAngles uint, ok bool) {
 	var _arg1 *C.GstMessage // out
@@ -853,19 +941,19 @@ func NavigationMessageParseAnglesChanged(message *gst.Message) (curAngle, nAngle
 }
 
 // NavigationMessageParseMouseOver: parse a Navigation message of type
-// T_NAVIGATION_MESSAGE_MOUSE_OVER and extract the active/inactive flag. If the
-// mouse over event is marked active, it indicates that the mouse is over a
-// clickable area.
+// T_NAVIGATION_MESSAGE_MOUSE_OVER and extract the active/inactive flag.
+// If the mouse over event is marked active, it indicates that the mouse is over
+// a clickable area.
 //
 // The function takes the following parameters:
 //
-//    - message to inspect.
+//   - message to inspect.
 //
 // The function returns the following values:
 //
-//    - active (optional): pointer to a gboolean to receive the active/inactive
-//      state, or NULL.
-//    - ok: TRUE if the message could be successfully parsed. FALSE if not.
+//   - active (optional): pointer to a gboolean to receive the active/inactive
+//     state, or NULL.
+//   - ok: TRUE if the message could be successfully parsed. FALSE if not.
 //
 func NavigationMessageParseMouseOver(message *gst.Message) (active, ok bool) {
 	var _arg1 *C.GstMessage // out
@@ -895,11 +983,11 @@ func NavigationMessageParseMouseOver(message *gst.Message) (active, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - query to inspect.
+//   - query to inspect.
 //
 // The function returns the following values:
 //
-//    - navigationQueryType of the query, or T_NAVIGATION_QUERY_INVALID.
+//   - navigationQueryType of the query, or T_NAVIGATION_QUERY_INVALID.
 //
 func NavigationQueryGetType(query *gst.Query) NavigationQueryType {
 	var _arg1 *C.GstQuery              // out
@@ -923,7 +1011,7 @@ func NavigationQueryGetType(query *gst.Query) NavigationQueryType {
 //
 // The function returns the following values:
 //
-//    - query: new query.
+//   - query: new query.
 //
 func NavigationQueryNewAngles() *gst.Query {
 	var _cret *C.GstQuery // in
@@ -943,13 +1031,13 @@ func NavigationQueryNewAngles() *gst.Query {
 	return _query
 }
 
-// NavigationQueryNewCommands: create a new Navigation commands query. When
-// executed, it will query the pipeline for the set of currently available
+// NavigationQueryNewCommands: create a new Navigation commands query.
+// When executed, it will query the pipeline for the set of currently available
 // commands.
 //
 // The function returns the following values:
 //
-//    - query: new query.
+//   - query: new query.
 //
 func NavigationQueryNewCommands() *gst.Query {
 	var _cret *C.GstQuery // in
@@ -970,21 +1058,21 @@ func NavigationQueryNewCommands() *gst.Query {
 }
 
 // NavigationQueryParseAngles: parse the current angle number in the Navigation
-// angles query into the #guint pointed to by the cur_angle variable, and the
-// number of available angles into the #guint pointed to by the n_angles
+// angles query into the #guint pointed to by the cur_angle variable,
+// and the number of available angles into the #guint pointed to by the n_angles
 // variable.
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
+//   - query: Query.
 //
 // The function returns the following values:
 //
-//    - curAngle (optional): pointer to a #guint into which to store the
-//      currently selected angle value from the query, or NULL.
-//    - nAngles (optional): pointer to a #guint into which to store the number of
-//      angles value from the query, or NULL.
-//    - ok: TRUE if the query could be successfully parsed. FALSE if not.
+//   - curAngle (optional): pointer to a #guint into which to store the
+//     currently selected angle value from the query, or NULL.
+//   - nAngles (optional): pointer to a #guint into which to store the number of
+//     angles value from the query, or NULL.
+//   - ok: TRUE if the query could be successfully parsed. FALSE if not.
 //
 func NavigationQueryParseAngles(query *gst.Query) (curAngle, nAngles uint, ok bool) {
 	var _arg1 *C.GstQuery // out
@@ -1015,12 +1103,12 @@ func NavigationQueryParseAngles(query *gst.Query) (curAngle, nAngles uint, ok bo
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
+//   - query: Query.
 //
 // The function returns the following values:
 //
-//    - nCmds (optional): number of commands in this query.
-//    - ok: TRUE if the query could be successfully parsed. FALSE if not.
+//   - nCmds (optional): number of commands in this query.
+//   - ok: TRUE if the query could be successfully parsed. FALSE if not.
 //
 func NavigationQueryParseCommandsLength(query *gst.Query) (uint, bool) {
 	var _arg1 *C.GstQuery // out
@@ -1049,13 +1137,13 @@ func NavigationQueryParseCommandsLength(query *gst.Query) (uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
-//    - nth command to retrieve.
+//   - query: Query.
+//   - nth command to retrieve.
 //
 // The function returns the following values:
 //
-//    - cmd (optional): pointer to store the nth command into.
-//    - ok: TRUE if the query could be successfully parsed. FALSE if not.
+//   - cmd (optional): pointer to store the nth command into.
+//   - ok: TRUE if the query could be successfully parsed. FALSE if not.
 //
 func NavigationQueryParseCommandsNth(query *gst.Query, nth uint) (NavigationCommand, bool) {
 	var _arg1 *C.GstQuery            // out
@@ -1086,9 +1174,9 @@ func NavigationQueryParseCommandsNth(query *gst.Query, nth uint) (NavigationComm
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
-//    - curAngle: current viewing angle to set.
-//    - nAngles: number of viewing angles to set.
+//   - query: Query.
+//   - curAngle: current viewing angle to set.
+//   - nAngles: number of viewing angles to set.
 //
 func NavigationQuerySetAngles(query *gst.Query, curAngle, nAngles uint) {
 	var _arg1 *C.GstQuery // out
@@ -1110,8 +1198,8 @@ func NavigationQuerySetAngles(query *gst.Query, curAngle, nAngles uint) {
 //
 // The function takes the following parameters:
 //
-//    - query: Query.
-//    - cmds: array containing n_cmds GstNavigationCommand values.
+//   - query: Query.
+//   - cmds: array containing n_cmds GstNavigationCommand values.
 //
 func NavigationQuerySetCommandsv(query *gst.Query, cmds []NavigationCommand) {
 	var _arg1 *C.GstQuery             // out

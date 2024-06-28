@@ -20,14 +20,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context to use for transforming caps.
-//    - direction: PadDirection.
-//    - caps of direction.
-//    - other to fixate.
+//   - context to use for transforming caps.
+//   - direction: PadDirection.
+//   - caps of direction.
+//   - other to fixate.
 //
 // The function returns the following values:
 //
-//    - ret: fixated Caps.
+//   - ret: fixated Caps.
 //
 func GLColorConvertFixateCaps(context GLContexter, direction gst.PadDirection, caps, other *gst.Caps) *gst.Caps {
 	var _arg1 *C.GstGLContext   // out

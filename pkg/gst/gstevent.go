@@ -216,11 +216,11 @@ func (e EventType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - typ: EventType.
+//   - typ: EventType.
 //
 // The function returns the following values:
 //
-//    - eventTypeFlags: EventTypeFlags.
+//   - eventTypeFlags: EventTypeFlags.
 //
 func EventTypeGetFlags(typ EventType) EventTypeFlags {
 	var _arg1 C.GstEventType      // out
@@ -243,11 +243,11 @@ func EventTypeGetFlags(typ EventType) EventTypeFlags {
 //
 // The function takes the following parameters:
 //
-//    - typ: event type.
+//   - typ: event type.
 //
 // The function returns the following values:
 //
-//    - utf8: reference to the static name of the event.
+//   - utf8: reference to the static name of the event.
 //
 func EventTypeGetName(typ EventType) string {
 	var _arg1 C.GstEventType // out
@@ -269,11 +269,11 @@ func EventTypeGetName(typ EventType) string {
 //
 // The function takes the following parameters:
 //
-//    - typ: event type.
+//   - typ: event type.
 //
 // The function returns the following values:
 //
-//    - quark associated with the event type.
+//   - quark associated with the event type.
 //
 func EventTypeToQuark(typ EventType) glib.Quark {
 	var _arg1 C.GstEventType // out
@@ -286,9 +286,7 @@ func EventTypeToQuark(typ EventType) glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -329,8 +327,8 @@ func (q QOSType) String() string {
 	}
 }
 
-// EventTypeFlags indicate the aspects of the different EventType values. You
-// can get the type flags of a EventType with the gst_event_type_get_flags()
+// EventTypeFlags indicate the aspects of the different EventType values.
+// You can get the type flags of a EventType with the gst_event_type_get_flags()
 // function.
 type EventTypeFlags C.guint
 
@@ -495,15 +493,13 @@ func NewEventCaps(caps *Caps) *Event {
 
 	var _event *Event // out
 
-	if _cret != nil {
-		_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_event)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _event
 }
@@ -524,15 +520,13 @@ func NewEventCustom(typ EventType, structure *Structure) *Event {
 
 	var _event *Event // out
 
-	if _cret != nil {
-		_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_event)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _event
 }
@@ -606,12 +600,8 @@ func NewEventGap(timestamp ClockTime, duration ClockTime) *Event {
 	var _arg2 C.GstClockTime // out
 	var _cret *C.GstEvent    // in
 
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(duration)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
+	_arg2 = C.GstClockTime(duration)
 
 	_cret = C.gst_event_new_gap(_arg1, _arg2)
 	runtime.KeepAlive(timestamp)
@@ -664,12 +654,8 @@ func NewEventInstantRateSyncTime(rateMultiplier float64, runningTime ClockTime, 
 	var _cret *C.GstEvent    // in
 
 	_arg1 = C.gdouble(rateMultiplier)
-	_arg2 = C.guint64(runningTime)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(upstreamRunningTime)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(runningTime)
+	_arg3 = C.GstClockTime(upstreamRunningTime)
 
 	_cret = C.gst_event_new_instant_rate_sync_time(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(rateMultiplier)
@@ -694,9 +680,7 @@ func NewEventLatency(latency ClockTime) *Event {
 	var _arg1 C.GstClockTime // out
 	var _cret *C.GstEvent    // in
 
-	_arg1 = C.guint64(latency)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(latency)
 
 	_cret = C.gst_event_new_latency(_arg1)
 	runtime.KeepAlive(latency)
@@ -779,12 +763,8 @@ func NewEventQos(typ QOSType, proportion float64, diff ClockTimeDiff, timestamp 
 
 	_arg1 = C.GstQOSType(typ)
 	_arg2 = C.gdouble(proportion)
-	_arg3 = C.gint64(diff)
-	type _ = ClockTimeDiff
-	type _ = int64
-	_arg4 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
+	_arg3 = C.GstClockTimeDiff(diff)
+	_arg4 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_event_new_qos(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(typ)
@@ -794,15 +774,13 @@ func NewEventQos(typ QOSType, proportion float64, diff ClockTimeDiff, timestamp 
 
 	var _event *Event // out
 
-	if _cret != nil {
-		_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_event)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _event
 }
@@ -856,15 +834,13 @@ func NewEventSeek(rate float64, format Format, flags SeekFlags, startType SeekTy
 
 	var _event *Event // out
 
-	if _cret != nil {
-		_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_event)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _event
 }
@@ -881,15 +857,13 @@ func NewEventSegment(segment *Segment) *Event {
 
 	var _event *Event // out
 
-	if _cret != nil {
-		_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_event)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _event
 }
@@ -1005,15 +979,13 @@ func NewEventStep(format Format, amount uint64, rate float64, flush bool, interm
 
 	var _event *Event // out
 
-	if _cret != nil {
-		_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_event)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _event
 }
@@ -1074,6 +1046,30 @@ func NewEventStreamStart(streamId string) *Event {
 
 	_cret = C.gst_event_new_stream_start(_arg1)
 	runtime.KeepAlive(streamId)
+
+	var _event *Event // out
+
+	_event = (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _event
+}
+
+// NewEventTag constructs a struct Event.
+func NewEventTag(taglist *TagList) *Event {
+	var _arg1 *C.GstTagList // out
+	var _cret *C.GstEvent   // in
+
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(taglist)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(taglist)), nil)
+
+	_cret = C.gst_event_new_tag(_arg1)
+	runtime.KeepAlive(taglist)
 
 	var _event *Event // out
 
@@ -1175,7 +1171,7 @@ func (e *Event) SetTimestamp(timestamp uint64) {
 //
 // The function takes the following parameters:
 //
-//    - segment: pointer to a Segment.
+//   - segment: pointer to a Segment.
 //
 func (event *Event) CopySegment(segment *Segment) {
 	var _arg0 *C.GstEvent   // out
@@ -1195,14 +1191,14 @@ func (event *Event) CopySegment(segment *Segment) {
 // gst_pad_set_offset() will get their offset adjusted according to the pad's
 // offset.
 //
-// If the event contains any information that related to the running time, this
-// information will need to be updated before usage with this offset.
+// If the event contains any information that related to the running time,
+// this information will need to be updated before usage with this offset.
 //
 // The function returns the following values:
 //
-//    - gint64 event's running time offset
+//   - gint64 event's running time offset
 //
-//      MT safe.
+//     MT safe.
 //
 func (event *Event) RunningTimeOffset() int64 {
 	var _arg0 *C.GstEvent // out
@@ -1225,19 +1221,19 @@ func (event *Event) RunningTimeOffset() int64 {
 // Events have ever-incrementing sequence numbers, which may also be set
 // explicitly via gst_event_set_seqnum(). Sequence numbers are typically used to
 // indicate that a event corresponds to some other set of events or messages,
-// for example an EOS event corresponding to a SEEK event. It is considered good
-// practice to make this correspondence when possible, though it is not
+// for example an EOS event corresponding to a SEEK event. It is considered
+// good practice to make this correspondence when possible, though it is not
 // required.
 //
-// Note that events and messages share the same sequence number incrementor; two
-// events or messages will never have the same sequence number unless that
+// Note that events and messages share the same sequence number incrementor;
+// two events or messages will never have the same sequence number unless that
 // correspondence was made explicitly.
 //
 // The function returns the following values:
 //
-//    - guint32 event's sequence number.
+//   - guint32 event's sequence number.
 //
-//      MT safe.
+//     MT safe.
 //
 func (event *Event) Seqnum() uint32 {
 	var _arg0 *C.GstEvent // out
@@ -1259,11 +1255,11 @@ func (event *Event) Seqnum() uint32 {
 //
 // The function returns the following values:
 //
-//    - structure (optional) of the event. The structure is still owned by the
-//      event, which means that you should not free it and that the pointer
-//      becomes invalid when you free the event.
+//   - structure (optional) of the event. The structure is still owned by the
+//     event, which means that you should not free it and that the pointer
+//     becomes invalid when you free the event.
 //
-//      MT safe.
+//     MT safe.
 //
 func (event *Event) Structure() *Structure {
 	var _arg0 *C.GstEvent     // out
@@ -1288,11 +1284,11 @@ func (event *Event) Structure() *Structure {
 //
 // The function takes the following parameters:
 //
-//    - name to check.
+//   - name to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if name matches the name of the event structure.
+//   - ok: TRUE if name matches the name of the event structure.
 //
 func (event *Event) HasName(name string) bool {
 	var _arg0 *C.GstEvent // out
@@ -1321,11 +1317,11 @@ func (event *Event) HasName(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name to check as a GQuark.
+//   - name to check as a GQuark.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if name matches the name of the event structure.
+//   - ok: TRUE if name matches the name of the event structure.
 //
 func (event *Event) HasNameID(name glib.Quark) bool {
 	var _arg0 *C.GstEvent // out
@@ -1333,9 +1329,7 @@ func (event *Event) HasNameID(name glib.Quark) bool {
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
-	_arg1 = C.guint32(name)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(name)
 
 	_cret = C.gst_event_has_name_id(_arg0, _arg1)
 	runtime.KeepAlive(event)
@@ -1355,10 +1349,10 @@ func (event *Event) HasNameID(name glib.Quark) bool {
 //
 // The function returns the following values:
 //
-//    - format: pointer to store the format in.
-//    - minsize: pointer to store the minsize in.
-//    - maxsize: pointer to store the maxsize in.
-//    - async: pointer to store the async-flag in.
+//   - format (optional): pointer to store the format in.
+//   - minsize (optional): pointer to store the minsize in.
+//   - maxsize (optional): pointer to store the maxsize in.
+//   - async (optional): pointer to store the async-flag in.
 //
 func (event *Event) ParseBufferSize() (format Format, minsize int64, maxsize int64, async bool) {
 	var _arg0 *C.GstEvent // out
@@ -1392,7 +1386,7 @@ func (event *Event) ParseBufferSize() (format Format, minsize int64, maxsize int
 //
 // The function returns the following values:
 //
-//    - caps: pointer to the caps.
+//   - caps (optional): pointer to the caps.
 //
 func (event *Event) ParseCaps() *Caps {
 	var _arg0 *C.GstEvent // out
@@ -1405,7 +1399,9 @@ func (event *Event) ParseCaps() *Caps {
 
 	var _caps *Caps // out
 
-	_caps = (*Caps)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_caps = (*Caps)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _caps
 }
@@ -1415,7 +1411,7 @@ func (event *Event) ParseCaps() *Caps {
 //
 // The function returns the following values:
 //
-//    - resetTime: if time should be reset.
+//   - resetTime (optional): if time should be reset.
 //
 func (event *Event) ParseFlushStop() bool {
 	var _arg0 *C.GstEvent // out
@@ -1439,10 +1435,10 @@ func (event *Event) ParseFlushStop() bool {
 //
 // The function returns the following values:
 //
-//    - timestamp (optional): location where to store the start time (pts) of the
-//      gap, or NULL.
-//    - duration (optional): location where to store the duration of the gap, or
-//      NULL.
+//   - timestamp (optional): location where to store the start time (pts) of the
+//     gap, or NULL.
+//   - duration (optional): location where to store the duration of the gap,
+//     or NULL.
 //
 func (event *Event) ParseGap() (timestamp ClockTime, duration ClockTime) {
 	var _arg0 *C.GstEvent    // out
@@ -1457,12 +1453,8 @@ func (event *Event) ParseGap() (timestamp ClockTime, duration ClockTime) {
 	var _timestamp ClockTime // out
 	var _duration ClockTime  // out
 
-	_timestamp = uint64(_arg1)
-	type _ = ClockTime
-	type _ = uint64
-	_duration = uint64(_arg2)
-	type _ = ClockTime
-	type _ = uint64
+	_timestamp = ClockTime(_arg1)
+	_duration = ClockTime(_arg2)
 
 	return _timestamp, _duration
 }
@@ -1472,7 +1464,7 @@ func (event *Event) ParseGap() (timestamp ClockTime, duration ClockTime) {
 //
 // The function returns the following values:
 //
-//    - flags or NULL.
+//   - flags (optional) or NULL.
 //
 func (event *Event) ParseGapFlags() GapFlags {
 	var _arg0 *C.GstEvent   // out
@@ -1492,9 +1484,9 @@ func (event *Event) ParseGapFlags() GapFlags {
 
 // The function returns the following values:
 //
-//    - groupId address of variable where to store the group id.
-//    - ok: TRUE if a group id was set on the event and could be parsed, FALSE
-//      otherwise.
+//   - groupId (optional) address of variable where to store the group id.
+//   - ok: TRUE if a group id was set on the event and could be parsed, FALSE
+//     otherwise.
 //
 func (event *Event) ParseGroupID() (uint, bool) {
 	var _arg0 *C.GstEvent // out
@@ -1522,10 +1514,10 @@ func (event *Event) ParseGroupID() (uint, bool) {
 //
 // The function returns the following values:
 //
-//    - rateMultiplier (optional): location in which to store the rate multiplier
-//      of the instant-rate-change event, or NULL.
-//    - newFlags (optional): location in which to store the new segment flags of
-//      the instant-rate-change event, or NULL.
+//   - rateMultiplier (optional): location in which to store the rate multiplier
+//     of the instant-rate-change event, or NULL.
+//   - newFlags (optional): location in which to store the new segment flags of
+//     the instant-rate-change event, or NULL.
 //
 func (event *Event) ParseInstantRateChange() (float64, SegmentFlags) {
 	var _arg0 *C.GstEvent       // out
@@ -1551,12 +1543,12 @@ func (event *Event) ParseInstantRateChange() (float64, SegmentFlags) {
 //
 // The function returns the following values:
 //
-//    - rateMultiplier (optional): location where to store the rate of the
-//      instant-rate-sync-time event, or NULL.
-//    - runningTime (optional): location in which to store the running time of
-//      the instant-rate-sync-time event, or NULL.
-//    - upstreamRunningTime (optional): location in which to store the upstream
-//      running time of the instant-rate-sync-time event, or NULL.
+//   - rateMultiplier (optional): location where to store the rate of the
+//     instant-rate-sync-time event, or NULL.
+//   - runningTime (optional): location in which to store the running time of
+//     the instant-rate-sync-time event, or NULL.
+//   - upstreamRunningTime (optional): location in which to store the upstream
+//     running time of the instant-rate-sync-time event, or NULL.
 //
 func (event *Event) ParseInstantRateSyncTime() (rateMultiplier float64, runningTime ClockTime, upstreamRunningTime ClockTime) {
 	var _arg0 *C.GstEvent    // out
@@ -1574,12 +1566,8 @@ func (event *Event) ParseInstantRateSyncTime() (rateMultiplier float64, runningT
 	var _upstreamRunningTime ClockTime // out
 
 	_rateMultiplier = float64(_arg1)
-	_runningTime = uint64(_arg2)
-	type _ = ClockTime
-	type _ = uint64
-	_upstreamRunningTime = uint64(_arg3)
-	type _ = ClockTime
-	type _ = uint64
+	_runningTime = ClockTime(_arg2)
+	_upstreamRunningTime = ClockTime(_arg3)
 
 	return _rateMultiplier, _runningTime, _upstreamRunningTime
 }
@@ -1588,7 +1576,7 @@ func (event *Event) ParseInstantRateSyncTime() (rateMultiplier float64, runningT
 //
 // The function returns the following values:
 //
-//    - latency: pointer to store the latency in.
+//   - latency (optional): pointer to store the latency in.
 //
 func (event *Event) ParseLatency() ClockTime {
 	var _arg0 *C.GstEvent    // out
@@ -1601,9 +1589,7 @@ func (event *Event) ParseLatency() ClockTime {
 
 	var _latency ClockTime // out
 
-	_latency = uint64(_arg1)
-	type _ = ClockTime
-	type _ = uint64
+	_latency = ClockTime(_arg1)
 
 	return _latency
 }
@@ -1614,12 +1600,12 @@ func (event *Event) ParseLatency() ClockTime {
 //
 // The function returns the following values:
 //
-//    - systemId (optional): pointer to store the UUID string uniquely
-//      identifying a content protection system.
-//    - data (optional): pointer to store a Buffer holding protection system
-//      specific information.
-//    - origin (optional): pointer to store a value that indicates where the
-//      protection information carried by event was extracted from.
+//   - systemId (optional): pointer to store the UUID string uniquely
+//     identifying a content protection system.
+//   - data (optional): pointer to store a Buffer holding protection system
+//     specific information.
+//   - origin (optional): pointer to store a value that indicates where the
+//     protection information carried by event was extracted from.
 //
 func (event *Event) ParseProtection() (systemId string, data *Buffer, origin string) {
 	var _arg0 *C.GstEvent  // out
@@ -1649,18 +1635,18 @@ func (event *Event) ParseProtection() (systemId string, data *Buffer, origin str
 	return _systemId, _data, _origin
 }
 
-// ParseQos: get the type, proportion, diff and timestamp in the qos event. See
-// gst_event_new_qos() for more information about the different QoS values.
+// ParseQos: get the type, proportion, diff and timestamp in the qos event.
+// See gst_event_new_qos() for more information about the different QoS values.
 //
 // timestamp will be adjusted for any pad offsets of pads it was passing
 // through.
 //
 // The function returns the following values:
 //
-//    - typ: pointer to store the QoS type in.
-//    - proportion: pointer to store the proportion in.
-//    - diff: pointer to store the diff in.
-//    - timestamp: pointer to store the timestamp in.
+//   - typ (optional): pointer to store the QoS type in.
+//   - proportion (optional): pointer to store the proportion in.
+//   - diff (optional): pointer to store the diff in.
+//   - timestamp (optional): pointer to store the timestamp in.
 //
 func (event *Event) ParseQos() (QOSType, float64, ClockTimeDiff, ClockTime) {
 	var _arg0 *C.GstEvent        // out
@@ -1681,12 +1667,8 @@ func (event *Event) ParseQos() (QOSType, float64, ClockTimeDiff, ClockTime) {
 
 	_typ = QOSType(_arg1)
 	_proportion = float64(_arg2)
-	_diff = int64(_arg3)
-	type _ = ClockTimeDiff
-	type _ = int64
-	_timestamp = uint64(_arg4)
-	type _ = ClockTime
-	type _ = uint64
+	_diff = ClockTimeDiff(_arg3)
+	_timestamp = ClockTime(_arg4)
 
 	return _typ, _proportion, _diff, _timestamp
 }
@@ -1696,13 +1678,17 @@ func (event *Event) ParseQos() (QOSType, float64, ClockTimeDiff, ClockTime) {
 //
 // The function returns the following values:
 //
-//    - rate: result location for the rate.
-//    - format: result location for the stream format.
-//    - flags: result location for the SeekFlags.
-//    - startType: result location for the SeekType of the start position.
-//    - start: result location for the start position expressed in format.
-//    - stopType: result location for the SeekType of the stop position.
-//    - stop: result location for the stop position expressed in format.
+//   - rate (optional): result location for the rate.
+//   - format (optional): result location for the stream format.
+//   - flags (optional): result location for the SeekFlags.
+//   - startType (optional): result location for the SeekType of the start
+//     position.
+//   - start (optional): result location for the start position expressed in
+//     format.
+//   - stopType (optional): result location for the SeekType of the stop
+//     position.
+//   - stop (optional): result location for the stop position expressed in
+//     format.
 //
 func (event *Event) ParseSeek() (rate float64, format Format, flags SeekFlags, startType SeekType, start int64, stopType SeekType, stop int64) {
 	var _arg0 *C.GstEvent    // out
@@ -1743,6 +1729,8 @@ func (event *Event) ParseSeek() (rate float64, format Format, flags SeekFlags, s
 //
 // The function returns the following values:
 //
+//   - interval (optional): interval.
+//
 func (event *Event) ParseSeekTrickmodeInterval() ClockTime {
 	var _arg0 *C.GstEvent    // out
 	var _arg1 C.GstClockTime // in
@@ -1754,21 +1742,19 @@ func (event *Event) ParseSeekTrickmodeInterval() ClockTime {
 
 	var _interval ClockTime // out
 
-	_interval = uint64(_arg1)
-	type _ = ClockTime
-	type _ = uint64
+	_interval = ClockTime(_arg1)
 
 	return _interval
 }
 
 // ParseSegment parses a segment event and stores the result in the given
-// segment location. segment remains valid only until the event is freed. Don't
-// modify the segment and make a copy if you want to modify it or store it for
-// later use.
+// segment location. segment remains valid only until the event is freed.
+// Don't modify the segment and make a copy if you want to modify it or store it
+// for later use.
 //
 // The function returns the following values:
 //
-//    - segment: pointer to a Segment.
+//   - segment (optional): pointer to a Segment.
 //
 func (event *Event) ParseSegment() *Segment {
 	var _arg0 *C.GstEvent   // out
@@ -1781,7 +1767,9 @@ func (event *Event) ParseSegment() *Segment {
 
 	var _segment *Segment // out
 
-	_segment = (*Segment)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_segment = (*Segment)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _segment
 }
@@ -1791,8 +1779,8 @@ func (event *Event) ParseSegment() *Segment {
 //
 // The function returns the following values:
 //
-//    - format (optional): result location for the format, or NULL.
-//    - position (optional): result location for the position, or NULL.
+//   - format (optional): result location for the format, or NULL.
+//   - position (optional): result location for the position, or NULL.
 //
 func (event *Event) ParseSegmentDone() (Format, int64) {
 	var _arg0 *C.GstEvent // out
@@ -1818,7 +1806,7 @@ func (event *Event) ParseSegmentDone() (Format, int64) {
 //
 // The function returns the following values:
 //
-//    - streams: streams.
+//   - streams (optional): streams.
 //
 func (event *Event) ParseSelectStreams() []string {
 	var _arg0 *C.GstEvent // out
@@ -1831,13 +1819,15 @@ func (event *Event) ParseSelectStreams() []string {
 
 	var _streams []string // out
 
-	_streams = make([]string, 0, gextras.ListSize(unsafe.Pointer(_arg1)))
-	gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		_streams = append(_streams, dst)
-	})
+	if _arg1 != nil {
+		_streams = make([]string, 0, gextras.ListSize(unsafe.Pointer(_arg1)))
+		gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
+			src := (*C.gchar)(v)
+			var dst string // out
+			dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+			_streams = append(_streams, dst)
+		})
+	}
 
 	return _streams
 }
@@ -1846,7 +1836,7 @@ func (event *Event) ParseSelectStreams() []string {
 //
 // The function returns the following values:
 //
-//    - msg: pointer to store the Message in.
+//   - msg (optional): pointer to store the Message in.
 //
 func (event *Event) ParseSinkMessage() *Message {
 	var _arg0 *C.GstEvent   // out
@@ -1859,13 +1849,15 @@ func (event *Event) ParseSinkMessage() *Message {
 
 	var _msg *Message // out
 
-	_msg = (*Message)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_msg)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_msg = (*Message)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_msg)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _msg
 }
@@ -1874,11 +1866,11 @@ func (event *Event) ParseSinkMessage() *Message {
 //
 // The function returns the following values:
 //
-//    - format (optional): pointer to store the format in.
-//    - amount (optional): pointer to store the amount in.
-//    - rate (optional): pointer to store the rate in.
-//    - flush (optional): pointer to store the flush boolean in.
-//    - intermediate (optional): pointer to store the intermediate boolean in.
+//   - format (optional): pointer to store the format in.
+//   - amount (optional): pointer to store the amount in.
+//   - rate (optional): pointer to store the rate in.
+//   - flush (optional): pointer to store the flush boolean in.
+//   - intermediate (optional): pointer to store the intermediate boolean in.
 //
 func (event *Event) ParseStep() (format Format, amount uint64, rate float64, flush bool, intermediate bool) {
 	var _arg0 *C.GstEvent // out
@@ -1916,7 +1908,7 @@ func (event *Event) ParseStep() (format Format, amount uint64, rate float64, flu
 //
 // The function returns the following values:
 //
-//    - stream address of variable to store the stream.
+//   - stream (optional) address of variable to store the stream.
 //
 func (event *Event) ParseStream() *Stream {
 	var _arg0 *C.GstEvent  // out
@@ -1929,7 +1921,9 @@ func (event *Event) ParseStream() *Stream {
 
 	var _stream *Stream // out
 
-	_stream = wrapStream(coreglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_stream = wrapStream(coreglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	}
 
 	return _stream
 }
@@ -1939,7 +1933,7 @@ func (event *Event) ParseStream() *Stream {
 //
 // The function returns the following values:
 //
-//    - collection: pointer to store the collection.
+//   - collection (optional): pointer to store the collection.
 //
 func (event *Event) ParseStreamCollection() *StreamCollection {
 	var _arg0 *C.GstEvent            // out
@@ -1952,14 +1946,16 @@ func (event *Event) ParseStreamCollection() *StreamCollection {
 
 	var _collection *StreamCollection // out
 
-	_collection = wrapStreamCollection(coreglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_collection = wrapStreamCollection(coreglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	}
 
 	return _collection
 }
 
 // The function returns the following values:
 //
-//    - flags address of variable where to store the stream flags.
+//   - flags (optional) address of variable where to store the stream flags.
 //
 func (event *Event) ParseStreamFlags() StreamFlags {
 	var _arg0 *C.GstEvent      // out
@@ -1982,7 +1978,7 @@ func (event *Event) ParseStreamFlags() StreamFlags {
 //
 // The function returns the following values:
 //
-//    - groupId address of variable to store the group id into.
+//   - groupId (optional) address of variable to store the group id into.
 //
 func (event *Event) ParseStreamGroupDone() uint {
 	var _arg0 *C.GstEvent // out
@@ -2007,7 +2003,7 @@ func (event *Event) ParseStreamGroupDone() uint {
 //
 // The function returns the following values:
 //
-//    - streamId: pointer to store the stream-id.
+//   - streamId (optional): pointer to store the stream-id.
 //
 func (event *Event) ParseStreamStart() string {
 	var _arg0 *C.GstEvent // out
@@ -2020,9 +2016,38 @@ func (event *Event) ParseStreamStart() string {
 
 	var _streamId string // out
 
-	_streamId = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_streamId = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
 
 	return _streamId
+}
+
+// ParseTag parses a tag event and stores the results in the given taglist
+// location. No reference to the taglist will be returned, it remains valid only
+// until the event is freed. Don't modify or free the taglist, make a copy if
+// you want to modify it or store it for later use.
+//
+// The function returns the following values:
+//
+//   - taglist (optional): pointer to metadata list.
+//
+func (event *Event) ParseTag() *TagList {
+	var _arg0 *C.GstEvent   // out
+	var _arg1 *C.GstTagList // in
+
+	_arg0 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	C.gst_event_parse_tag(_arg0, &_arg1)
+	runtime.KeepAlive(event)
+
+	var _taglist *TagList // out
+
+	if _arg1 != nil {
+		_taglist = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
+
+	return _taglist
 }
 
 // ParseToc: parse a TOC event and store the results in the given toc and
@@ -2030,8 +2055,8 @@ func (event *Event) ParseStreamStart() string {
 //
 // The function returns the following values:
 //
-//    - toc: pointer to Toc structure.
-//    - updated: pointer to store TOC updated flag.
+//   - toc (optional): pointer to Toc structure.
+//   - updated (optional): pointer to store TOC updated flag.
 //
 func (event *Event) ParseToc() (*Toc, bool) {
 	var _arg0 *C.GstEvent // out
@@ -2046,13 +2071,15 @@ func (event *Event) ParseToc() (*Toc, bool) {
 	var _toc *Toc     // out
 	var _updated bool // out
 
-	_toc = (*Toc)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_toc)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _arg1 != nil {
+		_toc = (*Toc)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_toc)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 	if _arg2 != 0 {
 		_updated = true
 	}
@@ -2065,7 +2092,7 @@ func (event *Event) ParseToc() (*Toc, bool) {
 //
 // The function returns the following values:
 //
-//    - uid (optional): storage for the selection UID.
+//   - uid (optional): storage for the selection UID.
 //
 func (event *Event) ParseTocSelect() string {
 	var _arg0 *C.GstEvent // out
@@ -2091,7 +2118,7 @@ func (event *Event) ParseTocSelect() string {
 //
 // The function takes the following parameters:
 //
-//    - flags: GapFlags.
+//   - flags: GapFlags.
 //
 func (event *Event) SetGapFlags(flags GapFlags) {
 	var _arg0 *C.GstEvent   // out
@@ -2115,7 +2142,7 @@ func (event *Event) SetGapFlags(flags GapFlags) {
 //
 // The function takes the following parameters:
 //
-//    - groupId: group id to set.
+//   - groupId: group id to set.
 //
 func (event *Event) SetGroupID(groupId uint) {
 	var _arg0 *C.GstEvent // out
@@ -2136,7 +2163,7 @@ func (event *Event) SetGroupID(groupId uint) {
 //
 // The function takes the following parameters:
 //
-//    - offset: the new running time offset.
+//   - offset: the new running time offset.
 //
 func (event *Event) SetRunningTimeOffset(offset int64) {
 	var _arg0 *C.GstEvent // out
@@ -2161,9 +2188,7 @@ func (event *Event) SetSeekTrickmodeInterval(interval ClockTime) {
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstEvent)(gextras.StructNative(unsafe.Pointer(event)))
-	_arg1 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(interval)
 
 	C.gst_event_set_seek_trickmode_interval(_arg0, _arg1)
 	runtime.KeepAlive(event)
@@ -2180,7 +2205,7 @@ func (event *Event) SetSeekTrickmodeInterval(interval ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - seqnum: sequence number.
+//   - seqnum: sequence number.
 //
 func (event *Event) SetSeqnum(seqnum uint32) {
 	var _arg0 *C.GstEvent // out
@@ -2198,7 +2223,7 @@ func (event *Event) SetSeqnum(seqnum uint32) {
 //
 // The function takes the following parameters:
 //
-//    - stream object to set.
+//   - stream object to set.
 //
 func (event *Event) SetStream(stream *Stream) {
 	var _arg0 *C.GstEvent  // out
@@ -2214,7 +2239,7 @@ func (event *Event) SetStream(stream *Stream) {
 
 // The function takes the following parameters:
 //
-//    - flags: stream flags to set.
+//   - flags: stream flags to set.
 //
 func (event *Event) SetStreamFlags(flags StreamFlags) {
 	var _arg0 *C.GstEvent      // out
@@ -2232,12 +2257,12 @@ func (event *Event) SetStreamFlags(flags StreamFlags) {
 //
 // The function returns the following values:
 //
-//    - structure of the event. The structure is still owned by the event, which
-//      means that you should not free it and that the pointer becomes invalid
-//      when you free the event. This function checks if event is writable and
-//      will never return NULL.
+//   - structure of the event. The structure is still owned by the event, which
+//     means that you should not free it and that the pointer becomes invalid
+//     when you free the event. This function ensures that event is writable,
+//     and if so, will never return NULL.
 //
-//      MT safe.
+//     MT safe.
 //
 func (event *Event) WritableStructure() *Structure {
 	var _arg0 *C.GstEvent     // out

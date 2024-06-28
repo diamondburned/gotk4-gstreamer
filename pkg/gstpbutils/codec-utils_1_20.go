@@ -24,11 +24,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - caps to convert to mime codec.
+//   - caps to convert to mime codec.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): RFC 6381 compatible codec string or NULL.
+//   - utf8 (optional): RFC 6381 compatible codec string or NULL.
 //
 func CodecUtilsCapsGetMIMECodec(caps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out
@@ -59,14 +59,14 @@ func CodecUtilsCapsGetMIMECodec(caps *gst.Caps) string {
 //
 // The function takes the following parameters:
 //
-//    - codecData: h264 AVCC extradata.
+//   - codecData: h264 AVCC extradata.
 //
 // The function returns the following values:
 //
-//    - profile (optional): return location for h264 profile_idc or NULL.
-//    - flags (optional): return location for h264 constraint set flags or NULL.
-//    - level (optional): return location h264 level_idc or NULL.
-//    - ok: TRUE on success, FALSE on failure.
+//   - profile (optional): return location for h264 profile_idc or NULL.
+//   - flags (optional): return location for h264 constraint set flags or NULL.
+//   - level (optional): return location h264 level_idc or NULL.
+//   - ok: TRUE on success, FALSE on failure.
 //
 func CodecUtilsH264GetProfileFlagsLevel(codecData []byte) (profile, flags, level byte, ok bool) {
 	var _arg1 *C.guint8 // out

@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - socket: socket to configure.
-//    - qosDscp: qoS DSCP value.
+//   - socket: socket to configure.
+//   - qosDscp: qoS DSCP value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, FALSE in case an error occurred.
+//   - ok: TRUE if successful, FALSE in case an error occurred.
 //
 func NetUtilsSetSocketTos(socket *gio.Socket, qosDscp int) bool {
 	var _arg1 *C.GSocket // out

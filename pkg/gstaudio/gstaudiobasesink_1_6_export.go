@@ -32,15 +32,9 @@ func _gotk4_gstaudio1_AudioBaseSinkCustomSlavingCallback(arg1 *C.GstAudioBaseSin
 	var _discontReason AudioBaseSinkDiscontReason // out
 
 	_sink = wrapAudioBaseSink(coreglib.Take(unsafe.Pointer(arg1)))
-	_etime = uint64(arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_itime = uint64(arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_requestedSkew = (*int64)(unsafe.Pointer(arg4))
-	type _ = *gst.ClockTimeDiff
-	type _ = *int64
+	_etime = gst.ClockTime(arg2)
+	_itime = gst.ClockTime(arg3)
+	_requestedSkew = (*gst.ClockTimeDiff)(unsafe.Pointer(arg4))
 	_discontReason = AudioBaseSinkDiscontReason(arg5)
 
 	fn(_sink, _etime, _itime, _requestedSkew, _discontReason)

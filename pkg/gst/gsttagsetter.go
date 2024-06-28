@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -35,10 +36,10 @@ type TagSetterOverrider interface {
 // interface. Examples of such elements are 'vorbisenc', 'theoraenc' and
 // 'id3v2mux'.
 //
-// If you just want to retrieve metadata in your application then all you need
-// to do is watch for tag messages on your pipeline's bus. This interface is
-// only for setting metadata, not for extracting it. To set tags from the
-// application, find tagsetter elements and set tags using e.g.
+// If you just want to retrieve metadata in your application then all
+// you need to do is watch for tag messages on your pipeline's bus.
+// This interface is only for setting metadata, not for extracting it. To set
+// tags from the application, find tagsetter elements and set tags using e.g.
 // gst_tag_setter_merge_tags() or gst_tag_setter_add_tags(). Also consider
 // setting the TagMergeMode that is used for tag events that arrive at the
 // tagsetter element (default mode is to keep existing tags). The application
@@ -83,8 +84,22 @@ var (
 type TagSetterer interface {
 	coreglib.Objector
 
+	// AddTagValue adds the given tag / GValue pair on the setter using the
+	// given merge mode.
+	AddTagValue(mode TagMergeMode, tag string, value *coreglib.Value)
+	// TagList returns the current list of tags the setter uses.
+	TagList() *TagList
+	// TagMergeMode queries the mode by which tags inside the setter are
+	// overwritten by tags from events.
+	TagMergeMode() TagMergeMode
+	// MergeTags merges the given list into the setter's list using the given
+	// mode.
+	MergeTags(list *TagList, mode TagMergeMode)
 	// ResetTags: reset the internal taglist.
 	ResetTags()
+	// SetTagMergeMode sets the given merge mode that is used for adding tags
+	// from events to tags specified by this interface.
+	SetTagMergeMode(mode TagMergeMode)
 }
 
 var _ TagSetterer = (*TagSetter)(nil)
@@ -108,6 +123,107 @@ func marshalTagSetter(p uintptr) (interface{}, error) {
 	return wrapTagSetter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// AddTagValue adds the given tag / GValue pair on the setter using the given
+// merge mode.
+//
+// The function takes the following parameters:
+//
+//   - mode to use.
+//   - tag to set.
+//   - value: GValue to set for the tag.
+//
+func (setter *TagSetter) AddTagValue(mode TagMergeMode, tag string, value *coreglib.Value) {
+	var _arg0 *C.GstTagSetter   // out
+	var _arg1 C.GstTagMergeMode // out
+	var _arg2 *C.gchar          // out
+	var _arg3 *C.GValue         // out
+
+	_arg0 = (*C.GstTagSetter)(unsafe.Pointer(coreglib.InternObject(setter).Native()))
+	_arg1 = C.GstTagMergeMode(mode)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gst_tag_setter_add_tag_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(setter)
+	runtime.KeepAlive(mode)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(value)
+}
+
+// TagList returns the current list of tags the setter uses. The list should not
+// be modified or freed.
+//
+// This function is not thread-safe.
+//
+// The function returns the following values:
+//
+//   - tagList (optional): current snapshot of the taglist used in the setter or
+//     NULL if none is used.
+//
+func (setter *TagSetter) TagList() *TagList {
+	var _arg0 *C.GstTagSetter // out
+	var _cret *C.GstTagList   // in
+
+	_arg0 = (*C.GstTagSetter)(unsafe.Pointer(coreglib.InternObject(setter).Native()))
+
+	_cret = C.gst_tag_setter_get_tag_list(_arg0)
+	runtime.KeepAlive(setter)
+
+	var _tagList *TagList // out
+
+	if _cret != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tagList
+}
+
+// TagMergeMode queries the mode by which tags inside the setter are overwritten
+// by tags from events.
+//
+// The function returns the following values:
+//
+//   - tagMergeMode: merge mode used inside the element.
+//
+func (setter *TagSetter) TagMergeMode() TagMergeMode {
+	var _arg0 *C.GstTagSetter   // out
+	var _cret C.GstTagMergeMode // in
+
+	_arg0 = (*C.GstTagSetter)(unsafe.Pointer(coreglib.InternObject(setter).Native()))
+
+	_cret = C.gst_tag_setter_get_tag_merge_mode(_arg0)
+	runtime.KeepAlive(setter)
+
+	var _tagMergeMode TagMergeMode // out
+
+	_tagMergeMode = TagMergeMode(_cret)
+
+	return _tagMergeMode
+}
+
+// MergeTags merges the given list into the setter's list using the given mode.
+//
+// The function takes the following parameters:
+//
+//   - list: tag list to merge from.
+//   - mode to merge with.
+//
+func (setter *TagSetter) MergeTags(list *TagList, mode TagMergeMode) {
+	var _arg0 *C.GstTagSetter   // out
+	var _arg1 *C.GstTagList     // out
+	var _arg2 C.GstTagMergeMode // out
+
+	_arg0 = (*C.GstTagSetter)(unsafe.Pointer(coreglib.InternObject(setter).Native()))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_tag_setter_merge_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(setter)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(mode)
+}
+
 // ResetTags: reset the internal taglist. Elements should call this from within
 // the state-change handler.
 func (setter *TagSetter) ResetTags() {
@@ -117,6 +233,26 @@ func (setter *TagSetter) ResetTags() {
 
 	C.gst_tag_setter_reset_tags(_arg0)
 	runtime.KeepAlive(setter)
+}
+
+// SetTagMergeMode sets the given merge mode that is used for adding tags from
+// events to tags specified by this interface. The default is T_TAG_MERGE_KEEP,
+// which keeps the tags set with this interface and discards tags from events.
+//
+// The function takes the following parameters:
+//
+//   - mode with which tags are added.
+//
+func (setter *TagSetter) SetTagMergeMode(mode TagMergeMode) {
+	var _arg0 *C.GstTagSetter   // out
+	var _arg1 C.GstTagMergeMode // out
+
+	_arg0 = (*C.GstTagSetter)(unsafe.Pointer(coreglib.InternObject(setter).Native()))
+	_arg1 = C.GstTagMergeMode(mode)
+
+	C.gst_tag_setter_set_tag_merge_mode(_arg0, _arg1)
+	runtime.KeepAlive(setter)
+	runtime.KeepAlive(mode)
 }
 
 // TagSetterInterface interface.

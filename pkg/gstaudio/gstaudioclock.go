@@ -30,8 +30,8 @@ func init() {
 	})
 }
 
-// AudioClockGetTimeFunc: this function will be called whenever the current
-// clock time needs to be calculated. If this function returns
+// AudioClockGetTimeFunc: this function will be called whenever the
+// current clock time needs to be calculated. If this function returns
 // T_CLOCK_TIME_NONE, the last reported time will be returned by the clock.
 type AudioClockGetTimeFunc func(clock gst.Clocker) (clockTime gst.ClockTime)
 
@@ -96,12 +96,12 @@ func marshalAudioClock(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name of the clock.
-//    - fn: function.
+//   - name of the clock.
+//   - fn: function.
 //
 // The function returns the following values:
 //
-//    - audioClock: new AudioClock casted to a Clock.
+//   - audioClock: new AudioClock casted to a Clock.
 //
 func NewAudioClock(name string, fn AudioClockGetTimeFunc) *AudioClock {
 	var _arg1 *C.gchar                   // out
@@ -131,11 +131,11 @@ func NewAudioClock(name string, fn AudioClockGetTimeFunc) *AudioClock {
 //
 // The function takes the following parameters:
 //
-//    - time: ClockTime.
+//   - time: ClockTime.
 //
 // The function returns the following values:
 //
-//    - clockTime: time adjusted with the internal offset.
+//   - clockTime: time adjusted with the internal offset.
 //
 func (clock *AudioClock) Adjust(time gst.ClockTime) gst.ClockTime {
 	var _arg0 *C.GstAudioClock // out
@@ -143,9 +143,7 @@ func (clock *AudioClock) Adjust(time gst.ClockTime) gst.ClockTime {
 	var _cret C.GstClockTime   // in
 
 	_arg0 = (*C.GstAudioClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(time)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	_cret = C.gst_audio_clock_adjust(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -153,9 +151,7 @@ func (clock *AudioClock) Adjust(time gst.ClockTime) gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -165,7 +161,7 @@ func (clock *AudioClock) Adjust(time gst.ClockTime) gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: time as reported by the time function of the audio clock.
+//   - clockTime: time as reported by the time function of the audio clock.
 //
 func (clock *AudioClock) Time() gst.ClockTime {
 	var _arg0 *C.GstAudioClock // out
@@ -178,9 +174,7 @@ func (clock *AudioClock) Time() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -207,16 +201,14 @@ func (clock *AudioClock) Invalidate() {
 //
 // The function takes the following parameters:
 //
-//    - time: ClockTime.
+//   - time: ClockTime.
 //
 func (clock *AudioClock) Reset(time gst.ClockTime) {
 	var _arg0 *C.GstAudioClock // out
 	var _arg1 C.GstClockTime   // out
 
 	_arg0 = (*C.GstAudioClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(time)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	C.gst_audio_clock_reset(_arg0, _arg1)
 	runtime.KeepAlive(clock)

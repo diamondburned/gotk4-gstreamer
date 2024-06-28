@@ -85,16 +85,16 @@ func marshalARGBControlBinding(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - object of the property.
-//    - propertyName: property-name to attach the control source.
-//    - csA: control source for the alpha channel.
-//    - csR: control source for the red channel.
-//    - csG: control source for the green channel.
-//    - csB: control source for the blue channel.
+//   - object of the property.
+//   - propertyName: property-name to attach the control source.
+//   - csA: control source for the alpha channel.
+//   - csR: control source for the red channel.
+//   - csG: control source for the green channel.
+//   - csB: control source for the blue channel.
 //
 // The function returns the following values:
 //
-//    - argbControlBinding: new ARGBControlBinding.
+//   - argbControlBinding: new ARGBControlBinding.
 //
 func NewARGBControlBinding(object gst.GstObjector, propertyName string, csA, csR, csG, csB gst.ControlSourcer) *ARGBControlBinding {
 	var _arg1 *C.GstObject         // out

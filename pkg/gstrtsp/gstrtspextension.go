@@ -97,8 +97,8 @@ func (ext *RTSPExtension) ConnectSend(f func(object, p0 unsafe.Pointer) (rtspRes
 
 // The function takes the following parameters:
 //
-//    - req
-//    - resp
+//   - req
+//   - resp
 //
 // The function returns the following values:
 //
@@ -222,8 +222,8 @@ func (ext *RTSPExtension) ReceiveRequest(req *RTSPMessage) RTSPResult {
 
 // The function takes the following parameters:
 //
-//    - req
-//    - resp
+//   - req
+//   - resp
 //
 // The function returns the following values:
 //
@@ -274,8 +274,8 @@ func (ext *RTSPExtension) StreamSelect(url *RTSPURL) RTSPResult {
 
 // The function takes the following parameters:
 //
-//    - req
-//    - resp
+//   - req
+//   - resp
 //
 // The function returns the following values:
 //
@@ -414,8 +414,8 @@ func (ext *RTSPExtension) receiveRequest(req *RTSPMessage) RTSPResult {
 
 // The function takes the following parameters:
 //
-//    - req
-//    - resp
+//   - req
+//   - resp
 //
 // The function returns the following values:
 //

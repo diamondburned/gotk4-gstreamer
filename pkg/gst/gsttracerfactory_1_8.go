@@ -59,8 +59,8 @@ func marshalTracerFactory(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gType for tracers managed by this factory or 0 if the factory is not
-//      loaded.
+//   - gType for tracers managed by this factory or 0 if the factory is not
+//     loaded.
 //
 func (factory *TracerFactory) TracerType() coreglib.Type {
 	var _arg0 *C.GstTracerFactory // out
@@ -78,8 +78,8 @@ func (factory *TracerFactory) TracerType() coreglib.Type {
 	return _gType
 }
 
-// TracerFactoryGetList gets the list of all registered tracer factories. You
-// must free the list using gst_plugin_feature_list_free().
+// TracerFactoryGetList gets the list of all registered tracer factories.
+// You must free the list using gst_plugin_feature_list_free().
 //
 // The returned factories are sorted by factory name.
 //
@@ -87,7 +87,7 @@ func (factory *TracerFactory) TracerType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - list of all registered TracerFactory.
+//   - list of all registered TracerFactory.
 //
 func TracerFactoryGetList() []*TracerFactory {
 	var _cret *C.GList // in

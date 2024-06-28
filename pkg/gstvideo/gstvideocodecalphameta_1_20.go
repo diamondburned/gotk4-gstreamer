@@ -21,12 +21,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - alphaBuffer: Buffer.
+//   - buffer: Buffer.
+//   - alphaBuffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - videoCodecAlphaMeta on buffer.
+//   - videoCodecAlphaMeta on buffer.
 //
 func BufferAddVideoCodecAlphaMeta(buffer, alphaBuffer *gst.Buffer) *VideoCodecAlphaMeta {
 	var _arg1 *C.GstBuffer              // out
@@ -50,7 +50,7 @@ func BufferAddVideoCodecAlphaMeta(buffer, alphaBuffer *gst.Buffer) *VideoCodecAl
 
 // The function returns the following values:
 //
-//    - gType for the VideoCodecAlphaMeta structure.
+//   - gType for the VideoCodecAlphaMeta structure.
 //
 func VideoCodecAlphaMetaApiGetType() coreglib.Type {
 	var _cret C.GType // in
@@ -99,7 +99,7 @@ func (v *VideoCodecAlphaMeta) Buffer() *gst.Buffer {
 
 // The function returns the following values:
 //
-//    - metaInfo pointer that describes VideoCodecAlphaMeta.
+//   - metaInfo pointer that describes VideoCodecAlphaMeta.
 //
 func VideoCodecAlphaMetaGetInfo() *gst.MetaInfo {
 	var _cret *C.GstMetaInfo // in

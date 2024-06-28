@@ -18,14 +18,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - format: VideoFormat.
+//   - format: VideoFormat.
 //
 // The function returns the following values:
 //
-//    - size of the palette in bytes.
-//    - gpointer (optional): default palette of format or NULL when format does
-//      not have a palette.
-//
+//   - size of the palette in bytes.
+//   - gpointer (optional): default palette of format or NULL when format does
+//     not have a palette.
 func VideoFormatGetPalette(format VideoFormat) (uint, unsafe.Pointer) {
 	var _arg1 C.GstVideoFormat // out
 	var _arg2 C.gsize          // in

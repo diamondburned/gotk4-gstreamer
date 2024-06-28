@@ -110,8 +110,8 @@ func (d DiscovererResult) String() string {
 type DiscovererOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - info
-	//    - err
+	//   - info
+	//   - err
 	//
 	Discovered func(info *DiscovererInfo, err error)
 	Finished   func()
@@ -138,11 +138,11 @@ func defaultDiscovererOverrides(v *Discoverer) DiscovererOverrides {
 // The blocking mode just requires calling gst_discoverer_discover_uri() with
 // the URI one wishes to discover.
 //
-// The non-blocking mode requires a running Loop iterating a Context, where one
-// connects to the various signals, appends the URIs to be processed (through
-// gst_discoverer_discover_uri_async()) and then asks for the discovery to begin
-// (through gst_discoverer_start()). By default this will use the GLib default
-// main context unless you have set a custom context using
+// The non-blocking mode requires a running Loop iterating a Context,
+// where one connects to the various signals, appends the URIs to be processed
+// (through gst_discoverer_discover_uri_async()) and then asks for the
+// discovery to begin (through gst_discoverer_start()). By default this will
+// use the GLib default main context unless you have set a custom context using
 // g_main_context_push_thread_default().
 //
 // All the information is returned in a DiscovererInfo structure.
@@ -214,10 +214,10 @@ func (discoverer *Discoverer) ConnectFinished(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(discoverer, "finished", false, unsafe.Pointer(C._gotk4_gstpbutils1_Discoverer_ConnectFinished), f)
 }
 
-// ConnectSourceSetup: this signal is emitted after the source element has been
-// created for, so the URI being discovered, so it can be configured by setting
-// additional properties (e.g. set a proxy server for an http source, or set the
-// device and read speed for an audio cd source).
+// ConnectSourceSetup: this signal is emitted after the source element has
+// been created for, so the URI being discovered, so it can be configured by
+// setting additional properties (e.g. set a proxy server for an http source,
+// or set the device and read speed for an audio cd source).
 //
 // This signal is usually emitted from the context of a GStreamer streaming
 // thread.
@@ -235,24 +235,22 @@ func (discoverer *Discoverer) ConnectStarting(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - timeout per file, in nanoseconds. Allowed are values between one second
-//      (T_SECOND) and one hour (3600 * T_SECOND).
+//   - timeout per file, in nanoseconds. Allowed are values between one second
+//     (T_SECOND) and one hour (3600 * T_SECOND).
 //
 // The function returns the following values:
 //
-//    - discoverer: new Discoverer. If an error occurred when creating the
-//      discoverer, err will be set accordingly and NULL will be returned. If err
-//      is set, the caller must free it when no longer needed using
-//      g_error_free().
+//   - discoverer: new Discoverer. If an error occurred when creating the
+//     discoverer, err will be set accordingly and NULL will be returned.
+//     If err is set, the caller must free it when no longer needed using
+//     g_error_free().
 //
 func NewDiscoverer(timeout gst.ClockTime) (*Discoverer, error) {
 	var _arg1 C.GstClockTime   // out
 	var _cret *C.GstDiscoverer // in
 	var _cerr *C.GError        // in
 
-	_arg1 = C.guint64(timeout)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timeout)
 
 	_cret = C.gst_discoverer_new(_arg1, &_cerr)
 	runtime.KeepAlive(timeout)
@@ -275,11 +273,11 @@ func NewDiscoverer(timeout gst.ClockTime) (*Discoverer, error) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to run on.
+//   - uri: URI to run on.
 //
 // The function returns the following values:
 //
-//    - discovererInfo: result of the scanning. Can be NULL if an error occurred.
+//   - discovererInfo: result of the scanning. Can be NULL if an error occurred.
 //
 func (discoverer *Discoverer) DiscoverURI(uri string) (*DiscovererInfo, error) {
 	var _arg0 *C.GstDiscoverer     // out
@@ -315,12 +313,12 @@ func (discoverer *Discoverer) DiscoverURI(uri string) (*DiscovererInfo, error) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to add.
+//   - uri: URI to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the uri was successfully appended to the list of pending
-//      uris, else FALSE.
+//   - ok: TRUE if the uri was successfully appended to the list of pending
+//     uris, else FALSE.
 //
 func (discoverer *Discoverer) DiscoverURIAsync(uri string) bool {
 	var _arg0 *C.GstDiscoverer // out
@@ -368,8 +366,8 @@ func (discoverer *Discoverer) Stop() {
 
 // The function takes the following parameters:
 //
-//    - info
-//    - err
+//   - info
+//   - err
 //
 func (discoverer *Discoverer) discovered(info *DiscovererInfo, err error) {
 	gclass := (*C.GstDiscovererClass)(coreglib.PeekParentClass(discoverer))
@@ -456,7 +454,7 @@ func marshalDiscovererAudioInfo(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - guint: average or nominal bitrate of the stream in bits/second.
+//   - guint: average or nominal bitrate of the stream in bits/second.
 //
 func (info *DiscovererAudioInfo) Bitrate() uint {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -476,8 +474,8 @@ func (info *DiscovererAudioInfo) Bitrate() uint {
 
 // The function returns the following values:
 //
-//    - guint64: channel-mask of the stream, refer to
-//      gst_audio_channel_positions_from_mask() for more information.
+//   - guint64: channel-mask of the stream, refer to
+//     gst_audio_channel_positions_from_mask() for more information.
 //
 func (info *DiscovererAudioInfo) ChannelMask() uint64 {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -497,7 +495,7 @@ func (info *DiscovererAudioInfo) ChannelMask() uint64 {
 
 // The function returns the following values:
 //
-//    - guint: number of channels in the stream.
+//   - guint: number of channels in the stream.
 //
 func (info *DiscovererAudioInfo) Channels() uint {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -517,7 +515,7 @@ func (info *DiscovererAudioInfo) Channels() uint {
 
 // The function returns the following values:
 //
-//    - guint: number of bits used per sample in each channel.
+//   - guint: number of bits used per sample in each channel.
 //
 func (info *DiscovererAudioInfo) Depth() uint {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -537,7 +535,7 @@ func (info *DiscovererAudioInfo) Depth() uint {
 
 // The function returns the following values:
 //
-//    - utf8: language of the stream, or NULL if unknown.
+//   - utf8 (optional): language of the stream, or NULL if unknown.
 //
 func (info *DiscovererAudioInfo) Language() string {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -550,14 +548,16 @@ func (info *DiscovererAudioInfo) Language() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function returns the following values:
 //
-//    - guint: maximum bitrate of the stream in bits/second.
+//   - guint: maximum bitrate of the stream in bits/second.
 //
 func (info *DiscovererAudioInfo) MaxBitrate() uint {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -577,7 +577,7 @@ func (info *DiscovererAudioInfo) MaxBitrate() uint {
 
 // The function returns the following values:
 //
-//    - guint: sample rate of the stream in Hertz.
+//   - guint: sample rate of the stream in Hertz.
 //
 func (info *DiscovererAudioInfo) SampleRate() uint {
 	var _arg0 *C.GstDiscovererAudioInfo // out
@@ -619,8 +619,8 @@ func marshalDiscovererContainerInfo(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - list of DiscovererStreamInfo this container stream offers. Free with
-//      gst_discoverer_stream_info_list_free() after usage.
+//   - list of DiscovererStreamInfo this container stream offers. Free with
+//     gst_discoverer_stream_info_list_free() after usage.
 //
 func (info *DiscovererContainerInfo) Streams() []*DiscovererStreamInfo {
 	var _arg0 *C.GstDiscovererContainerInfo // out
@@ -642,6 +642,29 @@ func (info *DiscovererContainerInfo) Streams() []*DiscovererStreamInfo {
 	})
 
 	return _list
+}
+
+// The function returns the following values:
+//
+//   - tagList (optional) tags specific to the given container. If you wish to
+//     use the tags after the life-time of info, you will need to copy them.
+//
+func (info *DiscovererContainerInfo) Tags() *gst.TagList {
+	var _arg0 *C.GstDiscovererContainerInfo // out
+	var _cret *C.GstTagList                 // in
+
+	_arg0 = (*C.GstDiscovererContainerInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.gst_discoverer_container_info_get_tags(_arg0)
+	runtime.KeepAlive(info)
+
+	var _tagList *gst.TagList // out
+
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tagList
 }
 
 // DiscovererInfo: structure containing the information of a URI analyzed by
@@ -667,7 +690,7 @@ func marshalDiscovererInfo(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - discovererInfo: copy of the DiscovererInfo.
+//   - discovererInfo: copy of the DiscovererInfo.
 //
 func (ptr *DiscovererInfo) Copy() *DiscovererInfo {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -689,10 +712,10 @@ func (ptr *DiscovererInfo) Copy() *DiscovererInfo {
 //
 // The function returns the following values:
 //
-//    - list of matching DiscovererStreamInfo. The caller should free it with
-//      gst_discoverer_stream_info_list_free().
+//   - list of matching DiscovererStreamInfo. The caller should free it with
+//     gst_discoverer_stream_info_list_free().
 //
-func (info *DiscovererInfo) AudioStreams() []*DiscovererStreamInfo {
+func (info *DiscovererInfo) AudioStreams() []*DiscovererAudioInfo {
 	var _arg0 *C.GstDiscovererInfo // out
 	var _cret *C.GList             // in
 
@@ -701,13 +724,13 @@ func (info *DiscovererInfo) AudioStreams() []*DiscovererStreamInfo {
 	_cret = C.gst_discoverer_info_get_audio_streams(_arg0)
 	runtime.KeepAlive(info)
 
-	var _list []*DiscovererStreamInfo // out
+	var _list []*DiscovererAudioInfo // out
 
-	_list = make([]*DiscovererStreamInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DiscovererAudioInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GstDiscovererStreamInfo)(v)
-		var dst *DiscovererStreamInfo // out
-		dst = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		src := (*C.GstDiscovererAudioInfo)(v)
+		var dst *DiscovererAudioInfo // out
+		dst = wrapDiscovererAudioInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -718,10 +741,10 @@ func (info *DiscovererInfo) AudioStreams() []*DiscovererStreamInfo {
 //
 // The function returns the following values:
 //
-//    - list of matching DiscovererStreamInfo. The caller should free it with
-//      gst_discoverer_stream_info_list_free().
+//   - list of matching DiscovererStreamInfo. The caller should free it with
+//     gst_discoverer_stream_info_list_free().
 //
-func (info *DiscovererInfo) ContainerStreams() []*DiscovererStreamInfo {
+func (info *DiscovererInfo) ContainerStreams() []*DiscovererContainerInfo {
 	var _arg0 *C.GstDiscovererInfo // out
 	var _cret *C.GList             // in
 
@@ -730,13 +753,13 @@ func (info *DiscovererInfo) ContainerStreams() []*DiscovererStreamInfo {
 	_cret = C.gst_discoverer_info_get_container_streams(_arg0)
 	runtime.KeepAlive(info)
 
-	var _list []*DiscovererStreamInfo // out
+	var _list []*DiscovererContainerInfo // out
 
-	_list = make([]*DiscovererStreamInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DiscovererContainerInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GstDiscovererStreamInfo)(v)
-		var dst *DiscovererStreamInfo // out
-		dst = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		src := (*C.GstDiscovererContainerInfo)(v)
+		var dst *DiscovererContainerInfo // out
+		dst = wrapDiscovererContainerInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -745,7 +768,7 @@ func (info *DiscovererInfo) ContainerStreams() []*DiscovererStreamInfo {
 
 // The function returns the following values:
 //
-//    - clockTime: duration of the URI in ClockTime (nanoseconds).
+//   - clockTime: duration of the URI in ClockTime (nanoseconds).
 //
 func (info *DiscovererInfo) Duration() gst.ClockTime {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -758,16 +781,14 @@ func (info *DiscovererInfo) Duration() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
 
 // The function returns the following values:
 //
-//    - ok: whether the URI is live.
+//   - ok: whether the URI is live.
 //
 func (info *DiscovererInfo) Live() bool {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -792,9 +813,9 @@ func (info *DiscovererInfo) Live() bool {
 //
 // The function returns the following values:
 //
-//    - structure miscellaneous information stored as a Structure (for example:
-//      information about missing plugins). If you wish to use the Structure
-//      after the life-time of info, you will need to copy it.
+//   - structure (optional) miscellaneous information stored as a Structure
+//     (for example: information about missing plugins). If you wish to use the
+//     Structure after the life-time of info, you will need to copy it.
 //
 func (info *DiscovererInfo) Misc() *gst.Structure {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -807,7 +828,9 @@ func (info *DiscovererInfo) Misc() *gst.Structure {
 
 	var _structure *gst.Structure // out
 
-	_structure = (*gst.Structure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_structure = (*gst.Structure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _structure
 }
@@ -817,9 +840,9 @@ func (info *DiscovererInfo) Misc() *gst.Structure {
 //
 // The function returns the following values:
 //
-//    - utf8s: array of strings containing information about how to install the
-//      various missing elements for info to be usable. If you wish to use the
-//      strings after the life-time of info, you will need to copy them.
+//   - utf8s: array of strings containing information about how to install the
+//     various missing elements for info to be usable. If you wish to use the
+//     strings after the life-time of info, you will need to copy them.
 //
 func (info *DiscovererInfo) MissingElementsInstallerDetails() []string {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -851,7 +874,7 @@ func (info *DiscovererInfo) MissingElementsInstallerDetails() []string {
 
 // The function returns the following values:
 //
-//    - discovererResult: result of the discovery as a DiscovererResult.
+//   - discovererResult: result of the discovery as a DiscovererResult.
 //
 func (info *DiscovererInfo) Result() DiscovererResult {
 	var _arg0 *C.GstDiscovererInfo  // out
@@ -871,7 +894,7 @@ func (info *DiscovererInfo) Result() DiscovererResult {
 
 // The function returns the following values:
 //
-//    - ok: whether the URI is seekable.
+//   - ok: whether the URI is seekable.
 //
 func (info *DiscovererInfo) Seekable() bool {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -893,9 +916,9 @@ func (info *DiscovererInfo) Seekable() bool {
 
 // The function returns the following values:
 //
-//    - discovererStreamInfo: structure (or topology) of the URI as a
-//      DiscovererStreamInfo. This structure can be traversed to see the original
-//      hierarchy. Unref with gst_discoverer_stream_info_unref() after usage.
+//   - discovererStreamInfo (optional): structure (or topology) of the URI as a
+//     DiscovererStreamInfo. This structure can be traversed to see the original
+//     hierarchy. Unref with gst_discoverer_stream_info_unref() after usage.
 //
 func (info *DiscovererInfo) StreamInfo() *DiscovererStreamInfo {
 	var _arg0 *C.GstDiscovererInfo       // out
@@ -908,15 +931,17 @@ func (info *DiscovererInfo) StreamInfo() *DiscovererStreamInfo {
 
 	var _discovererStreamInfo *DiscovererStreamInfo // out
 
-	_discovererStreamInfo = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_discovererStreamInfo = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _discovererStreamInfo
 }
 
 // The function returns the following values:
 //
-//    - list of all streams contained in the #info. Free after usage with
-//      gst_discoverer_stream_info_list_free().
+//   - list of all streams contained in the #info. Free after usage with
+//     gst_discoverer_stream_info_list_free().
 //
 func (info *DiscovererInfo) StreamList() []*DiscovererStreamInfo {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -945,12 +970,12 @@ func (info *DiscovererInfo) StreamList() []*DiscovererStreamInfo {
 //
 // The function takes the following parameters:
 //
-//    - streamtype derived from DiscovererStreamInfo.
+//   - streamtype derived from DiscovererStreamInfo.
 //
 // The function returns the following values:
 //
-//    - list of matching DiscovererStreamInfo. The caller should free it with
-//      gst_discoverer_stream_info_list_free().
+//   - list of matching DiscovererStreamInfo. The caller should free it with
+//     gst_discoverer_stream_info_list_free().
 //
 func (info *DiscovererInfo) Streams(streamtype coreglib.Type) []*DiscovererStreamInfo {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -981,10 +1006,10 @@ func (info *DiscovererInfo) Streams(streamtype coreglib.Type) []*DiscovererStrea
 //
 // The function returns the following values:
 //
-//    - list of matching DiscovererStreamInfo. The caller should free it with
-//      gst_discoverer_stream_info_list_free().
+//   - list of matching DiscovererStreamInfo. The caller should free it with
+//     gst_discoverer_stream_info_list_free().
 //
-func (info *DiscovererInfo) SubtitleStreams() []*DiscovererStreamInfo {
+func (info *DiscovererInfo) SubtitleStreams() []*DiscovererSubtitleInfo {
 	var _arg0 *C.GstDiscovererInfo // out
 	var _cret *C.GList             // in
 
@@ -993,23 +1018,49 @@ func (info *DiscovererInfo) SubtitleStreams() []*DiscovererStreamInfo {
 	_cret = C.gst_discoverer_info_get_subtitle_streams(_arg0)
 	runtime.KeepAlive(info)
 
-	var _list []*DiscovererStreamInfo // out
+	var _list []*DiscovererSubtitleInfo // out
 
-	_list = make([]*DiscovererStreamInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DiscovererSubtitleInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GstDiscovererStreamInfo)(v)
-		var dst *DiscovererStreamInfo // out
-		dst = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		src := (*C.GstDiscovererSubtitleInfo)(v)
+		var dst *DiscovererSubtitleInfo // out
+		dst = wrapDiscovererSubtitleInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
 	return _list
 }
 
+// Tags: deprecated: Use gst_discoverer_{container,stream}_info_get_tags()
+// instead.
+//
 // The function returns the following values:
 //
-//    - toc: TOC contained in the URI. If you wish to use the TOC after the
-//      life-time of info, you will need to copy it.
+//   - tagList (optional): all tags contained in the URI. If you wish to use the
+//     tags after the life-time of info, you will need to copy them.
+//
+func (info *DiscovererInfo) Tags() *gst.TagList {
+	var _arg0 *C.GstDiscovererInfo // out
+	var _cret *C.GstTagList        // in
+
+	_arg0 = (*C.GstDiscovererInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.gst_discoverer_info_get_tags(_arg0)
+	runtime.KeepAlive(info)
+
+	var _tagList *gst.TagList // out
+
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tagList
+}
+
+// The function returns the following values:
+//
+//   - toc (optional): TOC contained in the URI. If you wish to use the TOC
+//     after the life-time of info, you will need to copy it.
 //
 func (info *DiscovererInfo) Toc() *gst.Toc {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -1022,15 +1073,17 @@ func (info *DiscovererInfo) Toc() *gst.Toc {
 
 	var _toc *gst.Toc // out
 
-	_toc = (*gst.Toc)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_toc = (*gst.Toc)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _toc
 }
 
 // The function returns the following values:
 //
-//    - utf8: URI to which this information corresponds to. Copy it if you wish
-//      to use it after the life-time of info.
+//   - utf8: URI to which this information corresponds to. Copy it if you wish
+//     to use it after the life-time of info.
 //
 func (info *DiscovererInfo) URI() string {
 	var _arg0 *C.GstDiscovererInfo // out
@@ -1052,10 +1105,10 @@ func (info *DiscovererInfo) URI() string {
 //
 // The function returns the following values:
 //
-//    - list of matching DiscovererStreamInfo. The caller should free it with
-//      gst_discoverer_stream_info_list_free().
+//   - list of matching DiscovererStreamInfo. The caller should free it with
+//     gst_discoverer_stream_info_list_free().
 //
-func (info *DiscovererInfo) VideoStreams() []*DiscovererStreamInfo {
+func (info *DiscovererInfo) VideoStreams() []*DiscovererVideoInfo {
 	var _arg0 *C.GstDiscovererInfo // out
 	var _cret *C.GList             // in
 
@@ -1064,13 +1117,13 @@ func (info *DiscovererInfo) VideoStreams() []*DiscovererStreamInfo {
 	_cret = C.gst_discoverer_info_get_video_streams(_arg0)
 	runtime.KeepAlive(info)
 
-	var _list []*DiscovererStreamInfo // out
+	var _list []*DiscovererVideoInfo // out
 
-	_list = make([]*DiscovererStreamInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DiscovererVideoInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GstDiscovererStreamInfo)(v)
-		var dst *DiscovererStreamInfo // out
-		dst = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		src := (*C.GstDiscovererVideoInfo)(v)
+		var dst *DiscovererVideoInfo // out
+		dst = wrapDiscovererVideoInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -1085,12 +1138,12 @@ func (info *DiscovererInfo) VideoStreams() []*DiscovererStreamInfo {
 //
 // The function takes the following parameters:
 //
-//    - flags: combination of DiscovererSerializeFlags to specify what needs to
-//      be serialized.
+//   - flags: combination of DiscovererSerializeFlags to specify what needs to
+//     be serialized.
 //
 // The function returns the following values:
 //
-//    - variant: newly-allocated #GVariant representing info.
+//   - variant: newly-allocated #GVariant representing info.
 //
 func (info *DiscovererInfo) ToVariant(flags DiscovererSerializeFlags) *glib.Variant {
 	var _arg0 *C.GstDiscovererInfo          // out
@@ -1117,13 +1170,13 @@ func (info *DiscovererInfo) ToVariant(flags DiscovererSerializeFlags) *glib.Vari
 	return _variant
 }
 
-// DiscovererStreamInfo: base structure for information concerning a media
-// stream. Depending on the stream type, one can find more media-specific
-// information in DiscovererAudioInfo, DiscovererVideoInfo, and
-// DiscovererContainerInfo.
+// DiscovererStreamInfo: base structure for information concerning
+// a media stream. Depending on the stream type, one can find more
+// media-specific information in DiscovererAudioInfo, DiscovererVideoInfo,
+// and DiscovererContainerInfo.
 //
-// The DiscovererStreamInfo represents the topology of the stream. Siblings can
-// be iterated over with gst_discoverer_stream_info_get_next() and
+// The DiscovererStreamInfo represents the topology of the stream. Siblings
+// can be iterated over with gst_discoverer_stream_info_get_next() and
 // gst_discoverer_stream_info_get_previous(). Children (sub-streams) of a stream
 // can be accessed using the DiscovererContainerInfo API.
 //
@@ -1152,7 +1205,7 @@ func marshalDiscovererStreamInfo(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - caps of the stream. Unref with #gst_caps_unref after usage.
+//   - caps (optional) of the stream. Unref with #gst_caps_unref after usage.
 //
 func (info *DiscovererStreamInfo) Caps() *gst.Caps {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1165,13 +1218,15 @@ func (info *DiscovererStreamInfo) Caps() *gst.Caps {
 
 	var _caps *gst.Caps // out
 
-	_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_caps)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_caps)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _caps
 }
@@ -1181,9 +1236,9 @@ func (info *DiscovererStreamInfo) Caps() *gst.Caps {
 //
 // The function returns the following values:
 //
-//    - structure: additional information regarding the stream (for example codec
-//      version, profile, etc..). If you wish to use the Structure after the
-//      life-time of info you will need to copy it.
+//   - structure (optional): additional information regarding the stream (for
+//     example codec version, profile, etc..). If you wish to use the Structure
+//     after the life-time of info you will need to copy it.
 //
 func (info *DiscovererStreamInfo) Misc() *gst.Structure {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1196,15 +1251,18 @@ func (info *DiscovererStreamInfo) Misc() *gst.Structure {
 
 	var _structure *gst.Structure // out
 
-	_structure = (*gst.Structure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_structure = (*gst.Structure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _structure
 }
 
 // The function returns the following values:
 //
-//    - discovererStreamInfo: next DiscovererStreamInfo in a chain. NULL for
-//      final streams. Unref with #gst_discoverer_stream_info_unref after usage.
+//   - discovererStreamInfo (optional): next DiscovererStreamInfo in a chain.
+//     NULL for final streams. Unref with #gst_discoverer_stream_info_unref
+//     after usage.
 //
 func (info *DiscovererStreamInfo) Next() *DiscovererStreamInfo {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1217,16 +1275,18 @@ func (info *DiscovererStreamInfo) Next() *DiscovererStreamInfo {
 
 	var _discovererStreamInfo *DiscovererStreamInfo // out
 
-	_discovererStreamInfo = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_discovererStreamInfo = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _discovererStreamInfo
 }
 
 // The function returns the following values:
 //
-//    - discovererStreamInfo previous DiscovererStreamInfo in a chain. NULL for
-//      starting points. Unref with #gst_discoverer_stream_info_unref after
-//      usage.
+//   - discovererStreamInfo (optional) previous DiscovererStreamInfo in a chain.
+//     NULL for starting points. Unref with #gst_discoverer_stream_info_unref
+//     after usage.
 //
 func (info *DiscovererStreamInfo) Previous() *DiscovererStreamInfo {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1239,15 +1299,17 @@ func (info *DiscovererStreamInfo) Previous() *DiscovererStreamInfo {
 
 	var _discovererStreamInfo *DiscovererStreamInfo // out
 
-	_discovererStreamInfo = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_discovererStreamInfo = wrapDiscovererStreamInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _discovererStreamInfo
 }
 
 // The function returns the following values:
 //
-//    - utf8: stream ID of this stream. If you wish to use the stream ID after
-//      the life-time of info you will need to copy it.
+//   - utf8: stream ID of this stream. If you wish to use the stream ID after
+//     the life-time of info you will need to copy it.
 //
 func (info *DiscovererStreamInfo) StreamID() string {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1267,8 +1329,8 @@ func (info *DiscovererStreamInfo) StreamID() string {
 
 // The function returns the following values:
 //
-//    - gint: stream number, -1 if no index could be determined. This property
-//      acts as a unique identifier as a 'int' for the stream.
+//   - gint: stream number, -1 if no index could be determined. This property
+//     acts as a unique identifier as a 'int' for the stream.
 //
 func (info *DiscovererStreamInfo) StreamNumber() int {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1288,8 +1350,8 @@ func (info *DiscovererStreamInfo) StreamNumber() int {
 
 // The function returns the following values:
 //
-//    - utf8: human readable name for the stream type of the given info (ex :
-//      "audio", "container",...).
+//   - utf8: human readable name for the stream type of the given info (ex :
+//     "audio", "container",...).
 //
 func (info *DiscovererStreamInfo) StreamTypeNick() string {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1309,8 +1371,31 @@ func (info *DiscovererStreamInfo) StreamTypeNick() string {
 
 // The function returns the following values:
 //
-//    - toc: TOC contained in this stream. If you wish to use the TOC after the
-//      life-time of info you will need to copy it.
+//   - tagList (optional) tags contained in this stream. If you wish to use the
+//     tags after the life-time of info you will need to copy them.
+//
+func (info *DiscovererStreamInfo) Tags() *gst.TagList {
+	var _arg0 *C.GstDiscovererStreamInfo // out
+	var _cret *C.GstTagList              // in
+
+	_arg0 = (*C.GstDiscovererStreamInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.gst_discoverer_stream_info_get_tags(_arg0)
+	runtime.KeepAlive(info)
+
+	var _tagList *gst.TagList // out
+
+	if _cret != nil {
+		_tagList = (*gst.TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tagList
+}
+
+// The function returns the following values:
+//
+//   - toc (optional): TOC contained in this stream. If you wish to use the TOC
+//     after the life-time of info you will need to copy it.
 //
 func (info *DiscovererStreamInfo) Toc() *gst.Toc {
 	var _arg0 *C.GstDiscovererStreamInfo // out
@@ -1323,7 +1408,9 @@ func (info *DiscovererStreamInfo) Toc() *gst.Toc {
 
 	var _toc *gst.Toc // out
 
-	_toc = (*gst.Toc)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_toc = (*gst.Toc)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _toc
 }
@@ -1353,7 +1440,7 @@ func marshalDiscovererSubtitleInfo(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - utf8: language of the stream, or NULL if unknown.
+//   - utf8 (optional): language of the stream, or NULL if unknown.
 //
 func (info *DiscovererSubtitleInfo) Language() string {
 	var _arg0 *C.GstDiscovererSubtitleInfo // out
@@ -1366,7 +1453,9 @@ func (info *DiscovererSubtitleInfo) Language() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1395,7 +1484,7 @@ func marshalDiscovererVideoInfo(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - guint: average or nominal bitrate of the video stream in bits/second.
+//   - guint: average or nominal bitrate of the video stream in bits/second.
 //
 func (info *DiscovererVideoInfo) Bitrate() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1415,7 +1504,7 @@ func (info *DiscovererVideoInfo) Bitrate() uint {
 
 // The function returns the following values:
 //
-//    - guint: depth in bits of the video stream.
+//   - guint: depth in bits of the video stream.
 //
 func (info *DiscovererVideoInfo) Depth() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1435,7 +1524,7 @@ func (info *DiscovererVideoInfo) Depth() uint {
 
 // The function returns the following values:
 //
-//    - guint: framerate of the video stream (denominator).
+//   - guint: framerate of the video stream (denominator).
 //
 func (info *DiscovererVideoInfo) FramerateDenom() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1455,7 +1544,7 @@ func (info *DiscovererVideoInfo) FramerateDenom() uint {
 
 // The function returns the following values:
 //
-//    - guint: framerate of the video stream (numerator).
+//   - guint: framerate of the video stream (numerator).
 //
 func (info *DiscovererVideoInfo) FramerateNum() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1475,7 +1564,7 @@ func (info *DiscovererVideoInfo) FramerateNum() uint {
 
 // The function returns the following values:
 //
-//    - guint: height of the video stream in pixels.
+//   - guint: height of the video stream in pixels.
 //
 func (info *DiscovererVideoInfo) Height() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1495,7 +1584,7 @@ func (info *DiscovererVideoInfo) Height() uint {
 
 // The function returns the following values:
 //
-//    - guint: maximum bitrate of the video stream in bits/second.
+//   - guint: maximum bitrate of the video stream in bits/second.
 //
 func (info *DiscovererVideoInfo) MaxBitrate() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1515,7 +1604,7 @@ func (info *DiscovererVideoInfo) MaxBitrate() uint {
 
 // The function returns the following values:
 //
-//    - guint: pixel Aspect Ratio (PAR) of the video stream (denominator).
+//   - guint: pixel Aspect Ratio (PAR) of the video stream (denominator).
 //
 func (info *DiscovererVideoInfo) ParDenom() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1535,7 +1624,7 @@ func (info *DiscovererVideoInfo) ParDenom() uint {
 
 // The function returns the following values:
 //
-//    - guint: pixel Aspect Ratio (PAR) of the video stream (numerator).
+//   - guint: pixel Aspect Ratio (PAR) of the video stream (numerator).
 //
 func (info *DiscovererVideoInfo) ParNum() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1555,7 +1644,7 @@ func (info *DiscovererVideoInfo) ParNum() uint {
 
 // The function returns the following values:
 //
-//    - guint: width of the video stream in pixels.
+//   - guint: width of the video stream in pixels.
 //
 func (info *DiscovererVideoInfo) Width() uint {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1575,8 +1664,8 @@ func (info *DiscovererVideoInfo) Width() uint {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if the video stream corresponds to an image (i.e. only contains
-//      one frame).
+//   - ok: TRUE if the video stream corresponds to an image (i.e. only contains
+//     one frame).
 //
 func (info *DiscovererVideoInfo) IsImage() bool {
 	var _arg0 *C.GstDiscovererVideoInfo // out
@@ -1598,7 +1687,7 @@ func (info *DiscovererVideoInfo) IsImage() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream is interlaced, else FALSE.
+//   - ok: TRUE if the stream is interlaced, else FALSE.
 //
 func (info *DiscovererVideoInfo) IsInterlaced() bool {
 	var _arg0 *C.GstDiscovererVideoInfo // out

@@ -16,21 +16,21 @@ import (
 import "C"
 
 // BufferStrawGetBuffer: get one buffer from pad. Implemented via buffer probes.
-// This function will block until the pipeline passes a buffer over pad, so for
-// robust behavior in unit tests, you need to use check's timeout to fail out in
-// the case that a buffer never arrives.
+// This function will block until the pipeline passes a buffer over pad,
+// so for robust behavior in unit tests, you need to use check's timeout to fail
+// out in the case that a buffer never arrives.
 //
 // You must have previously called gst_buffer_straw_start_pipeline() on pipeline
 // and pad.
 //
 // The function takes the following parameters:
 //
-//    - bin: pipeline previously started via gst_buffer_straw_start_pipeline().
-//    - pad previously passed to gst_buffer_straw_start_pipeline().
+//   - bin: pipeline previously started via gst_buffer_straw_start_pipeline().
+//   - pad previously passed to gst_buffer_straw_start_pipeline().
 //
 // The function returns the following values:
 //
-//    - buffer: captured Buffer.
+//   - buffer: captured Buffer.
 //
 func BufferStrawGetBuffer(bin gst.Elementer, pad *gst.Pad) *gst.Buffer {
 	var _arg1 *C.GstElement // out
@@ -76,8 +76,8 @@ func BufferStrawGetBuffer(bin gst.Elementer, pad *gst.Pad) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - bin: pipeline to run.
-//    - pad on an element in bin.
+//   - bin: pipeline to run.
+//   - pad on an element in bin.
 //
 func BufferStrawStartPipeline(bin gst.Elementer, pad *gst.Pad) {
 	var _arg1 *C.GstElement // out
@@ -99,8 +99,8 @@ func BufferStrawStartPipeline(bin gst.Elementer, pad *gst.Pad) {
 //
 // The function takes the following parameters:
 //
-//    - bin: pipeline previously started via gst_buffer_straw_start_pipeline().
-//    - pad previously passed to gst_buffer_straw_start_pipeline().
+//   - bin: pipeline previously started via gst_buffer_straw_start_pipeline().
+//   - pad previously passed to gst_buffer_straw_start_pipeline().
 //
 func BufferStrawStopPipeline(bin gst.Elementer, pad *gst.Pad) {
 	var _arg1 *C.GstElement // out

@@ -79,11 +79,11 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glShader: new empty shader.
+//   - glShader: new empty shader.
 //
 func NewGLShader(context GLContexter) *GLShader {
 	var _arg1 *C.GstGLContext // out
@@ -105,11 +105,11 @@ func NewGLShader(context GLContexter) *GLShader {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glShader: default shader or NULL on failure.
+//   - glShader: default shader or NULL on failure.
 //
 func NewGLShaderDefault(context GLContexter) (*GLShader, error) {
 	var _arg1 *C.GstGLContext // out
@@ -139,11 +139,11 @@ func NewGLShaderDefault(context GLContexter) (*GLShader, error) {
 //
 // The function takes the following parameters:
 //
-//    - stage to attach.
+//   - stage to attach.
 //
 // The function returns the following values:
 //
-//    - ok: whether stage could be attached to shader.
+//   - ok: whether stage could be attached to shader.
 //
 func (shader *GLShader) Attach(stage *GLSLStage) bool {
 	var _arg0 *C.GstGLShader  // out
@@ -173,11 +173,11 @@ func (shader *GLShader) Attach(stage *GLSLStage) bool {
 //
 // The function takes the following parameters:
 //
-//    - stage to attach.
+//   - stage to attach.
 //
 // The function returns the following values:
 //
-//    - ok: whether stage could be attached to shader.
+//   - ok: whether stage could be attached to shader.
 //
 func (shader *GLShader) AttachUnlocked(stage *GLSLStage) bool {
 	var _arg0 *C.GstGLShader  // out
@@ -205,8 +205,8 @@ func (shader *GLShader) AttachUnlocked(stage *GLSLStage) bool {
 //
 // The function takes the following parameters:
 //
-//    - index: attribute index to set.
-//    - name of the attribute.
+//   - index: attribute index to set.
+//   - name of the attribute.
 //
 func (shader *GLShader) BindAttributeLocation(index uint, name string) {
 	var _arg0 *C.GstGLShader // out
@@ -229,8 +229,8 @@ func (shader *GLShader) BindAttributeLocation(index uint, name string) {
 //
 // The function takes the following parameters:
 //
-//    - index: attribute index to set.
-//    - name of the attribute.
+//   - index: attribute index to set.
+//   - name of the attribute.
 //
 func (shader *GLShader) BindFragDataLocation(index uint, name string) {
 	var _arg0 *C.GstGLShader // out
@@ -254,7 +254,7 @@ func (shader *GLShader) BindFragDataLocation(index uint, name string) {
 //
 // The function takes the following parameters:
 //
-//    - stage to attach.
+//   - stage to attach.
 //
 func (shader *GLShader) CompileAttachStage(stage *GLSLStage) error {
 	var _arg0 *C.GstGLShader  // out
@@ -284,7 +284,7 @@ func (shader *GLShader) CompileAttachStage(stage *GLSLStage) error {
 //
 // The function takes the following parameters:
 //
-//    - stage to attach.
+//   - stage to attach.
 //
 func (shader *GLShader) Detach(stage *GLSLStage) {
 	var _arg0 *C.GstGLShader  // out
@@ -298,15 +298,15 @@ func (shader *GLShader) Detach(stage *GLSLStage) {
 	runtime.KeepAlive(stage)
 }
 
-// DetachUnlocked detaches stage from shader. stage must have been successfully
-// attached to shader with gst_gl_shader_attach() or
+// DetachUnlocked detaches stage from shader. stage must have been
+// successfully attached to shader with gst_gl_shader_attach() or
 // gst_gl_shader_attach_unlocked().
 //
 // Note: must be called in the GL thread.
 //
 // The function takes the following parameters:
 //
-//    - stage to attach.
+//   - stage to attach.
 //
 func (shader *GLShader) DetachUnlocked(stage *GLSLStage) {
 	var _arg0 *C.GstGLShader  // out
@@ -322,11 +322,11 @@ func (shader *GLShader) DetachUnlocked(stage *GLSLStage) {
 
 // The function takes the following parameters:
 //
-//    - name of the attribute.
+//   - name of the attribute.
 //
 // The function returns the following values:
 //
-//    - gint: attribute index for name in shader or -1 on failure.
+//   - gint: attribute index for name in shader or -1 on failure.
 //
 func (shader *GLShader) AttributeLocation(name string) int {
 	var _arg0 *C.GstGLShader // out
@@ -350,7 +350,7 @@ func (shader *GLShader) AttributeLocation(name string) int {
 
 // The function returns the following values:
 //
-//    - gint: GL program handle for this shader.
+//   - gint: GL program handle for this shader.
 //
 func (shader *GLShader) ProgramHandle() int {
 	var _arg0 *C.GstGLShader // out
@@ -372,7 +372,7 @@ func (shader *GLShader) ProgramHandle() int {
 //
 // The function returns the following values:
 //
-//    - ok: whether shader has been successfully linked.
+//   - ok: whether shader has been successfully linked.
 //
 func (shader *GLShader) IsLinked() bool {
 	var _arg0 *C.GstGLShader // out
@@ -441,8 +441,8 @@ func (shader *GLShader) ReleaseUnlocked() {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value to set.
+//   - name of the uniform.
+//   - value to set.
 //
 func (shader *GLShader) SetUniform1F(name string, value float32) {
 	var _arg0 *C.GstGLShader // out
@@ -464,8 +464,8 @@ func (shader *GLShader) SetUniform1F(name string, value float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform1Fv(name string, value []float32) {
 	var _arg0 *C.GstGLShader // out
@@ -491,8 +491,8 @@ func (shader *GLShader) SetUniform1Fv(name string, value []float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value to set.
+//   - name of the uniform.
+//   - value to set.
 //
 func (shader *GLShader) SetUniform1I(name string, value int) {
 	var _arg0 *C.GstGLShader // out
@@ -514,8 +514,8 @@ func (shader *GLShader) SetUniform1I(name string, value int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform1Iv(name string, value []int) {
 	var _arg0 *C.GstGLShader // out
@@ -546,9 +546,9 @@ func (shader *GLShader) SetUniform1Iv(name string, value []int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - v0: first value to set.
-//    - v1: second value to set.
+//   - name of the uniform.
+//   - v0: first value to set.
+//   - v1: second value to set.
 //
 func (shader *GLShader) SetUniform2F(name string, v0, v1 float32) {
 	var _arg0 *C.GstGLShader // out
@@ -573,8 +573,8 @@ func (shader *GLShader) SetUniform2F(name string, v0, v1 float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform2Fv(name string, value []float32) {
 	var _arg0 *C.GstGLShader // out
@@ -600,9 +600,9 @@ func (shader *GLShader) SetUniform2Fv(name string, value []float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - v0: first value to set.
-//    - v1: second value to set.
+//   - name of the uniform.
+//   - v0: first value to set.
+//   - v1: second value to set.
 //
 func (shader *GLShader) SetUniform2I(name string, v0, v1 int) {
 	var _arg0 *C.GstGLShader // out
@@ -627,8 +627,8 @@ func (shader *GLShader) SetUniform2I(name string, v0, v1 int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform2Iv(name string, value []int) {
 	var _arg0 *C.GstGLShader // out
@@ -659,10 +659,10 @@ func (shader *GLShader) SetUniform2Iv(name string, value []int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - v0: first value to set.
-//    - v1: second value to set.
-//    - v2: third value to set.
+//   - name of the uniform.
+//   - v0: first value to set.
+//   - v1: second value to set.
+//   - v2: third value to set.
 //
 func (shader *GLShader) SetUniform3F(name string, v0, v1, v2 float32) {
 	var _arg0 *C.GstGLShader // out
@@ -690,8 +690,8 @@ func (shader *GLShader) SetUniform3F(name string, v0, v1, v2 float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform3Fv(name string, value []float32) {
 	var _arg0 *C.GstGLShader // out
@@ -717,10 +717,10 @@ func (shader *GLShader) SetUniform3Fv(name string, value []float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - v0: first value to set.
-//    - v1: second value to set.
-//    - v2: third value to set.
+//   - name of the uniform.
+//   - v0: first value to set.
+//   - v1: second value to set.
+//   - v2: third value to set.
 //
 func (shader *GLShader) SetUniform3I(name string, v0, v1, v2 int) {
 	var _arg0 *C.GstGLShader // out
@@ -748,8 +748,8 @@ func (shader *GLShader) SetUniform3I(name string, v0, v1, v2 int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform3Iv(name string, value []int) {
 	var _arg0 *C.GstGLShader // out
@@ -780,11 +780,11 @@ func (shader *GLShader) SetUniform3Iv(name string, value []int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - v0: first value to set.
-//    - v1: second value to set.
-//    - v2: third value to set.
-//    - v3: fourth value to set.
+//   - name of the uniform.
+//   - v0: first value to set.
+//   - v1: second value to set.
+//   - v2: third value to set.
+//   - v3: fourth value to set.
 //
 func (shader *GLShader) SetUniform4F(name string, v0, v1, v2, v3 float32) {
 	var _arg0 *C.GstGLShader // out
@@ -815,8 +815,8 @@ func (shader *GLShader) SetUniform4F(name string, v0, v1, v2, v3 float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform4Fv(name string, value []float32) {
 	var _arg0 *C.GstGLShader // out
@@ -842,11 +842,11 @@ func (shader *GLShader) SetUniform4Fv(name string, value []float32) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - v0: first value to set.
-//    - v1: second value to set.
-//    - v2: third value to set.
-//    - v3: fourth value to set.
+//   - name of the uniform.
+//   - v0: first value to set.
+//   - v1: second value to set.
+//   - v2: third value to set.
+//   - v3: fourth value to set.
 //
 func (shader *GLShader) SetUniform4I(name string, v0, v1, v2, v3 int) {
 	var _arg0 *C.GstGLShader // out
@@ -877,8 +877,8 @@ func (shader *GLShader) SetUniform4I(name string, v0, v1, v2, v3 int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - value values to set.
+//   - name of the uniform.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniform4Iv(name string, value []int) {
 	var _arg0 *C.GstGLShader // out
@@ -909,10 +909,10 @@ func (shader *GLShader) SetUniform4Iv(name string, value []int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 2x2 matrices to set.
-//    - transpose the matrix.
-//    - value: matrix to set.
+//   - name of the uniform.
+//   - count: number of 2x2 matrices to set.
+//   - transpose the matrix.
+//   - value: matrix to set.
 //
 func (shader *GLShader) SetUniformMatrix2Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -942,10 +942,10 @@ func (shader *GLShader) SetUniformMatrix2Fv(name string, count int, transpose bo
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 2x3 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 2x3 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix2X3Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -975,10 +975,10 @@ func (shader *GLShader) SetUniformMatrix2X3Fv(name string, count int, transpose 
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 2x4 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 2x4 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix2X4Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -1008,10 +1008,10 @@ func (shader *GLShader) SetUniformMatrix2X4Fv(name string, count int, transpose 
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 3x3 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 3x3 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix3Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -1041,10 +1041,10 @@ func (shader *GLShader) SetUniformMatrix3Fv(name string, count int, transpose bo
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 3x2 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 3x2 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix3X2Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -1074,10 +1074,10 @@ func (shader *GLShader) SetUniformMatrix3X2Fv(name string, count int, transpose 
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 3x4 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 3x4 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix3X4Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -1107,10 +1107,10 @@ func (shader *GLShader) SetUniformMatrix3X4Fv(name string, count int, transpose 
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 4x4 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 4x4 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix4Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -1140,10 +1140,10 @@ func (shader *GLShader) SetUniformMatrix4Fv(name string, count int, transpose bo
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 4x2 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 4x2 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix4X2Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out
@@ -1173,10 +1173,10 @@ func (shader *GLShader) SetUniformMatrix4X2Fv(name string, count int, transpose 
 //
 // The function takes the following parameters:
 //
-//    - name of the uniform.
-//    - count: number of 4x3 matrices to set.
-//    - transpose the matrix.
-//    - value values to set.
+//   - name of the uniform.
+//   - count: number of 4x3 matrices to set.
+//   - transpose the matrix.
+//   - value values to set.
 //
 func (shader *GLShader) SetUniformMatrix4X3Fv(name string, count int, transpose bool, value *float32) {
 	var _arg0 *C.GstGLShader // out

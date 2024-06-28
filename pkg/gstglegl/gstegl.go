@@ -13,11 +13,11 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - err: EGL error code.
+//   - err: EGL error code.
 //
 // The function returns the following values:
 //
-//    - utf8: short string representation of err.
+//   - utf8: short string representation of err.
 //
 func EglGetErrorString(err int32) string {
 	var _arg1 C.EGLint // out

@@ -72,15 +72,18 @@ type AudioSrcOverrides struct {
 	// The function returns the following values:
 	//
 	Prepare func(spec *AudioRingBufferSpec) bool
+	// Read samples from the device.
+	//
 	// The function takes the following parameters:
 	//
-	//    - data (optional)
-	//    - length
-	//    - timestamp
+	//   - data: sample data.
 	//
 	// The function returns the following values:
 	//
-	Read  func(data unsafe.Pointer, length uint, timestamp *gst.ClockTime) uint
+	//   - timestamp: ClockTime.
+	//   - guint
+	//
+	Read  func(data []byte) (gst.ClockTime, uint)
 	Reset func()
 	// The function returns the following values:
 	//
@@ -105,8 +108,8 @@ func defaultAudioSrcOverrides(v *AudioSrc) AudioSrcOverrides {
 // * open() :Open the device. * prepare() :Configure the device with the
 // specified format. * read() :Read samples from the device. * reset() :Unblock
 // reads and flush the device. * delay() :Get the number of samples in the
-// device but not yet read. * unprepare() :Undo operations done by prepare. *
-// close() :Close the device.
+// device but not yet read. * unprepare() :Undo operations done by prepare.
+// * close() :Close the device.
 //
 // All scheduling of samples and timestamps is done in this base class together
 // with AudioBaseSrc using a default implementation of a AudioRingBuffer that
@@ -283,42 +286,44 @@ func (src *AudioSrc) prepare(spec *AudioRingBufferSpec) bool {
 	return _ok
 }
 
+// Read: read samples from the device.
+//
 // The function takes the following parameters:
 //
-//    - data (optional)
-//    - length
-//    - timestamp
+//   - data: sample data.
 //
 // The function returns the following values:
 //
-func (src *AudioSrc) read(data unsafe.Pointer, length uint, timestamp *gst.ClockTime) uint {
+//   - timestamp: ClockTime.
+//   - guint
+//
+func (src *AudioSrc) read(data []byte) (gst.ClockTime, uint) {
 	gclass := (*C.GstAudioSrcClass)(coreglib.PeekParentClass(src))
 	fnarg := gclass.read
 
-	var _arg0 *C.GstAudioSrc  // out
-	var _arg1 C.gpointer      // out
-	var _arg2 C.guint         // out
-	var _arg3 *C.GstClockTime // out
-	var _cret C.guint         // in
+	var _arg0 *C.GstAudioSrc // out
+	var _arg1 C.gpointer     // out
+	var _arg2 C.guint
+	var _arg3 C.GstClockTime // in
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GstAudioSrc)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(data))
-	_arg2 = C.guint(length)
-	_arg3 = (*C.guint64)(unsafe.Pointer(timestamp))
-	type _ = *gst.ClockTime
-	type _ = *uint64
+	_arg2 = (C.guint)(len(data))
+	if len(data) > 0 {
+		_arg1 = (C.gpointer)(unsafe.Pointer(&data[0]))
+	}
 
-	_cret = C._gotk4_gstaudio1_AudioSrc_virtual_read(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	_cret = C._gotk4_gstaudio1_AudioSrc_virtual_read(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(data)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(timestamp)
 
-	var _guint uint // out
+	var _timestamp gst.ClockTime // out
+	var _guint uint              // out
 
+	_timestamp = gst.ClockTime(_arg3)
 	_guint = uint(_cret)
 
-	return _guint
+	return _timestamp, _guint
 }
 
 func (src *AudioSrc) reset() {

@@ -76,8 +76,8 @@ const (
 	// AppStreamTypeSeekable: stream is seekable but seeking might not be very
 	// fast, such as data from a webserver.
 	AppStreamTypeSeekable
-	// AppStreamTypeRandomAccess: stream is seekable and seeking is fast, such
-	// as in a local file.
+	// AppStreamTypeRandomAccess: stream is seekable and seeking is fast,
+	// such as in a local file.
 	AppStreamTypeRandomAccess
 )
 
@@ -106,8 +106,8 @@ type AppSrcOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - flowReturn when the EOS was successfully queued. T_FLOW_FLUSHING when
-	//      appsrc is not PAUSED or PLAYING.
+	//   - flowReturn when the EOS was successfully queued. T_FLOW_FLUSHING when
+	//     appsrc is not PAUSED or PLAYING.
 	//
 	EndOfStream func() gst.FlowReturn
 	EnoughData  func()
@@ -122,12 +122,12 @@ type AppSrcOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - buffer to push.
+	//   - buffer to push.
 	//
 	// The function returns the following values:
 	//
-	//    - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING
-	//      when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+	//   - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING
+	//     when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 	//
 	PushBuffer func(buffer *gst.Buffer) gst.FlowReturn
 	// PushBufferList adds a buffer list to the queue of buffers and buffer
@@ -139,18 +139,18 @@ type AppSrcOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - bufferList to push.
+	//   - bufferList to push.
 	//
 	// The function returns the following values:
 	//
-	//    - flowReturn when the buffer list was successfully queued.
-	//      T_FLOW_FLUSHING when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when
-	//      EOS occurred.
+	//   - flowReturn when the buffer list was successfully queued.
+	//     T_FLOW_FLUSHING when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when
+	//     EOS occurred.
 	//
 	PushBufferList func(bufferList *gst.BufferList) gst.FlowReturn
 	// PushSample: extract a buffer from the provided sample and adds it to the
-	// queue of buffers that the appsrc element will push to its source pad. Any
-	// previous caps that were set on appsrc will be replaced by the caps
+	// queue of buffers that the appsrc element will push to its source pad.
+	// Any previous caps that were set on appsrc will be replaced by the caps
 	// associated with the sample if not equal.
 	//
 	// This function does not take ownership of the sample so the sample needs
@@ -161,12 +161,12 @@ type AppSrcOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - sample from which buffer and caps may be extracted.
+	//   - sample from which buffer and caps may be extracted.
 	//
 	// The function returns the following values:
 	//
-	//    - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING
-	//      when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+	//   - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING
+	//     when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 	//
 	PushSample func(sample *gst.Sample) gst.FlowReturn
 	// The function takes the following parameters:
@@ -196,10 +196,10 @@ func defaultAppSrcOverrides(v *AppSrc) AppSrcOverrides {
 // methods directly or by using the appsrc action signals.
 //
 // Before operating appsrc, the caps property must be set to fixed caps
-// describing the format of the data that will be pushed with appsrc. An
-// exception to this is when pushing buffers with unknown caps, in which case no
-// caps should be set. This is typically true of file-like sources that push raw
-// byte buffers. If you don't want to explicitly set the caps, you can use
+// describing the format of the data that will be pushed with appsrc.
+// An exception to this is when pushing buffers with unknown caps, in which case
+// no caps should be set. This is typically true of file-like sources that push
+// raw byte buffers. If you don't want to explicitly set the caps, you can use
 // gst_app_src_push_sample. This method gets the caps associated with the sample
 // and sets them on the appsrc replacing any previously set caps (if different
 // from sample's caps).
@@ -211,11 +211,11 @@ func defaultAppSrcOverrides(v *AppSrc) AppSrcOverrides {
 // will not happen from the thread that performed the push-buffer call.
 //
 // The "max-bytes", "max-buffers" and "max-time" properties control how much
-// data can be queued in appsrc before appsrc considers the queue full. A filled
-// internal queue will always signal the "enough-data" signal, which signals the
-// application that it should stop pushing data into appsrc. The "block"
-// property will cause appsrc to block the push-buffer method until free data
-// becomes available again.
+// data can be queued in appsrc before appsrc considers the queue full.
+// A filled internal queue will always signal the "enough-data" signal,
+// which signals the application that it should stop pushing data into appsrc.
+// The "block" property will cause appsrc to block the push-buffer method until
+// free data becomes available again.
 //
 // When the internal queue is running out of data, the "need-data" signal is
 // emitted, which signals the application that it should start pushing more data
@@ -223,8 +223,8 @@ func defaultAppSrcOverrides(v *AppSrc) AppSrcOverrides {
 //
 // In addition to the "need-data" and "enough-data" signals, appsrc can emit the
 // "seek-data" signal when the "stream-mode" property is set to "seekable" or
-// "random-access". The signal argument will contain the new desired position in
-// the stream expressed in the unit set with the "format" property. After
+// "random-access". The signal argument will contain the new desired position
+// in the stream expressed in the unit set with the "format" property. After
 // receiving the seek-data signal, the application should push-buffers from the
 // new position.
 //
@@ -250,10 +250,10 @@ func defaultAppSrcOverrides(v *AppSrc) AppSrcOverrides {
 // For the stream and seekable modes, setting this property is optional but
 // recommended.
 //
-// When the application has finished pushing data into appsrc, it should call
-// gst_app_src_end_of_stream() or emit the end-of-stream action signal. After
-// this call, no more buffers can be pushed into appsrc until a flushing seek
-// occurs or the state of the appsrc has gone through READY.
+// When the application has finished pushing data into appsrc, it should
+// call gst_app_src_end_of_stream() or emit the end-of-stream action signal.
+// After this call, no more buffers can be pushed into appsrc until a flushing
+// seek occurs or the state of the appsrc has gone through READY.
 type AppSrc struct {
 	_ [0]func() // equal guard
 	gstbase.BaseSrc
@@ -382,8 +382,8 @@ func (appsrc *AppSrc) ConnectPushBufferList(f func(bufferList *gst.BufferList) (
 }
 
 // ConnectPushSample: extract a buffer from the provided sample and adds the
-// extracted buffer to the queue of buffers that the appsrc element will push to
-// its source pad. This function set the appsrc caps based on the caps in the
+// extracted buffer to the queue of buffers that the appsrc element will push
+// to its source pad. This function set the appsrc caps based on the caps in the
 // sample and reset the caps if they change. Only the caps and the buffer of the
 // provided sample are used and not for example the segment in the sample.
 //
@@ -408,8 +408,8 @@ func (appsrc *AppSrc) ConnectSeekData(f func(offset uint64) (ok bool)) coreglib.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the EOS was successfully queued. T_FLOW_FLUSHING when
-//      appsrc is not PAUSED or PLAYING.
+//   - flowReturn when the EOS was successfully queued. T_FLOW_FLUSHING when
+//     appsrc is not PAUSED or PLAYING.
 //
 func (appsrc *AppSrc) EndOfStream() gst.FlowReturn {
 	var _arg0 *C.GstAppSrc    // out
@@ -431,7 +431,7 @@ func (appsrc *AppSrc) EndOfStream() gst.FlowReturn {
 //
 // The function returns the following values:
 //
-//    - caps produced by the source. gst_caps_unref() after usage.
+//   - caps (optional) produced by the source. gst_caps_unref() after usage.
 //
 func (appsrc *AppSrc) Caps() *gst.Caps {
 	var _arg0 *C.GstAppSrc // out
@@ -444,13 +444,15 @@ func (appsrc *AppSrc) Caps() *gst.Caps {
 
 	var _caps *gst.Caps // out
 
-	_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_caps)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_caps)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _caps
 }
@@ -460,7 +462,7 @@ func (appsrc *AppSrc) Caps() *gst.Caps {
 //
 // The function returns the following values:
 //
-//    - guint64: number of currently queued buffers.
+//   - guint64: number of currently queued buffers.
 //
 func (appsrc *AppSrc) CurrentLevelBuffers() uint64 {
 	var _arg0 *C.GstAppSrc // out
@@ -482,7 +484,7 @@ func (appsrc *AppSrc) CurrentLevelBuffers() uint64 {
 //
 // The function returns the following values:
 //
-//    - guint64: number of currently queued bytes.
+//   - guint64: number of currently queued bytes.
 //
 func (appsrc *AppSrc) CurrentLevelBytes() uint64 {
 	var _arg0 *C.GstAppSrc // out
@@ -504,7 +506,7 @@ func (appsrc *AppSrc) CurrentLevelBytes() uint64 {
 //
 // The function returns the following values:
 //
-//    - clockTime: amount of currently queued time.
+//   - clockTime: amount of currently queued time.
 //
 func (appsrc *AppSrc) CurrentLevelTime() gst.ClockTime {
 	var _arg0 *C.GstAppSrc   // out
@@ -517,9 +519,7 @@ func (appsrc *AppSrc) CurrentLevelTime() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -529,8 +529,8 @@ func (appsrc *AppSrc) CurrentLevelTime() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: duration of the stream previously set with
-//      gst_app_src_set_duration();.
+//   - clockTime: duration of the stream previously set with
+//     gst_app_src_set_duration();.
 //
 func (appsrc *AppSrc) Duration() gst.ClockTime {
 	var _arg0 *C.GstAppSrc   // out
@@ -543,9 +543,7 @@ func (appsrc *AppSrc) Duration() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -555,8 +553,8 @@ func (appsrc *AppSrc) Duration() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appsrc is emitting the "new-preroll" and "new-buffer"
-//      signals.
+//   - ok: TRUE if appsrc is emitting the "new-preroll" and "new-buffer"
+//     signals.
 //
 func (appsrc *AppSrc) EmitSignals() bool {
 	var _arg0 *C.GstAppSrc // out
@@ -580,8 +578,8 @@ func (appsrc *AppSrc) EmitSignals() bool {
 //
 // The function returns the following values:
 //
-//    - min latency.
-//    - max latency.
+//   - min latency.
+//   - max latency.
 //
 func (appsrc *AppSrc) Latency() (min, max uint64) {
 	var _arg0 *C.GstAppSrc // out
@@ -607,7 +605,7 @@ func (appsrc *AppSrc) Latency() (min, max uint64) {
 //
 // The function returns the following values:
 //
-//    - appLeakyType: currently set AppLeakyType.
+//   - appLeakyType: currently set AppLeakyType.
 //
 func (appsrc *AppSrc) LeakyType() AppLeakyType {
 	var _arg0 *C.GstAppSrc      // out
@@ -629,7 +627,7 @@ func (appsrc *AppSrc) LeakyType() AppLeakyType {
 //
 // The function returns the following values:
 //
-//    - guint64: maximum amount of buffers that can be queued.
+//   - guint64: maximum amount of buffers that can be queued.
 //
 func (appsrc *AppSrc) MaxBuffers() uint64 {
 	var _arg0 *C.GstAppSrc // out
@@ -651,7 +649,7 @@ func (appsrc *AppSrc) MaxBuffers() uint64 {
 //
 // The function returns the following values:
 //
-//    - guint64: maximum amount of bytes that can be queued.
+//   - guint64: maximum amount of bytes that can be queued.
 //
 func (appsrc *AppSrc) MaxBytes() uint64 {
 	var _arg0 *C.GstAppSrc // out
@@ -673,7 +671,7 @@ func (appsrc *AppSrc) MaxBytes() uint64 {
 //
 // The function returns the following values:
 //
-//    - clockTime: maximum amount of time that can be queued.
+//   - clockTime: maximum amount of time that can be queued.
 //
 func (appsrc *AppSrc) MaxTime() gst.ClockTime {
 	var _arg0 *C.GstAppSrc   // out
@@ -686,9 +684,7 @@ func (appsrc *AppSrc) MaxTime() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -698,7 +694,7 @@ func (appsrc *AppSrc) MaxTime() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - gint64: size of the stream previously set with gst_app_src_set_size();.
+//   - gint64: size of the stream previously set with gst_app_src_set_size();.
 //
 func (appsrc *AppSrc) Size() int64 {
 	var _arg0 *C.GstAppSrc // out
@@ -721,7 +717,7 @@ func (appsrc *AppSrc) Size() int64 {
 //
 // The function returns the following values:
 //
-//    - appStreamType: stream type.
+//   - appStreamType: stream type.
 //
 func (appsrc *AppSrc) StreamType() AppStreamType {
 	var _arg0 *C.GstAppSrc       // out
@@ -747,12 +743,12 @@ func (appsrc *AppSrc) StreamType() AppStreamType {
 //
 // The function takes the following parameters:
 //
-//    - buffer to push.
+//   - buffer to push.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
-//      appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+//   - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
+//     appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 //
 func (appsrc *AppSrc) PushBuffer(buffer *gst.Buffer) gst.FlowReturn {
 	var _arg0 *C.GstAppSrc    // out
@@ -783,12 +779,12 @@ func (appsrc *AppSrc) PushBuffer(buffer *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - bufferList to push.
+//   - bufferList to push.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the buffer list was successfully queued. T_FLOW_FLUSHING
-//      when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+//   - flowReturn when the buffer list was successfully queued. T_FLOW_FLUSHING
+//     when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 //
 func (appsrc *AppSrc) PushBufferList(bufferList *gst.BufferList) gst.FlowReturn {
 	var _arg0 *C.GstAppSrc     // out
@@ -823,12 +819,12 @@ func (appsrc *AppSrc) PushBufferList(bufferList *gst.BufferList) gst.FlowReturn 
 //
 // The function takes the following parameters:
 //
-//    - sample from which buffer and caps may be extracted.
+//   - sample from which buffer and caps may be extracted.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
-//      appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+//   - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
+//     appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 //
 func (appsrc *AppSrc) PushSample(sample *gst.Sample) gst.FlowReturn {
 	var _arg0 *C.GstAppSrc    // out
@@ -856,7 +852,7 @@ func (appsrc *AppSrc) PushSample(sample *gst.Sample) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - caps (optional) to set.
+//   - caps (optional) to set.
 //
 func (appsrc *AppSrc) SetCaps(caps *gst.Caps) {
 	var _arg0 *C.GstAppSrc // out
@@ -877,16 +873,14 @@ func (appsrc *AppSrc) SetCaps(caps *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - duration to set.
+//   - duration to set.
 //
 func (appsrc *AppSrc) SetDuration(duration gst.ClockTime) {
 	var _arg0 *C.GstAppSrc   // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstAppSrc)(unsafe.Pointer(coreglib.InternObject(appsrc).Native()))
-	_arg1 = C.guint64(duration)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(duration)
 
 	C.gst_app_src_set_duration(_arg0, _arg1)
 	runtime.KeepAlive(appsrc)
@@ -899,7 +893,7 @@ func (appsrc *AppSrc) SetDuration(duration gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - emit: new state.
+//   - emit: new state.
 //
 func (appsrc *AppSrc) SetEmitSignals(emit bool) {
 	var _arg0 *C.GstAppSrc // out
@@ -920,8 +914,8 @@ func (appsrc *AppSrc) SetEmitSignals(emit bool) {
 //
 // The function takes the following parameters:
 //
-//    - min latency.
-//    - max latency.
+//   - min latency.
+//   - max latency.
 //
 func (appsrc *AppSrc) SetLatency(min, max uint64) {
 	var _arg0 *C.GstAppSrc // out
@@ -945,7 +939,7 @@ func (appsrc *AppSrc) SetLatency(min, max uint64) {
 //
 // The function takes the following parameters:
 //
-//    - leaky: AppLeakyType.
+//   - leaky: AppLeakyType.
 //
 func (appsrc *AppSrc) SetLeakyType(leaky AppLeakyType) {
 	var _arg0 *C.GstAppSrc      // out
@@ -965,7 +959,7 @@ func (appsrc *AppSrc) SetLeakyType(leaky AppLeakyType) {
 //
 // The function takes the following parameters:
 //
-//    - max: maximum number of buffers to queue.
+//   - max: maximum number of buffers to queue.
 //
 func (appsrc *AppSrc) SetMaxBuffers(max uint64) {
 	var _arg0 *C.GstAppSrc // out
@@ -985,7 +979,7 @@ func (appsrc *AppSrc) SetMaxBuffers(max uint64) {
 //
 // The function takes the following parameters:
 //
-//    - max: maximum number of bytes to queue.
+//   - max: maximum number of bytes to queue.
 //
 func (appsrc *AppSrc) SetMaxBytes(max uint64) {
 	var _arg0 *C.GstAppSrc // out
@@ -1005,16 +999,14 @@ func (appsrc *AppSrc) SetMaxBytes(max uint64) {
 //
 // The function takes the following parameters:
 //
-//    - max: maximum amonut of time to queue.
+//   - max: maximum amonut of time to queue.
 //
 func (appsrc *AppSrc) SetMaxTime(max gst.ClockTime) {
 	var _arg0 *C.GstAppSrc   // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstAppSrc)(unsafe.Pointer(coreglib.InternObject(appsrc).Native()))
-	_arg1 = C.guint64(max)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(max)
 
 	C.gst_app_src_set_max_time(_arg0, _arg1)
 	runtime.KeepAlive(appsrc)
@@ -1026,7 +1018,7 @@ func (appsrc *AppSrc) SetMaxTime(max gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - size to set.
+//   - size to set.
 //
 func (appsrc *AppSrc) SetSize(size int64) {
 	var _arg0 *C.GstAppSrc // out
@@ -1047,7 +1039,7 @@ func (appsrc *AppSrc) SetSize(size int64) {
 //
 // The function takes the following parameters:
 //
-//    - typ: new state.
+//   - typ: new state.
 //
 func (appsrc *AppSrc) SetStreamType(typ AppStreamType) {
 	var _arg0 *C.GstAppSrc       // out
@@ -1066,8 +1058,8 @@ func (appsrc *AppSrc) SetStreamType(typ AppStreamType) {
 //
 // The function returns the following values:
 //
-//    - flowReturn when the EOS was successfully queued. T_FLOW_FLUSHING when
-//      appsrc is not PAUSED or PLAYING.
+//   - flowReturn when the EOS was successfully queued. T_FLOW_FLUSHING when
+//     appsrc is not PAUSED or PLAYING.
 //
 func (appsrc *AppSrc) endOfStream() gst.FlowReturn {
 	gclass := (*C.GstAppSrcClass)(coreglib.PeekParentClass(appsrc))
@@ -1125,12 +1117,12 @@ func (appsrc *AppSrc) needData(length uint) {
 //
 // The function takes the following parameters:
 //
-//    - buffer to push.
+//   - buffer to push.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
-//      appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+//   - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
+//     appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 //
 func (appsrc *AppSrc) pushBuffer(buffer *gst.Buffer) gst.FlowReturn {
 	gclass := (*C.GstAppSrcClass)(coreglib.PeekParentClass(appsrc))
@@ -1164,12 +1156,12 @@ func (appsrc *AppSrc) pushBuffer(buffer *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - bufferList to push.
+//   - bufferList to push.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the buffer list was successfully queued. T_FLOW_FLUSHING
-//      when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+//   - flowReturn when the buffer list was successfully queued. T_FLOW_FLUSHING
+//     when appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 //
 func (appsrc *AppSrc) pushBufferList(bufferList *gst.BufferList) gst.FlowReturn {
 	gclass := (*C.GstAppSrcClass)(coreglib.PeekParentClass(appsrc))
@@ -1207,12 +1199,12 @@ func (appsrc *AppSrc) pushBufferList(bufferList *gst.BufferList) gst.FlowReturn 
 //
 // The function takes the following parameters:
 //
-//    - sample from which buffer and caps may be extracted.
+//   - sample from which buffer and caps may be extracted.
 //
 // The function returns the following values:
 //
-//    - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
-//      appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
+//   - flowReturn when the buffer was successfully queued. T_FLOW_FLUSHING when
+//     appsrc is not PAUSED or PLAYING. T_FLOW_EOS when EOS occurred.
 //
 func (appsrc *AppSrc) pushSample(sample *gst.Sample) gst.FlowReturn {
 	gclass := (*C.GstAppSrcClass)(coreglib.PeekParentClass(appsrc))

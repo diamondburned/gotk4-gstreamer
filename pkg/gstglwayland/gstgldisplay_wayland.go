@@ -84,11 +84,11 @@ func marshalGLDisplayWayland(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): display name.
+//   - name (optional): display name.
 //
 // The function returns the following values:
 //
-//    - glDisplayWayland: new GLDisplayWayland or NULL.
+//   - glDisplayWayland (optional): new GLDisplayWayland or NULL.
 //
 func NewGLDisplayWayland(name string) *GLDisplayWayland {
 	var _arg1 *C.gchar               // out
@@ -104,7 +104,9 @@ func NewGLDisplayWayland(name string) *GLDisplayWayland {
 
 	var _glDisplayWayland *GLDisplayWayland // out
 
-	_glDisplayWayland = wrapGLDisplayWayland(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_glDisplayWayland = wrapGLDisplayWayland(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _glDisplayWayland
 }

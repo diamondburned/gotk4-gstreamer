@@ -41,13 +41,13 @@ const GL_TEXTURE_TARGET_RECTANGLE_STR = "rectangle"
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - vinfo: VideoInfo.
-//    - plane number in vinfo.
+//   - context: GLContext.
+//   - vinfo: VideoInfo.
+//   - plane number in vinfo.
 //
 // The function returns the following values:
 //
-//    - glFormat necessary for holding the data in plane of vinfo.
+//   - glFormat necessary for holding the data in plane of vinfo.
 //
 func GLFormatFromVideoInfo(context GLContexter, vinfo *gstvideo.VideoInfo, plane uint) GLFormat {
 	var _arg1 *C.GstGLContext // out
@@ -73,13 +73,13 @@ func GLFormatFromVideoInfo(context GLContexter, vinfo *gstvideo.VideoInfo, plane
 
 // The function takes the following parameters:
 //
-//    - format: openGL format, GL_RGBA, GL_LUMINANCE, etc.
-//    - typ: openGL type, GL_UNSIGNED_BYTE, GL_FLOAT, etc.
+//   - format: openGL format, GL_RGBA, GL_LUMINANCE, etc.
+//   - typ: openGL type, GL_UNSIGNED_BYTE, GL_FLOAT, etc.
 //
 // The function returns the following values:
 //
-//    - guint: number of bytes the specified format, type combination takes per
-//      pixel.
+//   - guint: number of bytes the specified format, type combination takes per
+//     pixel.
 //
 func GLFormatTypeNBytes(format, typ uint) uint {
 	var _arg1 C.guint // out
@@ -102,12 +102,12 @@ func GLFormatTypeNBytes(format, typ uint) uint {
 
 // The function takes the following parameters:
 //
-//    - target: openGL texture binding target.
+//   - target: openGL texture binding target.
 //
 // The function returns the following values:
 //
-//    - glTextureTarget that's equiavalant to target or
-//      GST_GL_TEXTURE_TARGET_NONE.
+//   - glTextureTarget that's equiavalant to target or
+//     GST_GL_TEXTURE_TARGET_NONE.
 //
 func GLTextureTargetFromGL(target uint) GLTextureTarget {
 	var _arg1 C.guint              // out
@@ -127,11 +127,11 @@ func GLTextureTargetFromGL(target uint) GLTextureTarget {
 
 // The function takes the following parameters:
 //
-//    - str: string equivalent to one of the GST_GL_TEXTURE_TARGET_*_STR values.
+//   - str: string equivalent to one of the GST_GL_TEXTURE_TARGET_*_STR values.
 //
 // The function returns the following values:
 //
-//    - glTextureTarget represented by str or GST_GL_TEXTURE_TARGET_NONE.
+//   - glTextureTarget represented by str or GST_GL_TEXTURE_TARGET_NONE.
 //
 func GLTextureTargetFromString(str string) GLTextureTarget {
 	var _arg1 *C.gchar             // out
@@ -152,11 +152,12 @@ func GLTextureTargetFromString(str string) GLTextureTarget {
 
 // The function takes the following parameters:
 //
-//    - target: GLTextureTarget.
+//   - target: GLTextureTarget.
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the GstBufferPoolOption specified by target.
+//   - utf8 (optional): string representing the GstBufferPoolOption specified by
+//     target.
 //
 func GLTextureTargetToBufferPoolOption(target GLTextureTarget) string {
 	var _arg1 C.GstGLTextureTarget // out
@@ -169,19 +170,21 @@ func GLTextureTargetToBufferPoolOption(target GLTextureTarget) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function takes the following parameters:
 //
-//    - target: GLTextureTarget.
+//   - target: GLTextureTarget.
 //
 // The function returns the following values:
 //
-//    - guint: openGL value for binding the target with glBindTexture() and
-//      similar functions or 0.
+//   - guint: openGL value for binding the target with glBindTexture() and
+//     similar functions or 0.
 //
 func GLTextureTargetToGL(target GLTextureTarget) uint {
 	var _arg1 C.GstGLTextureTarget // out
@@ -201,11 +204,11 @@ func GLTextureTargetToGL(target GLTextureTarget) uint {
 
 // The function takes the following parameters:
 //
-//    - target: GLTextureTarget.
+//   - target: GLTextureTarget.
 //
 // The function returns the following values:
 //
-//    - utf8: stringified version of target or NULL.
+//   - utf8 (optional): stringified version of target or NULL.
 //
 func GLTextureTargetToString(target GLTextureTarget) string {
 	var _arg1 C.GstGLTextureTarget // out
@@ -218,21 +221,23 @@ func GLTextureTargetToString(target GLTextureTarget) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - format: openGL format, GL_RGBA, GL_LUMINANCE, etc.
-//    - typ: openGL type, GL_UNSIGNED_BYTE, GL_FLOAT, etc.
+//   - context: GLContext.
+//   - format: openGL format, GL_RGBA, GL_LUMINANCE, etc.
+//   - typ: openGL type, GL_UNSIGNED_BYTE, GL_FLOAT, etc.
 //
 // The function returns the following values:
 //
-//    - guint: sized internal format specified by format and type that can be
-//      used in context.
+//   - guint: sized internal format specified by format and type that can be
+//     used in context.
 //
 func GLSizedGLFormatFromGLFormatType(context GLContexter, format, typ uint) uint {
 	var _arg1 *C.GstGLContext // out

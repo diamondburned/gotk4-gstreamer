@@ -125,8 +125,8 @@ const BASE_TRANSFORM_SRC_NAME = "src"
 type BaseTransformOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - caps
+	//   - direction
+	//   - caps
 	//
 	// The function returns the following values:
 	//
@@ -136,8 +136,8 @@ type BaseTransformOverrides struct {
 	BeforeTransform func(buffer *gst.Buffer)
 	// The function takes the following parameters:
 	//
-	//    - input
-	//    - outbuf
+	//   - input
+	//   - outbuf
 	//
 	// The function returns the following values:
 	//
@@ -149,64 +149,64 @@ type BaseTransformOverrides struct {
 	DecideAllocation func(query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - query
-	//    - api
-	//    - params
+	//   - query
+	//   - api
+	//   - params
 	//
 	// The function returns the following values:
 	//
 	FilterMeta func(query *gst.Query, api coreglib.Type, params *gst.Structure) bool
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - caps
-	//    - othercaps
+	//   - direction
+	//   - caps
+	//   - othercaps
 	//
 	// The function returns the following values:
 	//
 	FixateCaps func(direction gst.PadDirection, caps, othercaps *gst.Caps) *gst.Caps
 	// The function returns the following values:
 	//
-	//    - outbuf
-	//    - flowReturn
+	//   - outbuf
+	//   - flowReturn
 	//
 	GenerateOutput func() (*gst.Buffer, gst.FlowReturn)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	//    - size
-	//    - ok
+	//   - size
+	//   - ok
 	//
 	UnitSize func(caps *gst.Caps) (uint, bool)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	//    - outbuf
-	//    - flowReturn
+	//   - outbuf
+	//   - flowReturn
 	//
 	PrepareOutputBuffer func(input *gst.Buffer) (*gst.Buffer, gst.FlowReturn)
 	// The function takes the following parameters:
 	//
-	//    - decideQuery
-	//    - query
+	//   - decideQuery
+	//   - query
 	//
 	// The function returns the following values:
 	//
 	ProposeAllocation func(decideQuery, query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - query
+	//   - direction
+	//   - query
 	//
 	// The function returns the following values:
 	//
 	Query func(direction gst.PadDirection, query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - incaps
-	//    - outcaps
+	//   - incaps
+	//   - outcaps
 	//
 	// The function returns the following values:
 	//
@@ -229,25 +229,25 @@ type BaseTransformOverrides struct {
 	Stop func() bool
 	// The function takes the following parameters:
 	//
-	//    - isDiscont
-	//    - input
+	//   - isDiscont
+	//   - input
 	//
 	// The function returns the following values:
 	//
 	SubmitInputBuffer func(isDiscont bool, input *gst.Buffer) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - inbuf
-	//    - outbuf
+	//   - inbuf
+	//   - outbuf
 	//
 	// The function returns the following values:
 	//
 	Transform func(inbuf, outbuf *gst.Buffer) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - caps
-	//    - filter
+	//   - direction
+	//   - caps
+	//   - filter
 	//
 	// The function returns the following values:
 	//
@@ -259,24 +259,24 @@ type BaseTransformOverrides struct {
 	TransformIP func(buf *gst.Buffer) gst.FlowReturn
 	// The function takes the following parameters:
 	//
-	//    - outbuf
-	//    - meta
-	//    - inbuf
+	//   - outbuf
+	//   - meta
+	//   - inbuf
 	//
 	// The function returns the following values:
 	//
 	TransformMeta func(outbuf *gst.Buffer, meta *gst.Meta, inbuf *gst.Buffer) bool
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - caps
-	//    - size
-	//    - othercaps
+	//   - direction
+	//   - caps
+	//   - size
+	//   - othercaps
 	//
 	// The function returns the following values:
 	//
-	//    - othersize
-	//    - ok
+	//   - othersize
+	//   - ok
 	//
 	TransformSize func(direction gst.PadDirection, caps *gst.Caps, size uint, othercaps *gst.Caps) (uint, bool)
 }
@@ -326,27 +326,28 @@ func defaultBaseTransformOverrides(v *BaseTransform) BaseTransformOverrides {
 // * Handles state changes * Does flushing * Push mode * Pull mode if the
 // sub-class transform can operate on arbitrary data
 //
-// Use Cases
+// # Use Cases
 //
 // Passthrough mode
 //
-//    * Element has no interest in modifying the buffer. It may want to inspect it,
-//      in which case the element should have a transform_ip function. If there
-//      is no transform_ip function in passthrough mode, the buffer is pushed
-//      intact.
+//   - Element has no interest in modifying the buffer. It may want to inspect
+//     it, in which case the element should have a transform_ip function.
+//     If there is no transform_ip function in passthrough mode, the buffer is
+//     pushed intact.
 //
-//    * The BaseTransformClass.passthrough_on_same_caps variable
-//      will automatically set/unset passthrough based on whether the
-//      element negotiates the same caps on both pads.
+//   - The BaseTransformClass.passthrough_on_same_caps variable will
+//     automatically set/unset passthrough based on whether the element
+//     negotiates the same caps on both pads.
 //
-//    * BaseTransformClass.passthrough_on_same_caps on an element that
-//      doesn't implement a transform_caps function is useful for elements that
-//      only inspect data (such as level)
+//   - BaseTransformClass.passthrough_on_same_caps on an element that doesn't
+//     implement a transform_caps function is useful for elements that only
+//     inspect data (such as level)
 //
-//    * Example elements
+//   - Example elements
 //
-//      * Level
-//      * Videoscale, audioconvert, videoconvert, audioresample in certain modes.
+//   - Level
+//
+//   - Videoscale, audioconvert, videoconvert, audioresample in certain modes.
 //
 // Modifications in-place - input buffer and output buffer are the same thing.
 //
@@ -359,10 +360,10 @@ func defaultBaseTransformOverrides(v *BaseTransform) BaseTransformOverrides {
 // immediately. * only implementing transform_ip and not transform implies
 // always_in_place = TRUE
 //
-//    * Example elements:
-//      * Volume
-//      * Audioconvert in certain modes (signed/unsigned conversion)
-//      * videoconvert in certain modes (endianness swapping)
+//   - Example elements:
+//   - Volume
+//   - Audioconvert in certain modes (signed/unsigned conversion)
+//   - videoconvert in certain modes (endianness swapping)
 //
 // Modifications only to the caps/metadata of a buffer
 //
@@ -378,35 +379,37 @@ func defaultBaseTransformOverrides(v *BaseTransform) BaseTransformOverrides {
 //
 // Normal mode
 //
-//    * always_in_place flag is not set, or there is no transform_ip function
-//    * Element will receive an input buffer and output buffer to operate on.
-//    * Output buffer is allocated by calling the prepare_output_buffer function.
-//    * Example elements:
-//      * Videoscale, videoconvert, audioconvert when doing
-//      scaling/conversions
+//   - always_in_place flag is not set, or there is no transform_ip function
+//   - Element will receive an input buffer and output buffer to operate on.
+//   - Output buffer is allocated by calling the prepare_output_buffer function.
+//   - Example elements:
+//   - Videoscale, videoconvert, audioconvert when doing scaling/conversions
 //
 // Special output buffer allocations
 //
-//    * Elements which need to do special allocation of their output buffers
-//      beyond allocating output buffers via the negotiated allocator or
-//      buffer pool should implement the prepare_output_buffer method.
+//   - Elements which need to do special allocation of their output buffers
+//     beyond allocating output buffers via the negotiated allocator or buffer
+//     pool should implement the prepare_output_buffer method.
 //
-//    * Example elements:
-//      * efence
+//   - Example elements:
 //
+//   - efence
 //
-// Sub-class settable flags on GstBaseTransform
+// # Sub-class settable flags on GstBaseTransform
 //
 // * passthrough
 //
-//    * Implies that in the current configuration, the sub-class is not interested in modifying the buffers.
-//    * Elements which are always in passthrough mode whenever the same caps has been negotiated on both pads can set the class variable passthrough_on_same_caps to have this behaviour automatically.
+//   - Implies that in the current configuration, the sub-class is not
+//     interested in modifying the buffers.
+//   - Elements which are always in passthrough mode whenever the same
+//     caps has been negotiated on both pads can set the class variable
+//     passthrough_on_same_caps to have this behaviour automatically.
 //
 // * always_in_place * Determines whether a non-writable buffer will be copied
 // before passing to the transform_ip function.
 //
-//    * Implied TRUE if no transform function is implemented.
-//    * Implied FALSE if ONLY transform function is implemented.
+//   - Implied TRUE if no transform function is implemented.
+//   - Implied FALSE if ONLY transform function is implemented.
 type BaseTransform struct {
 	_ [0]func() // equal guard
 	gst.Element
@@ -565,8 +568,8 @@ func BaseBaseTransform(obj BaseTransformer) *BaseTransform {
 //
 // The function returns the following values:
 //
-//    - allocator (optional): Allocator used.
-//    - params (optional) of allocator.
+//   - allocator (optional): Allocator used.
+//   - params (optional) of allocator.
 //
 func (trans *BaseTransform) Allocator() (gst.Allocatorrer, *gst.AllocationParams) {
 	var _arg0 *C.GstBaseTransform   // out
@@ -604,8 +607,8 @@ func (trans *BaseTransform) Allocator() (gst.Allocatorrer, *gst.AllocationParams
 
 // The function returns the following values:
 //
-//    - bufferPool (optional): instance of the BufferPool used by trans; free it
-//      after use.
+//   - bufferPool (optional): instance of the BufferPool used by trans; free it
+//     after use.
 //
 func (trans *BaseTransform) BufferPool() *gst.BufferPool {
 	var _arg0 *C.GstBaseTransform // out
@@ -638,9 +641,9 @@ func (trans *BaseTransform) BufferPool() *gst.BufferPool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the transform is configured in in_place mode.
+//   - ok: TRUE if the transform is configured in in_place mode.
 //
-//      MT safe.
+//     MT safe.
 //
 func (trans *BaseTransform) IsInPlace() bool {
 	var _arg0 *C.GstBaseTransform // out
@@ -664,9 +667,9 @@ func (trans *BaseTransform) IsInPlace() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the transform is configured in passthrough mode.
+//   - ok: TRUE if the transform is configured in passthrough mode.
 //
-//      MT safe.
+//     MT safe.
 //
 func (trans *BaseTransform) IsPassthrough() bool {
 	var _arg0 *C.GstBaseTransform // out
@@ -690,9 +693,9 @@ func (trans *BaseTransform) IsPassthrough() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if QoS is enabled.
+//   - ok: TRUE if QoS is enabled.
 //
-//      MT safe.
+//     MT safe.
 //
 func (trans *BaseTransform) IsQosEnabled() bool {
 	var _arg0 *C.GstBaseTransform // out
@@ -716,19 +719,19 @@ func (trans *BaseTransform) IsQosEnabled() bool {
 // pad is marked as needing reconfiguring. Unmarks GST_PAD_FLAG_NEED_RECONFIGURE
 // in any case. But marks it again if negotiation fails.
 //
-// Do not call this in the BaseTransformClass::transform or
-// BaseTransformClass::transform_ip vmethod. Call this in
-// BaseTransformClass::submit_input_buffer,
+// Do not call this in the BaseTransformClass::transform
+// or BaseTransformClass::transform_ip vmethod.
+// Call this in BaseTransformClass::submit_input_buffer,
 // BaseTransformClass::prepare_output_buffer or in
 // BaseTransformClass::generate_output _before_ any output buffer is allocated.
 //
-// It will be default be called when handling an ALLOCATION query or at the very
-// beginning of the default BaseTransformClass::submit_input_buffer
+// It will be default be called when handling an ALLOCATION query or at the
+// very beginning of the default BaseTransformClass::submit_input_buffer
 // implementation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the negotiation succeeded, else FALSE.
+//   - ok: TRUE if the negotiation succeeded, else FALSE.
 //
 func (trans *BaseTransform) Reconfigure() bool {
 	var _arg0 *C.GstBaseTransform // out
@@ -783,7 +786,7 @@ func (trans *BaseTransform) ReconfigureSrc() {
 //
 // The function takes the following parameters:
 //
-//    - gapAware: new state.
+//   - gapAware: new state.
 //
 func (trans *BaseTransform) SetGapAware(gapAware bool) {
 	var _arg0 *C.GstBaseTransform // out
@@ -802,15 +805,15 @@ func (trans *BaseTransform) SetGapAware(gapAware bool) {
 // SetInPlace determines whether a non-writable buffer will be copied before
 // passing to the transform_ip function.
 //
-//    * Always TRUE if no transform function is implemented.
-//    * Always FALSE if ONLY transform function is implemented.
+//   - Always TRUE if no transform function is implemented.
+//   - Always FALSE if ONLY transform function is implemented.
 //
 // MT safe.
 //
 // The function takes the following parameters:
 //
-//    - inPlace: boolean value indicating that we would like to operate on
-//      in_place buffers.
+//   - inPlace: boolean value indicating that we would like to operate on
+//     in_place buffers.
 //
 func (trans *BaseTransform) SetInPlace(inPlace bool) {
 	var _arg0 *C.GstBaseTransform // out
@@ -836,7 +839,7 @@ func (trans *BaseTransform) SetInPlace(inPlace bool) {
 //
 // The function takes the following parameters:
 //
-//    - passthrough: boolean indicating passthrough mode.
+//   - passthrough: boolean indicating passthrough mode.
 //
 func (trans *BaseTransform) SetPassthrough(passthrough bool) {
 	var _arg0 *C.GstBaseTransform // out
@@ -852,8 +855,8 @@ func (trans *BaseTransform) SetPassthrough(passthrough bool) {
 	runtime.KeepAlive(passthrough)
 }
 
-// SetPreferPassthrough: if prefer_passthrough is TRUE (the default), trans will
-// check and prefer passthrough caps from the list of caps returned by the
+// SetPreferPassthrough: if prefer_passthrough is TRUE (the default), trans
+// will check and prefer passthrough caps from the list of caps returned by the
 // transform_caps vmethod.
 //
 // If set to FALSE, the element must order the caps returned from the
@@ -865,7 +868,7 @@ func (trans *BaseTransform) SetPassthrough(passthrough bool) {
 //
 // The function takes the following parameters:
 //
-//    - preferPassthrough: new state.
+//   - preferPassthrough: new state.
 //
 func (trans *BaseTransform) SetPreferPassthrough(preferPassthrough bool) {
 	var _arg0 *C.GstBaseTransform // out
@@ -887,7 +890,7 @@ func (trans *BaseTransform) SetPreferPassthrough(preferPassthrough bool) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new state.
+//   - enabled: new state.
 //
 func (trans *BaseTransform) SetQosEnabled(enabled bool) {
 	var _arg0 *C.GstBaseTransform // out
@@ -911,9 +914,9 @@ func (trans *BaseTransform) SetQosEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - proportion: proportion.
-//    - diff against the clock.
-//    - timestamp of the buffer generating the QoS expressed in running_time.
+//   - proportion: proportion.
+//   - diff against the clock.
+//   - timestamp of the buffer generating the QoS expressed in running_time.
 //
 func (trans *BaseTransform) UpdateQos(proportion float64, diff gst.ClockTimeDiff, timestamp gst.ClockTime) {
 	var _arg0 *C.GstBaseTransform // out
@@ -923,12 +926,8 @@ func (trans *BaseTransform) UpdateQos(proportion float64, diff gst.ClockTimeDiff
 
 	_arg0 = (*C.GstBaseTransform)(unsafe.Pointer(coreglib.InternObject(trans).Native()))
 	_arg1 = C.gdouble(proportion)
-	_arg2 = C.gint64(diff)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
-	_arg3 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTimeDiff(diff)
+	_arg3 = C.GstClockTime(timestamp)
 
 	C.gst_base_transform_update_qos(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(trans)
@@ -939,16 +938,16 @@ func (trans *BaseTransform) UpdateQos(proportion float64, diff gst.ClockTimeDiff
 
 // UpdateSrcCaps updates the srcpad caps and sends the caps downstream. This
 // function can be used by subclasses when they have already negotiated their
-// caps but found a change in them (or computed new information). This way, they
-// can notify downstream about that change without losing any buffer.
+// caps but found a change in them (or computed new information). This way,
+// they can notify downstream about that change without losing any buffer.
 //
 // The function takes the following parameters:
 //
-//    - updatedCaps: updated version of the srcpad caps to be pushed downstream.
+//   - updatedCaps: updated version of the srcpad caps to be pushed downstream.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps could be sent downstream FALSE otherwise.
+//   - ok: TRUE if the caps could be sent downstream FALSE otherwise.
 //
 func (trans *BaseTransform) UpdateSrcCaps(updatedCaps *gst.Caps) bool {
 	var _arg0 *C.GstBaseTransform // out
@@ -973,8 +972,8 @@ func (trans *BaseTransform) UpdateSrcCaps(updatedCaps *gst.Caps) bool {
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - caps
+//   - direction
+//   - caps
 //
 // The function returns the following values:
 //
@@ -1024,8 +1023,8 @@ func (trans *BaseTransform) beforeTransform(buffer *gst.Buffer) {
 
 // The function takes the following parameters:
 //
-//    - input
-//    - outbuf
+//   - input
+//   - outbuf
 //
 // The function returns the following values:
 //
@@ -1086,9 +1085,9 @@ func (trans *BaseTransform) decideAllocation(query *gst.Query) bool {
 
 // The function takes the following parameters:
 //
-//    - query
-//    - api
-//    - params
+//   - query
+//   - api
+//   - params
 //
 // The function returns the following values:
 //
@@ -1124,9 +1123,9 @@ func (trans *BaseTransform) filterMeta(query *gst.Query, api coreglib.Type, para
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - caps
-//    - othercaps
+//   - direction
+//   - caps
+//   - othercaps
 //
 // The function returns the following values:
 //
@@ -1167,8 +1166,8 @@ func (trans *BaseTransform) fixateCaps(direction gst.PadDirection, caps, otherca
 
 // The function returns the following values:
 //
-//    - outbuf
-//    - flowReturn
+//   - outbuf
+//   - flowReturn
 //
 func (trans *BaseTransform) generateOutput() (*gst.Buffer, gst.FlowReturn) {
 	gclass := (*C.GstBaseTransformClass)(coreglib.PeekParentClass(trans))
@@ -1202,8 +1201,8 @@ func (trans *BaseTransform) generateOutput() (*gst.Buffer, gst.FlowReturn) {
 //
 // The function returns the following values:
 //
-//    - size
-//    - ok
+//   - size
+//   - ok
 //
 func (trans *BaseTransform) unitSize(caps *gst.Caps) (uint, bool) {
 	gclass := (*C.GstBaseTransformClass)(coreglib.PeekParentClass(trans))
@@ -1236,8 +1235,8 @@ func (trans *BaseTransform) unitSize(caps *gst.Caps) (uint, bool) {
 //
 // The function returns the following values:
 //
-//    - outbuf
-//    - flowReturn
+//   - outbuf
+//   - flowReturn
 //
 func (trans *BaseTransform) prepareOutputBuffer(input *gst.Buffer) (*gst.Buffer, gst.FlowReturn) {
 	gclass := (*C.GstBaseTransformClass)(coreglib.PeekParentClass(trans))
@@ -1272,8 +1271,8 @@ func (trans *BaseTransform) prepareOutputBuffer(input *gst.Buffer) (*gst.Buffer,
 
 // The function takes the following parameters:
 //
-//    - decideQuery
-//    - query
+//   - decideQuery
+//   - query
 //
 // The function returns the following values:
 //
@@ -1306,8 +1305,8 @@ func (trans *BaseTransform) proposeAllocation(decideQuery, query *gst.Query) boo
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - query
+//   - direction
+//   - query
 //
 // The function returns the following values:
 //
@@ -1340,8 +1339,8 @@ func (trans *BaseTransform) query(direction gst.PadDirection, query *gst.Query) 
 
 // The function takes the following parameters:
 //
-//    - incaps
-//    - outcaps
+//   - incaps
+//   - outcaps
 //
 // The function returns the following values:
 //
@@ -1478,8 +1477,8 @@ func (trans *BaseTransform) stop() bool {
 
 // The function takes the following parameters:
 //
-//    - isDiscont
-//    - input
+//   - isDiscont
+//   - input
 //
 // The function returns the following values:
 //
@@ -1512,8 +1511,8 @@ func (trans *BaseTransform) submitInputBuffer(isDiscont bool, input *gst.Buffer)
 
 // The function takes the following parameters:
 //
-//    - inbuf
-//    - outbuf
+//   - inbuf
+//   - outbuf
 //
 // The function returns the following values:
 //
@@ -1544,9 +1543,9 @@ func (trans *BaseTransform) transform(inbuf, outbuf *gst.Buffer) gst.FlowReturn 
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - caps
-//    - filter
+//   - direction
+//   - caps
+//   - filter
 //
 // The function returns the following values:
 //
@@ -1612,9 +1611,9 @@ func (trans *BaseTransform) transformIP(buf *gst.Buffer) gst.FlowReturn {
 
 // The function takes the following parameters:
 //
-//    - outbuf
-//    - meta
-//    - inbuf
+//   - outbuf
+//   - meta
+//   - inbuf
 //
 // The function returns the following values:
 //
@@ -1650,15 +1649,15 @@ func (trans *BaseTransform) transformMeta(outbuf *gst.Buffer, meta *gst.Meta, in
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - caps
-//    - size
-//    - othercaps
+//   - direction
+//   - caps
+//   - size
+//   - othercaps
 //
 // The function returns the following values:
 //
-//    - othersize
-//    - ok
+//   - othersize
+//   - ok
 //
 func (trans *BaseTransform) transformSize(direction gst.PadDirection, caps *gst.Caps, size uint, othercaps *gst.Caps) (uint, bool) {
 	gclass := (*C.GstBaseTransformClass)(coreglib.PeekParentClass(trans))
@@ -1697,9 +1696,9 @@ func (trans *BaseTransform) transformSize(direction gst.PadDirection, caps *gst.
 }
 
 // BaseTransformClass subclasses can override any of the available virtual
-// methods or not, as needed. At minimum either transform or transform_ip need
-// to be overridden. If the element can overwrite the input data with the
-// results (data is of the same type and quantity) it should provide
+// methods or not, as needed. At minimum either transform or transform_ip
+// need to be overridden. If the element can overwrite the input data with
+// the results (data is of the same type and quantity) it should provide
 // transform_ip.
 //
 // An instance of this type is always passed by reference.
@@ -1733,8 +1732,8 @@ func (b *BaseTransformClass) PassthroughOnSameCaps() bool {
 
 // TransformIPOnPassthrough: if set to TRUE, transform_ip will be called in
 // passthrough mode. The passed buffer might not be writable. When FALSE,
-// neither transform nor transform_ip will be called in passthrough mode. Set to
-// TRUE by default.
+// neither transform nor transform_ip will be called in passthrough mode.
+// Set to TRUE by default.
 func (b *BaseTransformClass) TransformIPOnPassthrough() bool {
 	valptr := &b.native.transform_ip_on_passthrough
 	var _v bool // out

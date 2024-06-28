@@ -20,11 +20,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - videoAffineTransformationMeta on buffer.
+//   - videoAffineTransformationMeta on buffer.
 //
 func BufferAddVideoAffineTransformationMeta(buffer *gst.Buffer) *VideoAffineTransformationMeta {
 	var _arg1 *C.GstBuffer                        // out
@@ -47,10 +47,10 @@ func BufferAddVideoAffineTransformationMeta(buffer *gst.Buffer) *VideoAffineTran
 // with gst_video_affine_transformation_meta_apply_matrix().
 //
 // The vertices operated on are all in the range 0 to 1, not in Normalized
-// Device Coordinates (-1 to +1). Transforming points in this space are assumed
-// to have an origin at (0.5, 0.5, 0.5) in a left-handed coordinate system with
-// the x-axis moving horizontally (positive values to the right), the y-axis
-// moving vertically (positive values up the screen) and the z-axis
+// Device Coordinates (-1 to +1). Transforming points in this space are
+// assumed to have an origin at (0.5, 0.5, 0.5) in a left-handed coordinate
+// system with the x-axis moving horizontally (positive values to the right),
+// the y-axis moving vertically (positive values up the screen) and the z-axis
 // perpendicular to the screen (positive values into the screen).
 //
 // An instance of this type is always passed by reference.
@@ -84,7 +84,7 @@ func (v *VideoAffineTransformationMeta) Matrix() [16]float32 {
 //
 // The function takes the following parameters:
 //
-//    - matrix: 4x4 transformation matrix to be applied.
+//   - matrix: 4x4 transformation matrix to be applied.
 //
 func (meta *VideoAffineTransformationMeta) ApplyMatrix(matrix [16]float32) {
 	var _arg0 *C.GstVideoAffineTransformationMeta // out

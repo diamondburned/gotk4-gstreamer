@@ -89,8 +89,10 @@ func _gotk4_gstrtp1_RTPBaseDepayload_ConnectRequestExtension(arg0 C.gpointer, ar
 
 	var _ RTPHeaderExtensioner
 
-	cret = (*C.GstRTPHeaderExtension)(unsafe.Pointer(coreglib.InternObject(rtpHeaderExtension).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(rtpHeaderExtension).Native()))
+	if rtpHeaderExtension != nil {
+		cret = (*C.GstRTPHeaderExtension)(unsafe.Pointer(coreglib.InternObject(rtpHeaderExtension).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(rtpHeaderExtension).Native()))
+	}
 
 	return cret
 }

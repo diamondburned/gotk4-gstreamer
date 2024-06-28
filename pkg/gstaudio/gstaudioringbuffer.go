@@ -207,13 +207,13 @@ type AudioRingBufferOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - spec specs of the buffer.
+	//   - spec specs of the buffer.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be acquired, FALSE on error.
+	//   - ok: TRUE if the device could be acquired, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Acquire func(spec *AudioRingBufferSpec) bool
 	// Activate buf to start or stop pulling data.
@@ -222,31 +222,31 @@ type AudioRingBufferOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - active: new mode.
+	//   - active: new mode.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be activated in the requested mode,
-	//      FALSE on error.
+	//   - ok: TRUE if the device could be activated in the requested mode,
+	//     FALSE on error.
 	//
 	Activate func(active bool) bool
 	// ClearAll: clear all samples from the ringbuffer.
 	//
 	// MT safe.
 	ClearAll func()
-	// CloseDevice: close the audio device associated with the ring buffer. The
-	// ring buffer should already have been released via
+	// CloseDevice: close the audio device associated with the ring
+	// buffer. The ring buffer should already have been released via
 	// gst_audio_ring_buffer_release().
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be closed, FALSE on error.
+	//   - ok: TRUE if the device could be closed, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	CloseDevice func() bool
-	// Delay: get the number of samples queued in the audio device. This is
-	// usually less than the segment size but can be bigger when the
+	// Delay: get the number of samples queued in the audio device.
+	// This is usually less than the segment size but can be bigger when the
 	// implementation uses another internal buffer between the audio device.
 	//
 	// For playback ringbuffers this is the amount of samples transferred from
@@ -257,38 +257,38 @@ type AudioRingBufferOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - guint: number of samples queued in the audio device.
+	//   - guint: number of samples queued in the audio device.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Delay func() uint
-	// OpenDevice: open the audio device associated with the ring buffer. Does
-	// not perform any setup on the device. You must open the device before
+	// OpenDevice: open the audio device associated with the ring buffer.
+	// Does not perform any setup on the device. You must open the device before
 	// acquiring the ring buffer.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be opened, FALSE on error.
+	//   - ok: TRUE if the device could be opened, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	OpenDevice func() bool
 	// Pause processing samples from the ringbuffer.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be paused, FALSE on error.
+	//   - ok: TRUE if the device could be paused, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Pause func() bool
 	// Release: free the resources of the ringbuffer.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be released, FALSE on error.
+	//   - ok: TRUE if the device could be released, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Release func() bool
 	// The function returns the following values:
@@ -298,18 +298,18 @@ type AudioRingBufferOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be started, FALSE on error.
+	//   - ok: TRUE if the device could be started, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Start func() bool
 	// Stop processing samples from the ringbuffer.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the device could be stopped, FALSE on error.
+	//   - ok: TRUE if the device could be stopped, FALSE on error.
 	//
-	//      MT safe.
+	//     MT safe.
 	//
 	Stop func() bool
 }
@@ -333,10 +333,10 @@ func defaultAudioRingBufferOverrides(v *AudioRingBuffer) AudioRingBufferOverride
 // AudioRingBuffer: this object is the base class for audio ringbuffers used by
 // the base audio source and sink classes.
 //
-// The ringbuffer abstracts a circular buffer of data. One reader and one writer
-// can operate on the data from different threads in a lockfree manner. The base
-// class is sufficiently flexible to be used as an abstraction for DMA based
-// ringbuffers as well as a pure software implementations.
+// The ringbuffer abstracts a circular buffer of data. One reader and one
+// writer can operate on the data from different threads in a lockfree manner.
+// The base class is sufficiently flexible to be used as an abstraction for DMA
+// based ringbuffers as well as a pure software implementations.
 type AudioRingBuffer struct {
 	_ [0]func() // equal guard
 	gst.GstObject
@@ -448,13 +448,13 @@ func BaseAudioRingBuffer(obj AudioRingBufferer) *AudioRingBuffer {
 //
 // The function takes the following parameters:
 //
-//    - spec specs of the buffer.
+//   - spec specs of the buffer.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be acquired, FALSE on error.
+//   - ok: TRUE if the device could be acquired, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Acquire(spec *AudioRingBufferSpec) bool {
 	var _arg0 *C.GstAudioRingBuffer     // out
@@ -483,12 +483,12 @@ func (buf *AudioRingBuffer) Acquire(spec *AudioRingBufferSpec) bool {
 //
 // The function takes the following parameters:
 //
-//    - active: new mode.
+//   - active: new mode.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be activated in the requested mode, FALSE on
-//      error.
+//   - ok: TRUE if the device could be activated in the requested mode, FALSE on
+//     error.
 //
 func (buf *AudioRingBuffer) Activate(active bool) bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -520,7 +520,7 @@ func (buf *AudioRingBuffer) Activate(active bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - advance: number of segments written.
+//   - advance: number of segments written.
 //
 func (buf *AudioRingBuffer) Advance(advance uint) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -541,7 +541,7 @@ func (buf *AudioRingBuffer) Advance(advance uint) {
 //
 // The function takes the following parameters:
 //
-//    - segment to clear.
+//   - segment to clear.
 //
 func (buf *AudioRingBuffer) Clear(segment int) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -572,9 +572,9 @@ func (buf *AudioRingBuffer) ClearAll() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be closed, FALSE on error.
+//   - ok: TRUE if the device could be closed, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) CloseDevice() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -599,14 +599,14 @@ func (buf *AudioRingBuffer) CloseDevice() bool {
 //
 // The function takes the following parameters:
 //
-//    - srcFmt: source format.
-//    - srcVal: source value.
-//    - destFmt: destination format.
+//   - srcFmt: source format.
+//   - srcVal: source value.
+//   - destFmt: destination format.
 //
 // The function returns the following values:
 //
-//    - destVal: location to store the converted value.
-//    - ok: TRUE if the conversion succeeded.
+//   - destVal: location to store the converted value.
+//   - ok: TRUE if the conversion succeeded.
 //
 func (buf *AudioRingBuffer) Convert(srcFmt gst.Format, srcVal int64, destFmt gst.Format) (int64, bool) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -650,9 +650,9 @@ func (buf *AudioRingBuffer) Convert(srcFmt gst.Format, srcVal int64, destFmt gst
 //
 // The function returns the following values:
 //
-//    - guint: number of samples queued in the audio device.
+//   - guint: number of samples queued in the audio device.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Delay() uint {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -674,9 +674,9 @@ func (buf *AudioRingBuffer) Delay() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device was open, FALSE if it was closed.
+//   - ok: TRUE if the device was open, FALSE if it was closed.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) DeviceIsOpen() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -700,9 +700,9 @@ func (buf *AudioRingBuffer) DeviceIsOpen() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the ringbuffer is acquired, FALSE on error.
+//   - ok: TRUE if the ringbuffer is acquired, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) IsAcquired() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -728,7 +728,7 @@ func (buf *AudioRingBuffer) IsAcquired() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device is active.
+//   - ok: TRUE if the device is active.
 //
 func (buf *AudioRingBuffer) IsActive() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -754,7 +754,7 @@ func (buf *AudioRingBuffer) IsActive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device is flushing.
+//   - ok: TRUE if the device is flushing.
 //
 func (buf *AudioRingBuffer) IsFlushing() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -781,7 +781,7 @@ func (buf *AudioRingBuffer) IsFlushing() bool {
 //
 // The function takes the following parameters:
 //
-//    - allowed: new value.
+//   - allowed: new value.
 //
 func (buf *AudioRingBuffer) MayStart(allowed bool) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -803,9 +803,9 @@ func (buf *AudioRingBuffer) MayStart(allowed bool) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be opened, FALSE on error.
+//   - ok: TRUE if the device could be opened, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) OpenDevice() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -829,9 +829,9 @@ func (buf *AudioRingBuffer) OpenDevice() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be paused, FALSE on error.
+//   - ok: TRUE if the device could be paused, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Pause() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -856,11 +856,13 @@ func (buf *AudioRingBuffer) Pause() bool {
 //
 // The function returns the following values:
 //
-//    - segment to read.
-//    - readptr: the pointer to the memory where samples can be read.
-//    - ok: FALSE if the buffer is not started.
+//   - segment to read.
 //
-//      MT safe.
+//   - readptr: the pointer to the memory where samples can be read.
+//
+//   - ok: FALSE if the buffer is not started.
+//
+//     MT safe.
 //
 func (buf *AudioRingBuffer) PrepareRead() (int, []byte, bool) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -889,8 +891,8 @@ func (buf *AudioRingBuffer) PrepareRead() (int, []byte, bool) {
 	return _segment, _readptr, _ok
 }
 
-// Read len samples from the ringbuffer into the memory pointed to by data. The
-// first sample should be read from position sample in the ringbuffer.
+// Read len samples from the ringbuffer into the memory pointed to by data.
+// The first sample should be read from position sample in the ringbuffer.
 //
 // len should not be a multiple of the segment size of the ringbuffer although
 // it is recommended.
@@ -899,15 +901,16 @@ func (buf *AudioRingBuffer) PrepareRead() (int, []byte, bool) {
 //
 // The function takes the following parameters:
 //
-//    - sample position of the data.
-//    - data: where the data should be read.
+//   - sample position of the data.
+//   - data: where the data should be read.
 //
 // The function returns the following values:
 //
-//    - timestamp: where the timestamp is returned.
-//    - guint: number of samples read from the ringbuffer or -1 on error.
+//   - timestamp: where the timestamp is returned.
 //
-//      MT safe.
+//   - guint: number of samples read from the ringbuffer or -1 on error.
+//
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Read(sample uint64, data []byte) (gst.ClockTime, uint) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -932,9 +935,7 @@ func (buf *AudioRingBuffer) Read(sample uint64, data []byte) (gst.ClockTime, uin
 	var _timestamp gst.ClockTime // out
 	var _guint uint              // out
 
-	_timestamp = uint64(_arg4)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_timestamp = gst.ClockTime(_arg4)
 	_guint = uint(_cret)
 
 	return _timestamp, _guint
@@ -944,9 +945,9 @@ func (buf *AudioRingBuffer) Read(sample uint64, data []byte) (gst.ClockTime, uin
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be released, FALSE on error.
+//   - ok: TRUE if the device could be released, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Release() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -972,9 +973,9 @@ func (buf *AudioRingBuffer) Release() bool {
 //
 // The function returns the following values:
 //
-//    - guint64: number of samples processed by the ringbuffer.
+//   - guint64: number of samples processed by the ringbuffer.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) SamplesDone() uint64 {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -999,7 +1000,7 @@ func (buf *AudioRingBuffer) SamplesDone() uint64 {
 //
 // The function takes the following parameters:
 //
-//    - cb (optional): callback to set.
+//   - cb (optional): callback to set.
 //
 func (buf *AudioRingBuffer) SetCallback(cb AudioRingBufferCallback) {
 	var _arg0 *C.GstAudioRingBuffer        // out
@@ -1025,7 +1026,7 @@ func (buf *AudioRingBuffer) SetCallback(cb AudioRingBufferCallback) {
 //
 // The function takes the following parameters:
 //
-//    - flushing: new mode.
+//   - flushing: new mode.
 //
 func (buf *AudioRingBuffer) SetFlushing(flushing bool) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -1051,7 +1052,7 @@ func (buf *AudioRingBuffer) SetFlushing(flushing bool) {
 //
 // The function takes the following parameters:
 //
-//    - sample number to set.
+//   - sample number to set.
 //
 func (buf *AudioRingBuffer) SetSample(sample uint64) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -1067,8 +1068,8 @@ func (buf *AudioRingBuffer) SetSample(sample uint64) {
 
 // The function takes the following parameters:
 //
-//    - readseg
-//    - timestamp
+//   - readseg
+//   - timestamp
 //
 func (buf *AudioRingBuffer) SetTimestamp(readseg int, timestamp gst.ClockTime) {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -1077,9 +1078,7 @@ func (buf *AudioRingBuffer) SetTimestamp(readseg int, timestamp gst.ClockTime) {
 
 	_arg0 = (*C.GstAudioRingBuffer)(unsafe.Pointer(coreglib.InternObject(buf).Native()))
 	_arg1 = C.gint(readseg)
-	_arg2 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
 
 	C.gst_audio_ring_buffer_set_timestamp(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buf)
@@ -1091,9 +1090,9 @@ func (buf *AudioRingBuffer) SetTimestamp(readseg int, timestamp gst.ClockTime) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be started, FALSE on error.
+//   - ok: TRUE if the device could be started, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Start() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -1117,9 +1116,9 @@ func (buf *AudioRingBuffer) Start() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be stopped, FALSE on error.
+//   - ok: TRUE if the device could be stopped, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) Stop() bool {
 	var _arg0 *C.GstAudioRingBuffer // out
@@ -1145,13 +1144,13 @@ func (buf *AudioRingBuffer) Stop() bool {
 //
 // The function takes the following parameters:
 //
-//    - spec specs of the buffer.
+//   - spec specs of the buffer.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be acquired, FALSE on error.
+//   - ok: TRUE if the device could be acquired, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) acquire(spec *AudioRingBufferSpec) bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1183,12 +1182,12 @@ func (buf *AudioRingBuffer) acquire(spec *AudioRingBufferSpec) bool {
 //
 // The function takes the following parameters:
 //
-//    - active: new mode.
+//   - active: new mode.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be activated in the requested mode, FALSE on
-//      error.
+//   - ok: TRUE if the device could be activated in the requested mode, FALSE on
+//     error.
 //
 func (buf *AudioRingBuffer) activate(active bool) bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1236,9 +1235,9 @@ func (buf *AudioRingBuffer) clearAll() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be closed, FALSE on error.
+//   - ok: TRUE if the device could be closed, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) closeDevice() bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1273,9 +1272,9 @@ func (buf *AudioRingBuffer) closeDevice() bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of samples queued in the audio device.
+//   - guint: number of samples queued in the audio device.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) delay() uint {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1302,9 +1301,9 @@ func (buf *AudioRingBuffer) delay() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be opened, FALSE on error.
+//   - ok: TRUE if the device could be opened, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) openDevice() bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1331,9 +1330,9 @@ func (buf *AudioRingBuffer) openDevice() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be paused, FALSE on error.
+//   - ok: TRUE if the device could be paused, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) pause() bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1360,9 +1359,9 @@ func (buf *AudioRingBuffer) pause() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be released, FALSE on error.
+//   - ok: TRUE if the device could be released, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) release() bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1412,9 +1411,9 @@ func (buf *AudioRingBuffer) resume() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be started, FALSE on error.
+//   - ok: TRUE if the device could be started, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) start() bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1441,9 +1440,9 @@ func (buf *AudioRingBuffer) start() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the device could be stopped, FALSE on error.
+//   - ok: TRUE if the device could be stopped, FALSE on error.
 //
-//      MT safe.
+//     MT safe.
 //
 func (buf *AudioRingBuffer) stop() bool {
 	gclass := (*C.GstAudioRingBufferClass)(coreglib.PeekParentClass(buf))
@@ -1471,7 +1470,7 @@ func (buf *AudioRingBuffer) stop() bool {
 //
 // The function takes the following parameters:
 //
-//    - spec to debug.
+//   - spec to debug.
 //
 func AudioRingBufferDebugSpecBuff(spec *AudioRingBufferSpec) {
 	var _arg1 *C.GstAudioRingBufferSpec // out
@@ -1487,7 +1486,7 @@ func AudioRingBufferDebugSpecBuff(spec *AudioRingBufferSpec) {
 //
 // The function takes the following parameters:
 //
-//    - spec to debug.
+//   - spec to debug.
 //
 func AudioRingBufferDebugSpecCaps(spec *AudioRingBufferSpec) {
 	var _arg1 *C.GstAudioRingBufferSpec // out
@@ -1502,12 +1501,12 @@ func AudioRingBufferDebugSpecCaps(spec *AudioRingBufferSpec) {
 //
 // The function takes the following parameters:
 //
-//    - spec: spec.
-//    - caps: Caps.
+//   - spec: spec.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps could be parsed.
+//   - ok: TRUE if the caps could be parsed.
 //
 func AudioRingBufferParseCaps(spec *AudioRingBufferSpec, caps *gst.Caps) bool {
 	var _arg1 *C.GstAudioRingBufferSpec // out

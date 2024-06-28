@@ -132,7 +132,7 @@ type PadTemplateOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - pad that created it.
+	//   - pad that created it.
 	//
 	PadCreated func(pad *Pad)
 }
@@ -148,14 +148,14 @@ func defaultPadTemplateOverrides(v *PadTemplate) PadTemplateOverrides {
 // before loading the element plugin as well as identifying pads on elements
 // that are not yet created (request or sometimes pads).
 //
-// Pad and PadTemplates have Caps attached to it to describe the media type they
-// are capable of dealing with. gst_pad_template_get_caps() or
+// Pad and PadTemplates have Caps attached to it to describe the media
+// type they are capable of dealing with. gst_pad_template_get_caps() or
 // GST_PAD_TEMPLATE_CAPS() are used to get the caps of a padtemplate. It's not
 // possible to modify the caps of a padtemplate after creation.
 //
-// PadTemplates have a PadPresence property which identifies the lifetime of the
-// pad and that can be retrieved with GST_PAD_TEMPLATE_PRESENCE(). Also the
-// direction of the pad can be retrieved from the PadTemplate with
+// PadTemplates have a PadPresence property which identifies the lifetime
+// of the pad and that can be retrieved with GST_PAD_TEMPLATE_PRESENCE().
+// Also the direction of the pad can be retrieved from the PadTemplate with
 // GST_PAD_TEMPLATE_DIRECTION().
 //
 // The GST_PAD_TEMPLATE_NAME_TEMPLATE () is important for GST_PAD_REQUEST pads
@@ -163,23 +163,23 @@ func defaultPadTemplateOverrides(v *PadTemplate) PadTemplateOverrides {
 // call to instantiate a pad from this template.
 //
 // Padtemplates can be created with gst_pad_template_new() or with
-// gst_static_pad_template_get (), which creates a PadTemplate from a
-// StaticPadTemplate that can be filled with the convenient
+// gst_static_pad_template_get (), which creates a PadTemplate
+// from a StaticPadTemplate that can be filled with the convenient
 // GST_STATIC_PAD_TEMPLATE() macro.
 //
-// A padtemplate can be used to create a pad (see gst_pad_new_from_template() or
-// gst_pad_new_from_static_template ()) or to add to an element class (see
+// A padtemplate can be used to create a pad (see gst_pad_new_from_template()
+// or gst_pad_new_from_static_template ()) or to add to an element class (see
 // gst_element_class_add_static_pad_template ()).
 //
 // The following code example shows the code to create a pad from a padtemplate.
 //
-//      static void
-//      my_element_class_init (GstMyElementClass *klass)
-//      {
-//        GstElementClass *gstelement_class = GST_ELEMENT_CLASS (klass);
+//    static void
+//    my_element_class_init (GstMyElementClass *klass)
+//    {
+//      GstElementClass *gstelement_class = GST_ELEMENT_CLASS (klass);
 //
-//        gst_element_class_add_static_pad_template (gstelement_class, &my_template);
-//      }.
+//      gst_element_class_add_static_pad_template (gstelement_class, &my_template);
+//    }.
 type PadTemplate struct {
 	_ [0]func() // equal guard
 	GstObject
@@ -236,14 +236,14 @@ func (templ *PadTemplate) ConnectPadCreated(f func(pad *Pad)) coreglib.SignalHan
 //
 // The function takes the following parameters:
 //
-//    - nameTemplate: name template.
-//    - direction of the template.
-//    - presence of the pad.
-//    - caps set for the template.
+//   - nameTemplate: name template.
+//   - direction of the template.
+//   - presence of the pad.
+//   - caps set for the template.
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional): new PadTemplate.
+//   - padTemplate (optional): new PadTemplate.
 //
 func NewPadTemplate(nameTemplate string, direction PadDirection, presence PadPresence, caps *Caps) *PadTemplate {
 	var _arg1 *C.gchar          // out
@@ -278,12 +278,12 @@ func NewPadTemplate(nameTemplate string, direction PadDirection, presence PadPre
 //
 // The function takes the following parameters:
 //
-//    - padTemplate: static pad template.
-//    - padType of the pad to create.
+//   - padTemplate: static pad template.
+//   - padType of the pad to create.
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional): new PadTemplate.
+//   - padTemplate (optional): new PadTemplate.
 //
 func NewPadTemplateFromStaticPadTemplateWithGType(padTemplate *StaticPadTemplate, padType coreglib.Type) *PadTemplate {
 	var _arg1 *C.GstStaticPadTemplate // out
@@ -311,15 +311,15 @@ func NewPadTemplateFromStaticPadTemplateWithGType(padTemplate *StaticPadTemplate
 //
 // The function takes the following parameters:
 //
-//    - nameTemplate: name template.
-//    - direction of the template.
-//    - presence of the pad.
-//    - caps set for the template.
-//    - padType of the pad to create.
+//   - nameTemplate: name template.
+//   - direction of the template.
+//   - presence of the pad.
+//   - caps set for the template.
+//   - padType of the pad to create.
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional): new PadTemplate.
+//   - padTemplate (optional): new PadTemplate.
 //
 func NewPadTemplateWithGType(nameTemplate string, direction PadDirection, presence PadPresence, caps *Caps, padType coreglib.Type) *PadTemplate {
 	var _arg1 *C.gchar          // out
@@ -356,7 +356,7 @@ func NewPadTemplateWithGType(nameTemplate string, direction PadDirection, presen
 //
 // The function returns the following values:
 //
-//    - caps of the pad template. Unref after usage.
+//   - caps of the pad template. Unref after usage.
 //
 func (templ *PadTemplate) Caps() *Caps {
 	var _arg0 *C.GstPadTemplate // out
@@ -384,8 +384,8 @@ func (templ *PadTemplate) Caps() *Caps {
 //
 // The function returns the following values:
 //
-//    - caps to document. For convenience, this will return
-//      gst_pad_template_get_caps() when no documentation caps were set.
+//   - caps to document. For convenience, this will return
+//     gst_pad_template_get_caps() when no documentation caps were set.
 //
 func (templ *PadTemplate) DocumentationCaps() *Caps {
 	var _arg0 *C.GstPadTemplate // out
@@ -414,7 +414,7 @@ func (templ *PadTemplate) DocumentationCaps() *Caps {
 //
 // The function takes the following parameters:
 //
-//    - pad that created it.
+//   - pad that created it.
 //
 func (templ *PadTemplate) PadCreated(pad *Pad) {
 	var _arg0 *C.GstPadTemplate // out
@@ -428,14 +428,14 @@ func (templ *PadTemplate) PadCreated(pad *Pad) {
 	runtime.KeepAlive(pad)
 }
 
-// SetDocumentationCaps: certain elements will dynamically construct the caps of
-// their pad templates. In order not to let environment-specific information
+// SetDocumentationCaps: certain elements will dynamically construct the caps
+// of their pad templates. In order not to let environment-specific information
 // into the documentation, element authors should use this method to expose
 // "stable" caps to the reader.
 //
 // The function takes the following parameters:
 //
-//    - caps: documented capabilities.
+//   - caps: documented capabilities.
 //
 func (templ *PadTemplate) SetDocumentationCaps(caps *Caps) {
 	var _arg0 *C.GstPadTemplate // out
@@ -443,7 +443,6 @@ func (templ *PadTemplate) SetDocumentationCaps(caps *Caps) {
 
 	_arg0 = (*C.GstPadTemplate)(unsafe.Pointer(coreglib.InternObject(templ).Native()))
 	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(caps)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(caps)), nil)
 
 	C.gst_pad_template_set_documentation_caps(_arg0, _arg1)
 	runtime.KeepAlive(templ)
@@ -455,7 +454,7 @@ func (templ *PadTemplate) SetDocumentationCaps(caps *Caps) {
 //
 // The function takes the following parameters:
 //
-//    - pad that created it.
+//   - pad that created it.
 //
 func (templ *PadTemplate) padCreated(pad *Pad) {
 	gclass := (*C.GstPadTemplateClass)(coreglib.PeekParentClass(templ))
@@ -537,7 +536,7 @@ func (s *StaticPadTemplate) StaticCaps() *StaticCaps {
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional): new PadTemplate.
+//   - padTemplate (optional): new PadTemplate.
 //
 func (padTemplate *StaticPadTemplate) Get() *PadTemplate {
 	var _arg0 *C.GstStaticPadTemplate // out
@@ -561,9 +560,9 @@ func (padTemplate *StaticPadTemplate) Get() *PadTemplate {
 //
 // The function returns the following values:
 //
-//    - caps of the static pad template. Unref after usage. Since the core holds
-//      an additional ref to the returned caps, use gst_caps_make_writable() on
-//      the returned caps to modify it.
+//   - caps of the static pad template. Unref after usage. Since the core holds
+//     an additional ref to the returned caps, use gst_caps_make_writable() on
+//     the returned caps to modify it.
 //
 func (templ *StaticPadTemplate) Caps() *Caps {
 	var _arg0 *C.GstStaticPadTemplate // out

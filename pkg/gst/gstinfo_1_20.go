@@ -19,13 +19,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - category to log.
-//    - level of the message is in.
-//    - file that emitted the message, usually the __FILE__ identifier.
-//    - function that emitted the message.
-//    - line from that the message was emitted, usually __LINE__.
-//    - object (optional) this message relates to, or NULL if none.
-//    - messageString: message string.
+//   - category to log.
+//   - level of the message is in.
+//   - file that emitted the message, usually the __FILE__ identifier.
+//   - function that emitted the message.
+//   - line from that the message was emitted, usually __LINE__.
+//   - object (optional) this message relates to, or NULL if none.
+//   - messageString: message string.
 //
 func DebugLogLiteral(category *DebugCategory, level DebugLevel, file, function string, line int, object *coreglib.Object, messageString string) {
 	var _arg1 *C.GstDebugCategory // out

@@ -717,11 +717,11 @@ func (r RTSPVersion) String() string {
 //
 // The function takes the following parameters:
 //
-//    - version: RTSPVersion.
+//   - version: RTSPVersion.
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of version.
+//   - utf8: string representation of version.
 //
 func RTSPVersionAsText(version RTSPVersion) string {
 	var _arg1 C.GstRTSPVersion // out
@@ -885,11 +885,11 @@ func (r RTSPMethod) Has(other RTSPMethod) bool {
 //
 // The function takes the following parameters:
 //
-//    - method: RTSPMethod.
+//   - method: RTSPMethod.
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of method.
+//   - utf8 (optional): string representation of method.
 //
 func RTSPMethodAsText(method RTSPMethod) string {
 	var _arg1 C.GstRTSPMethod // out
@@ -902,7 +902,9 @@ func RTSPMethodAsText(method RTSPMethod) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -911,12 +913,12 @@ func RTSPMethodAsText(method RTSPMethod) string {
 //
 // The function takes the following parameters:
 //
-//    - header string.
+//   - header string.
 //
 // The function returns the following values:
 //
-//    - rtspHeaderField for header or T_RTSP_HDR_INVALID if the header field is
-//      unknown.
+//   - rtspHeaderField for header or T_RTSP_HDR_INVALID if the header field is
+//     unknown.
 //
 func RtspFindHeaderField(header string) RTSPHeaderField {
 	var _arg1 *C.gchar             // out
@@ -939,11 +941,11 @@ func RtspFindHeaderField(header string) RTSPHeaderField {
 //
 // The function takes the following parameters:
 //
-//    - method: method.
+//   - method: method.
 //
 // The function returns the following values:
 //
-//    - rtspMethod for method or T_RTSP_INVALID if the method is unknown.
+//   - rtspMethod for method or T_RTSP_INVALID if the method is unknown.
 //
 func RtspFindMethod(method string) RTSPMethod {
 	var _arg1 *C.gchar        // out
@@ -967,11 +969,11 @@ func RtspFindMethod(method string) RTSPMethod {
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
+//   - field: RTSPHeaderField.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if multiple headers are allowed.
+//   - ok: TRUE if multiple headers are allowed.
 //
 func RtspHeaderAllowMultiple(field RTSPHeaderField) bool {
 	var _arg1 C.GstRTSPHeaderField // out
@@ -995,11 +997,11 @@ func RtspHeaderAllowMultiple(field RTSPHeaderField) bool {
 //
 // The function takes the following parameters:
 //
-//    - field: RTSPHeaderField.
+//   - field: RTSPHeaderField.
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of field.
+//   - utf8 (optional): string representation of field.
 //
 func RtspHeaderAsText(field RTSPHeaderField) string {
 	var _arg1 C.GstRTSPHeaderField // out
@@ -1012,7 +1014,9 @@ func RtspHeaderAsText(field RTSPHeaderField) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1021,11 +1025,11 @@ func RtspHeaderAsText(field RTSPHeaderField) string {
 //
 // The function takes the following parameters:
 //
-//    - options: one or more RTSPMethod.
+//   - options: one or more RTSPMethod.
 //
 // The function returns the following values:
 //
-//    - utf8: new string of options. g_free() after usage.
+//   - utf8: new string of options. g_free() after usage.
 //
 func RtspOptionsAsText(options RTSPMethod) string {
 	var _arg1 C.GstRTSPMethod // out
@@ -1048,11 +1052,11 @@ func RtspOptionsAsText(options RTSPMethod) string {
 //
 // The function takes the following parameters:
 //
-//    - code: RTSPStatusCode.
+//   - code: RTSPStatusCode.
 //
 // The function returns the following values:
 //
-//    - utf8: string representation of code.
+//   - utf8: string representation of code.
 //
 func RtspStatusAsText(code RTSPStatusCode) string {
 	var _arg1 C.GstRTSPStatusCode // out
@@ -1074,11 +1078,11 @@ func RtspStatusAsText(code RTSPStatusCode) string {
 //
 // The function takes the following parameters:
 //
-//    - result: RTSPResult.
+//   - result: RTSPResult.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string. g_free() after usage.
+//   - utf8: newly allocated string. g_free() after usage.
 //
 func RtspStrresult(result RTSPResult) string {
 	var _arg1 C.GstRTSPResult // out

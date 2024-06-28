@@ -85,12 +85,12 @@ func (t TocEntryType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - typ: TocEntryType.
+//   - typ: TocEntryType.
 //
 // The function returns the following values:
 //
-//    - utf8 returns a human-readable string for type. This string is only for
-//      debugging purpose and should not be displayed in a user interface.
+//   - utf8 returns a human-readable string for type. This string is only for
+//     debugging purpose and should not be displayed in a user interface.
 //
 func TocEntryTypeGetNick(typ TocEntryType) string {
 	var _arg1 C.GstTocEntryType // out
@@ -115,11 +115,11 @@ const (
 	// TocScopeGlobal: global TOC representing all selectable options (this is
 	// what applications are usually interested in).
 	TocScopeGlobal TocScope = 1
-	// TocScopeCurrent: TOC for the currently active/selected stream (this is a
-	// TOC representing the current stream from start to EOS, and is what a TOC
-	// writer / muxer is usually interested in; it will usually be a subset of
-	// the global TOC, e.g. just the chapters of the current title, or the
-	// chapters selected for playback from the current title).
+	// TocScopeCurrent: TOC for the currently active/selected stream (this is
+	// a TOC representing the current stream from start to EOS, and is what
+	// a TOC writer / muxer is usually interested in; it will usually be a
+	// subset of the global TOC, e.g. just the chapters of the current title,
+	// or the chapters selected for playback from the current title).
 	TocScopeCurrent TocScope = 2
 )
 
@@ -148,9 +148,9 @@ func (t TocScope) String() string {
 // or cue sheet TOC. Such TOC will be useful for applications to display instead
 // of just a playlist.
 //
-// Using TOC is very easy. Firstly, create Toc structure which represents root
-// contents of the source. You can also attach TOC-specific tags to it. Then
-// fill it with TocEntry entries by appending them to the Toc using
+// Using TOC is very easy. Firstly, create Toc structure which represents
+// root contents of the source. You can also attach TOC-specific tags to it.
+// Then fill it with TocEntry entries by appending them to the Toc using
 // gst_toc_append_entry(), and appending subentries to a TocEntry using
 // gst_toc_entry_append_sub_entry().
 //
@@ -168,21 +168,21 @@ func (t TocScope) String() string {
 // TOCs can have global scope or current scope. Global scope TOCs contain all
 // entries that can possibly be selected using a toc select event, and are what
 // an application is usually interested in. TOCs with current scope only contain
-// the parts of the TOC relevant to the currently selected/playing stream; the
-// current scope TOC is used by downstream elements such as muxers to write
+// the parts of the TOC relevant to the currently selected/playing stream;
+// the current scope TOC is used by downstream elements such as muxers to write
 // correct TOC entries when transcoding files, for example. When playing a DVD,
 // the global TOC would contain a hierarchy of all titles, chapters and angles,
 // for example, while the current TOC would only contain the chapters for the
 // currently playing title if playback of a specific title was requested.
 //
-// Applications and plugins should not rely on TOCs having a certain kind of
-// structure, but should allow for different alternatives. For example, a simple
-// CUE sheet embedded in a file may be presented as a flat list of track
-// entries, or could have a top-level edition node (or some other alternative
-// type entry) with track entries underneath that node; or even multiple
-// top-level edition nodes (or some other alternative type entries) each with
-// track entries underneath, in case the source file has extracted a track
-// listing from different sources).
+// Applications and plugins should not rely on TOCs having a certain kind
+// of structure, but should allow for different alternatives. For example,
+// a simple CUE sheet embedded in a file may be presented as a flat list
+// of track entries, or could have a top-level edition node (or some other
+// alternative type entry) with track entries underneath that node; or even
+// multiple top-level edition nodes (or some other alternative type entries)
+// each with track entries underneath, in case the source file has extracted a
+// track listing from different sources).
 //
 // An instance of this type is always passed by reference.
 type Toc struct {
@@ -226,7 +226,7 @@ func NewToc(scope TocScope) *Toc {
 //
 // The function takes the following parameters:
 //
-//    - entry: TocEntry.
+//   - entry: TocEntry.
 //
 func (toc *Toc) AppendEntry(entry *TocEntry) {
 	var _arg0 *C.GstToc      // out
@@ -254,12 +254,12 @@ func (toc *Toc) Dump() {
 //
 // The function takes the following parameters:
 //
-//    - uid: UID to find TocEntry with.
+//   - uid: UID to find TocEntry with.
 //
 // The function returns the following values:
 //
-//    - tocEntry (optional) with specified uid from the toc, or NULL if not
-//      found.
+//   - tocEntry (optional) with specified uid from the toc, or NULL if not
+//     found.
 //
 func (toc *Toc) FindEntry(uid string) *TocEntry {
 	var _arg0 *C.GstToc      // out
@@ -287,7 +287,7 @@ func (toc *Toc) FindEntry(uid string) *TocEntry {
 //
 // The function returns the following values:
 //
-//    - list of TocEntry for entry.
+//   - list of TocEntry for entry.
 //
 func (toc *Toc) Entries() []*TocEntry {
 	var _arg0 *C.GstToc // out
@@ -313,7 +313,7 @@ func (toc *Toc) Entries() []*TocEntry {
 
 // The function returns the following values:
 //
-//    - tocScope: scope of toc.
+//   - tocScope: scope of toc.
 //
 func (toc *Toc) Scope() TocScope {
 	var _arg0 *C.GstToc     // out
@@ -329,6 +329,75 @@ func (toc *Toc) Scope() TocScope {
 	_tocScope = TocScope(_cret)
 
 	return _tocScope
+}
+
+// Tags gets the tags for toc.
+//
+// The function returns the following values:
+//
+//   - tagList (optional) for entry.
+//
+func (toc *Toc) Tags() *TagList {
+	var _arg0 *C.GstToc     // out
+	var _cret *C.GstTagList // in
+
+	_arg0 = (*C.GstToc)(gextras.StructNative(unsafe.Pointer(toc)))
+
+	_cret = C.gst_toc_get_tags(_arg0)
+	runtime.KeepAlive(toc)
+
+	var _tagList *TagList // out
+
+	if _cret != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tagList
+}
+
+// MergeTags: merge tags into the existing tags of toc using mode.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) or NULL.
+//   - mode: TagMergeMode.
+//
+func (toc *Toc) MergeTags(tags *TagList, mode TagMergeMode) {
+	var _arg0 *C.GstToc         // out
+	var _arg1 *C.GstTagList     // out
+	var _arg2 C.GstTagMergeMode // out
+
+	_arg0 = (*C.GstToc)(gextras.StructNative(unsafe.Pointer(toc)))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+	}
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_toc_merge_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(toc)
+	runtime.KeepAlive(tags)
+	runtime.KeepAlive(mode)
+}
+
+// SetTags: set a TagList with tags for the complete toc.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) or NULL.
+//
+func (toc *Toc) SetTags(tags *TagList) {
+	var _arg0 *C.GstToc     // out
+	var _arg1 *C.GstTagList // out
+
+	_arg0 = (*C.GstToc)(gextras.StructNative(unsafe.Pointer(toc)))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(tags)), nil)
+	}
+
+	C.gst_toc_set_tags(_arg0, _arg1)
+	runtime.KeepAlive(toc)
+	runtime.KeepAlive(tags)
 }
 
 // TocEntry: instance of this type is always passed by reference.
@@ -377,7 +446,7 @@ func NewTocEntry(typ TocEntryType, uid string) *TocEntry {
 //
 // The function takes the following parameters:
 //
-//    - subentry: TocEntry.
+//   - subentry: TocEntry.
 //
 func (entry *TocEntry) AppendSubEntry(subentry *TocEntry) {
 	var _arg0 *C.GstTocEntry // out
@@ -394,7 +463,7 @@ func (entry *TocEntry) AppendSubEntry(subentry *TocEntry) {
 
 // The function returns the following values:
 //
-//    - tocEntryType entry's entry type.
+//   - tocEntryType entry's entry type.
 //
 func (entry *TocEntry) EntryType() TocEntryType {
 	var _arg0 *C.GstTocEntry    // out
@@ -419,12 +488,12 @@ func (entry *TocEntry) EntryType() TocEntryType {
 //
 // The function returns the following values:
 //
-//    - loopType (optional): storage for the loop_type value, leave NULL if not
-//      need.
-//    - repeatCount (optional): storage for the repeat_count value, leave NULL if
-//      not need.
-//    - ok: TRUE if all non-NULL storage pointers were filled with appropriate
-//      values, FALSE otherwise.
+//   - loopType (optional): storage for the loop_type value, leave NULL if not
+//     need.
+//   - repeatCount (optional): storage for the repeat_count value, leave NULL if
+//     not need.
+//   - ok: TRUE if all non-NULL storage pointers were filled with appropriate
+//     values, FALSE otherwise.
 //
 func (entry *TocEntry) Loop() (TocLoopType, int, bool) {
 	var _arg0 *C.GstTocEntry   // out
@@ -454,7 +523,7 @@ func (entry *TocEntry) Loop() (TocLoopType, int, bool) {
 //
 // The function returns the following values:
 //
-//    - tocEntry (optional): parent TocEntry of entry.
+//   - tocEntry (optional): parent TocEntry of entry.
 //
 func (entry *TocEntry) Parent() *TocEntry {
 	var _arg0 *C.GstTocEntry // out
@@ -479,10 +548,10 @@ func (entry *TocEntry) Parent() *TocEntry {
 //
 // The function returns the following values:
 //
-//    - start (optional): storage for the start value, leave NULL if not need.
-//    - stop (optional): storage for the stop value, leave NULL if not need.
-//    - ok: TRUE if all non-NULL storage pointers were filled with appropriate
-//      values, FALSE otherwise.
+//   - start (optional): storage for the start value, leave NULL if not need.
+//   - stop (optional): storage for the stop value, leave NULL if not need.
+//   - ok: TRUE if all non-NULL storage pointers were filled with appropriate
+//     values, FALSE otherwise.
 //
 func (entry *TocEntry) StartStopTimes() (start int64, stop int64, ok bool) {
 	var _arg0 *C.GstTocEntry // out
@@ -512,7 +581,7 @@ func (entry *TocEntry) StartStopTimes() (start int64, stop int64, ok bool) {
 //
 // The function returns the following values:
 //
-//    - list of TocEntry of entry.
+//   - list of TocEntry of entry.
 //
 func (entry *TocEntry) SubEntries() []*TocEntry {
 	var _arg0 *C.GstTocEntry // out
@@ -536,11 +605,35 @@ func (entry *TocEntry) SubEntries() []*TocEntry {
 	return _list
 }
 
+// Tags gets the tags for entry.
+//
+// The function returns the following values:
+//
+//   - tagList (optional) for entry.
+//
+func (entry *TocEntry) Tags() *TagList {
+	var _arg0 *C.GstTocEntry // out
+	var _cret *C.GstTagList  // in
+
+	_arg0 = (*C.GstTocEntry)(gextras.StructNative(unsafe.Pointer(entry)))
+
+	_cret = C.gst_toc_entry_get_tags(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _tagList *TagList // out
+
+	if _cret != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tagList
+}
+
 // Toc gets the parent Toc of entry.
 //
 // The function returns the following values:
 //
-//    - toc: parent Toc of entry.
+//   - toc (optional): parent Toc of entry.
 //
 func (entry *TocEntry) Toc() *Toc {
 	var _arg0 *C.GstTocEntry // out
@@ -553,7 +646,9 @@ func (entry *TocEntry) Toc() *Toc {
 
 	var _toc *Toc // out
 
-	_toc = (*Toc)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_toc = (*Toc)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _toc
 }
@@ -562,7 +657,7 @@ func (entry *TocEntry) Toc() *Toc {
 //
 // The function returns the following values:
 //
-//    - utf8: UID of entry.
+//   - utf8: UID of entry.
 //
 func (entry *TocEntry) Uid() string {
 	var _arg0 *C.GstTocEntry // out
@@ -582,7 +677,7 @@ func (entry *TocEntry) Uid() string {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if entry's type is an alternative type, otherwise FALSE.
+//   - ok: TRUE if entry's type is an alternative type, otherwise FALSE.
 //
 func (entry *TocEntry) IsAlternative() bool {
 	var _arg0 *C.GstTocEntry // out
@@ -604,7 +699,7 @@ func (entry *TocEntry) IsAlternative() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if entry's type is a sequence type, otherwise FALSE.
+//   - ok: TRUE if entry's type is a sequence type, otherwise FALSE.
 //
 func (entry *TocEntry) IsSequence() bool {
 	var _arg0 *C.GstTocEntry // out
@@ -624,12 +719,36 @@ func (entry *TocEntry) IsSequence() bool {
 	return _ok
 }
 
+// MergeTags: merge tags into the existing tags of entry using mode.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) or NULL.
+//   - mode: TagMergeMode.
+//
+func (entry *TocEntry) MergeTags(tags *TagList, mode TagMergeMode) {
+	var _arg0 *C.GstTocEntry    // out
+	var _arg1 *C.GstTagList     // out
+	var _arg2 C.GstTagMergeMode // out
+
+	_arg0 = (*C.GstTocEntry)(gextras.StructNative(unsafe.Pointer(entry)))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+	}
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_toc_entry_merge_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(tags)
+	runtime.KeepAlive(mode)
+}
+
 // SetLoop: set loop_type and repeat_count values for the entry.
 //
 // The function takes the following parameters:
 //
-//    - loopType: loop_type value to set.
-//    - repeatCount: repeat_count value to set.
+//   - loopType: loop_type value to set.
+//   - repeatCount: repeat_count value to set.
 //
 func (entry *TocEntry) SetLoop(loopType TocLoopType, repeatCount int) {
 	var _arg0 *C.GstTocEntry   // out
@@ -650,8 +769,8 @@ func (entry *TocEntry) SetLoop(loopType TocLoopType, repeatCount int) {
 //
 // The function takes the following parameters:
 //
-//    - start value to set.
-//    - stop value to set.
+//   - start value to set.
+//   - stop value to set.
 //
 func (entry *TocEntry) SetStartStopTimes(start int64, stop int64) {
 	var _arg0 *C.GstTocEntry // out
@@ -666,4 +785,25 @@ func (entry *TocEntry) SetStartStopTimes(start int64, stop int64) {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(stop)
+}
+
+// SetTags: set a TagList with tags for the complete entry.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) or NULL.
+//
+func (entry *TocEntry) SetTags(tags *TagList) {
+	var _arg0 *C.GstTocEntry // out
+	var _arg1 *C.GstTagList  // out
+
+	_arg0 = (*C.GstTocEntry)(gextras.StructNative(unsafe.Pointer(entry)))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(tags)), nil)
+	}
+
+	C.gst_toc_entry_set_tags(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(tags)
 }

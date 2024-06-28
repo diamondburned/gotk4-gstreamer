@@ -197,7 +197,7 @@ func (depayload *RTPBaseDepayload) ConnectRequestExtension(f func(extId uint, ex
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if source-info is enabled.
+//   - ok: TRUE if source-info is enabled.
 //
 func (depayload *RTPBaseDepayload) IsSourceInfoEnabled() bool {
 	var _arg0 *C.GstRTPBaseDepayload // out
@@ -224,11 +224,11 @@ func (depayload *RTPBaseDepayload) IsSourceInfoEnabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - outBuf: Buffer.
+//   - outBuf: Buffer.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (filter *RTPBaseDepayload) Push(outBuf *gst.Buffer) gst.FlowReturn {
 	var _arg0 *C.GstRTPBaseDepayload // out
@@ -237,6 +237,7 @@ func (filter *RTPBaseDepayload) Push(outBuf *gst.Buffer) gst.FlowReturn {
 
 	_arg0 = (*C.GstRTPBaseDepayload)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(outBuf)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(outBuf)), nil)
 
 	_cret = C.gst_rtp_base_depayload_push(_arg0, _arg1)
 	runtime.KeepAlive(filter)
@@ -254,11 +255,11 @@ func (filter *RTPBaseDepayload) Push(outBuf *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - outList: BufferList.
+//   - outList: BufferList.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (filter *RTPBaseDepayload) PushList(outList *gst.BufferList) gst.FlowReturn {
 	var _arg0 *C.GstRTPBaseDepayload // out
@@ -267,6 +268,7 @@ func (filter *RTPBaseDepayload) PushList(outList *gst.BufferList) gst.FlowReturn
 
 	_arg0 = (*C.GstRTPBaseDepayload)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.GstBufferList)(gextras.StructNative(unsafe.Pointer(outList)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(outList)), nil)
 
 	_cret = C.gst_rtp_base_depayload_push_list(_arg0, _arg1)
 	runtime.KeepAlive(filter)
@@ -284,7 +286,7 @@ func (filter *RTPBaseDepayload) PushList(outList *gst.BufferList) gst.FlowReturn
 //
 // The function takes the following parameters:
 //
-//    - enable: whether to add meta about RTP sources to buffer.
+//   - enable: whether to add meta about RTP sources to buffer.
 //
 func (depayload *RTPBaseDepayload) SetSourceInfoEnabled(enable bool) {
 	var _arg0 *C.GstRTPBaseDepayload // out

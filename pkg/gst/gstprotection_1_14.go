@@ -17,14 +17,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - systemIdentifiers: A null terminated array of strings that contains the
-//      UUID values of each protection system that is to be checked.
+//   - systemIdentifiers: A null terminated array of strings that contains the
+//     UUID values of each protection system that is to be checked.
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): A null terminated array containing all the
-//      system_identifiers supported by the set of available decryptors, or NULL
-//      if no matches were found.
+//   - utf8s (optional): A null terminated array containing all the
+//     system_identifiers supported by the set of available decryptors, or NULL
+//     if no matches were found.
 //
 func ProtectionFilterSystemsByAvailableDecryptors(systemIdentifiers []string) []string {
 	var _arg1 **C.gchar // out

@@ -22,12 +22,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - addr GSocketAddress to connect to buffer.
+//   - buffer: Buffer.
+//   - addr GSocketAddress to connect to buffer.
 //
 // The function returns the following values:
 //
-//    - netAddressMeta connected to buffer.
+//   - netAddressMeta connected to buffer.
 //
 func BufferAddNetAddressMeta(buffer *gst.Buffer, addr gio.SocketAddresser) *NetAddressMeta {
 	var _arg1 *C.GstBuffer         // out
@@ -52,11 +52,12 @@ func BufferAddNetAddressMeta(buffer *gst.Buffer, addr gio.SocketAddresser) *NetA
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - netAddressMeta or NULL when there is no such metadata on buffer.
+//   - netAddressMeta (optional) or NULL when there is no such metadata on
+//     buffer.
 //
 func BufferGetNetAddressMeta(buffer *gst.Buffer) *NetAddressMeta {
 	var _arg1 *C.GstBuffer         // out
@@ -69,7 +70,9 @@ func BufferGetNetAddressMeta(buffer *gst.Buffer) *NetAddressMeta {
 
 	var _netAddressMeta *NetAddressMeta // out
 
-	_netAddressMeta = (*NetAddressMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_netAddressMeta = (*NetAddressMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _netAddressMeta
 }

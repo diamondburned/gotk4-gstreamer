@@ -84,11 +84,11 @@ func marshalGLDisplayEGLDevice(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - deviceIndex: index of device to use.
+//   - deviceIndex: index of device to use.
 //
 // The function returns the following values:
 //
-//    - glDisplayEGLDevice: new GLDisplayEGLDevice or NULL.
+//   - glDisplayEGLDevice (optional): new GLDisplayEGLDevice or NULL.
 //
 func NewGLDisplayEGLDevice(deviceIndex uint) *GLDisplayEGLDevice {
 	var _arg1 C.guint                  // out
@@ -101,7 +101,9 @@ func NewGLDisplayEGLDevice(deviceIndex uint) *GLDisplayEGLDevice {
 
 	var _glDisplayEGLDevice *GLDisplayEGLDevice // out
 
-	_glDisplayEGLDevice = wrapGLDisplayEGLDevice(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_glDisplayEGLDevice = wrapGLDisplayEGLDevice(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _glDisplayEGLDevice
 }
@@ -111,11 +113,11 @@ func NewGLDisplayEGLDevice(deviceIndex uint) *GLDisplayEGLDevice {
 //
 // The function takes the following parameters:
 //
-//    - device (optional): existing EGLDeviceEXT.
+//   - device (optional): existing EGLDeviceEXT.
 //
 // The function returns the following values:
 //
-//    - glDisplayEGLDevice: new GLDisplayEGLDevice.
+//   - glDisplayEGLDevice: new GLDisplayEGLDevice.
 //
 func NewGLDisplayEGLDeviceWithEglDevice(device unsafe.Pointer) *GLDisplayEGLDevice {
 	var _arg1 C.gpointer               // out

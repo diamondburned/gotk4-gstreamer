@@ -22,11 +22,11 @@ const FLAG_SET_MASK_EXACT = 4294967295
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_FLAG_SET.
+//   - value: GValue initialized to T_TYPE_FLAG_SET.
 //
 // The function returns the following values:
 //
-//    - guint flags field of the flagset instance.
+//   - guint flags field of the flagset instance.
 //
 func ValueGetFlagsetFlags(value *coreglib.Value) uint {
 	var _arg1 *C.GValue // out
@@ -48,11 +48,11 @@ func ValueGetFlagsetFlags(value *coreglib.Value) uint {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to T_TYPE_FLAG_SET.
+//   - value: GValue initialized to T_TYPE_FLAG_SET.
 //
 // The function returns the following values:
 //
-//    - guint: mask field of the flagset instance.
+//   - guint: mask field of the flagset instance.
 //
 func ValueGetFlagsetMask(value *coreglib.Value) uint {
 	var _arg1 *C.GValue // out
@@ -70,15 +70,15 @@ func ValueGetFlagsetMask(value *coreglib.Value) uint {
 	return _guint
 }
 
-// ValueSetFlagset sets value to the flags and mask values provided in flags and
-// mask. The flags value indicates the values of flags, the mask represents
+// ValueSetFlagset sets value to the flags and mask values provided in flags
+// and mask. The flags value indicates the values of flags, the mask represents
 // which bits in the flag value have been set, and which are "don't care".
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized to GST_TYPE_FLAG_SET.
-//    - flags: value of the flags set or unset.
-//    - mask indicate which flags bits must match for comparisons.
+//   - value: GValue initialized to GST_TYPE_FLAG_SET.
+//   - flags: value of the flags set or unset.
+//   - mask indicate which flags bits must match for comparisons.
 //
 func ValueSetFlagset(value *coreglib.Value, flags, mask uint) {
 	var _arg1 *C.GValue // out
@@ -100,7 +100,7 @@ func ValueSetFlagset(value *coreglib.Value, flags, mask uint) {
 //
 // The function takes the following parameters:
 //
-//    - flagsType of a TYPE_FLAGS type.
+//   - flagsType of a TYPE_FLAGS type.
 //
 // The function returns the following values:
 //

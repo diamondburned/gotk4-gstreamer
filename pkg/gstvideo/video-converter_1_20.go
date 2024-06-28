@@ -6,8 +6,8 @@ package gstvideo
 // #include <gst/video/video.h>
 import "C"
 
-// VIDEO_CONVERTER_OPT_ASYNC_TASKS whether gst_video_converter_frame() will
-// return immediately without waiting for the conversion to complete. A
-// subsequent gst_video_converter_frame_finish() must be performed to ensure
+// VIDEO_CONVERTER_OPT_ASYNC_TASKS whether gst_video_converter_frame()
+// will return immediately without waiting for the conversion to complete.
+// A subsequent gst_video_converter_frame_finish() must be performed to ensure
 // completion of the conversion before subsequent use. Default FALSE.
 const VIDEO_CONVERTER_OPT_ASYNC_TASKS = "GstVideoConverter.async-tasks"

@@ -51,7 +51,7 @@ func (p *ParentBufferMeta) Buffer() *Buffer {
 //
 // The function returns the following values:
 //
-//    - metaInfo: MetaInfo.
+//   - metaInfo: MetaInfo.
 //
 func ParentBufferMetaGetInfo() *MetaInfo {
 	var _cret *C.GstMetaInfo // in

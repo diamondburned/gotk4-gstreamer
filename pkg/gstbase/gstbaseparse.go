@@ -93,8 +93,8 @@ const (
 	// subsequent calls with same data).
 	BaseParseFrameFlagNewFrame BaseParseFrameFlags = 0b1
 	// BaseParseFrameFlagNoFrame: set to indicate this buffer should not be
-	// counted as frame, e.g. if this frame is dependent on a previous one. As
-	// it is not counted as a frame, bitrate increases but frame to time
+	// counted as frame, e.g. if this frame is dependent on a previous one.
+	// As it is not counted as a frame, bitrate increases but frame to time
 	// conversions are maintained.
 	BaseParseFrameFlagNoFrame BaseParseFrameFlags = 0b10
 	// BaseParseFrameFlagClip: pre_push_frame can set this to indicate that
@@ -155,10 +155,10 @@ func (b BaseParseFrameFlags) Has(other BaseParseFrameFlags) bool {
 type BaseParseOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - srcFormat
-	//    - srcValue
-	//    - destFormat
-	//    - destValue
+	//   - srcFormat
+	//   - srcValue
+	//   - destFormat
+	//   - destValue
 	//
 	// The function returns the following values:
 	//
@@ -174,8 +174,8 @@ type BaseParseOverrides struct {
 	//
 	SinkCaps func(filter *gst.Caps) *gst.Caps
 	// HandleFrame parses the input data into valid frames as defined by
-	// subclass which should be passed to gst_base_parse_finish_frame(). The
-	// frame's input buffer is guaranteed writable, whereas the input frame
+	// subclass which should be passed to gst_base_parse_finish_frame().
+	// The frame's input buffer is guaranteed writable, whereas the input frame
 	// ownership is held by caller (so subclass should make a copy if it needs
 	// to hang on). Input buffer (data) is provided by baseclass with as much
 	// metadata set as possible by baseclass according to upstream information
@@ -186,8 +186,8 @@ type BaseParseOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - skipsize
-	//    - flowReturn
+	//   - skipsize
+	//   - flowReturn
 	//
 	HandleFrame func(frame *BaseParseFrame) (int, gst.FlowReturn)
 	// The function takes the following parameters:
@@ -250,13 +250,13 @@ func defaultBaseParseOverrides(v *BaseParse) BaseParseOverrides {
 //
 // It provides for:
 //
-//    * provides one sink pad and one source pad
-//    * handles state changes
-//    * can operate in pull mode or push mode
-//    * handles seeking in both modes
-//    * handles events (SEGMENT/EOS/FLUSH)
-//    * handles queries (POSITION/DURATION/SEEKING/FORMAT/CONVERT)
-//    * handles flushing
+//   - provides one sink pad and one source pad
+//   - handles state changes
+//   - can operate in pull mode or push mode
+//   - handles seeking in both modes
+//   - handles events (SEGMENT/EOS/FLUSH)
+//   - handles queries (POSITION/DURATION/SEEKING/FORMAT/CONVERT)
+//   - handles flushing
 //
 // The purpose of this base class is to provide the basic functionality of a
 // parser and share a lot of rather complex code.
@@ -265,75 +265,69 @@ func defaultBaseParseOverrides(v *BaseParse) BaseParseOverrides {
 //
 // Set-up phase
 //
-//    * BaseParse calls BaseParseClass::start to inform subclass
-//      that data processing is about to start now.
+//   - BaseParse calls BaseParseClass::start to inform subclass that data
+//     processing is about to start now.
 //
-//    * BaseParse class calls BaseParseClass::set_sink_caps to
-//      inform the subclass about incoming sinkpad caps. Subclass could
-//      already set the srcpad caps accordingly, but this might be delayed
-//      until calling gst_base_parse_finish_frame() with a non-queued frame.
+//   - BaseParse class calls BaseParseClass::set_sink_caps to inform the
+//     subclass about incoming sinkpad caps. Subclass could already set the
+//     srcpad caps accordingly, but this might be delayed until calling
+//     gst_base_parse_finish_frame() with a non-queued frame.
 //
-//    * At least at this point subclass needs to tell the BaseParse class
-//      how big data chunks it wants to receive (minimum frame size ). It can
-//      do this with gst_base_parse_set_min_frame_size().
+//   - At least at this point subclass needs to tell the BaseParse class how
+//     big data chunks it wants to receive (minimum frame size ). It can do this
+//     with gst_base_parse_set_min_frame_size().
 //
-//    * BaseParse class sets up appropriate data passing mode (pull/push)
-//      and starts to process the data.
+//   - BaseParse class sets up appropriate data passing mode (pull/push) and
+//     starts to process the data.
 //
 // Parsing phase
 //
-//    * BaseParse gathers at least min_frame_size bytes of data either
-//      by pulling it from upstream or collecting buffers in an internal
-//      Adapter.
+//   - BaseParse gathers at least min_frame_size bytes of data either by pulling
+//     it from upstream or collecting buffers in an internal Adapter.
 //
-//    * A buffer of (at least) min_frame_size bytes is passed to subclass
-//      with BaseParseClass::handle_frame. Subclass checks the contents
-//      and can optionally return T_FLOW_OK along with an amount of data
-//      to be skipped to find a valid frame (which will result in a
-//      subsequent DISCONT).  If, otherwise, the buffer does not hold a
-//      complete frame, BaseParseClass::handle_frame can merely return
-//      and will be called again when additional data is available.  In push
-//      mode this amounts to an additional input buffer (thus minimal
-//      additional latency), in pull mode this amounts to some arbitrary
-//      reasonable buffer size increase.
+//   - A buffer of (at least) min_frame_size bytes is passed to subclass
+//     with BaseParseClass::handle_frame. Subclass checks the contents and
+//     can optionally return T_FLOW_OK along with an amount of data to be
+//     skipped to find a valid frame (which will result in a subsequent
+//     DISCONT). If, otherwise, the buffer does not hold a complete frame,
+//     BaseParseClass::handle_frame can merely return and will be called again
+//     when additional data is available. In push mode this amounts to an
+//     additional input buffer (thus minimal additional latency), in pull mode
+//     this amounts to some arbitrary reasonable buffer size increase.
 //
-//      Of course, gst_base_parse_set_min_frame_size() could also be used if
-//      a very specific known amount of additional data is required.  If,
-//      however, the buffer holds a complete valid frame, it can pass the
-//      size of this frame to gst_base_parse_finish_frame().
+//     Of course, gst_base_parse_set_min_frame_size() could also be used if a
+//     very specific known amount of additional data is required. If, however,
+//     the buffer holds a complete valid frame, it can pass the size of this
+//     frame to gst_base_parse_finish_frame().
 //
-//      If acting as a converter, it can also merely indicate consumed input
-//      data while simultaneously providing custom output data.  Note that
-//      baseclass performs some processing (such as tracking overall consumed
-//      data rate versus duration) for each finished frame, but other state
-//      is only updated upon each call to BaseParseClass::handle_frame
-//      (such as tracking upstream input timestamp).
+//     If acting as a converter, it can also merely indicate consumed input data
+//     while simultaneously providing custom output data. Note that baseclass
+//     performs some processing (such as tracking overall consumed data rate
+//     versus duration) for each finished frame, but other state is only updated
+//     upon each call to BaseParseClass::handle_frame (such as tracking upstream
+//     input timestamp).
 //
-//      Subclass is also responsible for setting the buffer metadata
-//      (e.g. buffer timestamp and duration, or keyframe if applicable).
-//      (although the latter can also be done by BaseParse if it is
-//      appropriately configured, see below).  Frame is provided with
-//      timestamp derived from upstream (as much as generally possible),
-//      duration obtained from configuration (see below), and offset
-//      if meaningful (in pull mode).
+//     Subclass is also responsible for setting the buffer metadata (e.g.
+//     buffer timestamp and duration, or keyframe if applicable). (although the
+//     latter can also be done by BaseParse if it is appropriately configured,
+//     see below). Frame is provided with timestamp derived from upstream (as
+//     much as generally possible), duration obtained from configuration (see
+//     below), and offset if meaningful (in pull mode).
 //
-//      Note that BaseParseClass::handle_frame might receive any small
-//      amount of input data when leftover data is being drained (e.g. at
-//      EOS).
+//     Note that BaseParseClass::handle_frame might receive any small amount of
+//     input data when leftover data is being drained (e.g. at EOS).
 //
-//    * As part of finish frame processing, just prior to actually pushing
-//      the buffer in question, it is passed to
-//      BaseParseClass::pre_push_frame which gives subclass yet one last
-//      chance to examine buffer metadata, or to send some custom (tag)
-//      events, or to perform custom (segment) filtering.
+//   - As part of finish frame processing, just prior to actually pushing the
+//     buffer in question, it is passed to BaseParseClass::pre_push_frame which
+//     gives subclass yet one last chance to examine buffer metadata, or to send
+//     some custom (tag) events, or to perform custom (segment) filtering.
 //
-//    * During the parsing process BaseParseClass will handle both srcpad
-//      and sinkpad events. They will be passed to subclass if
-//      BaseParseClass::sink_event or BaseParseClass::src_event
-//      implementations have been provided.
+//   - During the parsing process BaseParseClass will handle both
+//     srcpad and sinkpad events. They will be passed to subclass if
+//     BaseParseClass::sink_event or BaseParseClass::src_event implementations
+//     have been provided.
 //
-//
-// Shutdown phase
+// # Shutdown phase
 //
 // * BaseParse class calls BaseParseClass::stop to inform the subclass that data
 // parsing will be stopped.
@@ -357,24 +351,24 @@ func defaultBaseParseOverrides(v *BaseParse) BaseParseOverrides {
 // Things that subclass need to take care of:
 //
 // * Provide pad templates * Fixate the source pad caps when appropriate *
-// Inform base class how big data chunks should be retrieved. This is done with
-// gst_base_parse_set_min_frame_size() function. * Examine data chunks passed to
-// subclass with BaseParseClass::handle_frame and pass proper frame(s) to
-// gst_base_parse_finish_frame(), and setting src pad caps and timestamps on
-// frame. * Provide conversion functions * Update the duration information with
-// gst_base_parse_set_duration() * Optionally passthrough using
+// Inform base class how big data chunks should be retrieved. This is done
+// with gst_base_parse_set_min_frame_size() function. * Examine data chunks
+// passed to subclass with BaseParseClass::handle_frame and pass proper
+// frame(s) to gst_base_parse_finish_frame(), and setting src pad caps and
+// timestamps on frame. * Provide conversion functions * Update the duration
+// information with gst_base_parse_set_duration() * Optionally passthrough using
 // gst_base_parse_set_passthrough() * Configure various baseparse parameters
 // using gst_base_parse_set_average_bitrate(), gst_base_parse_set_syncable() and
 // gst_base_parse_set_frame_rate().
 //
 // * In particular, if subclass is unable to determine a duration, but parsing
 // (or specs) yields a frames per seconds rate, then this can be provided to
-// BaseParse to enable it to cater for buffer time metadata (which will be taken
-// from upstream as much as possible). Internally keeping track of frame
-// durations and respective sizes that have been pushed provides BaseParse with
-// an estimated bitrate. A default BaseParseClass::convert (used if not
-// overridden) will then use these rates to perform obvious conversions. These
-// rates are also used to update (estimated) duration at regular frame
+// BaseParse to enable it to cater for buffer time metadata (which will be
+// taken from upstream as much as possible). Internally keeping track of frame
+// durations and respective sizes that have been pushed provides BaseParse
+// with an estimated bitrate. A default BaseParseClass::convert (used if not
+// overridden) will then use these rates to perform obvious conversions.
+// These rates are also used to update (estimated) duration at regular frame
 // intervals.
 type BaseParse struct {
 	_ [0]func() // equal guard
@@ -488,20 +482,20 @@ func BaseBaseParse(obj BaseParser) *BaseParse {
 }
 
 // AddIndexEntry adds an entry to the index associating offset to ts. It is
-// recommended to only add keyframe entries. force allows to bypass checks, such
-// as whether the stream is (upstream) seekable, another entry is already
+// recommended to only add keyframe entries. force allows to bypass checks,
+// such as whether the stream is (upstream) seekable, another entry is already
 // "close" to the new entry, etc.
 //
 // The function takes the following parameters:
 //
-//    - offset of entry.
-//    - ts: timestamp associated with offset.
-//    - key: whether entry refers to keyframe.
-//    - force: add entry disregarding sanity checks.
+//   - offset of entry.
+//   - ts: timestamp associated with offset.
+//   - key: whether entry refers to keyframe.
+//   - force: add entry disregarding sanity checks.
 //
 // The function returns the following values:
 //
-//    - ok indicating whether entry was added.
+//   - ok indicating whether entry was added.
 //
 func (parse *BaseParse) AddIndexEntry(offset uint64, ts gst.ClockTime, key, force bool) bool {
 	var _arg0 *C.GstBaseParse // out
@@ -513,9 +507,7 @@ func (parse *BaseParse) AddIndexEntry(offset uint64, ts gst.ClockTime, key, forc
 
 	_arg0 = (*C.GstBaseParse)(unsafe.Pointer(coreglib.InternObject(parse).Native()))
 	_arg1 = C.guint64(offset)
-	_arg2 = C.guint64(ts)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(ts)
 	if key {
 		_arg3 = C.TRUE
 	}
@@ -543,14 +535,14 @@ func (parse *BaseParse) AddIndexEntry(offset uint64, ts gst.ClockTime, key, forc
 //
 // The function takes the following parameters:
 //
-//    - srcFormat describing the source format.
-//    - srcValue: source value to be converted.
-//    - destFormat defining the converted format.
+//   - srcFormat describing the source format.
+//   - srcValue: source value to be converted.
+//   - destFormat defining the converted format.
 //
 // The function returns the following values:
 //
-//    - destValue: pointer where the conversion result will be put.
-//    - ok: TRUE if conversion was successful.
+//   - destValue: pointer where the conversion result will be put.
+//   - ok: TRUE if conversion was successful.
 //
 func (parse *BaseParse) ConvertDefault(srcFormat gst.Format, srcValue int64, destFormat gst.Format) (int64, bool) {
 	var _arg0 *C.GstBaseParse // out
@@ -598,9 +590,9 @@ func (parse *BaseParse) Drain() {
 // must be set when this is called.
 //
 // If frame's out_buffer is set, that will be used as subsequent frame data.
-// Otherwise, size samples will be taken from the input and used for output, and
-// the output's metadata (timestamps etc) will be taken as (optionally) set by
-// the subclass on frame's (input) buffer (which is otherwise ignored for any
+// Otherwise, size samples will be taken from the input and used for output,
+// and the output's metadata (timestamps etc) will be taken as (optionally) set
+// by the subclass on frame's (input) buffer (which is otherwise ignored for any
 // but the above purpose/information).
 //
 // Note that the latter buffer is invalidated by this call, whereas the caller
@@ -608,12 +600,12 @@ func (parse *BaseParse) Drain() {
 //
 // The function takes the following parameters:
 //
-//    - frame: BaseParseFrame.
-//    - size: consumed input data represented by frame.
+//   - frame: BaseParseFrame.
+//   - size: consumed input data represented by frame.
 //
 // The function returns the following values:
 //
-//    - flowReturn that should be escalated to caller (of caller).
+//   - flowReturn that should be escalated to caller (of caller).
 //
 func (parse *BaseParse) FinishFrame(frame *BaseParseFrame, size int) gst.FlowReturn {
 	var _arg0 *C.GstBaseParse      // out
@@ -637,6 +629,35 @@ func (parse *BaseParse) FinishFrame(frame *BaseParseFrame, size int) gst.FlowRet
 	return _flowReturn
 }
 
+// MergeTags sets the parser subclass's tags and how they should be merged with
+// any upstream stream tags. This will override any tags previously-set with
+// gst_base_parse_merge_tags().
+//
+// Note that this is provided for convenience, and the subclass is not required
+// to use this and can still do tag handling on its own.
+//
+// The function takes the following parameters:
+//
+//   - tags (optional) to merge, or NULL to unset previously-set tags.
+//   - mode to use, usually T_TAG_MERGE_REPLACE.
+//
+func (parse *BaseParse) MergeTags(tags *gst.TagList, mode gst.TagMergeMode) {
+	var _arg0 *C.GstBaseParse   // out
+	var _arg1 *C.GstTagList     // out
+	var _arg2 C.GstTagMergeMode // out
+
+	_arg0 = (*C.GstBaseParse)(unsafe.Pointer(coreglib.InternObject(parse).Native()))
+	if tags != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tags)))
+	}
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_base_parse_merge_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(parse)
+	runtime.KeepAlive(tags)
+	runtime.KeepAlive(mode)
+}
+
 // PushFrame pushes the frame's buffer downstream, sends any pending events and
 // does some timestamp and segment handling. Takes ownership of frame's buffer,
 // though caller retains ownership of frame.
@@ -645,11 +666,11 @@ func (parse *BaseParse) FinishFrame(frame *BaseParseFrame, size int) gst.FlowRet
 //
 // The function takes the following parameters:
 //
-//    - frame: BaseParseFrame.
+//   - frame: BaseParseFrame.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (parse *BaseParse) PushFrame(frame *BaseParseFrame) gst.FlowReturn {
 	var _arg0 *C.GstBaseParse      // out
@@ -673,14 +694,14 @@ func (parse *BaseParse) PushFrame(frame *BaseParseFrame) gst.FlowReturn {
 // SetAverageBitrate: optionally sets the average bitrate detected in media (if
 // non-zero), e.g. based on metadata, as it will be posted to the application.
 //
-// By default, announced average bitrate is estimated. The average bitrate is
-// used to estimate the total duration of the stream and to estimate a seek
-// position, if there's no index and the format is syncable (see
+// By default, announced average bitrate is estimated. The average bitrate
+// is used to estimate the total duration of the stream and to estimate
+// a seek position, if there's no index and the format is syncable (see
 // gst_base_parse_set_syncable()).
 //
 // The function takes the following parameters:
 //
-//    - bitrate: average bitrate in bits/second.
+//   - bitrate: average bitrate in bits/second.
 //
 func (parse *BaseParse) SetAverageBitrate(bitrate uint) {
 	var _arg0 *C.GstBaseParse // out
@@ -702,10 +723,10 @@ func (parse *BaseParse) SetAverageBitrate(bitrate uint) {
 //
 // The function takes the following parameters:
 //
-//    - fmt: Format.
-//    - duration value.
-//    - interval: how often to update the duration estimate based on bitrate, or
-//      0.
+//   - fmt: Format.
+//   - duration value.
+//   - interval: how often to update the duration estimate based on bitrate,
+//     or 0.
 //
 func (parse *BaseParse) SetDuration(fmt gst.Format, duration int64, interval int) {
 	var _arg0 *C.GstBaseParse // out
@@ -725,18 +746,18 @@ func (parse *BaseParse) SetDuration(fmt gst.Format, duration int64, interval int
 	runtime.KeepAlive(interval)
 }
 
-// SetFrameRate: if frames per second is configured, parser can take care of
-// buffer duration and timestamping. When performing segment clipping, or
-// seeking to a specific location, a corresponding decoder might need an initial
-// lead_in and a following lead_out number of frames to ensure the desired
-// segment is entirely filled upon decoding.
+// SetFrameRate: if frames per second is configured, parser can take care
+// of buffer duration and timestamping. When performing segment clipping,
+// or seeking to a specific location, a corresponding decoder might need an
+// initial lead_in and a following lead_out number of frames to ensure the
+// desired segment is entirely filled upon decoding.
 //
 // The function takes the following parameters:
 //
-//    - fpsNum frames per second (numerator).
-//    - fpsDen frames per second (denominator).
-//    - leadIn frames needed before a segment for subsequent decode.
-//    - leadOut frames needed after a segment.
+//   - fpsNum frames per second (numerator).
+//   - fpsDen frames per second (denominator).
+//   - leadIn frames needed before a segment for subsequent decode.
+//   - leadOut frames needed after a segment.
 //
 func (parse *BaseParse) SetFrameRate(fpsNum, fpsDen, leadIn, leadOut uint) {
 	var _arg0 *C.GstBaseParse // out
@@ -765,7 +786,7 @@ func (parse *BaseParse) SetFrameRate(fpsNum, fpsDen, leadIn, leadOut uint) {
 //
 // The function takes the following parameters:
 //
-//    - hasTiming: whether frames carry timing information.
+//   - hasTiming: whether frames carry timing information.
 //
 func (parse *BaseParse) SetHasTimingInfo(hasTiming bool) {
 	var _arg0 *C.GstBaseParse // out
@@ -788,7 +809,7 @@ func (parse *BaseParse) SetHasTimingInfo(hasTiming bool) {
 //
 // The function takes the following parameters:
 //
-//    - inferTs: TRUE if parser should infer DTS/PTS from each other.
+//   - inferTs: TRUE if parser should infer DTS/PTS from each other.
 //
 func (parse *BaseParse) SetInferTs(inferTs bool) {
 	var _arg0 *C.GstBaseParse // out
@@ -809,10 +830,14 @@ func (parse *BaseParse) SetInferTs(inferTs bool) {
 // on the particular parsing of the format, it typically corresponds to 1 frame
 // duration.
 //
+// If the provided values changed from previously provided ones, this will also
+// post a LATENCY message on the bus so the pipeline can reconfigure its global
+// latency.
+//
 // The function takes the following parameters:
 //
-//    - minLatency: minimum parse latency.
-//    - maxLatency: maximum parse latency.
+//   - minLatency: minimum parse latency.
+//   - maxLatency: maximum parse latency.
 //
 func (parse *BaseParse) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	var _arg0 *C.GstBaseParse // out
@@ -820,12 +845,8 @@ func (parse *BaseParse) SetLatency(minLatency, maxLatency gst.ClockTime) {
 	var _arg2 C.GstClockTime  // out
 
 	_arg0 = (*C.GstBaseParse)(unsafe.Pointer(coreglib.InternObject(parse).Native()))
-	_arg1 = C.guint64(minLatency)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(maxLatency)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(minLatency)
+	_arg2 = C.GstClockTime(maxLatency)
 
 	C.gst_base_parse_set_latency(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(parse)
@@ -838,8 +859,8 @@ func (parse *BaseParse) SetLatency(minLatency, maxLatency gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - minSize: minimum size in bytes of the data that this base class should
-//      give to subclass.
+//   - minSize: minimum size in bytes of the data that this base class should
+//     give to subclass.
 //
 func (parse *BaseParse) SetMinFrameSize(minSize uint) {
 	var _arg0 *C.GstBaseParse // out
@@ -856,14 +877,14 @@ func (parse *BaseParse) SetMinFrameSize(minSize uint) {
 // SetPassthrough: set if the nature of the format or configuration does not
 // allow (much) parsing, and the parser should operate in passthrough mode
 // (which only applies when operating in push mode). That is, incoming buffers
-// are pushed through unmodified, i.e. no BaseParseClass::handle_frame will be
-// invoked, but BaseParseClass::pre_push_frame will still be invoked, so
-// subclass can perform as much or as little is appropriate for passthrough
+// are pushed through unmodified, i.e. no BaseParseClass::handle_frame will
+// be invoked, but BaseParseClass::pre_push_frame will still be invoked,
+// so subclass can perform as much or as little is appropriate for passthrough
 // semantics in BaseParseClass::pre_push_frame.
 //
 // The function takes the following parameters:
 //
-//    - passthrough: TRUE if parser should run in passthrough mode.
+//   - passthrough: TRUE if parser should run in passthrough mode.
 //
 func (parse *BaseParse) SetPassthrough(passthrough bool) {
 	var _arg0 *C.GstBaseParse // out
@@ -886,7 +907,7 @@ func (parse *BaseParse) SetPassthrough(passthrough bool) {
 //
 // The function takes the following parameters:
 //
-//    - ptsInterpolate: TRUE if parser should interpolate PTS timestamps.
+//   - ptsInterpolate: TRUE if parser should interpolate PTS timestamps.
 //
 func (parse *BaseParse) SetPtsInterpolation(ptsInterpolate bool) {
 	var _arg0 *C.GstBaseParse // out
@@ -908,7 +929,7 @@ func (parse *BaseParse) SetPtsInterpolation(ptsInterpolate bool) {
 //
 // The function takes the following parameters:
 //
-//    - syncable: set if frame starts can be identified.
+//   - syncable: set if frame starts can be identified.
 //
 func (parse *BaseParse) SetSyncable(syncable bool) {
 	var _arg0 *C.GstBaseParse // out
@@ -935,7 +956,7 @@ func (parse *BaseParse) SetSyncable(syncable bool) {
 //
 // The function takes the following parameters:
 //
-//    - offset into current buffer.
+//   - offset into current buffer.
 //
 func (parse *BaseParse) SetTsAtOffset(offset uint) {
 	var _arg0 *C.GstBaseParse // out
@@ -951,10 +972,10 @@ func (parse *BaseParse) SetTsAtOffset(offset uint) {
 
 // The function takes the following parameters:
 //
-//    - srcFormat
-//    - srcValue
-//    - destFormat
-//    - destValue
+//   - srcFormat
+//   - srcValue
+//   - destFormat
+//   - destValue
 //
 // The function returns the following values:
 //
@@ -1051,18 +1072,18 @@ func (parse *BaseParse) sinkCaps(filter *gst.Caps) *gst.Caps {
 
 // handleFrame parses the input data into valid frames as defined by subclass
 // which should be passed to gst_base_parse_finish_frame(). The frame's input
-// buffer is guaranteed writable, whereas the input frame ownership is held by
-// caller (so subclass should make a copy if it needs to hang on). Input buffer
-// (data) is provided by baseclass with as much metadata set as possible by
-// baseclass according to upstream information and/or subclass settings, though
-// subclass may still set buffer timestamp and duration if desired.
+// buffer is guaranteed writable, whereas the input frame ownership is held
+// by caller (so subclass should make a copy if it needs to hang on). Input
+// buffer (data) is provided by baseclass with as much metadata set as possible
+// by baseclass according to upstream information and/or subclass settings,
+// though subclass may still set buffer timestamp and duration if desired.
 //
 // The function takes the following parameters:
 //
 // The function returns the following values:
 //
-//    - skipsize
-//    - flowReturn
+//   - skipsize
+//   - flowReturn
 //
 func (parse *BaseParse) handleFrame(frame *BaseParseFrame) (int, gst.FlowReturn) {
 	gclass := (*C.GstBaseParseClass)(coreglib.PeekParentClass(parse))
@@ -1323,8 +1344,8 @@ func (b *BaseParseClass) ParentClass() *gst.ElementClass {
 }
 
 // BaseParseFrame: frame (context) data passed to each frame parsing virtual
-// methods. In addition to providing the data to be checked for a valid frame or
-// an already identified frame, it conveys additional metadata or control
+// methods. In addition to providing the data to be checked for a valid frame
+// or an already identified frame, it conveys additional metadata or control
 // information from and to the subclass w.r.t. the particular frame in question
 // (rather than global parameters). Some of these may apply to each parsing
 // stage, others only to some a particular one. These parameters are effectively
@@ -1449,7 +1470,7 @@ func (b *BaseParseFrame) SetOverhead(overhead int) {
 //
 // The function returns the following values:
 //
-//    - baseParseFrame: copy of frame.
+//   - baseParseFrame: copy of frame.
 //
 func (frame *BaseParseFrame) Copy() *BaseParseFrame {
 	var _arg0 *C.GstBaseParseFrame // out
@@ -1473,8 +1494,8 @@ func (frame *BaseParseFrame) Copy() *BaseParseFrame {
 	return _baseParseFrame
 }
 
-// Init sets a BaseParseFrame to initial state. Currently this means all public
-// fields are zero-ed and a private flag is set to make sure
+// Init sets a BaseParseFrame to initial state. Currently this means
+// all public fields are zero-ed and a private flag is set to make sure
 // gst_base_parse_frame_free() only frees the contents but not the actual frame.
 // Use this function to initialise a BaseParseFrame allocated on the stack.
 func (frame *BaseParseFrame) Init() {

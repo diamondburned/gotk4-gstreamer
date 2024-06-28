@@ -42,8 +42,8 @@ type VideoSinkOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - caps: Caps.
-	//    - info corresponding to caps.
+	//   - caps: Caps.
+	//   - info corresponding to caps.
 	//
 	// The function returns the following values:
 	//
@@ -124,8 +124,8 @@ func marshalVideoSink(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
-//    - info corresponding to caps.
+//   - caps: Caps.
+//   - info corresponding to caps.
 //
 // The function returns the following values:
 //
@@ -186,13 +186,13 @@ func (videoSink *VideoSink) showFrame(buf *gst.Buffer) gst.FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - src describing the source area.
-//    - dst describing the destination area.
-//    - scaling indicating if scaling should be applied or not.
+//   - src describing the source area.
+//   - dst describing the destination area.
+//   - scaling indicating if scaling should be applied or not.
 //
 // The function returns the following values:
 //
-//    - result: pointer to a VideoRectangle which will receive the result area.
+//   - result: pointer to a VideoRectangle which will receive the result area.
 //
 func VideoSinkCenterRect(src, dst *VideoRectangle, scaling bool) *VideoRectangle {
 	var _arg1 C.GstVideoRectangle // out

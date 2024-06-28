@@ -88,7 +88,7 @@ func (p ParseError) String() string {
 //
 // The function returns the following values:
 //
-//    - quark of the parse errors.
+//   - quark of the parse errors.
 //
 func ParseErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -97,9 +97,7 @@ func ParseErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -114,8 +112,8 @@ const (
 	// behaviour is to return partially constructed bins or elements in some
 	// cases).
 	ParseFlagFatalErrors ParseFlags = 0b1
-	// ParseFlagNoSingleElementBins: if a bin only has a single element, just
-	// return the element.
+	// ParseFlagNoSingleElementBins: if a bin only has a single element,
+	// just return the element.
 	ParseFlagNoSingleElementBins ParseFlags = 0b10
 	// ParseFlagPlaceInBin: if more than one toplevel element is described by
 	// the pipeline description string, put them in a Bin instead of a Pipeline.
@@ -174,13 +172,13 @@ func (p ParseFlags) Has(other ParseFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - pipelineDescription: command line describing the pipeline.
+//   - pipelineDescription: command line describing the pipeline.
 //
 // The function returns the following values:
 //
-//    - element: new element on success, NULL on failure. If more than one
-//      toplevel element is specified by the pipeline_description, all elements
-//      are put into a Pipeline, which than is returned.
+//   - element: new element on success, NULL on failure. If more than one
+//     toplevel element is specified by the pipeline_description, all elements
+//     are put into a Pipeline, which than is returned.
 //
 func ParseLaunch(pipelineDescription string) (Elementer, error) {
 	var _arg1 *C.gchar      // out
@@ -230,18 +228,18 @@ func ParseLaunch(pipelineDescription string) (Elementer, error) {
 //
 // The function takes the following parameters:
 //
-//    - pipelineDescription: command line describing the pipeline.
-//    - context (optional): parse context allocated with gst_parse_context_new(),
-//      or NULL.
-//    - flags: parsing options, or T_PARSE_FLAG_NONE.
+//   - pipelineDescription: command line describing the pipeline.
+//   - context (optional): parse context allocated with gst_parse_context_new(),
+//     or NULL.
+//   - flags: parsing options, or T_PARSE_FLAG_NONE.
 //
 // The function returns the following values:
 //
-//    - element: new element on success, NULL on failure. If more than one
-//      toplevel element is specified by the pipeline_description, all elements
-//      are put into a Pipeline, which then is returned (unless the
-//      GST_PARSE_FLAG_PLACE_IN_BIN flag is set, in which case they are put in a
-//      Bin instead).
+//   - element: new element on success, NULL on failure. If more than
+//     one toplevel element is specified by the pipeline_description,
+//     all elements are put into a Pipeline, which then is returned (unless the
+//     GST_PARSE_FLAG_PLACE_IN_BIN flag is set, in which case they are put in a
+//     Bin instead).
 //
 func ParseLaunchFull(pipelineDescription string, context *ParseContext, flags ParseFlags) (Elementer, error) {
 	var _arg1 *C.gchar           // out
@@ -295,11 +293,11 @@ func ParseLaunchFull(pipelineDescription string, context *ParseContext, flags Pa
 //
 // The function takes the following parameters:
 //
-//    - argv: null-terminated array of arguments.
+//   - argv: null-terminated array of arguments.
 //
 // The function returns the following values:
 //
-//    - element: new element on success and NULL on failure.
+//   - element: new element on success and NULL on failure.
 //
 func ParseLaunchv(argv []string) (Elementer, error) {
 	var _arg1 **C.gchar     // out
@@ -350,23 +348,23 @@ func ParseLaunchv(argv []string) (Elementer, error) {
 	return _element, _goerr
 }
 
-// ParseLaunchvFull: create a new element based on command line syntax. error
-// will contain an error message if an erroneous pipeline is specified. An error
-// does not mean that the pipeline could not be constructed.
+// ParseLaunchvFull: create a new element based on command line syntax.
+// error will contain an error message if an erroneous pipeline is specified.
+// An error does not mean that the pipeline could not be constructed.
 //
 // The function takes the following parameters:
 //
-//    - argv: null-terminated array of arguments.
-//    - context (optional): parse context allocated with gst_parse_context_new(),
-//      or NULL.
-//    - flags: parsing options, or T_PARSE_FLAG_NONE.
+//   - argv: null-terminated array of arguments.
+//   - context (optional): parse context allocated with gst_parse_context_new(),
+//     or NULL.
+//   - flags: parsing options, or T_PARSE_FLAG_NONE.
 //
 // The function returns the following values:
 //
-//    - element: new element on success; on failure, either NULL or a
-//      partially-constructed bin or element will be returned and error will be
-//      set (unless you passed T_PARSE_FLAG_FATAL_ERRORS in flags, then NULL will
-//      always be returned on failure).
+//   - element: new element on success; on failure, either NULL or a
+//     partially-constructed bin or element will be returned and error will be
+//     set (unless you passed T_PARSE_FLAG_FATAL_ERRORS in flags, then NULL will
+//     always be returned on failure).
 //
 func ParseLaunchvFull(argv []string, context *ParseContext, flags ParseFlags) (Elementer, error) {
 	var _arg1 **C.gchar          // out
@@ -467,7 +465,7 @@ func NewParseContext() *ParseContext {
 //
 // The function returns the following values:
 //
-//    - parseContext (optional): copied ParseContext.
+//   - parseContext (optional): copied ParseContext.
 //
 func (context *ParseContext) Copy() *ParseContext {
 	var _arg0 *C.GstParseContext // out
@@ -499,8 +497,8 @@ func (context *ParseContext) Copy() *ParseContext {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): a NULL-terminated array of element factory name strings
-//      of missing elements. Free with g_strfreev() when no longer needed.
+//   - utf8s (optional): a NULL-terminated array of element factory name strings
+//     of missing elements. Free with g_strfreev() when no longer needed.
 //
 func (context *ParseContext) MissingElements() []string {
 	var _arg0 *C.GstParseContext // out

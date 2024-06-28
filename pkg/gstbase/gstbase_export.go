@@ -191,9 +191,7 @@ func _gotk4_gstbase1_AggregatorClass_get_next_time(arg0 *C.GstAggregator) (cret 
 
 	var _ gst.ClockTime
 
-	cret = C.guint64(clockTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	cret = C.GstClockTime(clockTime)
 
 	return cret
 }
@@ -975,7 +973,9 @@ func _gotk4_gstbase1_BaseSinkClass_get_caps(arg0 *C.GstBaseSink, arg1 *C.GstCaps
 
 	var _filter *gst.Caps // out
 
-	_filter = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	if arg1 != nil {
+		_filter = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	}
 
 	caps := overrides.Caps(_filter)
 
@@ -995,19 +995,17 @@ func _gotk4_gstbase1_BaseSinkClass_get_times(arg0 *C.GstBaseSink, arg1 *C.GstBuf
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected BaseSinkOverrides.Times, got none")
 	}
 
-	var _buffer *gst.Buffer   // out
-	var _start *gst.ClockTime // out
-	var _end *gst.ClockTime   // out
+	var _buffer *gst.Buffer // out
 
 	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_start = (*uint64)(unsafe.Pointer(arg2))
-	type _ = *gst.ClockTime
-	type _ = *uint64
-	_end = (*uint64)(unsafe.Pointer(arg3))
-	type _ = *gst.ClockTime
-	type _ = *uint64
 
-	overrides.Times(_buffer, _start, _end)
+	start, end := overrides.Times(_buffer)
+
+	var _ gst.ClockTime
+	var _ gst.ClockTime
+
+	*arg2 = C.GstClockTime(start)
+	*arg3 = C.GstClockTime(end)
 }
 
 //export _gotk4_gstbase1_BaseSinkClass_prepare
@@ -1300,8 +1298,10 @@ func _gotk4_gstbase1_BaseSrcClass_alloc(arg0 *C.GstBaseSrc, arg1 C.guint64, arg2
 	var _ *gst.Buffer
 	var _ gst.FlowReturn
 
-	*arg3 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buf)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buf)), nil)
+	if buf != nil {
+		*arg3 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buf)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buf)), nil)
+	}
 	cret = C.GstFlowReturn(flowReturn)
 
 	return cret
@@ -1412,6 +1412,12 @@ func _gotk4_gstbase1_BaseSrcClass_fixate(arg0 *C.GstBaseSrc, arg1 *C.GstCaps) (c
 	var _caps *gst.Caps // out
 
 	_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_caps)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	ret := overrides.Fixate(_caps)
 
@@ -1485,12 +1491,8 @@ func _gotk4_gstbase1_BaseSrcClass_get_times(arg0 *C.GstBaseSrc, arg1 *C.GstBuffe
 	var _ gst.ClockTime
 	var _ gst.ClockTime
 
-	*arg2 = C.guint64(start)
-	type _ = gst.ClockTime
-	type _ = uint64
-	*arg3 = C.guint64(end)
-	type _ = gst.ClockTime
-	type _ = uint64
+	*arg2 = C.GstClockTime(start)
+	*arg3 = C.GstClockTime(end)
 }
 
 //export _gotk4_gstbase1_BaseSrcClass_is_seekable
@@ -2253,8 +2255,10 @@ func _gotk4_gstbase1_PushSrcClass_alloc(arg0 *C.GstPushSrc, arg1 **C.GstBuffer) 
 	var _ *gst.Buffer
 	var _ gst.FlowReturn
 
-	*arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buf)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buf)), nil)
+	if buf != nil {
+		*arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buf)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buf)), nil)
+	}
 	cret = C.GstFlowReturn(flowReturn)
 
 	return cret

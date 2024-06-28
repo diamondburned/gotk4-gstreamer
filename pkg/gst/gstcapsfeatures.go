@@ -19,7 +19,7 @@ const CAPS_FEATURE_MEMORY_SYSTEM_MEMORY = "memory:SystemMemory"
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if obj is a CapsFeatures FALSE otherwise.
+//   - ok: TRUE if obj is a CapsFeatures FALSE otherwise.
 //
 func IsCapsFeatures(obj unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out

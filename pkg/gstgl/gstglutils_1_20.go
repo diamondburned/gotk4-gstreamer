@@ -15,11 +15,10 @@ import (
 import "C"
 
 // GLGetAffineTransformationMetaAsNdc retrieves the stored 4x4 affine
-// transformation matrix stored in meta in NDC coordinates. if meta is NULL, an
-// identity matrix is returned.
+// transformation matrix stored in meta in NDC coordinates. if meta is NULL,
+// an identity matrix is returned.
 //
-//
-// NDC is a left-handed coordinate system
+// # NDC is a left-handed coordinate system
 //
 // - x - [-1, 1] - +ve X moves right
 //
@@ -29,11 +28,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - meta (optional): VideoAffineTransformationMeta.
+//   - meta (optional): VideoAffineTransformationMeta.
 //
 // The function returns the following values:
 //
-//    - matrix: result of the 4x4 matrix.
+//   - matrix: result of the 4x4 matrix.
 //
 func GLGetAffineTransformationMetaAsNdc(meta *gstvideo.VideoAffineTransformationMeta) [16]float32 {
 	var _arg1 *C.GstVideoAffineTransformationMeta // out
@@ -58,12 +57,12 @@ func GLGetAffineTransformationMetaAsNdc(meta *gstvideo.VideoAffineTransformation
 //
 // The function takes the following parameters:
 //
-//    - a: 2-dimensional 4x4 array of #gfloat.
-//    - b: another 2-dimensional 4x4 array of #gfloat.
+//   - a: 2-dimensional 4x4 array of #gfloat.
+//   - b: another 2-dimensional 4x4 array of #gfloat.
 //
 // The function returns the following values:
 //
-//    - result of the multiplication.
+//   - result of the multiplication.
 //
 func GLMultiplyMatrix4(a, b [16]float32) [16]float32 {
 	var _arg1 *C.gfloat    // out
@@ -89,8 +88,8 @@ func GLMultiplyMatrix4(a, b [16]float32) [16]float32 {
 //
 // The function takes the following parameters:
 //
-//    - meta: VideoAffineTransformationMeta.
-//    - matrix: 4x4 matrix.
+//   - meta: VideoAffineTransformationMeta.
+//   - matrix: 4x4 matrix.
 //
 func GLSetAffineTransformationMetaFromNdc(meta *gstvideo.VideoAffineTransformationMeta, matrix [16]float32) {
 	var _arg1 *C.GstVideoAffineTransformationMeta // out

@@ -236,15 +236,15 @@ func (a AudioFormat) String() string {
 //
 // The function takes the following parameters:
 //
-//    - sign: signed or unsigned format.
-//    - endianness: g_LITTLE_ENDIAN or G_BIG_ENDIAN.
-//    - width: amount of bits used per sample.
-//    - depth: amount of used bits in width.
+//   - sign: signed or unsigned format.
+//   - endianness: g_LITTLE_ENDIAN or G_BIG_ENDIAN.
+//   - width: amount of bits used per sample.
+//   - depth: amount of used bits in width.
 //
 // The function returns the following values:
 //
-//    - audioFormat or GST_AUDIO_FORMAT_UNKNOWN when no audio format exists with
-//      the given parameters.
+//   - audioFormat or GST_AUDIO_FORMAT_UNKNOWN when no audio format exists with
+//     the given parameters.
 //
 func AudioFormatBuildInteger(sign bool, endianness, width, depth int) AudioFormat {
 	var _arg1 C.gboolean       // out
@@ -280,8 +280,8 @@ func AudioFormatBuildInteger(sign bool, endianness, width, depth int) AudioForma
 //
 // The function takes the following parameters:
 //
-//    - info: AudioFormatInfo.
-//    - dest: destination to fill.
+//   - info: AudioFormatInfo.
+//   - dest: destination to fill.
 //
 func AudioFormatFillSilence(info *AudioFormatInfo, dest []byte) {
 	var _arg1 *C.GstAudioFormatInfo // out
@@ -303,12 +303,12 @@ func AudioFormatFillSilence(info *AudioFormatInfo, dest []byte) {
 //
 // The function takes the following parameters:
 //
-//    - format string.
+//   - format string.
 //
 // The function returns the following values:
 //
-//    - audioFormat for format or GST_AUDIO_FORMAT_UNKNOWN when the string is not
-//      a known format.
+//   - audioFormat for format or GST_AUDIO_FORMAT_UNKNOWN when the string is not
+//     a known format.
 //
 func AudioFormatFromString(format string) AudioFormat {
 	var _arg1 *C.gchar         // out
@@ -331,11 +331,11 @@ func AudioFormatFromString(format string) AudioFormat {
 //
 // The function takes the following parameters:
 //
-//    - format: AudioFormat.
+//   - format: AudioFormat.
 //
 // The function returns the following values:
 //
-//    - audioFormatInfo for format.
+//   - audioFormatInfo for format.
 //
 func AudioFormatGetInfo(format AudioFormat) *AudioFormatInfo {
 	var _arg1 C.GstAudioFormat      // out
@@ -465,9 +465,9 @@ type AudioPackFlags C.guint
 const (
 	// AudioPackFlagNone: no flag.
 	AudioPackFlagNone AudioPackFlags = 0b0
-	// AudioPackFlagTruncateRange: when the source has a smaller depth than the
-	// target format, set the least significant bits of the target to 0. This is
-	// likely slightly faster but less accurate. When this flag is not
+	// AudioPackFlagTruncateRange: when the source has a smaller depth than
+	// the target format, set the least significant bits of the target to 0.
+	// This is likely slightly faster but less accurate. When this flag is not
 	// specified, the most significant bits of the source are duplicated in the
 	// least significant bits of the destination.
 	AudioPackFlagTruncateRange AudioPackFlags = 0b1
@@ -540,7 +540,7 @@ type audioFormatInfo struct {
 //
 // The function takes the following parameters:
 //
-//    - dest: destination to fill.
+//   - dest: destination to fill.
 //
 func (info *AudioFormatInfo) FillSilence(dest []byte) {
 	var _arg0 *C.GstAudioFormatInfo // out

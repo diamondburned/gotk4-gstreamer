@@ -22,15 +22,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - bytes: #GBytes.
-//    - bitPattern: bit-pattern. Anything but 0xBEDE is rejected.
-//    - id: ID of the header extension to be read (between 1 and 14).
-//    - nth: read the nth extension packet with the requested ID.
+//   - bytes: #GBytes.
+//   - bitPattern: bit-pattern. Anything but 0xBEDE is rejected.
+//   - id: ID of the header extension to be read (between 1 and 14).
+//   - nth: read the nth extension packet with the requested ID.
 //
 // The function returns the following values:
 //
-//    - data: location for data.
-//    - ok: TRUE if bytes had the requested header extension.
+//   - data: location for data.
+//   - ok: TRUE if bytes had the requested header extension.
 //
 func RTPBufferGetExtensionOnebyteHeaderFromBytes(bytes *glib.Bytes, bitPattern uint16, id byte, nth uint) ([]byte, bool) {
 	var _arg1 *C.GBytes  // out

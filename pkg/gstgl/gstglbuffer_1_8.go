@@ -16,11 +16,11 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - ok: whether the memory at mem is a GLBuffer.
+//   - ok: whether the memory at mem is a GLBuffer.
 //
 func IsGLBuffer(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -40,8 +40,8 @@ func IsGLBuffer(mem *gst.Memory) bool {
 	return _ok
 }
 
-// GLBufferInitOnce initializes the GL Buffer allocator. It is safe to call this
-// function multiple times. This must be called before any other GLBuffer
+// GLBufferInitOnce initializes the GL Buffer allocator. It is safe to call
+// this function multiple times. This must be called before any other GLBuffer
 // operation.
 func GLBufferInitOnce() {
 	C.gst_gl_buffer_init_once()

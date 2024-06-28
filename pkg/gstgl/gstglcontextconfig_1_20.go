@@ -17,12 +17,12 @@ const GL_CONFIG_STRUCTURE_NAME = "gst-gl-context-config"
 
 // The function takes the following parameters:
 //
-//    - caveat: GLConfigCaveat.
+//   - caveat: GLConfigCaveat.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string version of caveat or NULL if caveat does not
-//      exist.
+//   - utf8 (optional): string version of caveat or NULL if caveat does not
+//     exist.
 //
 func GLConfigCaveatToString(caveat GLConfigCaveat) string {
 	var _arg1 C.GstGLConfigCaveat // out
@@ -44,12 +44,12 @@ func GLConfigCaveatToString(caveat GLConfigCaveat) string {
 
 // The function takes the following parameters:
 //
-//    - surfaceType: GLConfigSurfaceType.
+//   - surfaceType: GLConfigSurfaceType.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string version of caveat or NULL if surface_type does
-//      not exist.
+//   - utf8 (optional): string version of caveat or NULL if surface_type does
+//     not exist.
 //
 func GLConfigSurfaceTypeToString(surfaceType GLConfigSurfaceType) string {
 	var _arg1 C.GstGLConfigSurfaceType // out

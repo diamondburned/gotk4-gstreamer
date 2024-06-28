@@ -111,8 +111,8 @@ type AudioVisualizerOverrides struct {
 	DecideAllocation func(query *gst.Query) bool
 	// The function takes the following parameters:
 	//
-	//    - audio
-	//    - video
+	//   - audio
+	//   - video
 	//
 	// The function returns the following values:
 	//
@@ -242,8 +242,8 @@ func (scope *AudioVisualizer) decideAllocation(query *gst.Query) bool {
 
 // The function takes the following parameters:
 //
-//    - audio
-//    - video
+//   - audio
+//   - video
 //
 // The function returns the following values:
 //

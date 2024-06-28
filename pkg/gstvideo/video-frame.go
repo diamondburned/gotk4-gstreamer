@@ -44,31 +44,32 @@ const (
 	// interlace-mode, this flags specifies if the frame is interlaced or
 	// progressive.
 	VideoBufferFlagInterlaced VideoBufferFlags = 0b100000000000000000000
-	// VideoBufferFlagTff: if the Buffer is interlaced, then the first field in
-	// the video frame is the top field. If unset, the bottom field is first.
-	VideoBufferFlagTff VideoBufferFlags = 0b1000000000000000000000
-	// VideoBufferFlagRff: if the Buffer is interlaced, then the first field (as
-	// defined by the GST_VIDEO_BUFFER_FLAG_TFF flag setting) is repeated.
-	VideoBufferFlagRff VideoBufferFlags = 0b10000000000000000000000
-	// VideoBufferFlagOnefield: if the Buffer is interlaced, then only the first
-	// field (as defined by the GST_VIDEO_BUFFER_FLAG_TFF flag setting) is to be
-	// displayed (Since: 1.16).
-	VideoBufferFlagOnefield VideoBufferFlags = 0b100000000000000000000000
+	// VideoBufferFlagTopField: video frame has the top field only. This is
+	// the same as GST_VIDEO_BUFFER_FLAG_TFF | GST_VIDEO_BUFFER_FLAG_ONEFIELD
+	// (Since: 1.16). Use GST_VIDEO_BUFFER_IS_TOP_FIELD() to check for this
+	// flag.
+	VideoBufferFlagTopField VideoBufferFlags = 0b101000000000000000000000
 	// VideoBufferFlagMultipleView contains one or more specific views, such as
 	// left or right eye view. This flags is set on any buffer that contains
 	// non-mono content - even for streams that contain only a single viewpoint.
 	// In mixed mono / non-mono streams, the absence of the flag marks mono
 	// buffers.
 	VideoBufferFlagMultipleView VideoBufferFlags = 0b1000000000000000000000000
+	// VideoBufferFlagTff: if the Buffer is interlaced, then the first field in
+	// the video frame is the top field. If unset, the bottom field is first.
+	VideoBufferFlagTff VideoBufferFlags = 0b1000000000000000000000
+	// VideoBufferFlagLast: offset to define more flags.
+	VideoBufferFlagLast VideoBufferFlags = 0b10000000000000000000000000000
 	// VideoBufferFlagFirstInBundle: when conveying stereo/multiview content
 	// with frame-by-frame methods, this flag marks the first buffer in a bundle
 	// of frames that belong together.
 	VideoBufferFlagFirstInBundle VideoBufferFlags = 0b10000000000000000000000000
-	// VideoBufferFlagTopField: video frame has the top field only. This is the
-	// same as GST_VIDEO_BUFFER_FLAG_TFF | GST_VIDEO_BUFFER_FLAG_ONEFIELD
-	// (Since: 1.16). Use GST_VIDEO_BUFFER_IS_TOP_FIELD() to check for this
-	// flag.
-	VideoBufferFlagTopField VideoBufferFlags = 0b101000000000000000000000
+	// VideoBufferFlagRff: if the Buffer is interlaced, then the first field (as
+	// defined by the GST_VIDEO_BUFFER_FLAG_TFF flag setting) is repeated.
+	VideoBufferFlagRff VideoBufferFlags = 0b10000000000000000000000
+	// VideoBufferFlagMarker contains the end of a video field or frame boundary
+	// such as the last subframe or packet (Since: 1.18).
+	VideoBufferFlagMarker VideoBufferFlags = 0b1000000000
 	// VideoBufferFlagOnefield: if the Buffer is interlaced, then only the first
 	// field (as defined by the GST_VIDEO_BUFFER_FLAG_TFF flag setting) is to be
 	// displayed (Since: 1.16).
@@ -78,11 +79,6 @@ const (
 	// flag unset) (Since: 1.16). Use GST_VIDEO_BUFFER_IS_BOTTOM_FIELD() to
 	// check for this flag.
 	VideoBufferFlagBottomField VideoBufferFlags = 0b100000000000000000000000
-	// VideoBufferFlagMarker contains the end of a video field or frame boundary
-	// such as the last subframe or packet (Since: 1.18).
-	VideoBufferFlagMarker VideoBufferFlags = 0b1000000000
-	// VideoBufferFlagLast: offset to define more flags.
-	VideoBufferFlagLast VideoBufferFlags = 0b10000000000000000000000000000
 )
 
 func marshalVideoBufferFlags(p uintptr) (interface{}, error) {
@@ -96,7 +92,7 @@ func (v VideoBufferFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(256)
+	builder.Grow(237)
 
 	for v != 0 {
 		next := v & (v - 1)
@@ -105,22 +101,22 @@ func (v VideoBufferFlags) String() string {
 		switch bit {
 		case VideoBufferFlagInterlaced:
 			builder.WriteString("Interlaced|")
-		case VideoBufferFlagTff:
-			builder.WriteString("Tff|")
-		case VideoBufferFlagRff:
-			builder.WriteString("Rff|")
-		case VideoBufferFlagOnefield:
-			builder.WriteString("Onefield|")
-		case VideoBufferFlagMultipleView:
-			builder.WriteString("MultipleView|")
-		case VideoBufferFlagFirstInBundle:
-			builder.WriteString("FirstInBundle|")
 		case VideoBufferFlagTopField:
 			builder.WriteString("TopField|")
-		case VideoBufferFlagMarker:
-			builder.WriteString("Marker|")
+		case VideoBufferFlagMultipleView:
+			builder.WriteString("MultipleView|")
+		case VideoBufferFlagTff:
+			builder.WriteString("Tff|")
 		case VideoBufferFlagLast:
 			builder.WriteString("Last|")
+		case VideoBufferFlagFirstInBundle:
+			builder.WriteString("FirstInBundle|")
+		case VideoBufferFlagRff:
+			builder.WriteString("Rff|")
+		case VideoBufferFlagMarker:
+			builder.WriteString("Marker|")
+		case VideoBufferFlagOnefield:
+			builder.WriteString("Onefield|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoBufferFlags(0b%b)|", bit))
 		}
@@ -146,21 +142,19 @@ const (
 	// interlace-mode, this flag specifies if the frame is interlaced or
 	// progressive.
 	VideoFrameFlagInterlaced VideoFrameFlags = 0b1
-	// VideoFrameFlagTff: video frame has the top field first.
-	VideoFrameFlagTff VideoFrameFlags = 0b10
-	// VideoFrameFlagRff: video frame has the repeat flag.
-	VideoFrameFlagRff VideoFrameFlags = 0b100
-	// VideoFrameFlagOnefield: video frame has one field.
-	VideoFrameFlagOnefield VideoFrameFlags = 0b1000
-	// VideoFrameFlagMultipleView: video contains one or more non-mono views.
-	VideoFrameFlagMultipleView VideoFrameFlags = 0b10000
-	// VideoFrameFlagFirstInBundle: video frame is the first in a set of
-	// corresponding views provided as sequential frames.
-	VideoFrameFlagFirstInBundle VideoFrameFlags = 0b100000
 	// VideoFrameFlagTopField: video frame has the top field only. This is the
 	// same as GST_VIDEO_FRAME_FLAG_TFF | GST_VIDEO_FRAME_FLAG_ONEFIELD (Since:
 	// 1.16).
 	VideoFrameFlagTopField VideoFrameFlags = 0b1010
+	// VideoFrameFlagMultipleView: video contains one or more non-mono views.
+	VideoFrameFlagMultipleView VideoFrameFlags = 0b10000
+	// VideoFrameFlagTff: video frame has the top field first.
+	VideoFrameFlagTff VideoFrameFlags = 0b10
+	// VideoFrameFlagFirstInBundle: video frame is the first in a set of
+	// corresponding views provided as sequential frames.
+	VideoFrameFlagFirstInBundle VideoFrameFlags = 0b100000
+	// VideoFrameFlagRff: video frame has the repeat flag.
+	VideoFrameFlagRff VideoFrameFlags = 0b100
 	// VideoFrameFlagOnefield: video frame has one field.
 	VideoFrameFlagOnefield VideoFrameFlags = 0b1000
 	// VideoFrameFlagBottomField: video frame has the bottom field only. This is
@@ -180,7 +174,7 @@ func (v VideoFrameFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(229)
+	builder.Grow(206)
 
 	for v != 0 {
 		next := v & (v - 1)
@@ -191,18 +185,18 @@ func (v VideoFrameFlags) String() string {
 			builder.WriteString("None|")
 		case VideoFrameFlagInterlaced:
 			builder.WriteString("Interlaced|")
+		case VideoFrameFlagTopField:
+			builder.WriteString("TopField|")
+		case VideoFrameFlagMultipleView:
+			builder.WriteString("MultipleView|")
 		case VideoFrameFlagTff:
 			builder.WriteString("Tff|")
+		case VideoFrameFlagFirstInBundle:
+			builder.WriteString("FirstInBundle|")
 		case VideoFrameFlagRff:
 			builder.WriteString("Rff|")
 		case VideoFrameFlagOnefield:
 			builder.WriteString("Onefield|")
-		case VideoFrameFlagMultipleView:
-			builder.WriteString("MultipleView|")
-		case VideoFrameFlagFirstInBundle:
-			builder.WriteString("FirstInBundle|")
-		case VideoFrameFlagTopField:
-			builder.WriteString("TopField|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoFrameFlags(0b%b)|", bit))
 		}
@@ -311,11 +305,11 @@ func (v *VideoFrame) SetID(id int) {
 //
 // The function takes the following parameters:
 //
-//    - src: VideoFrame.
+//   - src: VideoFrame.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the contents could be copied.
+//   - ok: TRUE if the contents could be copied.
 //
 func (dest *VideoFrame) Copy(src *VideoFrame) bool {
 	var _arg0 *C.GstVideoFrame // out
@@ -345,12 +339,12 @@ func (dest *VideoFrame) Copy(src *VideoFrame) bool {
 //
 // The function takes the following parameters:
 //
-//    - src: VideoFrame.
-//    - plane: plane.
+//   - src: VideoFrame.
+//   - plane: plane.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the contents could be copied.
+//   - ok: TRUE if the contents could be copied.
 //
 func (dest *VideoFrame) CopyPlane(src *VideoFrame, plane uint) bool {
 	var _arg0 *C.GstVideoFrame // out
@@ -386,42 +380,42 @@ func (frame *VideoFrame) Unmap() {
 	runtime.KeepAlive(frame)
 }
 
-// VideoFrameMap: use info and buffer to fill in the values of frame. frame is
-// usually allocated on the stack, and you will pass the address to the
-// VideoFrame structure allocated on the stack; gst_video_frame_map() will then
-// fill in the structures with the various video-specific information you need
-// to access the pixels of the video buffer. You can then use accessor macros
-// such as GST_VIDEO_FRAME_COMP_DATA(), GST_VIDEO_FRAME_PLANE_DATA(),
+// VideoFrameMap: use info and buffer to fill in the values of frame.
+// frame is usually allocated on the stack, and you will pass the address to
+// the VideoFrame structure allocated on the stack; gst_video_frame_map() will
+// then fill in the structures with the various video-specific information you
+// need to access the pixels of the video buffer. You can then use accessor
+// macros such as GST_VIDEO_FRAME_COMP_DATA(), GST_VIDEO_FRAME_PLANE_DATA(),
 // GST_VIDEO_FRAME_COMP_STRIDE(), GST_VIDEO_FRAME_PLANE_STRIDE() etc. to get to
 // the pixels.
 //
-//      GstVideoFrame vframe;
-//      ...
-//      // set RGB pixels to black one at a time
-//      if (gst_video_frame_map (&vframe, video_info, video_buffer, GST_MAP_WRITE)) {
-//        guint8 *pixels = GST_VIDEO_FRAME_PLANE_DATA (vframe, 0);
-//        guint stride = GST_VIDEO_FRAME_PLANE_STRIDE (vframe, 0);
-//        guint pixel_stride = GST_VIDEO_FRAME_COMP_PSTRIDE (vframe, 0);
+//    GstVideoFrame vframe;
+//    ...
+//    // set RGB pixels to black one at a time
+//    if (gst_video_frame_map (&vframe, video_info, video_buffer, GST_MAP_WRITE)) {
+//      guint8 *pixels = GST_VIDEO_FRAME_PLANE_DATA (vframe, 0);
+//      guint stride = GST_VIDEO_FRAME_PLANE_STRIDE (vframe, 0);
+//      guint pixel_stride = GST_VIDEO_FRAME_COMP_PSTRIDE (vframe, 0);
 //
-//        for (h = 0; h < height; ++h) {
-//          for (w = 0; w < width; ++w) {
-//            guint8 *pixel = pixels + h * stride + w * pixel_stride;
+//      for (h = 0; h < height; ++h) {
+//        for (w = 0; w < width; ++w) {
+//          guint8 *pixel = pixels + h * stride + w * pixel_stride;
 //
-//            memset (pixel, 0, pixel_stride);
-//          }
+//          memset (pixel, 0, pixel_stride);
 //        }
-//
-//        gst_video_frame_unmap (&vframe);
 //      }
-//      ...
+//
+//      gst_video_frame_unmap (&vframe);
+//    }
+//    ...
 //
 // All video planes of buffer will be mapped and the pointers will be set in
 // frame->data.
 //
 // The purpose of this function is to make it easy for you to get to the video
 // pixels in a generic way, without you having to worry too much about details
-// such as whether the video data is allocated in one contiguous memory chunk or
-// multiple memory chunks (e.g. one for each plane); or if custom strides and
+// such as whether the video data is allocated in one contiguous memory chunk
+// or multiple memory chunks (e.g. one for each plane); or if custom strides and
 // custom plane offsets are used or not (as signalled by GstVideoMeta on each
 // buffer). This function will just fill the VideoFrame structure with the right
 // values and if you use the accessor macros everything will just work and you
@@ -430,14 +424,14 @@ func (frame *VideoFrame) Unmap() {
 //
 // The function takes the following parameters:
 //
-//    - info: VideoInfo.
-//    - buffer to map.
-//    - flags: MapFlags.
+//   - info: VideoInfo.
+//   - buffer to map.
+//   - flags: MapFlags.
 //
 // The function returns the following values:
 //
-//    - frame: pointer to VideoFrame.
-//    - ok: TRUE on success.
+//   - frame: pointer to VideoFrame.
+//   - ok: TRUE on success.
 //
 func VideoFrameMap(info *VideoInfo, buffer *gst.Buffer, flags gst.MapFlags) (*VideoFrame, bool) {
 	var _arg1 C.GstVideoFrame // in
@@ -477,15 +471,15 @@ func VideoFrameMap(info *VideoInfo, buffer *gst.Buffer, flags gst.MapFlags) (*Vi
 //
 // The function takes the following parameters:
 //
-//    - info: VideoInfo.
-//    - buffer to map.
-//    - id: frame id to map.
-//    - flags: MapFlags.
+//   - info: VideoInfo.
+//   - buffer to map.
+//   - id: frame id to map.
+//   - flags: MapFlags.
 //
 // The function returns the following values:
 //
-//    - frame: pointer to VideoFrame.
-//    - ok: TRUE on success.
+//   - frame: pointer to VideoFrame.
+//   - ok: TRUE on success.
 //
 func VideoFrameMapID(info *VideoInfo, buffer *gst.Buffer, id int, flags gst.MapFlags) (*VideoFrame, bool) {
 	var _arg1 C.GstVideoFrame // in

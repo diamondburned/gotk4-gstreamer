@@ -49,12 +49,12 @@ func PtpDeinit() {
 //
 // The function takes the following parameters:
 //
-//    - clockId: PTP clock id of this process' clock or GST_PTP_CLOCK_ID_NONE.
-//    - interfaces (optional): network interfaces to run the clock on.
+//   - clockId: PTP clock id of this process' clock or GST_PTP_CLOCK_ID_NONE.
+//   - interfaces (optional): network interfaces to run the clock on.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GStreamer PTP clock subsystem could be initialized.
+//   - ok: TRUE if the GStreamer PTP clock subsystem could be initialized.
 //
 func PtpInit(clockId uint64, interfaces []string) bool {
 	var _arg1 C.guint64  // out
@@ -93,7 +93,7 @@ func PtpInit(clockId uint64, interfaces []string) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GStreamer PTP clock subsystem is initialized.
+//   - ok: TRUE if the GStreamer PTP clock subsystem is initialized.
 //
 func PtpIsInitialized() bool {
 	var _cret C.gboolean // in
@@ -114,8 +114,8 @@ func PtpIsInitialized() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if PTP clocks are generally supported on this system, and
-//      previous initializations did not fail.
+//   - ok: TRUE if PTP clocks are generally supported on this system, and
+//     previous initializations did not fail.
 //
 func PtpIsSupported() bool {
 	var _cret C.gboolean // in
@@ -137,12 +137,12 @@ func PtpIsSupported() bool {
 //
 // The function takes the following parameters:
 //
-//    - callback: gstPtpStatisticsCallback to call.
+//   - callback: gstPtpStatisticsCallback to call.
 //
 // The function returns the following values:
 //
-//    - gulong: id for the callback that can be passed to
-//      gst_ptp_statistics_callback_remove().
+//   - gulong: id for the callback that can be passed to
+//     gst_ptp_statistics_callback_remove().
 //
 func PtpStatisticsCallbackAdd(callback PtpStatisticsCallback) uint32 {
 	var _arg1 C.GstPtpStatisticsCallback // out
@@ -169,7 +169,7 @@ func PtpStatisticsCallbackAdd(callback PtpStatisticsCallback) uint32 {
 //
 // The function takes the following parameters:
 //
-//    - id: callback id to remove.
+//   - id: callback id to remove.
 //
 func PtpStatisticsCallbackRemove(id uint32) {
 	var _arg1 C.gulong // out
@@ -192,21 +192,21 @@ func defaultPtpClockOverrides(v *PtpClock) PtpClockOverrides {
 // that allows a GStreamer pipeline to synchronize to a PTP network clock in
 // some specific domain.
 //
-// The PTP subsystem can be initialized with gst_ptp_init(), which then starts a
-// helper process to do the actual communication via the PTP ports. This is
+// The PTP subsystem can be initialized with gst_ptp_init(), which then starts
+// a helper process to do the actual communication via the PTP ports. This is
 // required as PTP listens on ports < 1024 and thus requires special privileges.
 // Once this helper process is started, the main process will synchronize to all
 // PTP domains that are detected on the selected interfaces.
 //
 // gst_ptp_clock_new() then allows to create a GstClock that provides the PTP
 // time from a master clock inside a specific PTP domain. This clock will only
-// return valid timestamps once the timestamps in the PTP domain are known. To
-// check this, you can use gst_clock_wait_for_sync(), the GstClock::synced
+// return valid timestamps once the timestamps in the PTP domain are known.
+// To check this, you can use gst_clock_wait_for_sync(), the GstClock::synced
 // signal and gst_clock_is_synced().
 //
 // To gather statistics about the PTP clock synchronization,
-// gst_ptp_statistics_callback_add() can be used. This gives the application the
-// possibility to collect all kinds of statistics from the clock
+// gst_ptp_statistics_callback_add() can be used. This gives the application
+// the possibility to collect all kinds of statistics from the clock
 // synchronization.
 type PtpClock struct {
 	_ [0]func() // equal guard
@@ -257,20 +257,20 @@ func marshalPtpClock(p uintptr) (interface{}, error) {
 // If gst_ptp_init() was not called before, this will call gst_ptp_init() with
 // default parameters.
 //
-// This clock only returns valid timestamps after it received the first times
-// from the PTP master clock on the network. Once this happens the
-// GstPtpClock::internal-clock property will become non-NULL. You can check this
-// with gst_clock_wait_for_sync(), the GstClock::synced signal and
+// This clock only returns valid timestamps after it received the first
+// times from the PTP master clock on the network. Once this happens the
+// GstPtpClock::internal-clock property will become non-NULL. You can check
+// this with gst_clock_wait_for_sync(), the GstClock::synced signal and
 // gst_clock_is_synced().
 //
 // The function takes the following parameters:
 //
-//    - name: name of the clock.
-//    - domain: PTP domain.
+//   - name: name of the clock.
+//   - domain: PTP domain.
 //
 // The function returns the following values:
 //
-//    - ptpClock: new Clock.
+//   - ptpClock: new Clock.
 //
 func NewPtpClock(name string, domain uint) *PtpClock {
 	var _arg1 *C.gchar    // out

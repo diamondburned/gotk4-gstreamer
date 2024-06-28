@@ -45,12 +45,12 @@ const GL_DISPLAY_CONTEXT_TYPE = "gst.gl.GLDisplay"
 type GLDisplayOverrides struct {
 	// The function returns the following values:
 	//
-	//    - glWindow: new GLWindow for display or NULL.
+	//   - glWindow (optional): new GLWindow for display or NULL.
 	//
 	CreateWindow func() GLWindower
 	// The function returns the following values:
 	//
-	//    - guintptr: native handle for the display.
+	//   - guintptr: native handle for the display.
 	//
 	Handle func() uintptr
 }
@@ -81,8 +81,8 @@ func defaultGLDisplayOverrides(v *GLDisplay) GLDisplayOverrides {
 // > Certain window systems require a special function to be called to >
 // initialize threading support. As this GStreamer GL library does not preclude
 // > concurrent access to the windowing system, it is strongly advised that >
-// applications ensure that threading support has been initialized before any >
-// other toolkit/library functionality is accessed. Failure to do so could >
+// applications ensure that threading support has been initialized before any
+// > other toolkit/library functionality is accessed. Failure to do so could >
 // result in sudden application abortion during execution. The most notably >
 // example of such a function is X11's XInitThreads\().
 type GLDisplay struct {
@@ -142,7 +142,7 @@ func (display *GLDisplay) ConnectCreateContext(f func(context GLContexter) (glCo
 
 // The function returns the following values:
 //
-//    - glDisplay: new GLDisplay.
+//   - glDisplay: new GLDisplay.
 //
 func NewGLDisplay() *GLDisplay {
 	var _cret *C.GstGLDisplay // in
@@ -156,18 +156,18 @@ func NewGLDisplay() *GLDisplay {
 	return _glDisplay
 }
 
-// NewGLDisplayWithType will always return a GLDisplay of a single type. This
-// differs from gst_gl_display_new() and the seemingly equivalent call
+// NewGLDisplayWithType will always return a GLDisplay of a single type.
+// This differs from gst_gl_display_new() and the seemingly equivalent call
 // gst_gl_display_new_with_type (GST_GL_DISPLAY_TYPE_ANY) in that the latter may
 // return NULL.
 //
 // The function takes the following parameters:
 //
-//    - typ: GLDisplayType.
+//   - typ: GLDisplayType.
 //
 // The function returns the following values:
 //
-//    - glDisplay (optional): new GLDisplay or NULL if type is not supported.
+//   - glDisplay (optional): new GLDisplay or NULL if type is not supported.
 //
 func NewGLDisplayWithType(typ GLDisplayType) *GLDisplay {
 	var _arg1 C.GstGLDisplayType // out
@@ -189,14 +189,14 @@ func NewGLDisplayWithType(typ GLDisplayType) *GLDisplay {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - ok: whether context was successfully added. FALSE may be returned if
-//      there already exists another context for context's active thread.
+//   - ok: whether context was successfully added. FALSE may be returned if
+//     there already exists another context for context's active thread.
 //
-//      Must be called with the object lock held.
+//     Must be called with the object lock held.
 //
 func (display *GLDisplay) AddContext(context GLContexter) bool {
 	var _arg0 *C.GstGLDisplay // out
@@ -223,11 +223,11 @@ func (display *GLDisplay) AddContext(context GLContexter) bool {
 //
 // The function takes the following parameters:
 //
-//    - otherContext: other GLContext to share resources with.
+//   - otherContext (optional): other GLContext to share resources with.
 //
 // The function returns the following values:
 //
-//    - pContext: resulting GLContext.
+//   - pContext: resulting GLContext.
 //
 func (display *GLDisplay) CreateContext(otherContext GLContexter) (GLContexter, error) {
 	var _arg0 *C.GstGLDisplay // out
@@ -236,7 +236,9 @@ func (display *GLDisplay) CreateContext(otherContext GLContexter) (GLContexter, 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GstGLDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.GstGLContext)(unsafe.Pointer(coreglib.InternObject(otherContext).Native()))
+	if otherContext != nil {
+		_arg1 = (*C.GstGLContext)(unsafe.Pointer(coreglib.InternObject(otherContext).Native()))
+	}
 
 	C.gst_gl_display_create_context(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(display)
@@ -271,7 +273,7 @@ func (display *GLDisplay) CreateContext(otherContext GLContexter) (GLContexter, 
 
 // The function returns the following values:
 //
-//    - glWindow: new GLWindow for display or NULL.
+//   - glWindow (optional): new GLWindow for display or NULL.
 //
 func (display *GLDisplay) CreateWindow() GLWindower {
 	var _arg0 *C.GstGLDisplay // out
@@ -284,22 +286,21 @@ func (display *GLDisplay) CreateWindow() GLWindower {
 
 	var _glWindow GLWindower // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstgl.GLWindower is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(GLWindower)
-			return ok
-		})
-		rv, ok := casted.(GLWindower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstgl.GLWindower")
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(GLWindower)
+				return ok
+			})
+			rv, ok := casted.(GLWindower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstgl.GLWindower")
+			}
+			_glWindow = rv
 		}
-		_glWindow = rv
 	}
 
 	return _glWindow
@@ -312,7 +313,7 @@ func (display *GLDisplay) CreateWindow() GLWindower {
 //
 // The function takes the following parameters:
 //
-//    - glApi to filter with.
+//   - glApi to filter with.
 //
 func (display *GLDisplay) FilterGLApi(glApi GLAPI) {
 	var _arg0 *C.GstGLDisplay // out
@@ -331,7 +332,7 @@ func (display *GLDisplay) FilterGLApi(glApi GLAPI) {
 //
 // The function returns the following values:
 //
-//    - glapI configured for display.
+//   - glapI configured for display.
 //
 func (display *GLDisplay) GLApi() GLAPI {
 	var _arg0 *C.GstGLDisplay // out
@@ -369,7 +370,7 @@ func (display *GLDisplay) GLApiUnlocked() GLAPI {
 
 // The function returns the following values:
 //
-//    - guintptr: native handle for the display.
+//   - guintptr: native handle for the display.
 //
 func (display *GLDisplay) Handle() uintptr {
 	var _arg0 *C.GstGLDisplay // out
@@ -382,14 +383,14 @@ func (display *GLDisplay) Handle() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
 
 // The function returns the following values:
 //
-//    - glDisplayType of display.
+//   - glDisplayType of display.
 //
 func (display *GLDisplay) HandleType() GLDisplayType {
 	var _arg0 *C.GstGLDisplay    // out
@@ -411,7 +412,7 @@ func (display *GLDisplay) HandleType() GLDisplayType {
 //
 // The function takes the following parameters:
 //
-//    - context to remove.
+//   - context to remove.
 //
 func (display *GLDisplay) RemoveContext(context GLContexter) {
 	var _arg0 *C.GstGLDisplay // out
@@ -427,11 +428,11 @@ func (display *GLDisplay) RemoveContext(context GLContexter) {
 
 // The function takes the following parameters:
 //
-//    - window to remove.
+//   - window to remove.
 //
 // The function returns the following values:
 //
-//    - ok: if window could be removed from display.
+//   - ok: if window could be removed from display.
 //
 func (display *GLDisplay) RemoveWindow(window GLWindower) bool {
 	var _arg0 *C.GstGLDisplay // out
@@ -456,7 +457,7 @@ func (display *GLDisplay) RemoveWindow(window GLWindower) bool {
 
 // The function returns the following values:
 //
-//    - glWindow: new GLWindow for display or NULL.
+//   - glWindow (optional): new GLWindow for display or NULL.
 //
 func (display *GLDisplay) createWindow() GLWindower {
 	gclass := (*C.GstGLDisplayClass)(coreglib.PeekParentClass(display))
@@ -472,22 +473,21 @@ func (display *GLDisplay) createWindow() GLWindower {
 
 	var _glWindow GLWindower // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstgl.GLWindower is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(GLWindower)
-			return ok
-		})
-		rv, ok := casted.(GLWindower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstgl.GLWindower")
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(GLWindower)
+				return ok
+			})
+			rv, ok := casted.(GLWindower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstgl.GLWindower")
+			}
+			_glWindow = rv
 		}
-		_glWindow = rv
 	}
 
 	return _glWindow
@@ -495,7 +495,7 @@ func (display *GLDisplay) createWindow() GLWindower {
 
 // The function returns the following values:
 //
-//    - guintptr: native handle for the display.
+//   - guintptr: native handle for the display.
 //
 func (display *GLDisplay) handle() uintptr {
 	gclass := (*C.GstGLDisplayClass)(coreglib.PeekParentClass(display))
@@ -511,7 +511,7 @@ func (display *GLDisplay) handle() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }

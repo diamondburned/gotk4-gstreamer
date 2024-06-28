@@ -17,7 +17,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - glContext active in the current thread or NULL.
+//   - glContext (optional) active in the current thread or NULL.
 //
 func GLContextGetCurrent() GLContexter {
 	var _cret *C.GstGLContext // in
@@ -26,22 +26,21 @@ func GLContextGetCurrent() GLContexter {
 
 	var _glContext GLContexter // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstgl.GLContexter is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(GLContexter)
-			return ok
-		})
-		rv, ok := casted.(GLContexter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstgl.GLContexter")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(GLContexter)
+				return ok
+			})
+			rv, ok := casted.(GLContexter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstgl.GLContexter")
+			}
+			_glContext = rv
 		}
-		_glContext = rv
 	}
 
 	return _glContext
@@ -52,14 +51,14 @@ func GLContextGetCurrent() GLContexter {
 //
 // The function takes the following parameters:
 //
-//    - platform to retrieve the API for.
+//   - platform to retrieve the API for.
 //
 // The function returns the following values:
 //
-//    - major (optional) version.
-//    - minor (optional) version.
-//    - glapI: version supported by the OpenGL context current in the calling
-//      thread or GST_GL_API_NONE.
+//   - major (optional) version.
+//   - minor (optional) version.
+//   - glapI: version supported by the OpenGL context current in the calling
+//     thread or GST_GL_API_NONE.
 //
 func GLContextGetCurrentGLApi(platform GLPlatform) (major, minor uint, glapI GLAPI) {
 	var _arg1 C.GstGLPlatform // out
@@ -85,11 +84,12 @@ func GLContextGetCurrentGLApi(platform GLPlatform) (major, minor uint, glapI GLA
 
 // The function takes the following parameters:
 //
-//    - contextType specifying the type of context to retrieve.
+//   - contextType specifying the type of context to retrieve.
 //
 // The function returns the following values:
 //
-//    - guintptr: openGL context handle current in the calling thread or NULL.
+//   - guintptr (optional): openGL context handle current in the calling thread
+//     or NULL.
 //
 func GLContextGetCurrentGLContext(contextType GLPlatform) uintptr {
 	var _arg1 C.GstGLPlatform // out
@@ -102,7 +102,7 @@ func GLContextGetCurrentGLContext(contextType GLPlatform) uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
@@ -114,13 +114,13 @@ func GLContextGetCurrentGLContext(contextType GLPlatform) uintptr {
 //
 // The function takes the following parameters:
 //
-//    - contextType: GLPlatform.
-//    - glApi: GLAPI.
-//    - name of the function to retrieve.
+//   - contextType: GLPlatform.
+//   - glApi: GLAPI.
+//   - name of the function to retrieve.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): function pointer for name, or NULL.
+//   - gpointer (optional): function pointer for name, or NULL.
 //
 func GLContextGetProcAddressWithPlatform(contextType GLPlatform, glApi GLAPI, name string) unsafe.Pointer {
 	var _arg1 C.GstGLPlatform // out

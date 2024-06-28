@@ -56,12 +56,8 @@ func NewAudioStreamAlign(rate int, alignmentThreshold gst.ClockTime, discontWait
 	var _cret *C.GstAudioStreamAlign // in
 
 	_arg1 = C.gint(rate)
-	_arg2 = C.guint64(alignmentThreshold)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(discontWait)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(alignmentThreshold)
+	_arg3 = C.GstClockTime(discontWait)
 
 	_cret = C.gst_audio_stream_align_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(rate)
@@ -85,8 +81,8 @@ func NewAudioStreamAlign(rate int, alignmentThreshold gst.ClockTime, discontWait
 //
 // The function returns the following values:
 //
-//    - audioStreamAlign: new AudioStreamAlign. free with
-//      gst_audio_stream_align_free.
+//   - audioStreamAlign: new AudioStreamAlign. free with
+//     gst_audio_stream_align_free.
 //
 func (align *AudioStreamAlign) Copy() *AudioStreamAlign {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -114,7 +110,7 @@ func (align *AudioStreamAlign) Copy() *AudioStreamAlign {
 //
 // The function returns the following values:
 //
-//    - clockTime: currently configured alignment threshold.
+//   - clockTime: currently configured alignment threshold.
 //
 func (align *AudioStreamAlign) AlignmentThreshold() gst.ClockTime {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -127,9 +123,7 @@ func (align *AudioStreamAlign) AlignmentThreshold() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -138,7 +132,7 @@ func (align *AudioStreamAlign) AlignmentThreshold() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: currently configured discont wait.
+//   - clockTime: currently configured discont wait.
 //
 func (align *AudioStreamAlign) DiscontWait() gst.ClockTime {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -151,9 +145,7 @@ func (align *AudioStreamAlign) DiscontWait() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -162,7 +154,7 @@ func (align *AudioStreamAlign) DiscontWait() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - gint: currently configured sample rate.
+//   - gint: currently configured sample rate.
 //
 func (align *AudioStreamAlign) Rate() int {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -185,7 +177,7 @@ func (align *AudioStreamAlign) Rate() int {
 //
 // The function returns the following values:
 //
-//    - guint64: number of samples processed since the last discontinuity.
+//   - guint64: number of samples processed since the last discontinuity.
 //
 func (align *AudioStreamAlign) SamplesSinceDiscont() uint64 {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -208,7 +200,7 @@ func (align *AudioStreamAlign) SamplesSinceDiscont() uint64 {
 //
 // The function returns the following values:
 //
-//    - clockTime: last timestamp at when a discontinuity was detected.
+//   - clockTime: last timestamp at when a discontinuity was detected.
 //
 func (align *AudioStreamAlign) TimestampAtDiscont() gst.ClockTime {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -221,9 +213,7 @@ func (align *AudioStreamAlign) TimestampAtDiscont() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -244,8 +234,8 @@ func (align *AudioStreamAlign) MarkDiscont() {
 // whether a discontinuity was detected or not. All non-discontinuous data will
 // have perfect timestamps and durations.
 //
-// A discontinuity is detected once the difference between the actual timestamp
-// and the timestamp calculated from the sample count since the last
+// A discontinuity is detected once the difference between the actual
+// timestamp and the timestamp calculated from the sample count since the last
 // discontinuity differs by more than the alignment threshold for a duration
 // longer than discont wait.
 //
@@ -258,16 +248,16 @@ func (align *AudioStreamAlign) MarkDiscont() {
 //
 // The function takes the following parameters:
 //
-//    - discont: if this data is considered to be discontinuous.
-//    - timestamp of the start of the data.
-//    - nSamples: number of samples to process.
+//   - discont: if this data is considered to be discontinuous.
+//   - timestamp of the start of the data.
+//   - nSamples: number of samples to process.
 //
 // The function returns the following values:
 //
-//    - outTimestamp: output timestamp of the data.
-//    - outDuration: output duration of the data.
-//    - outSamplePosition: output sample position of the start of the data.
-//    - ok: TRUE if a discontinuity was detected, FALSE otherwise.
+//   - outTimestamp: output timestamp of the data.
+//   - outDuration: output duration of the data.
+//   - outSamplePosition: output sample position of the start of the data.
+//   - ok: TRUE if a discontinuity was detected, FALSE otherwise.
 //
 func (align *AudioStreamAlign) Process(discont bool, timestamp gst.ClockTime, nSamples uint) (outTimestamp gst.ClockTime, outDuration gst.ClockTime, outSamplePosition uint64, ok bool) {
 	var _arg0 *C.GstAudioStreamAlign // out
@@ -283,9 +273,7 @@ func (align *AudioStreamAlign) Process(discont bool, timestamp gst.ClockTime, nS
 	if discont {
 		_arg1 = C.TRUE
 	}
-	_arg2 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
 	_arg3 = C.guint(nSamples)
 
 	_cret = C.gst_audio_stream_align_process(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
@@ -299,12 +287,8 @@ func (align *AudioStreamAlign) Process(discont bool, timestamp gst.ClockTime, nS
 	var _outSamplePosition uint64   // out
 	var _ok bool                    // out
 
-	_outTimestamp = uint64(_arg4)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_outDuration = uint64(_arg5)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_outTimestamp = gst.ClockTime(_arg4)
+	_outDuration = gst.ClockTime(_arg5)
 	_outSamplePosition = uint64(_arg6)
 	if _cret != 0 {
 		_ok = true
@@ -318,16 +302,14 @@ func (align *AudioStreamAlign) Process(discont bool, timestamp gst.ClockTime, nS
 //
 // The function takes the following parameters:
 //
-//    - alignmentThreshold: new alignment threshold.
+//   - alignmentThreshold: new alignment threshold.
 //
 func (align *AudioStreamAlign) SetAlignmentThreshold(alignmentThreshold gst.ClockTime) {
 	var _arg0 *C.GstAudioStreamAlign // out
 	var _arg1 C.GstClockTime         // out
 
 	_arg0 = (*C.GstAudioStreamAlign)(gextras.StructNative(unsafe.Pointer(align)))
-	_arg1 = C.guint64(alignmentThreshold)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(alignmentThreshold)
 
 	C.gst_audio_stream_align_set_alignment_threshold(_arg0, _arg1)
 	runtime.KeepAlive(align)
@@ -339,16 +321,14 @@ func (align *AudioStreamAlign) SetAlignmentThreshold(alignmentThreshold gst.Cloc
 //
 // The function takes the following parameters:
 //
-//    - discontWait: new discont wait.
+//   - discontWait: new discont wait.
 //
 func (align *AudioStreamAlign) SetDiscontWait(discontWait gst.ClockTime) {
 	var _arg0 *C.GstAudioStreamAlign // out
 	var _arg1 C.GstClockTime         // out
 
 	_arg0 = (*C.GstAudioStreamAlign)(gextras.StructNative(unsafe.Pointer(align)))
-	_arg1 = C.guint64(discontWait)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(discontWait)
 
 	C.gst_audio_stream_align_set_discont_wait(_arg0, _arg1)
 	runtime.KeepAlive(align)
@@ -360,7 +340,7 @@ func (align *AudioStreamAlign) SetDiscontWait(discontWait gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - rate: new sample rate.
+//   - rate: new sample rate.
 //
 func (align *AudioStreamAlign) SetRate(rate int) {
 	var _arg0 *C.GstAudioStreamAlign // out

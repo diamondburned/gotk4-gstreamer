@@ -13,11 +13,11 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - str: GLSL version string.
+//   - str: GLSL version string.
 //
 // The function returns the following values:
 //
-//    - glslVersion of string or GST_GLSL_VERSION_NONE on error.
+//   - glslVersion of string or GST_GLSL_VERSION_NONE on error.
 //
 func GLSLVersionFromString(str string) GLSLVersion {
 	var _arg1 *C.gchar         // out
@@ -41,13 +41,13 @@ func GLSLVersionFromString(str string) GLSLVersion {
 //
 // The function takes the following parameters:
 //
-//    - str: valid GLSL #version string.
+//   - str: valid GLSL #version string.
 //
 // The function returns the following values:
 //
-//    - versionRet: resulting GLSLVersion.
-//    - profileRet: resulting GLSLVersion.
-//    - ok: TRUE if a valid #version string was found, FALSE otherwise.
+//   - versionRet: resulting GLSLVersion.
+//   - profileRet: resulting GLSLVersion.
+//   - ok: TRUE if a valid #version string was found, FALSE otherwise.
 //
 func GLSLVersionProfileFromString(str string) (GLSLVersion, GLSLProfile, bool) {
 	var _arg1 *C.gchar         // out
@@ -76,12 +76,12 @@ func GLSLVersionProfileFromString(str string) (GLSLVersion, GLSLProfile, bool) {
 
 // The function takes the following parameters:
 //
-//    - version: GLSLVersion.
-//    - profile: GLSLVersion.
+//   - version: GLSLVersion.
+//   - profile: GLSLVersion.
 //
 // The function returns the following values:
 //
-//    - utf8: combined GLSL #version string for version and profile.
+//   - utf8 (optional): combined GLSL #version string for version and profile.
 //
 func GLSLVersionProfileToString(version GLSLVersion, profile GLSLProfile) string {
 	var _arg1 C.GstGLSLVersion // out
@@ -97,19 +97,21 @@ func GLSLVersionProfileToString(version GLSLVersion, profile GLSLProfile) string
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
 
 // The function takes the following parameters:
 //
-//    - version: GLSLVersion.
+//   - version: GLSLVersion.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of version or NULL on error.
+//   - utf8 (optional): name of version or NULL on error.
 //
 func GLSLVersionToString(version GLSLVersion) string {
 	var _arg1 C.GstGLSLVersion // out
@@ -131,11 +133,11 @@ func GLSLVersionToString(version GLSLVersion) string {
 
 // The function takes the following parameters:
 //
-//    - str: GLSL version string.
+//   - str: GLSL version string.
 //
 // The function returns the following values:
 //
-//    - glslProfile of string or GST_GLSL_PROFILE_NONE on error.
+//   - glslProfile of string or GST_GLSL_PROFILE_NONE on error.
 //
 func GLSLProfileFromString(str string) GLSLProfile {
 	var _arg1 *C.gchar         // out
@@ -156,11 +158,11 @@ func GLSLProfileFromString(str string) GLSLProfile {
 
 // The function takes the following parameters:
 //
-//    - profile: GLSLProfile.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name for profile or NULL on error.
+//   - utf8 (optional): name for profile or NULL on error.
 //
 func GLSLProfileToString(profile GLSLProfile) string {
 	var _arg1 C.GstGLSLProfile // out
@@ -182,14 +184,14 @@ func GLSLProfileToString(profile GLSLProfile) string {
 
 // The function takes the following parameters:
 //
-//    - glApi: GLAPI.
-//    - maj: major GL version.
-//    - min: minor GL version.
+//   - glApi: GLAPI.
+//   - maj: major GL version.
+//   - min: minor GL version.
 //
 // The function returns the following values:
 //
-//    - glslVersion: minimum supported GLSLVersion available for gl_api, maj and
-//      min.
+//   - glslVersion: minimum supported GLSLVersion available for gl_api, maj and
+//     min.
 //
 func GLVersionToGlslVersion(glApi GLAPI, maj, min int) GLSLVersion {
 	var _arg1 C.GstGLAPI       // out
@@ -213,19 +215,19 @@ func GLVersionToGlslVersion(glApi GLAPI, maj, min int) GLSLVersion {
 	return _glslVersion
 }
 
-// GlslStringGetVersionProfile: note: this function first searches the first 1
-// kilobytes for a #version preprocessor directive and then executes
+// GlslStringGetVersionProfile: note: this function first searches the
+// first 1 kilobytes for a #version preprocessor directive and then executes
 // gst_glsl_version_profile_from_string().
 //
 // The function takes the following parameters:
 //
-//    - s: string to search for a valid #version string.
+//   - s: string to search for a valid #version string.
 //
 // The function returns the following values:
 //
-//    - version: resulting GLSLVersion.
-//    - profile: resulting GLSLProfile.
-//    - ok: TRUE if a valid #version string was found, FALSE otherwise.
+//   - version: resulting GLSLVersion.
+//   - profile: resulting GLSLProfile.
+//   - ok: TRUE if a valid #version string was found, FALSE otherwise.
 //
 func GlslStringGetVersionProfile(s string) (GLSLVersion, GLSLProfile, bool) {
 	var _arg1 *C.gchar         // out

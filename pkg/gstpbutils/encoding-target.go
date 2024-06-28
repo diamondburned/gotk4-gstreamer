@@ -59,12 +59,12 @@ const ENCODING_CATEGORY_STORAGE_EDITING = "storage-editing"
 //
 // The function takes the following parameters:
 //
-//    - categoryname (optional): category, for ex: T_ENCODING_CATEGORY_DEVICE.
-//      Can be NULL.
+//   - categoryname (optional): category, for ex: T_ENCODING_CATEGORY_DEVICE.
+//     Can be NULL.
 //
 // The function returns the following values:
 //
-//    - list of EncodingTarget.
+//   - list of EncodingTarget.
 //
 func EncodingListAllTargets(categoryname string) []*EncodingTarget {
 	var _arg1 *C.gchar // out
@@ -96,7 +96,7 @@ func EncodingListAllTargets(categoryname string) []*EncodingTarget {
 //
 // The function returns the following values:
 //
-//    - list: list of EncodingTarget categories.
+//   - list: list of EncodingTarget categories.
 //
 func EncodingListAvailableCategories() []string {
 	var _cret *C.GList // in
@@ -153,16 +153,16 @@ func marshalEncodingTarget(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name of the target.
-//    - category: name of the category to which this target belongs. For example:
-//      T_ENCODING_CATEGORY_DEVICE.
-//    - description of EncodingTarget in the current locale.
-//    - profiles: #GList of EncodingProfile.
+//   - name of the target.
+//   - category: name of the category to which this target belongs. For example:
+//     T_ENCODING_CATEGORY_DEVICE.
+//   - description of EncodingTarget in the current locale.
+//   - profiles: #GList of EncodingProfile.
 //
 // The function returns the following values:
 //
-//    - encodingTarget: newly created EncodingTarget or NULL if there was an
-//      error.
+//   - encodingTarget (optional): newly created EncodingTarget or NULL if there
+//     was an error.
 //
 func NewEncodingTarget(name, category, description string, profiles []*EncodingProfile) *EncodingTarget {
 	var _arg1 *C.gchar             // out
@@ -193,7 +193,9 @@ func NewEncodingTarget(name, category, description string, profiles []*EncodingP
 
 	var _encodingTarget *EncodingTarget // out
 
-	_encodingTarget = wrapEncodingTarget(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_encodingTarget = wrapEncodingTarget(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _encodingTarget
 }
@@ -206,11 +208,11 @@ func NewEncodingTarget(name, category, description string, profiles []*EncodingP
 //
 // The function takes the following parameters:
 //
-//    - profile to add.
+//   - profile to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the profile was added, else FALSE.
+//   - ok: TRUE if the profile was added, else FALSE.
 //
 func (target *EncodingTarget) AddProfile(profile *EncodingProfile) bool {
 	var _arg0 *C.GstEncodingTarget  // out
@@ -236,7 +238,7 @@ func (target *EncodingTarget) AddProfile(profile *EncodingProfile) bool {
 
 // The function returns the following values:
 //
-//    - utf8: category of the target. For example: T_ENCODING_CATEGORY_DEVICE.
+//   - utf8: category of the target. For example: T_ENCODING_CATEGORY_DEVICE.
 //
 func (target *EncodingTarget) Category() string {
 	var _arg0 *C.GstEncodingTarget // out
@@ -256,7 +258,7 @@ func (target *EncodingTarget) Category() string {
 
 // The function returns the following values:
 //
-//    - utf8: description of the target.
+//   - utf8: description of the target.
 //
 func (target *EncodingTarget) Description() string {
 	var _arg0 *C.GstEncodingTarget // out
@@ -276,7 +278,7 @@ func (target *EncodingTarget) Description() string {
 
 // The function returns the following values:
 //
-//    - utf8: name of the target.
+//   - utf8: name of the target.
 //
 func (target *EncodingTarget) Name() string {
 	var _arg0 *C.GstEncodingTarget // out
@@ -296,7 +298,7 @@ func (target *EncodingTarget) Name() string {
 
 // The function returns the following values:
 //
-//    - utf8: path to the target file.
+//   - filename (optional): path to the target file.
 //
 func (target *EncodingTarget) Path() string {
 	var _arg0 *C.GstEncodingTarget // out
@@ -307,20 +309,22 @@ func (target *EncodingTarget) Path() string {
 	_cret = C.gst_encoding_target_get_path(_arg0)
 	runtime.KeepAlive(target)
 
-	var _utf8 string // out
+	var _filename string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
-	return _utf8
+	return _filename
 }
 
 // The function takes the following parameters:
 //
-//    - name of the profile to retrieve.
+//   - name of the profile to retrieve.
 //
 // The function returns the following values:
 //
-//    - encodingProfile: matching EncodingProfile, or NULL.
+//   - encodingProfile (optional): matching EncodingProfile, or NULL.
 //
 func (target *EncodingTarget) Profile(name string) *EncodingProfile {
 	var _arg0 *C.GstEncodingTarget  // out
@@ -337,14 +341,16 @@ func (target *EncodingTarget) Profile(name string) *EncodingProfile {
 
 	var _encodingProfile *EncodingProfile // out
 
-	_encodingProfile = wrapEncodingProfile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_encodingProfile = wrapEncodingProfile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _encodingProfile
 }
 
 // The function returns the following values:
 //
-//    - list of EncodingProfile(s) this target handles.
+//   - list of EncodingProfile(s) this target handles.
 //
 func (target *EncodingTarget) Profiles() []*EncodingProfile {
 	var _arg0 *C.GstEncodingTarget // out
@@ -391,7 +397,7 @@ func (target *EncodingTarget) Save() error {
 //
 // The function takes the following parameters:
 //
-//    - filepath: location to store the target at.
+//   - filepath: location to store the target at.
 //
 func (target *EncodingTarget) SaveToFile(filepath string) error {
 	var _arg0 *C.GstEncodingTarget // out
@@ -415,22 +421,22 @@ func (target *EncodingTarget) SaveToFile(filepath string) error {
 	return _goerr
 }
 
-// EncodingTargetLoad searches for the EncodingTarget with the given name, loads
-// it and returns it.
+// EncodingTargetLoad searches for the EncodingTarget with the given name,
+// loads it and returns it.
 //
 // If the category name is specified only targets from that category will be
 // searched for.
 //
 // The function takes the following parameters:
 //
-//    - name of the EncodingTarget to load (automatically converted to lower case
-//      internally as capital letters are not valid for target names).
-//    - category (optional): name of the target category, like
-//      T_ENCODING_CATEGORY_DEVICE. Can be NULL.
+//   - name of the EncodingTarget to load (automatically converted to lower case
+//     internally as capital letters are not valid for target names).
+//   - category (optional): name of the target category, like
+//     T_ENCODING_CATEGORY_DEVICE. Can be NULL.
 //
 // The function returns the following values:
 //
-//    - encodingTarget if available, else NULL.
+//   - encodingTarget if available, else NULL.
 //
 func EncodingTargetLoad(name, category string) (*EncodingTarget, error) {
 	var _arg1 *C.gchar             // out
@@ -465,11 +471,11 @@ func EncodingTargetLoad(name, category string) (*EncodingTarget, error) {
 //
 // The function takes the following parameters:
 //
-//    - filepath: file location to load the EncodingTarget from.
+//   - filepath: file location to load the EncodingTarget from.
 //
 // The function returns the following values:
 //
-//    - encodingTarget contained in the file, else NULL.
+//   - encodingTarget contained in the file, else NULL.
 //
 func EncodingTargetLoadFromFile(filepath string) (*EncodingTarget, error) {
 	var _arg1 *C.gchar             // out

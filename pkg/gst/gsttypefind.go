@@ -115,7 +115,7 @@ func (t *TypeFind) Data() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - guint64: length of the data stream, or 0 if it is not available.
+//   - guint64: length of the data stream, or 0 if it is not available.
 //
 func (find *TypeFind) Length() uint64 {
 	var _arg0 *C.GstTypeFind // out
@@ -133,6 +133,46 @@ func (find *TypeFind) Length() uint64 {
 	return _guint64
 }
 
+// Peek returns the size bytes of the stream to identify beginning at offset.
+// If offset is a positive number, the offset is relative to the beginning of
+// the stream, if offset is a negative number the offset is relative to the end
+// of the stream. The returned memory is valid until the typefinding function
+// returns and must not be freed.
+//
+// The function takes the following parameters:
+//
+//   - offset: offset.
+//   - size: number of bytes to return.
+//
+// The function returns the following values:
+//
+//   - guint8 (optional): the requested data, or NULL if that data is not
+//     available.
+//
+func (find *TypeFind) Peek(offset int64, size uint) *byte {
+	var _arg0 *C.GstTypeFind // out
+	var _arg1 C.gint64       // out
+	var _arg2 C.guint        // out
+	var _cret *C.guint8      // in
+
+	_arg0 = (*C.GstTypeFind)(gextras.StructNative(unsafe.Pointer(find)))
+	_arg1 = C.gint64(offset)
+	_arg2 = C.guint(size)
+
+	_cret = C.gst_type_find_peek(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(find)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(size)
+
+	var _guint8 *byte // out
+
+	if _cret != nil {
+		_guint8 = (*byte)(unsafe.Pointer(_cret))
+	}
+
+	return _guint8
+}
+
 // Suggest: if a TypeFindFunction calls this function it suggests the caps with
 // the given probability. A TypeFindFunction may supply different suggestions in
 // one call. It is up to the caller of the TypeFindFunction to interpret these
@@ -140,8 +180,8 @@ func (find *TypeFind) Length() uint64 {
 //
 // The function takes the following parameters:
 //
-//    - probability in percent that the suggestion is right.
-//    - caps: fixed Caps to suggest.
+//   - probability in percent that the suggestion is right.
+//   - caps: fixed Caps to suggest.
 //
 func (find *TypeFind) Suggest(probability uint, caps *Caps) {
 	var _arg0 *C.GstTypeFind // out
@@ -166,8 +206,8 @@ func (find *TypeFind) Suggest(probability uint, caps *Caps) {
 //
 // The function takes the following parameters:
 //
-//    - probability in percent that the suggestion is right.
-//    - mediaType: media type of the suggested caps.
+//   - probability in percent that the suggestion is right.
+//   - mediaType: media type of the suggested caps.
 //
 func (find *TypeFind) SuggestEmptySimple(probability uint, mediaType string) {
 	var _arg0 *C.GstTypeFind // out
@@ -192,18 +232,18 @@ func (find *TypeFind) SuggestEmptySimple(probability uint, mediaType string) {
 //
 // The function takes the following parameters:
 //
-//    - plugin (optional) or NULL for a static typefind function.
-//    - name for registering.
-//    - rank (or importance) of this typefind function.
-//    - fn to use.
-//    - extensions (optional): optional comma-separated list of extensions that
-//      could belong to this type.
-//    - possibleCaps (optional): optionally the caps that could be returned when
-//      typefinding succeeds.
+//   - plugin (optional) or NULL for a static typefind function.
+//   - name for registering.
+//   - rank (or importance) of this typefind function.
+//   - fn to use.
+//   - extensions (optional): optional comma-separated list of extensions that
+//     could belong to this type.
+//   - possibleCaps (optional): optionally the caps that could be returned when
+//     typefinding succeeds.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success, FALSE otherwise.
+//   - ok: TRUE on success, FALSE otherwise.
 //
 func TypeFindRegister(plugin *Plugin, name string, rank uint, fn TypeFindFunction, extensions string, possibleCaps *Caps) bool {
 	var _arg1 *C.GstPlugin          // out

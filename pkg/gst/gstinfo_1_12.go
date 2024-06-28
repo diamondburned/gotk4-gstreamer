@@ -13,13 +13,13 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - flags: set of StackTraceFlags to determine how the stack trace should
-//      look like. Pass T_STACK_TRACE_SHOW_NONE to retrieve a minimal backtrace.
+//   - flags: set of StackTraceFlags to determine how the stack trace should
+//     look like. Pass T_STACK_TRACE_SHOW_NONE to retrieve a minimal backtrace.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): stack trace, if libunwind or glibc backtrace are
-//      present, else NULL.
+//   - utf8 (optional): stack trace, if libunwind or glibc backtrace are
+//     present, else NULL.
 //
 func DebugGetStackTrace(flags StackTraceFlags) string {
 	var _arg1 C.GstStackTraceFlags // out

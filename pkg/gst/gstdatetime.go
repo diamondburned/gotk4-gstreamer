@@ -30,14 +30,13 @@ func init() {
 // DateTime: struct to store date, time and timezone information altogether.
 // DateTime is refcounted and immutable.
 //
-// Date information is handled using the [proleptic Gregorian calendar].
+// Date information is handled using the proleptic Gregorian calendar.
 //
 // Provides basic creation functions and accessor functions to its fields.
 //
-// [proleptic Gregorian calendar]:
-// https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar
-//
 // An instance of this type is always passed by reference.
+//
+// [proleptic Gregorian calendar]: https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar
 type DateTime struct {
 	*dateTime
 }
@@ -418,7 +417,7 @@ func NewDateTimeYmd(year int, month int, day int) *DateTime {
 //
 // The function returns the following values:
 //
-//    - gint: day of this DateTime, or -1 if none is set.
+//   - gint: day of this DateTime, or -1 if none is set.
 //
 func (datetime *DateTime) Day() int {
 	var _arg0 *C.GstDateTime // out
@@ -441,7 +440,7 @@ func (datetime *DateTime) Day() int {
 //
 // The function returns the following values:
 //
-//    - gint: hour of the day, or -1 if none is set.
+//   - gint: hour of the day, or -1 if none is set.
 //
 func (datetime *DateTime) Hour() int {
 	var _arg0 *C.GstDateTime // out
@@ -464,7 +463,7 @@ func (datetime *DateTime) Hour() int {
 //
 // The function returns the following values:
 //
-//    - gint: microsecond of the second, or -1 if none is set.
+//   - gint: microsecond of the second, or -1 if none is set.
 //
 func (datetime *DateTime) Microsecond() int {
 	var _arg0 *C.GstDateTime // out
@@ -487,7 +486,7 @@ func (datetime *DateTime) Microsecond() int {
 //
 // The function returns the following values:
 //
-//    - gint: minute of the hour, or -1 if none is set.
+//   - gint: minute of the hour, or -1 if none is set.
 //
 func (datetime *DateTime) Minute() int {
 	var _arg0 *C.GstDateTime // out
@@ -509,7 +508,7 @@ func (datetime *DateTime) Minute() int {
 //
 // The function returns the following values:
 //
-//    - gint: month of this DateTime, or -1 if none is set.
+//   - gint: month of this DateTime, or -1 if none is set.
 //
 func (datetime *DateTime) Month() int {
 	var _arg0 *C.GstDateTime // out
@@ -532,7 +531,7 @@ func (datetime *DateTime) Month() int {
 //
 // The function returns the following values:
 //
-//    - gint: second represented by datetime, or -1 if none is set.
+//   - gint: second represented by datetime, or -1 if none is set.
 //
 func (datetime *DateTime) Second() int {
 	var _arg0 *C.GstDateTime // out
@@ -557,7 +556,7 @@ func (datetime *DateTime) Second() int {
 //
 // The function returns the following values:
 //
-//    - gfloat: offset from UTC in hours, or G_MAXDOUBLE if none is set.
+//   - gfloat: offset from UTC in hours, or G_MAXFLOAT if none is set.
 //
 func (datetime *DateTime) TimeZoneOffset() float32 {
 	var _arg0 *C.GstDateTime // out
@@ -580,7 +579,7 @@ func (datetime *DateTime) TimeZoneOffset() float32 {
 //
 // The function returns the following values:
 //
-//    - gint: year of this DateTime.
+//   - gint: year of this DateTime.
 //
 func (datetime *DateTime) Year() int {
 	var _arg0 *C.GstDateTime // out
@@ -600,7 +599,7 @@ func (datetime *DateTime) Year() int {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if datetime<!-- -->'s day field is set, otherwise FALSE.
+//   - ok: TRUE if datetime<!-- -->'s day field is set, otherwise FALSE.
 //
 func (datetime *DateTime) HasDay() bool {
 	var _arg0 *C.GstDateTime // out
@@ -622,7 +621,7 @@ func (datetime *DateTime) HasDay() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if datetime<!-- -->'s month field is set, otherwise FALSE.
+//   - ok: TRUE if datetime<!-- -->'s month field is set, otherwise FALSE.
 //
 func (datetime *DateTime) HasMonth() bool {
 	var _arg0 *C.GstDateTime // out
@@ -644,7 +643,7 @@ func (datetime *DateTime) HasMonth() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if datetime<!-- -->'s second field is set, otherwise FALSE.
+//   - ok: TRUE if datetime<!-- -->'s second field is set, otherwise FALSE.
 //
 func (datetime *DateTime) HasSecond() bool {
 	var _arg0 *C.GstDateTime // out
@@ -666,8 +665,8 @@ func (datetime *DateTime) HasSecond() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if datetime<!-- -->'s hour and minute fields are set, otherwise
-//      FALSE.
+//   - ok: TRUE if datetime<!-- -->'s hour and minute fields are set, otherwise
+//     FALSE.
 //
 func (datetime *DateTime) HasTime() bool {
 	var _arg0 *C.GstDateTime // out
@@ -689,8 +688,8 @@ func (datetime *DateTime) HasTime() bool {
 
 // The function returns the following values:
 //
-//    - ok: TRUE if datetime<!-- -->'s year field is set (which should always be
-//      the case), otherwise FALSE.
+//   - ok: TRUE if datetime<!-- -->'s year field is set (which should always be
+//     the case), otherwise FALSE.
 //
 func (datetime *DateTime) HasYear() bool {
 	var _arg0 *C.GstDateTime // out
@@ -714,8 +713,8 @@ func (datetime *DateTime) HasYear() bool {
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time, or NULL on error or if datetime
-//      does not have a year, month, day, hour, minute and second.
+//   - dateTime (optional): newly created Time, or NULL on error or if datetime
+//     does not have a year, month, day, hour, minute and second.
 //
 func (datetime *DateTime) ToGDateTime() *glib.DateTime {
 	var _arg0 *C.GstDateTime // out
@@ -741,16 +740,16 @@ func (datetime *DateTime) ToGDateTime() *glib.DateTime {
 	return _dateTime
 }
 
-// ToISO8601String: create a minimal string compatible with ISO-8601. Possible
-// output formats are (for example): 2012, 2012-06, 2012-06-23,
+// ToISO8601String: create a minimal string compatible with ISO-8601.
+// Possible output formats are (for example): 2012, 2012-06, 2012-06-23,
 // 2012-06-23T23:30Z, 2012-06-23T23:30+0100, 2012-06-23T23:30:59Z,
 // 2012-06-23T23:30:59+0100.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string formatted according to ISO 8601
-//      and only including the datetime fields that are valid, or NULL in case
-//      there was an error.
+//   - utf8 (optional): newly allocated string formatted according to ISO 8601
+//     and only including the datetime fields that are valid, or NULL in case
+//     there was an error.
 //
 func (datetime *DateTime) ToISO8601String() string {
 	var _arg0 *C.GstDateTime // out

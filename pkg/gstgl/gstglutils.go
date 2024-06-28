@@ -19,8 +19,8 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - element
-//    - display
+//   - element
+//   - display
 //
 func GLElementPropagateDisplayContext(element gst.Elementer, display *GLDisplay) {
 	var _arg1 *C.GstElement   // out
@@ -39,9 +39,9 @@ func GLElementPropagateDisplayContext(element gst.Elementer, display *GLDisplay)
 //
 // The function takes the following parameters:
 //
-//    - info: VideoInfo.
-//    - align or NULL.
-//    - plane number in info to retrieve the data size of.
+//   - info: VideoInfo.
+//   - align or NULL.
+//   - plane number in info to retrieve the data size of.
 //
 // The function returns the following values:
 //
@@ -69,14 +69,14 @@ func GLGetPlaneDataSize(info *gstvideo.VideoInfo, align *gstvideo.VideoAlignment
 
 // The function takes the following parameters:
 //
-//    - info: VideoInfo.
-//    - valign or NULL.
-//    - plane number in info to retrieve the data size of.
+//   - info: VideoInfo.
+//   - valign or NULL.
+//   - plane number in info to retrieve the data size of.
 //
 // The function returns the following values:
 //
-//    - gsize: difference between the supposed start of the plane from the info
-//      and where the data from the previous plane ends.
+//   - gsize: difference between the supposed start of the plane from the info
+//     and where the data from the previous plane ends.
 //
 func GLGetPlaneStart(info *gstvideo.VideoInfo, valign *gstvideo.VideoAlignment, plane uint) uint {
 	var _arg1 *C.GstVideoInfo      // out
@@ -102,16 +102,16 @@ func GLGetPlaneStart(info *gstvideo.VideoInfo, valign *gstvideo.VideoAlignment, 
 
 // The function takes the following parameters:
 //
-//    - element: Element.
-//    - query of type GST_QUERY_CONTEXT.
-//    - display (optional): GLDisplay.
-//    - context (optional): GLContext.
-//    - otherContext (optional): application provided GLContext.
+//   - element: Element.
+//   - query of type GST_QUERY_CONTEXT.
+//   - display (optional): GLDisplay.
+//   - context (optional): GLContext.
+//   - otherContext (optional): application provided GLContext.
 //
 // The function returns the following values:
 //
-//    - ok: whether the query was successfully responded to from the passed
-//      display, context, and other_context.
+//   - ok: whether the query was successfully responded to from the passed
+//     display, context, and other_context.
 //
 func GLHandleContextQuery(element gst.Elementer, query *gst.Query, display *GLDisplay, context, otherContext GLContexter) bool {
 	var _arg1 *C.GstElement   // out
@@ -157,14 +157,14 @@ func GLHandleContextQuery(element gst.Elementer, query *gst.Query, display *GLDi
 //
 // The function takes the following parameters:
 //
-//    - element: Element.
-//    - context: Context.
+//   - element: Element.
+//   - context: Context.
 //
 // The function returns the following values:
 //
-//    - display: location of a GLDisplay.
-//    - otherContext: location of a GLContext.
-//    - ok: whether the display or other_context could be set successfully.
+//   - display: location of a GLDisplay.
+//   - otherContext: location of a GLContext.
+//   - ok: whether the display or other_context could be set successfully.
 //
 func GLHandleSetContext(element gst.Elementer, context *gst.Context) (*GLDisplay, GLContexter, bool) {
 	var _arg1 *C.GstElement   // out
@@ -214,12 +214,12 @@ func GLHandleSetContext(element gst.Elementer, context *gst.Context) (*GLDisplay
 //
 // The function takes the following parameters:
 //
-//    - value: initialized #GValue of type G_TYPE_STRING.
+//   - value: initialized #GValue of type G_TYPE_STRING.
 //
 // The function returns the following values:
 //
-//    - glTextureTarget: mask of GLTextureTarget's in value or
-//      GST_GL_TEXTURE_TARGET_NONE on failure.
+//   - glTextureTarget: mask of GLTextureTarget's in value or
+//     GST_GL_TEXTURE_TARGET_NONE on failure.
 //
 func GLValueGetTextureTargetMask(value *coreglib.Value) GLTextureTarget {
 	var _arg1 *C.GValue            // out
@@ -239,12 +239,12 @@ func GLValueGetTextureTargetMask(value *coreglib.Value) GLTextureTarget {
 
 // The function takes the following parameters:
 //
-//    - value: initialized #GValue of type G_TYPE_STRING.
-//    - target: GLTextureTarget's.
+//   - value: initialized #GValue of type G_TYPE_STRING.
+//   - target: GLTextureTarget's.
 //
 // The function returns the following values:
 //
-//    - ok: whether the target could be set on value.
+//   - ok: whether the target could be set on value.
 //
 func GLValueSetTextureTarget(value *coreglib.Value, target GLTextureTarget) bool {
 	var _arg1 *C.GValue            // out
@@ -272,12 +272,12 @@ func GLValueSetTextureTarget(value *coreglib.Value, target GLTextureTarget) bool
 //
 // The function takes the following parameters:
 //
-//    - value: uninitialized #GValue.
-//    - targetMask: bitwise mask of GLTextureTarget's.
+//   - value: uninitialized #GValue.
+//   - targetMask: bitwise mask of GLTextureTarget's.
 //
 // The function returns the following values:
 //
-//    - ok: whether the target_mask could be set on value.
+//   - ok: whether the target_mask could be set on value.
 //
 func GLValueSetTextureTargetFromMask(value *coreglib.Value, targetMask GLTextureTarget) bool {
 	var _arg1 *C.GValue            // out

@@ -69,8 +69,8 @@ type AudioResamplerFilterMode C.gint
 
 const (
 	// AudioResamplerFilterModeInterpolated: use interpolated filter tables.
-	// This uses less memory but more CPU and is slightly less accurate but it
-	// allows for more efficient variable rate resampling with
+	// This uses less memory but more CPU and is slightly less accurate
+	// but it allows for more efficient variable rate resampling with
 	// gst_audio_resampler_update().
 	AudioResamplerFilterModeInterpolated AudioResamplerFilterMode = iota
 	// AudioResamplerFilterModeFull: use full filter table. This uses more
@@ -146,17 +146,17 @@ type AudioResamplerFlags C.guint
 const (
 	// AudioResamplerFlagNone: no flags.
 	AudioResamplerFlagNone AudioResamplerFlags = 0b0
-	// AudioResamplerFlagNonInterleavedIn: input samples are non-interleaved. an
-	// array of blocks of samples, one for each channel, should be passed to the
-	// resample function.
+	// AudioResamplerFlagNonInterleavedIn: input samples are non-interleaved.
+	// an array of blocks of samples, one for each channel, should be passed to
+	// the resample function.
 	AudioResamplerFlagNonInterleavedIn AudioResamplerFlags = 0b1
 	// AudioResamplerFlagNonInterleavedOut: output samples are non-interleaved.
 	// an array of blocks of samples, one for each channel, should be passed to
 	// the resample function.
 	AudioResamplerFlagNonInterleavedOut AudioResamplerFlags = 0b10
 	// AudioResamplerFlagVariableRate: optimize for dynamic updates of the
-	// sample rates with gst_audio_resampler_update(). This will select an
-	// interpolating filter when T_AUDIO_RESAMPLER_FILTER_MODE_AUTO is
+	// sample rates with gst_audio_resampler_update(). This will select
+	// an interpolating filter when T_AUDIO_RESAMPLER_FILTER_MODE_AUTO is
 	// configured.
 	AudioResamplerFlagVariableRate AudioResamplerFlags = 0b100
 )

@@ -32,11 +32,11 @@ func init() {
 
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - ok: whether the memory at mem is backed by physical memory.
+//   - ok: whether the memory at mem is backed by physical memory.
 //
 func IsPhysMemory(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -58,11 +58,11 @@ func IsPhysMemory(mem *gst.Memory) bool {
 
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - guintptr: physical memory address that is backing mem, or 0 if none.
+//   - guintptr: physical memory address that is backing mem, or 0 if none.
 //
 func PhysMemoryGetPhysAddr(mem *gst.Memory) uintptr {
 	var _arg1 *C.GstMemory // out
@@ -75,7 +75,7 @@ func PhysMemoryGetPhysAddr(mem *gst.Memory) uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
@@ -147,7 +147,7 @@ func (allocator *PhysMemoryAllocator) physAddr(mem *gst.Memory) uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }

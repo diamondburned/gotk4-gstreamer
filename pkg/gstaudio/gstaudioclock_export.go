@@ -49,9 +49,7 @@ func _gotk4_gstaudio1_AudioClockGetTimeFunc(arg1 *C.GstClock, arg2 C.gpointer) (
 
 	var _ gst.ClockTime
 
-	cret = C.guint64(clockTime)
-	type _ = gst.ClockTime
-	type _ = uint64
+	cret = C.GstClockTime(clockTime)
 
 	return cret
 }

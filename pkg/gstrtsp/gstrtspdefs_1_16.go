@@ -14,22 +14,22 @@ import "C"
 // RtspGenerateDigestAuthResponseFromMD5 calculates the digest auth response
 // from the values given by the server and the md5sum. See RFC2069 for details.
 //
-// This function is useful when the passwords are not stored in clear text, but
-// instead in the same format as the .htdigest file.
+// This function is useful when the passwords are not stored in clear text,
+// but instead in the same format as the .htdigest file.
 //
 // Currently only supported algorithm "md5".
 //
 // The function takes the following parameters:
 //
-//    - algorithm (optional): hash algorithm to use, or NULL for MD5.
-//    - method: request method, e.g. PLAY.
-//    - md5 sum of username:realm:password.
-//    - uri: original request URI.
-//    - nonce: nonce.
+//   - algorithm (optional): hash algorithm to use, or NULL for MD5.
+//   - method: request method, e.g. PLAY.
+//   - md5 sum of username:realm:password.
+//   - uri: original request URI.
+//   - nonce: nonce.
 //
 // The function returns the following values:
 //
-//    - utf8: authentication response or NULL if unsupported.
+//   - utf8 (optional): authentication response or NULL if unsupported.
 //
 func RtspGenerateDigestAuthResponseFromMD5(algorithm, method, md5, uri, nonce string) string {
 	var _arg1 *C.gchar // out
@@ -61,8 +61,10 @@ func RtspGenerateDigestAuthResponseFromMD5(algorithm, method, md5, uri, nonce st
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }

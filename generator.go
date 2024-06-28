@@ -4,6 +4,7 @@ package main
 
 import (
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -13,15 +14,10 @@ import (
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-const (
-	gotk4Module     = "github.com/diamondburned/gotk4/pkg"
-	gstreamerModule = "github.com/OmegaRogue/gotk4-gstreamer/pkg"
-)
-
 var Data = genmain.Overlay(
 	gendata.Main,
 	genmain.Data{
-		Module: gstreamerModule,
+		Module: "github.com/OmegaRogue/gotk4-gstreamer/pkg",
 		Packages: []genmain.Package{
 			{
 				Name: "gstreamer-1.0", Namespaces: []string{
@@ -81,6 +77,24 @@ var Data = genmain.Overlay(
 				p := FindParameter(c, "user_data")
 				p.AnyType = gir.AnyType{
 					Type: &gir.Type{Name: "gpointer"},
+				}
+			}),
+			// For some reason, this namespace has a lot of duplicate members.
+			// This is a hack to remove duplicate members in all bitfields.
+			PreprocessorFunc(func(repos gir.Repositories) {
+				gstvideo := repos.FindNamespace("GstVideo-1")
+
+				for i := range gstvideo.Namespace.Bitfields {
+					bitfield := &gstvideo.Namespace.Bitfields[i]
+
+					slices.SortStableFunc(bitfield.Members, func(a, b gir.Member) int {
+						// Sort by value first, then by name.
+						return strings.Compare(a.Value, b.Value)
+					})
+
+					bitfield.Members = slices.CompactFunc(bitfield.Members, func(a, b gir.Member) bool {
+						return a.Name() == b.Name() && a.Value == b.Value
+					})
 				}
 			}),
 		},

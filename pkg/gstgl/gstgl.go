@@ -82,7 +82,7 @@ func (g GLBaseMemoryError) String() string {
 
 // The function returns the following values:
 //
-//    - quark used for GLBaseMemory in #GError's.
+//   - quark used for GLBaseMemory in #GError's.
 //
 func GLBaseMemoryErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -91,9 +91,7 @@ func GLBaseMemoryErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -129,7 +127,7 @@ func (g GLConfigCaveat) String() string {
 
 // The function returns the following values:
 //
-//    - quark used for GLContext in #GError's.
+//   - quark used for GLContext in #GError's.
 //
 func GLContextErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -138,9 +136,7 @@ func GLContextErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -163,32 +159,32 @@ const (
 	GLRg GLFormat = 33319
 	// GLRg8: two 8-bit components stored in the R and G texture components.
 	GLRg8 GLFormat = 33323
-	// GLRgb: three components stored in the R, G, and B texture components.
-	GLRgb GLFormat = 6407
-	// GLRgb8: three 8-bit components stored in the R, G, and B texture
+	// GLRGB: three components stored in the R, G, and B texture components.
+	GLRGB GLFormat = 6407
+	// GLRGB8: three 8-bit components stored in the R, G, and B texture
 	// components.
-	GLRgb8 GLFormat = 32849
-	// GLRgb565: three components of bit depth 5, 6 and 5 stored in the R, G,
+	GLRGB8 GLFormat = 32849
+	// GLRGB565: three components of bit depth 5, 6 and 5 stored in the R, G,
 	// and B texture components respectively.
-	GLRgb565 GLFormat = 36194
-	// GLRgb16: three 16-bit components stored in the R, G, and B texture
+	GLRGB565 GLFormat = 36194
+	// GLRGB16: three 16-bit components stored in the R, G, and B texture
 	// components.
-	GLRgb16 GLFormat = 32852
-	// GLRgba: four components stored in the R, G, B, and A texture components
+	GLRGB16 GLFormat = 32852
+	// GLRGBA: four components stored in the R, G, B, and A texture components
 	// respectively.
-	GLRgba GLFormat = 6408
-	// GLRgba8: four 8-bit components stored in the R, G, B, and A texture
+	GLRGBA GLFormat = 6408
+	// GLRGBA8: four 8-bit components stored in the R, G, B, and A texture
 	// components respectively.
-	GLRgba8 GLFormat = 32856
-	// GLRgba16: four 16-bit components stored in the R, G, B, and A texture
+	GLRGBA8 GLFormat = 32856
+	// GLRGBA16: four 16-bit components stored in the R, G, B, and A texture
 	// components respectively.
-	GLRgba16 GLFormat = 32859
+	GLRGBA16 GLFormat = 32859
 	// GLDepthComponent16: single 16-bit component for depth information.
 	GLDepthComponent16 GLFormat = 33189
 	// GLDepth24Stencil8: 24-bit component for depth information and a 8-bit
 	// component for stencil informat.
 	GLDepth24Stencil8 GLFormat = 35056
-	GLRgb10A2         GLFormat = 32857
+	GLRGB10A2         GLFormat = 32857
 	// GLR16: single 16-bit component stored in the R texture component.
 	GLR16 GLFormat = 33322
 	// GLRg16: two 16-bit components stored in the R and G texture components.
@@ -216,25 +212,25 @@ func (g GLFormat) String() string {
 		return "Rg"
 	case GLRg8:
 		return "Rg8"
-	case GLRgb:
+	case GLRGB:
 		return "RGB"
-	case GLRgb8:
+	case GLRGB8:
 		return "RGB8"
-	case GLRgb565:
+	case GLRGB565:
 		return "RGB565"
-	case GLRgb16:
+	case GLRGB16:
 		return "RGB16"
-	case GLRgba:
+	case GLRGBA:
 		return "RGBA"
-	case GLRgba8:
+	case GLRGBA8:
 		return "RGBA8"
-	case GLRgba16:
+	case GLRGBA16:
 		return "RGBA16"
 	case GLDepthComponent16:
 		return "DepthComponent16"
 	case GLDepth24Stencil8:
 		return "Depth24Stencil8"
-	case GLRgb10A2:
+	case GLRGB10A2:
 		return "RGB10A2"
 	case GLR16:
 		return "R16"
@@ -276,7 +272,7 @@ func (g GLQueryType) String() string {
 
 // The function returns the following values:
 //
-//    - quark used for GstGLSL in #GError's.
+//   - quark used for GstGLSL in #GError's.
 //
 func GLSLErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -285,9 +281,7 @@ func GLSLErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -360,7 +354,7 @@ func (g GLWindowError) String() string {
 
 // The function returns the following values:
 //
-//    - quark used for GLWindow in #GError's.
+//   - quark used for GLWindow in #GError's.
 //
 func GLWindowErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -369,9 +363,7 @@ func GLWindowErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }

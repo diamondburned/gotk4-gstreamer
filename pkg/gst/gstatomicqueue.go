@@ -71,7 +71,7 @@ func NewAtomicQueue(initialSize uint) *AtomicQueue {
 //
 // The function returns the following values:
 //
-//    - guint: number of elements in the queue.
+//   - guint: number of elements in the queue.
 //
 func (queue *AtomicQueue) Length() uint {
 	var _arg0 *C.GstAtomicQueue // out
@@ -93,8 +93,8 @@ func (queue *AtomicQueue) Length() uint {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): head element of queue or NULL when the queue is
-//      empty.
+//   - gpointer (optional): head element of queue or NULL when the queue is
+//     empty.
 //
 func (queue *AtomicQueue) Peek() unsafe.Pointer {
 	var _arg0 *C.GstAtomicQueue // out
@@ -116,8 +116,8 @@ func (queue *AtomicQueue) Peek() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): head element of queue or NULL when the queue is
-//      empty.
+//   - gpointer (optional): head element of queue or NULL when the queue is
+//     empty.
 //
 func (queue *AtomicQueue) Pop() unsafe.Pointer {
 	var _arg0 *C.GstAtomicQueue // out
@@ -139,7 +139,7 @@ func (queue *AtomicQueue) Pop() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - data (optional): data.
+//   - data (optional): data.
 //
 func (queue *AtomicQueue) Push(data unsafe.Pointer) {
 	var _arg0 *C.GstAtomicQueue // out

@@ -44,18 +44,18 @@ func init() {
 type VideoFilterOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - incaps
-	//    - inInfo
-	//    - outcaps
-	//    - outInfo
+	//   - incaps
+	//   - inInfo
+	//   - outcaps
+	//   - outInfo
 	//
 	// The function returns the following values:
 	//
 	SetInfo func(incaps *gst.Caps, inInfo *VideoInfo, outcaps *gst.Caps, outInfo *VideoInfo) bool
 	// The function takes the following parameters:
 	//
-	//    - inframe
-	//    - outframe
+	//   - inframe
+	//   - outframe
 	//
 	// The function returns the following values:
 	//
@@ -158,10 +158,10 @@ func BaseVideoFilter(obj VideoFilterer) *VideoFilter {
 
 // The function takes the following parameters:
 //
-//    - incaps
-//    - inInfo
-//    - outcaps
-//    - outInfo
+//   - incaps
+//   - inInfo
+//   - outcaps
+//   - outInfo
 //
 // The function returns the following values:
 //
@@ -200,8 +200,8 @@ func (filter *VideoFilter) setInfo(incaps *gst.Caps, inInfo *VideoInfo, outcaps 
 
 // The function takes the following parameters:
 //
-//    - inframe
-//    - outframe
+//   - inframe
+//   - outframe
 //
 // The function returns the following values:
 //

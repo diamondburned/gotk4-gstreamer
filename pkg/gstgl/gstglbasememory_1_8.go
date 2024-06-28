@@ -36,11 +36,11 @@ const GL_BASE_MEMORY_ALLOCATOR_NAME = "GLBaseMemory"
 
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - ok: whether the memory at mem is a GLBaseMemory.
+//   - ok: whether the memory at mem is a GLBaseMemory.
 //
 func IsGLBaseMemory(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -64,11 +64,12 @@ func IsGLBaseMemory(mem *gst.Memory) bool {
 type GLBaseMemoryAllocatorOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - params to allocate the memory with.
+	//   - params to allocate the memory with.
 	//
 	// The function returns the following values:
 	//
-	//    - glBaseMemory: newly allocated GLBaseMemory from allocator and params.
+	//   - glBaseMemory (optional): newly allocated GLBaseMemory from allocator
+	//     and params.
 	//
 	Alloc func(params *GLAllocationParams) *GLBaseMemory
 }
@@ -149,11 +150,12 @@ func BaseGLBaseMemoryAllocator(obj GLBaseMemoryAllocatorrer) *GLBaseMemoryAlloca
 
 // The function takes the following parameters:
 //
-//    - params to allocate the memory with.
+//   - params to allocate the memory with.
 //
 // The function returns the following values:
 //
-//    - glBaseMemory: newly allocated GLBaseMemory from allocator and params.
+//   - glBaseMemory (optional): newly allocated GLBaseMemory from allocator and
+//     params.
 //
 func (allocator *GLBaseMemoryAllocator) alloc(params *GLAllocationParams) *GLBaseMemory {
 	gclass := (*C.GstGLBaseMemoryAllocatorClass)(coreglib.PeekParentClass(allocator))
@@ -172,25 +174,28 @@ func (allocator *GLBaseMemoryAllocator) alloc(params *GLAllocationParams) *GLBas
 
 	var _glBaseMemory *GLBaseMemory // out
 
-	_glBaseMemory = (*GLBaseMemory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_glBaseMemory)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_glBaseMemory = (*GLBaseMemory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glBaseMemory)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _glBaseMemory
 }
 
 // The function takes the following parameters:
 //
-//    - allocator: GLBaseMemoryAllocator.
-//    - params to allocate the memory with.
+//   - allocator: GLBaseMemoryAllocator.
+//   - params to allocate the memory with.
 //
 // The function returns the following values:
 //
-//    - glBaseMemory: new GLBaseMemory from allocator with the requested params.
+//   - glBaseMemory (optional): new GLBaseMemory from allocator with the
+//     requested params.
 //
 func GLBaseMemoryAlloc(allocator GLBaseMemoryAllocatorrer, params *GLAllocationParams) *GLBaseMemory {
 	var _arg1 *C.GstGLBaseMemoryAllocator // out
@@ -206,19 +211,21 @@ func GLBaseMemoryAlloc(allocator GLBaseMemoryAllocatorrer, params *GLAllocationP
 
 	var _glBaseMemory *GLBaseMemory // out
 
-	_glBaseMemory = (*GLBaseMemory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_glBaseMemory)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_glBaseMemory = (*GLBaseMemory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glBaseMemory)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _glBaseMemory
 }
 
-// GLBaseMemoryInitOnce initializes the GL Base Memory allocator. It is safe to
-// call this function multiple times. This must be called before any other
+// GLBaseMemoryInitOnce initializes the GL Base Memory allocator. It is safe
+// to call this function multiple times. This must be called before any other
 // GstGLBaseMemory operation.
 func GLBaseMemoryInitOnce() {
 	C.gst_gl_base_memory_init_once()

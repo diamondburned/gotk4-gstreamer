@@ -15,12 +15,12 @@ import (
 // #include <gst/base/base.h>
 import "C"
 
-// TypeFindHelperForBufferWithExtension tries to find what type of data is
-// contained in the given Buffer, the assumption being that the buffer
+// TypeFindHelperForBufferWithExtension tries to find what type of data
+// is contained in the given Buffer, the assumption being that the buffer
 // represents the beginning of the stream or file.
 //
-// All available typefinders will be called on the data in order of rank. If a
-// typefinding function returns a probability of GST_TYPE_FIND_MAXIMUM,
+// All available typefinders will be called on the data in order of rank.
+// If a typefinding function returns a probability of GST_TYPE_FIND_MAXIMUM,
 // typefinding is stopped immediately and the found caps will be returned right
 // away. Otherwise, all available typefind functions will the tried, and the
 // caps with the highest probability will be returned, or NULL if the content of
@@ -34,16 +34,16 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - obj (optional): object doing the typefinding, or NULL (used for logging).
-//    - buf with data to typefind.
-//    - extension (optional) of the media, or NULL.
+//   - obj (optional): object doing the typefinding, or NULL (used for logging).
+//   - buf with data to typefind.
+//   - extension (optional) of the media, or NULL.
 //
 // The function returns the following values:
 //
-//    - prob (optional): location to store the probability of the found caps, or
-//      NULL.
-//    - caps (optional) corresponding to the data, or NULL if no type could be
-//      found. The caller should free the caps returned with gst_caps_unref().
+//   - prob (optional): location to store the probability of the found caps,
+//     or NULL.
+//   - caps (optional) corresponding to the data, or NULL if no type could be
+//     found. The caller should free the caps returned with gst_caps_unref().
 //
 func TypeFindHelperForBufferWithExtension(obj gst.GstObjector, buf *gst.Buffer, extension string) (gst.TypeFindProbability, *gst.Caps) {
 	var _arg1 *C.GstObject             // out
@@ -87,8 +87,8 @@ func TypeFindHelperForBufferWithExtension(obj gst.GstObjector, buf *gst.Buffer, 
 // contained in the given data, the assumption being that the data represents
 // the beginning of the stream or file.
 //
-// All available typefinders will be called on the data in order of rank. If a
-// typefinding function returns a probability of GST_TYPE_FIND_MAXIMUM,
+// All available typefinders will be called on the data in order of rank.
+// If a typefinding function returns a probability of GST_TYPE_FIND_MAXIMUM,
 // typefinding is stopped immediately and the found caps will be returned right
 // away. Otherwise, all available typefind functions will the tried, and the
 // caps with the highest probability will be returned, or NULL if the content of
@@ -102,16 +102,16 @@ func TypeFindHelperForBufferWithExtension(obj gst.GstObjector, buf *gst.Buffer, 
 //
 // The function takes the following parameters:
 //
-//    - obj (optional): object doing the typefinding, or NULL (used for logging).
-//    - data: * a pointer with data to typefind.
-//    - extension (optional) of the media, or NULL.
+//   - obj (optional): object doing the typefinding, or NULL (used for logging).
+//   - data: * a pointer with data to typefind.
+//   - extension (optional) of the media, or NULL.
 //
 // The function returns the following values:
 //
-//    - prob (optional): location to store the probability of the found caps, or
-//      NULL.
-//    - caps (optional) corresponding to the data, or NULL if no type could be
-//      found. The caller should free the caps returned with gst_caps_unref().
+//   - prob (optional): location to store the probability of the found caps,
+//     or NULL.
+//   - caps (optional) corresponding to the data, or NULL if no type could be
+//     found. The caller should free the caps returned with gst_caps_unref().
 //
 func TypeFindHelperForDataWithExtension(obj gst.GstObjector, data []byte, extension string) (gst.TypeFindProbability, *gst.Caps) {
 	var _arg1 *C.GstObject // out

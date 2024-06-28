@@ -22,12 +22,12 @@ const RTP_HDREXT_NTP_64_SIZE = 8
 //
 // The function takes the following parameters:
 //
-//    - data to read from.
+//   - data to read from.
 //
 // The function returns the following values:
 //
-//    - ntptime: result NTP time.
-//    - ok: TRUE on success.
+//   - ntptime: result NTP time.
+//   - ok: TRUE on success.
 //
 func RtpHdrextGetNtp56(data []byte) (uint64, bool) {
 	var _arg1 C.gpointer // out
@@ -59,12 +59,12 @@ func RtpHdrextGetNtp56(data []byte) (uint64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - data to read from.
+//   - data to read from.
 //
 // The function returns the following values:
 //
-//    - ntptime: result NTP time.
-//    - ok: TRUE on success.
+//   - ntptime: result NTP time.
+//   - ok: TRUE on success.
 //
 func RtpHdrextGetNtp64(data []byte) (uint64, bool) {
 	var _arg1 C.gpointer // out
@@ -97,13 +97,13 @@ func RtpHdrextGetNtp64(data []byte) (uint64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) to write to.
-//    - size of data.
-//    - ntptime: NTP time.
+//   - data (optional) to write to.
+//   - size of data.
+//   - ntptime: NTP time.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
 func RtpHdrextSetNtp56(data unsafe.Pointer, size uint, ntptime uint64) bool {
 	var _arg1 C.gpointer // out
@@ -135,13 +135,13 @@ func RtpHdrextSetNtp56(data unsafe.Pointer, size uint, ntptime uint64) bool {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) to write to.
-//    - size of data.
-//    - ntptime: NTP time.
+//   - data (optional) to write to.
+//   - size of data.
+//   - ntptime: NTP time.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
 func RtpHdrextSetNtp64(data unsafe.Pointer, size uint, ntptime uint64) bool {
 	var _arg1 C.gpointer // out

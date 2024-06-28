@@ -23,8 +23,8 @@ import "C"
 // packed and in sequence: offsets[channel] = channel * samples * sample_stride
 //
 // It is not allowed for channels to overlap in memory, i.e. for each i in [0,
-// channels), the range [offsets[i], offsets[i] + samples * sample_stride) must
-// not overlap with any other such range. This function will assert if the
+// channels), the range [offsets[i], offsets[i] + samples * sample_stride)
+// must not overlap with any other such range. This function will assert if the
 // parameters specified cause this restriction to be violated.
 //
 // It is, obviously, also not allowed to specify parameters that would cause
@@ -33,16 +33,16 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - info: audio properties of the buffer.
-//    - samples: number of valid samples in the buffer.
-//    - offsets (optional) (in bytes) where each channel plane starts in the
-//      buffer or NULL to calculate it (see below); must be NULL also when
-//      info->layout is GST_AUDIO_LAYOUT_INTERLEAVED.
+//   - buffer: Buffer.
+//   - info: audio properties of the buffer.
+//   - samples: number of valid samples in the buffer.
+//   - offsets (optional) (in bytes) where each channel plane starts in the
+//     buffer or NULL to calculate it (see below); must be NULL also when
+//     info->layout is GST_AUDIO_LAYOUT_INTERLEAVED.
 //
 // The function returns the following values:
 //
-//    - audioMeta that was attached on the buffer.
+//   - audioMeta that was attached on the buffer.
 //
 func BufferAddAudioMeta(buffer *gst.Buffer, info *AudioInfo, samples uint, offsets *uint) *AudioMeta {
 	var _arg1 *C.GstBuffer    // out

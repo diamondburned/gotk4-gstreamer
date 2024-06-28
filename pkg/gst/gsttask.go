@@ -83,9 +83,9 @@ func defaultTaskOverrides(v *Task) TaskOverrides {
 // done when the demuxer can perform random access on the upstream peer element
 // for improved performance.
 //
-// Although convenience functions exist on Pad to start/pause/stop tasks, it
-// might sometimes be needed to create a Task manually if it is not related to a
-// Pad.
+// Although convenience functions exist on Pad to start/pause/stop tasks,
+// it might sometimes be needed to create a Task manually if it is not related
+// to a Pad.
 //
 // Before the Task can be run, it needs a Mutex that can be set with
 // gst_task_set_lock().
@@ -99,8 +99,8 @@ func defaultTaskOverrides(v *Task) TaskOverrides {
 // function it will acquire the provided lock. The provided lock is released
 // when the task pauses or stops.
 //
-// Stopping a task with gst_task_stop() will not immediately make sure the task
-// is not running anymore. Use gst_task_join() to make sure the task is
+// Stopping a task with gst_task_stop() will not immediately make sure the
+// task is not running anymore. Use gst_task_join() to make sure the task is
 // completely stopped and the thread is stopped.
 //
 // After creating a Task, use gst_object_unref() to free its resources. This can
@@ -110,9 +110,9 @@ func defaultTaskOverrides(v *Task) TaskOverrides {
 // application. The application can receive messages from the Bus in its
 // mainloop.
 //
-// For debugging purposes, the task will configure its object name as the thread
-// name on Linux. Please note that the object name should be configured before
-// the task is started; changing the object name after the task has been
+// For debugging purposes, the task will configure its object name as the
+// thread name on Linux. Please note that the object name should be configured
+// before the task is started; changing the object name after the task has been
 // started, has no effect on the thread name.
 type Task struct {
 	_ [0]func() // equal guard
@@ -168,13 +168,13 @@ func marshalTask(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - fn to use.
+//   - fn to use.
 //
 // The function returns the following values:
 //
-//    - task: new Task.
+//   - task: new Task.
 //
-//      MT safe.
+//     MT safe.
 //
 func NewTask(fn TaskFunction) *Task {
 	var _arg1 C.GstTaskFunction // out
@@ -202,7 +202,7 @@ func NewTask(fn TaskFunction) *Task {
 //
 // The function returns the following values:
 //
-//    - taskPool used by task. gst_object_unref() after usage.
+//   - taskPool used by task. gst_object_unref() after usage.
 //
 func (task *Task) Pool() *TaskPool {
 	var _arg0 *C.GstTask     // out
@@ -224,9 +224,9 @@ func (task *Task) Pool() *TaskPool {
 //
 // The function returns the following values:
 //
-//    - taskState of the task
+//   - taskState of the task
 //
-//      MT safe.
+//     MT safe.
 //
 func (task *Task) State() TaskState {
 	var _arg0 *C.GstTask     // out
@@ -254,9 +254,9 @@ func (task *Task) State() TaskState {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be joined.
+//   - ok: TRUE if the task could be joined.
 //
-//      MT safe.
+//     MT safe.
 //
 func (task *Task) Join() bool {
 	var _arg0 *C.GstTask // out
@@ -282,9 +282,9 @@ func (task *Task) Join() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be paused.
+//   - ok: TRUE if the task could be paused.
 //
-//      MT safe.
+//     MT safe.
 //
 func (task *Task) Pause() bool {
 	var _arg0 *C.GstTask // out
@@ -309,9 +309,9 @@ func (task *Task) Pause() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be resumed.
+//   - ok: TRUE if the task could be resumed.
 //
-//      MT safe.
+//     MT safe.
 //
 func (task *Task) Resume() bool {
 	var _arg0 *C.GstTask // out
@@ -338,7 +338,7 @@ func (task *Task) Resume() bool {
 //
 // The function takes the following parameters:
 //
-//    - pool: TaskPool.
+//   - pool: TaskPool.
 //
 func (task *Task) SetPool(pool *TaskPool) {
 	var _arg0 *C.GstTask     // out
@@ -362,11 +362,11 @@ func (task *Task) SetPool(pool *TaskPool) {
 //
 // The function takes the following parameters:
 //
-//    - state: new task state.
+//   - state: new task state.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the state could be changed.
+//   - ok: TRUE if the state could be changed.
 //
 func (task *Task) SetState(state TaskState) bool {
 	var _arg0 *C.GstTask     // out
@@ -394,9 +394,9 @@ func (task *Task) SetState(state TaskState) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be started.
+//   - ok: TRUE if the task could be started.
 //
-//      MT safe.
+//     MT safe.
 //
 func (task *Task) Start() bool {
 	var _arg0 *C.GstTask // out
@@ -422,9 +422,9 @@ func (task *Task) Start() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be stopped.
+//   - ok: TRUE if the task could be stopped.
 //
-//      MT safe.
+//     MT safe.
 //
 func (task *Task) Stop() bool {
 	var _arg0 *C.GstTask // out

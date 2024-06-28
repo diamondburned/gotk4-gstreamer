@@ -155,8 +155,8 @@ func (filter *AudioFilter) setup(info *AudioInfo) bool {
 	return _ok
 }
 
-// AudioFilterClass: in addition to the setup virtual function, you should also
-// override the GstBaseTransform::transform and/or
+// AudioFilterClass: in addition to the setup virtual function,
+// you should also override the GstBaseTransform::transform and/or
 // GstBaseTransform::transform_ip virtual function.
 //
 // An instance of this type is always passed by reference.
@@ -184,7 +184,7 @@ func (a *AudioFilterClass) Basetransformclass() *gstbase.BaseTransformClass {
 //
 // The function takes the following parameters:
 //
-//    - allowedCaps: what formats the filter can handle, as Caps.
+//   - allowedCaps: what formats the filter can handle, as Caps.
 //
 func (klass *AudioFilterClass) AddPadTemplates(allowedCaps *gst.Caps) {
 	var _arg0 *C.GstAudioFilterClass // out

@@ -103,8 +103,8 @@ func marshalTypeFindFactory(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - find: properly setup TypeFind entry. The get_data and suggest_type
-//      members must be set.
+//   - find: properly setup TypeFind entry. The get_data and suggest_type
+//     members must be set.
 //
 func (factory *TypeFindFactory) CallFunction(find *TypeFind) {
 	var _arg0 *C.GstTypeFindFactory // out
@@ -122,7 +122,7 @@ func (factory *TypeFindFactory) CallFunction(find *TypeFind) {
 //
 // The function returns the following values:
 //
-//    - caps (optional) associated with this factory.
+//   - caps (optional) associated with this factory.
 //
 func (factory *TypeFindFactory) Caps() *Caps {
 	var _arg0 *C.GstTypeFindFactory // out
@@ -149,8 +149,8 @@ func (factory *TypeFindFactory) Caps() *Caps {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): a NULL-terminated array of extensions associated with
-//      this factory.
+//   - utf8s (optional): a NULL-terminated array of extensions associated with
+//     this factory.
 //
 func (factory *TypeFindFactory) Extensions() []string {
 	var _arg0 *C.GstTypeFindFactory // out
@@ -188,7 +188,7 @@ func (factory *TypeFindFactory) Extensions() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the factory has a typefind functions set, otherwise FALSE.
+//   - ok: TRUE if the factory has a typefind functions set, otherwise FALSE.
 //
 func (factory *TypeFindFactory) HasFunction() bool {
 	var _arg0 *C.GstTypeFindFactory // out
@@ -218,7 +218,7 @@ func (factory *TypeFindFactory) HasFunction() bool {
 //
 // The function returns the following values:
 //
-//    - list of all registered TypeFindFactory.
+//   - list of all registered TypeFindFactory.
 //
 func TypeFindFactoryGetList() []*TypeFindFactory {
 	var _cret *C.GList // in

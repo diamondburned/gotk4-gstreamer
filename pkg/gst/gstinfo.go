@@ -34,9 +34,9 @@ const DEBUG_BG_MASK = 240
 const DEBUG_FG_MASK = 15
 const DEBUG_FORMAT_MASK = 65280
 
-// PTR_FORMAT: printf format type used to debug GStreamer types. You can use
-// this in combination with GStreamer's debug logging system as well as the
-// functions gst_info_vasprintf(), gst_info_strdup_vprintf() and
+// PTR_FORMAT: printf format type used to debug GStreamer types. You can
+// use this in combination with GStreamer's debug logging system as well
+// as the functions gst_info_vasprintf(), gst_info_strdup_vprintf() and
 // gst_info_strdup_printf() to pretty-print the following types: Caps,
 // Structure, CapsFeatures, TagList, DateTime, Buffer, BufferList, Message,
 // Event, Query, Context, Pad, Object. All #GObject types will be printed as
@@ -46,9 +46,9 @@ const DEBUG_FORMAT_MASK = 65280
 // This can only be used on types whose size is >= sizeof(gpointer).
 const PTR_FORMAT = "paA"
 
-// SEGMENT_FORMAT: printf format type used to debug GStreamer segments. You can
-// use this in combination with GStreamer's debug logging system as well as the
-// functions gst_info_vasprintf(), gst_info_strdup_vprintf() and
+// SEGMENT_FORMAT: printf format type used to debug GStreamer segments.
+// You can use this in combination with GStreamer's debug logging system as
+// well as the functions gst_info_vasprintf(), gst_info_strdup_vprintf() and
 // gst_info_strdup_printf() to pretty-print Segment structures. This can only be
 // used on pointers to GstSegment structures.
 const SEGMENT_FORMAT = "paB"
@@ -63,8 +63,8 @@ const (
 	// debugging output.
 	LevelNone DebugLevel = 0
 	// LevelError: error messages are to be used only when an error occurred
-	// that stops the application from keeping working correctly. An examples is
-	// gst_element_error, which outputs a message with this priority. It does
+	// that stops the application from keeping working correctly. An examples
+	// is gst_element_error, which outputs a message with this priority. It does
 	// not mean that the application is terminating as with g_error.
 	LevelError DebugLevel = 1
 	// LevelWarning: warning messages are to inform about abnormal behaviour
@@ -86,8 +86,8 @@ const (
 	LevelInfo DebugLevel = 4
 	// LevelDebug: debugging messages should be used when something common
 	// happens that is not the expected default behavior, or something that's
-	// useful to know but doesn't happen all the time (ie. per loop iteration or
-	// buffer processed or event handled). An example would be notifications
+	// useful to know but doesn't happen all the time (ie. per loop iteration
+	// or buffer processed or event handled). An example would be notifications
 	// about state changes or receiving/sending of events.
 	LevelDebug DebugLevel = 5
 	// LevelLog: log messages are messages that are very common but might be
@@ -143,11 +143,11 @@ func (d DebugLevel) String() string {
 //
 // The function takes the following parameters:
 //
-//    - level to get the name for.
+//   - level to get the name for.
 //
 // The function returns the following values:
 //
-//    - utf8: name.
+//   - utf8: name.
 //
 func DebugLevelGetName(level DebugLevel) string {
 	var _arg1 C.GstDebugLevel // out
@@ -281,11 +281,11 @@ func (d DebugColorFlags) Has(other DebugColorFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - colorinfo: color info.
+//   - colorinfo: color info.
 //
 // The function returns the following values:
 //
-//    - utf8: string containing the color definition.
+//   - utf8: string containing the color definition.
 //
 func DebugConstructTermColor(colorinfo uint) string {
 	var _arg1 C.guint  // out
@@ -304,19 +304,19 @@ func DebugConstructTermColor(colorinfo uint) string {
 	return _utf8
 }
 
-// DebugConstructWinColor constructs an integer that can be used for getting the
-// desired color in windows' terminals (cmd.exe). As there is no mean to
+// DebugConstructWinColor constructs an integer that can be used for getting
+// the desired color in windows' terminals (cmd.exe). As there is no mean to
 // underline, we simply ignore this attribute.
 //
 // This function returns 0 on non-windows machines.
 //
 // The function takes the following parameters:
 //
-//    - colorinfo: color info.
+//   - colorinfo: color info.
 //
 // The function returns the following values:
 //
-//    - gint: integer containing the color definition.
+//   - gint: integer containing the color definition.
 //
 func DebugConstructWinColor(colorinfo uint) int {
 	var _arg1 C.guint // out
@@ -340,7 +340,7 @@ func DebugConstructWinColor(colorinfo uint) int {
 //
 // The function returns the following values:
 //
-//    - sList: list of debug categories.
+//   - sList: list of debug categories.
 //
 func DebugGetAllCategories() []*DebugCategory {
 	var _cret *C.GSList // in
@@ -365,7 +365,7 @@ func DebugGetAllCategories() []*DebugCategory {
 //
 // The function returns the following values:
 //
-//    - debugLevel: default threshold level.
+//   - debugLevel: default threshold level.
 //
 func DebugGetDefaultThreshold() DebugLevel {
 	var _cret C.GstDebugLevel // in
@@ -383,7 +383,7 @@ func DebugGetDefaultThreshold() DebugLevel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if debugging is activated.
+//   - ok: TRUE, if debugging is activated.
 //
 func DebugIsActive() bool {
 	var _cret C.gboolean // in
@@ -403,7 +403,7 @@ func DebugIsActive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the debug output should be colored.
+//   - ok: TRUE, if the debug output should be colored.
 //
 func DebugIsColored() bool {
 	var _cret C.gboolean // in
@@ -430,11 +430,11 @@ func DebugPrintStackTrace() {
 //
 // The function takes the following parameters:
 //
-//    - data (optional): user data of the log function to remove.
+//   - data (optional): user data of the log function to remove.
 //
 // The function returns the following values:
 //
-//    - guint: how many instances of the function were removed.
+//   - guint: how many instances of the function were removed.
 //
 func DebugRemoveLogFunctionByData(data unsafe.Pointer) uint {
 	var _arg1 C.gpointer // out
@@ -458,7 +458,7 @@ func DebugRemoveLogFunctionByData(data unsafe.Pointer) uint {
 //
 // The function takes the following parameters:
 //
-//    - active: whether to use debugging output or not.
+//   - active: whether to use debugging output or not.
 //
 func DebugSetActive(active bool) {
 	var _arg1 C.gboolean // out
@@ -471,15 +471,15 @@ func DebugSetActive(active bool) {
 	runtime.KeepAlive(active)
 }
 
-// DebugSetColored sets or unsets the use of coloured debugging output. Same as
-// gst_debug_set_color_mode () with the argument being being
+// DebugSetColored sets or unsets the use of coloured debugging output.
+// Same as gst_debug_set_color_mode () with the argument being being
 // GST_DEBUG_COLOR_MODE_ON or GST_DEBUG_COLOR_MODE_OFF.
 //
 // This function may be called before gst_init().
 //
 // The function takes the following parameters:
 //
-//    - colored: whether to use colored output or not.
+//   - colored: whether to use colored output or not.
 //
 func DebugSetColored(colored bool) {
 	var _arg1 C.gboolean // out
@@ -499,7 +499,7 @@ func DebugSetColored(colored bool) {
 //
 // The function takes the following parameters:
 //
-//    - level to set.
+//   - level to set.
 //
 func DebugSetDefaultThreshold(level DebugLevel) {
 	var _arg1 C.GstDebugLevel // out
@@ -515,8 +515,8 @@ func DebugSetDefaultThreshold(level DebugLevel) {
 //
 // The function takes the following parameters:
 //
-//    - name of the categories to set.
-//    - level to set them to.
+//   - name of the categories to set.
+//   - level to set them to.
 //
 func DebugSetThresholdForName(name string, level DebugLevel) {
 	var _arg1 *C.gchar        // out
@@ -536,7 +536,7 @@ func DebugSetThresholdForName(name string, level DebugLevel) {
 //
 // The function takes the following parameters:
 //
-//    - name of the categories to set.
+//   - name of the categories to set.
 //
 func DebugUnsetThresholdForName(name string) {
 	var _arg1 *C.gchar // out
@@ -566,7 +566,7 @@ type debugCategory struct {
 //
 // The function returns the following values:
 //
-//    - guint: color of the category.
+//   - guint: color of the category.
 //
 func (category *DebugCategory) Color() uint {
 	var _arg0 *C.GstDebugCategory // out
@@ -588,7 +588,7 @@ func (category *DebugCategory) Color() uint {
 //
 // The function returns the following values:
 //
-//    - utf8: description of the category.
+//   - utf8: description of the category.
 //
 func (category *DebugCategory) Description() string {
 	var _arg0 *C.GstDebugCategory // out
@@ -610,7 +610,7 @@ func (category *DebugCategory) Description() string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the category.
+//   - utf8: name of the category.
 //
 func (category *DebugCategory) Name() string {
 	var _arg0 *C.GstDebugCategory // out
@@ -632,7 +632,7 @@ func (category *DebugCategory) Name() string {
 //
 // The function returns the following values:
 //
-//    - debugLevel that is used as threshold.
+//   - debugLevel that is used as threshold.
 //
 func (category *DebugCategory) Threshold() DebugLevel {
 	var _arg0 *C.GstDebugCategory // out
@@ -663,16 +663,16 @@ func (category *DebugCategory) ResetThreshold() {
 	runtime.KeepAlive(category)
 }
 
-// SetThreshold sets the threshold of the category to the given level. Debug
-// information will only be output if the threshold is lower or equal to the
-// level of the debugging message. > Do not use this function in production
+// SetThreshold sets the threshold of the category to the given level.
+// Debug information will only be output if the threshold is lower or equal to
+// the level of the debugging message. > Do not use this function in production
 // code, because other functions may > change the threshold of categories as
 // side effect. It is however a nice > function to use when debugging (even from
 // gdb).
 //
 // The function takes the following parameters:
 //
-//    - level threshold to set.
+//   - level threshold to set.
 //
 func (category *DebugCategory) SetThreshold(level DebugLevel) {
 	var _arg0 *C.GstDebugCategory // out

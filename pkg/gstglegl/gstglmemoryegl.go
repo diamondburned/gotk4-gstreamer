@@ -107,7 +107,7 @@ func marshalGLMemoryEGL(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - gpointer (optional): EGLDisplay mem is associated with.
+//   - gpointer (optional): EGLDisplay mem is associated with.
 //
 func (mem *GLMemoryEGL) Display() unsafe.Pointer {
 	var _arg0 *C.GstGLMemoryEGL // out
@@ -127,7 +127,7 @@ func (mem *GLMemoryEGL) Display() unsafe.Pointer {
 
 // The function returns the following values:
 //
-//    - gpointer (optional): EGLImage held by mem.
+//   - gpointer (optional): EGLImage held by mem.
 //
 func (mem *GLMemoryEGL) Image() unsafe.Pointer {
 	var _arg0 *C.GstGLMemoryEGL // out

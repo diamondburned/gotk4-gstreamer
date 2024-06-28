@@ -19,14 +19,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - format: gstFormat of start and stop, GST_FORMAT_DEFAULT is samples.
-//    - start: amount of audio to clip from start of buffer.
-//    - end: amount of to clip from end of buffer.
+//   - buffer: Buffer.
+//   - format: gstFormat of start and stop, GST_FORMAT_DEFAULT is samples.
+//   - start: amount of audio to clip from start of buffer.
+//   - end: amount of to clip from end of buffer.
 //
 // The function returns the following values:
 //
-//    - audioClippingMeta on buffer.
+//   - audioClippingMeta on buffer.
 //
 func BufferAddAudioClippingMeta(buffer *gst.Buffer, format gst.Format, start, end uint64) *AudioClippingMeta {
 	var _arg1 *C.GstBuffer            // out
@@ -53,8 +53,8 @@ func BufferAddAudioClippingMeta(buffer *gst.Buffer, format gst.Format, start, en
 	return _audioClippingMeta
 }
 
-// AudioClippingMeta: extra buffer metadata describing how much audio has to be
-// clipped from the start or end of a buffer. This is used for compressed
+// AudioClippingMeta: extra buffer metadata describing how much audio has to
+// be clipped from the start or end of a buffer. This is used for compressed
 // formats, where the first frame usually has some additional samples due to
 // encoder and decoder delays, and the last frame usually has some additional
 // samples to be able to fill the complete last frame.

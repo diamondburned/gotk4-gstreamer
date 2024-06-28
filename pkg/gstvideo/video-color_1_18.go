@@ -10,18 +10,18 @@ import (
 // #include <gst/video/video.h>
 import "C"
 
-// VideoColorMatrixFromISO converts the value to the VideoColorMatrix The matrix
-// coefficients (MatrixCoefficients) value is defined by "ISO/IEC 23001-8
+// VideoColorMatrixFromISO converts the value to the VideoColorMatrix The
+// matrix coefficients (MatrixCoefficients) value is defined by "ISO/IEC 23001-8
 // Section 7.3 Table 4" and "ITU-T H.273 Table 4". "H.264 Table E-5" and "H.265
 // Table E.5" share the identical values.
 //
 // The function takes the following parameters:
 //
-//    - value: ITU-T H.273 matrix coefficients value.
+//   - value: ITU-T H.273 matrix coefficients value.
 //
 // The function returns the following values:
 //
-//    - videoColorMatrix: matched VideoColorMatrix.
+//   - videoColorMatrix: matched VideoColorMatrix.
 //
 func VideoColorMatrixFromISO(value uint) VideoColorMatrix {
 	var _arg1 C.guint               // out
@@ -46,11 +46,11 @@ func VideoColorMatrixFromISO(value uint) VideoColorMatrix {
 //
 // The function takes the following parameters:
 //
-//    - matrix: VideoColorMatrix.
+//   - matrix: VideoColorMatrix.
 //
 // The function returns the following values:
 //
-//    - guint: value of ISO/IEC 23001-8 matrix coefficients.
+//   - guint: value of ISO/IEC 23001-8 matrix coefficients.
 //
 func VideoColorMatrixToISO(matrix VideoColorMatrix) uint {
 	var _arg1 C.GstVideoColorMatrix // out
@@ -68,18 +68,18 @@ func VideoColorMatrixToISO(matrix VideoColorMatrix) uint {
 	return _guint
 }
 
-// VideoColorPrimariesFromISO converts the value to the VideoColorPrimaries The
-// colour primaries (ColourPrimaries) value is defined by "ISO/IEC 23001-8
+// VideoColorPrimariesFromISO converts the value to the VideoColorPrimaries
+// The colour primaries (ColourPrimaries) value is defined by "ISO/IEC 23001-8
 // Section 7.1 Table 2" and "ITU-T H.273 Table 2". "H.264 Table E-3" and "H.265
 // Table E.3" share the identical values.
 //
 // The function takes the following parameters:
 //
-//    - value: ITU-T H.273 colour primaries value.
+//   - value: ITU-T H.273 colour primaries value.
 //
 // The function returns the following values:
 //
-//    - videoColorPrimaries: matched VideoColorPrimaries.
+//   - videoColorPrimaries: matched VideoColorPrimaries.
 //
 func VideoColorPrimariesFromISO(value uint) VideoColorPrimaries {
 	var _arg1 C.guint                  // out
@@ -104,11 +104,11 @@ func VideoColorPrimariesFromISO(value uint) VideoColorPrimaries {
 //
 // The function takes the following parameters:
 //
-//    - primaries: VideoColorPrimaries.
+//   - primaries: VideoColorPrimaries.
 //
 // The function returns the following values:
 //
-//    - guint: value of ISO/IEC 23001-8 colour primaries.
+//   - guint: value of ISO/IEC 23001-8 colour primaries.
 //
 func VideoColorPrimariesToISO(primaries VideoColorPrimaries) uint {
 	var _arg1 C.GstVideoColorPrimaries // out
@@ -133,11 +133,11 @@ func VideoColorPrimariesToISO(primaries VideoColorPrimaries) uint {
 //
 // The function takes the following parameters:
 //
-//    - value: ITU-T H.273 transfer characteristics value.
+//   - value: ITU-T H.273 transfer characteristics value.
 //
 // The function returns the following values:
 //
-//    - videoTransferFunction: matched VideoTransferFunction.
+//   - videoTransferFunction: matched VideoTransferFunction.
 //
 func VideoTransferFunctionFromISO(value uint) VideoTransferFunction {
 	var _arg1 C.guint                    // out
@@ -163,14 +163,14 @@ func VideoTransferFunctionFromISO(value uint) VideoTransferFunction {
 //
 // The function takes the following parameters:
 //
-//    - fromFunc to convert from.
-//    - fromBpp bits per pixel to convert from.
-//    - toFunc to convert into.
-//    - toBpp bits per pixel to convert into.
+//   - fromFunc to convert from.
+//   - fromBpp bits per pixel to convert from.
+//   - toFunc to convert into.
+//   - toBpp bits per pixel to convert into.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if from_func and to_func can be considered equivalent.
+//   - ok: TRUE if from_func and to_func can be considered equivalent.
 //
 func VideoTransferFunctionIsEquivalent(fromFunc VideoTransferFunction, fromBpp uint, toFunc VideoTransferFunction, toBpp uint) bool {
 	var _arg1 C.GstVideoTransferFunction // out
@@ -206,11 +206,11 @@ func VideoTransferFunctionIsEquivalent(fromFunc VideoTransferFunction, fromBpp u
 //
 // The function takes the following parameters:
 //
-//    - fn: VideoTransferFunction.
+//   - fn: VideoTransferFunction.
 //
 // The function returns the following values:
 //
-//    - guint: value of ISO/IEC 23001-8 transfer characteristics.
+//   - guint: value of ISO/IEC 23001-8 transfer characteristics.
 //
 func VideoTransferFunctionToISO(fn VideoTransferFunction) uint {
 	var _arg1 C.GstVideoTransferFunction // out

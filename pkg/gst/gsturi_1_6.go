@@ -18,11 +18,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string to parse.
+//   - uri: URI string to parse.
 //
 // The function returns the following values:
 //
-//    - ret (optional): new Uri object, or NULL.
+//   - ret (optional): new Uri object, or NULL.
 //
 func URIFromString(uri string) *URI {
 	var _arg1 *C.gchar  // out
@@ -54,12 +54,13 @@ func URIFromString(uri string) *URI {
 //
 // The function takes the following parameters:
 //
-//    - baseUri: percent-encoded base URI.
-//    - refUri: percent-encoded reference URI to join to the base_uri.
+//   - baseUri: percent-encoded base URI.
+//   - refUri: percent-encoded reference URI to join to the base_uri.
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the percent-encoded join of the two URIs.
+//   - utf8 (optional): string representing the percent-encoded join of the two
+//     URIs.
 //
 func URIJoinStrings(baseUri, refUri string) string {
 	var _arg1 *C.gchar // out
@@ -77,8 +78,10 @@ func URIJoinStrings(baseUri, refUri string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }

@@ -18,8 +18,8 @@ import "C"
 // operation, which is executed with gst_audio_buffer_map(). For non-interleaved
 // (planar) buffers, the beginning of each channel in the buffer has its own
 // pointer in the planes array. For interleaved buffers, the planes array only
-// contains one item, which is the pointer to the beginning of the buffer, and
-// n_planes equals 1.
+// contains one item, which is the pointer to the beginning of the buffer,
+// and n_planes equals 1.
 //
 // The different channels in planes are always in the GStreamer channel order.
 //
@@ -103,34 +103,34 @@ func (buffer *AudioBuffer) Unmap() {
 // This is especially useful when the gstbuffer is in non-interleaved (planar)
 // layout, in which case this function will use the information in the
 // gstbuffer's attached AudioMeta in order to map each channel in a separate
-// "plane" in AudioBuffer. If a AudioMeta is not attached on the gstbuffer, then
-// it must be in interleaved layout.
+// "plane" in AudioBuffer. If a AudioMeta is not attached on the gstbuffer,
+// then it must be in interleaved layout.
 //
 // If a AudioMeta is attached, then the AudioInfo on the meta is checked against
 // info. Normally, they should be equal, but in case they are not, a g_critical
 // will be printed and the AudioInfo from the meta will be used.
 //
 // In non-interleaved buffers, it is possible to have each channel on a separate
-// Memory. In this case, each memory will be mapped separately to avoid copying
-// their contents in a larger memory area. Do note though that it is not
-// supported to have a single channel spanning over two or more different Memory
-// objects. Although the map operation will likely succeed in this case, it will
-// be highly sub-optimal and it is recommended to merge all the memories in the
-// buffer before calling this function.
+// Memory. In this case, each memory will be mapped separately to avoid
+// copying their contents in a larger memory area. Do note though that it is
+// not supported to have a single channel spanning over two or more different
+// Memory objects. Although the map operation will likely succeed in this case,
+// it will be highly sub-optimal and it is recommended to merge all the memories
+// in the buffer before calling this function.
 //
 // Note: The actual Buffer is not ref'ed, but it is required to stay valid as
 // long as it's mapped.
 //
 // The function takes the following parameters:
 //
-//    - info: audio properties of the buffer.
-//    - gstbuffer to be mapped.
-//    - flags access mode for the memory.
+//   - info: audio properties of the buffer.
+//   - gstbuffer to be mapped.
+//   - flags access mode for the memory.
 //
 // The function returns the following values:
 //
-//    - buffer: pointer to a AudioBuffer.
-//    - ok: TRUE if the map operation succeeded or FALSE on failure.
+//   - buffer: pointer to a AudioBuffer.
+//   - ok: TRUE if the map operation succeeded or FALSE on failure.
 //
 func AudioBufferMap(info *AudioInfo, gstbuffer *gst.Buffer, flags gst.MapFlags) (*AudioBuffer, bool) {
 	var _arg1 C.GstAudioBuffer // in

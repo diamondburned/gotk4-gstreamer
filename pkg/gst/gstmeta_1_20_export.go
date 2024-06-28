@@ -34,9 +34,7 @@ func _gotk4_gst1_CustomMetaTransformFunction(arg1 *C.GstBuffer, arg2 *C.GstCusto
 	_transbuf = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	_meta = (*CustomMeta)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	_buffer = (*Buffer)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	_typ = uint32(arg4)
-	type _ = glib.Quark
-	type _ = uint32
+	_typ = glib.Quark(arg4)
 	_data = (unsafe.Pointer)(unsafe.Pointer(arg5))
 
 	ok := fn(_transbuf, _meta, _buffer, _typ, _data)

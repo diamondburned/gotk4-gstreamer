@@ -68,18 +68,18 @@ func (s SearchMode) String() string {
 // about the syntax. Ghost pads on the bin for unlinked source or sink pads
 // within the bin can automatically be created (but only a maximum of one ghost
 // pad for each direction will be created; if you expect multiple unlinked
-// source pads or multiple unlinked sink pads and want them all ghosted, you
-// will have to create the ghost pads yourself).
+// source pads or multiple unlinked sink pads and want them all ghosted,
+// you will have to create the ghost pads yourself).
 //
 // The function takes the following parameters:
 //
-//    - binDescription: command line describing the bin.
-//    - ghostUnlinkedPads: whether to automatically create ghost pads for
-//      unlinked source or sink pads within the bin.
+//   - binDescription: command line describing the bin.
+//   - ghostUnlinkedPads: whether to automatically create ghost pads for
+//     unlinked source or sink pads within the bin.
 //
 // The function returns the following values:
 //
-//    - bin: a newly-created bin, or NULL if an error occurred.
+//   - bin: a newly-created bin, or NULL if an error occurred.
 //
 func ParseBinFromDescription(binDescription string, ghostUnlinkedPads bool) (*Bin, error) {
 	var _arg1 *C.gchar      // out
@@ -114,23 +114,23 @@ func ParseBinFromDescription(binDescription string, ghostUnlinkedPads bool) (*Bi
 // about the syntax. Ghost pads on the bin for unlinked source or sink pads
 // within the bin can automatically be created (but only a maximum of one ghost
 // pad for each direction will be created; if you expect multiple unlinked
-// source pads or multiple unlinked sink pads and want them all ghosted, you
-// will have to create the ghost pads yourself).
+// source pads or multiple unlinked sink pads and want them all ghosted,
+// you will have to create the ghost pads yourself).
 //
 // The function takes the following parameters:
 //
-//    - binDescription: command line describing the bin.
-//    - ghostUnlinkedPads: whether to automatically create ghost pads for
-//      unlinked source or sink pads within the bin.
-//    - context (optional): parse context allocated with gst_parse_context_new(),
-//      or NULL.
-//    - flags: parsing options, or T_PARSE_FLAG_NONE.
+//   - binDescription: command line describing the bin.
+//   - ghostUnlinkedPads: whether to automatically create ghost pads for
+//     unlinked source or sink pads within the bin.
+//   - context (optional): parse context allocated with gst_parse_context_new(),
+//     or NULL.
+//   - flags: parsing options, or T_PARSE_FLAG_NONE.
 //
 // The function returns the following values:
 //
-//    - element: newly-created element, which is guaranteed to be a bin unless
-//      T_PARSE_FLAG_NO_SINGLE_ELEMENT_BINS was passed, or NULL if an error
-//      occurred.
+//   - element: newly-created element, which is guaranteed to be a bin unless
+//     T_PARSE_FLAG_NO_SINGLE_ELEMENT_BINS was passed, or NULL if an error
+//     occurred.
 //
 func ParseBinFromDescriptionFull(binDescription string, ghostUnlinkedPads bool, context *ParseContext, flags ParseFlags) (Elementer, error) {
 	var _arg1 *C.gchar           // out
@@ -193,18 +193,18 @@ func ParseBinFromDescriptionFull(binDescription string, ghostUnlinkedPads bool, 
 //
 // The function takes the following parameters:
 //
-//    - array (optional): sorted input array.
-//    - numElements: number of elements in the array.
-//    - elementSize: size of every element in bytes.
-//    - searchFunc: function to compare two elements, search_data will always be
-//      passed as second argument.
-//    - mode: search mode that should be used.
-//    - searchData (optional): element that should be found.
+//   - array (optional): sorted input array.
+//   - numElements: number of elements in the array.
+//   - elementSize: size of every element in bytes.
+//   - searchFunc: function to compare two elements, search_data will always be
+//     passed as second argument.
+//   - mode: search mode that should be used.
+//   - searchData (optional): element that should be found.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) address of the found element or NULL if nothing was
-//      found.
+//   - gpointer (optional) address of the found element or NULL if nothing was
+//     found.
 //
 func UtilArrayBinarySearch(array unsafe.Pointer, numElements, elementSize uint, searchFunc glib.CompareDataFunc, mode SearchMode, searchData unsafe.Pointer) unsafe.Pointer {
 	var _arg1 C.gpointer         // out
@@ -245,12 +245,12 @@ func UtilArrayBinarySearch(array unsafe.Pointer, numElements, elementSize uint, 
 //
 // The function takes the following parameters:
 //
-//    - src to transform.
+//   - src to transform.
 //
 // The function returns the following values:
 //
-//    - destN: pointer to a #gint to hold the result numerator.
-//    - destD: pointer to a #gint to hold the result denominator.
+//   - destN: pointer to a #gint to hold the result numerator.
+//   - destD: pointer to a #gint to hold the result denominator.
 //
 func UtilDoubleToFraction(src float64) (destN, destD int) {
 	var _arg1 C.gdouble // out
@@ -276,7 +276,7 @@ func UtilDoubleToFraction(src float64) (destN, destD int) {
 //
 // The function takes the following parameters:
 //
-//    - mem: pointer to the memory to dump.
+//   - mem: pointer to the memory to dump.
 //
 func UtilDumpMem(mem []byte) {
 	var _arg1 *C.guchar // out
@@ -296,16 +296,16 @@ func UtilDumpMem(mem []byte) {
 //
 // The function takes the following parameters:
 //
-//    - aN: numerator of first value.
-//    - aD: denominator of first value.
-//    - bN: numerator of second value.
-//    - bD: denominator of second value.
+//   - aN: numerator of first value.
+//   - aD: denominator of first value.
+//   - bN: numerator of second value.
+//   - bD: denominator of second value.
 //
 // The function returns the following values:
 //
-//    - resN: pointer to #gint to hold the result numerator.
-//    - resD: pointer to #gint to hold the result denominator.
-//    - ok: FALSE on overflow, TRUE otherwise.
+//   - resN: pointer to #gint to hold the result numerator.
+//   - resD: pointer to #gint to hold the result denominator.
+//   - ok: FALSE on overflow, TRUE otherwise.
 //
 func UtilFractionAdd(aN, aD, bN, bD int) (resN, resD int, ok bool) {
 	var _arg1 C.gint     // out
@@ -345,14 +345,14 @@ func UtilFractionAdd(aN, aD, bN, bD int) (resN, resD int, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - aN: numerator of first value.
-//    - aD: denominator of first value.
-//    - bN: numerator of second value.
-//    - bD: denominator of second value.
+//   - aN: numerator of first value.
+//   - aD: denominator of first value.
+//   - bN: numerator of second value.
+//   - bD: denominator of second value.
 //
 // The function returns the following values:
 //
-//    - gint: -1 if a < b; 0 if a = b; 1 if a > b.
+//   - gint: -1 if a < b; 0 if a = b; 1 if a > b.
 //
 func UtilFractionCompare(aN, aD, bN, bD int) int {
 	var _arg1 C.gint // out
@@ -384,16 +384,16 @@ func UtilFractionCompare(aN, aD, bN, bD int) int {
 //
 // The function takes the following parameters:
 //
-//    - aN: numerator of first value.
-//    - aD: denominator of first value.
-//    - bN: numerator of second value.
-//    - bD: denominator of second value.
+//   - aN: numerator of first value.
+//   - aD: denominator of first value.
+//   - bN: numerator of second value.
+//   - bD: denominator of second value.
 //
 // The function returns the following values:
 //
-//    - resN: pointer to #gint to hold the result numerator.
-//    - resD: pointer to #gint to hold the result denominator.
-//    - ok: FALSE on overflow, TRUE otherwise.
+//   - resN: pointer to #gint to hold the result numerator.
+//   - resD: pointer to #gint to hold the result denominator.
+//   - ok: FALSE on overflow, TRUE otherwise.
 //
 func UtilFractionMultiply(aN, aD, bN, bD int) (resN, resD int, ok bool) {
 	var _arg1 C.gint     // out
@@ -432,12 +432,12 @@ func UtilFractionMultiply(aN, aD, bN, bD int) (resN, resD int, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - srcN: fraction numerator as #gint.
-//    - srcD: fraction denominator #gint.
+//   - srcN: fraction numerator as #gint.
+//   - srcD: fraction denominator #gint.
 //
 // The function returns the following values:
 //
-//    - dest: pointer to a #gdouble for the result.
+//   - dest: pointer to a #gdouble for the result.
 //
 func UtilFractionToDouble(srcN, srcD int) float64 {
 	var _arg1 C.gint    // out
@@ -460,11 +460,11 @@ func UtilFractionToDouble(srcN, srcD int) float64 {
 
 // The function takes the following parameters:
 //
-//    - value value to convert guint64 double.
+//   - value value to convert guint64 double.
 //
 // The function returns the following values:
 //
-//    - guint64: value casted to #guint64.
+//   - guint64: value casted to #guint64.
 //
 func UtilGdoubleToGuint64(value float64) uint64 {
 	var _arg1 C.gdouble // out
@@ -487,7 +487,7 @@ func UtilGdoubleToGuint64(value float64) uint64 {
 //
 // The function returns the following values:
 //
-//    - clockTime: timestamp.
+//   - clockTime: timestamp.
 //
 func UtilGetTimestamp() ClockTime {
 	var _cret C.GstClockTime // in
@@ -496,9 +496,7 @@ func UtilGetTimestamp() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -507,12 +505,12 @@ func UtilGetTimestamp() ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - a: first value as #gint.
-//    - b: second value as #gint.
+//   - a: first value as #gint.
+//   - b: second value as #gint.
 //
 // The function returns the following values:
 //
-//    - gint: greatest common divisor of a and b.
+//   - gint: greatest common divisor of a and b.
 //
 func UtilGreatestCommonDivisor(a, b int) int {
 	var _arg1 C.gint // out
@@ -538,12 +536,12 @@ func UtilGreatestCommonDivisor(a, b int) int {
 //
 // The function takes the following parameters:
 //
-//    - a: first value as #gint64.
-//    - b: second value as #gint64.
+//   - a: first value as #gint64.
+//   - b: second value as #gint64.
 //
 // The function returns the following values:
 //
-//    - gint64: greatest common divisor of a and b.
+//   - gint64: greatest common divisor of a and b.
 //
 func UtilGreatestCommonDivisorInt64(a, b int64) int64 {
 	var _arg1 C.gint64 // out
@@ -572,8 +570,8 @@ func UtilGreatestCommonDivisorInt64(a, b int64) int64 {
 //
 // The function returns the following values:
 //
-//    - guint: constantly incrementing unsigned integer, which might overflow
-//      back to 0 at some point.
+//   - guint: constantly incrementing unsigned integer, which might overflow
+//     back to 0 at some point.
 //
 func UtilGroupIDNext() uint {
 	var _cret C.guint // in
@@ -589,11 +587,11 @@ func UtilGroupIDNext() uint {
 
 // The function takes the following parameters:
 //
-//    - value value to convert to double.
+//   - value value to convert to double.
 //
 // The function returns the following values:
 //
-//    - gdouble: value casted to #gdouble.
+//   - gdouble: value casted to #gdouble.
 //
 func UtilGuint64ToGdouble(value uint64) float64 {
 	var _arg1 C.guint64 // out
@@ -617,13 +615,13 @@ func UtilGuint64ToGdouble(value uint64) float64 {
 //
 // The function takes the following parameters:
 //
-//    - s1: sequence number.
-//    - s2: another sequence number.
+//   - s1: sequence number.
+//   - s2: another sequence number.
 //
 // The function returns the following values:
 //
-//    - gint32: negative number if s1 is before s2, 0 if they are equal, or a
-//      positive number if s1 is after s2.
+//   - gint32: negative number if s1 is before s2, 0 if they are equal, or a
+//     positive number if s1 is after s2.
 //
 func UtilSeqnumCompare(s1, s2 uint32) int32 {
 	var _arg1 C.guint32 // out
@@ -648,16 +646,16 @@ func UtilSeqnumCompare(s1, s2 uint32) int32 {
 //
 // This function is used internally to GStreamer to be able to determine which
 // events and messages are "the same". For example, elements may set the seqnum
-// on a segment-done message to be the same as that of the last seek event, to
-// indicate that event and the message correspond to the same segment.
+// on a segment-done message to be the same as that of the last seek event,
+// to indicate that event and the message correspond to the same segment.
 //
 // This function never returns GST_SEQNUM_INVALID (which is 0).
 //
 // The function returns the following values:
 //
-//    - guint32: constantly incrementing 32-bit unsigned integer, which might
-//      overflow at some point. Use gst_util_seqnum_compare() to make sure you
-//      handle wraparound correctly.
+//   - guint32: constantly incrementing 32-bit unsigned integer, which might
+//     overflow at some point. Use gst_util_seqnum_compare() to make sure you
+//     handle wraparound correctly.
 //
 func UtilSeqnumNext() uint32 {
 	var _cret C.guint32 // in
@@ -679,9 +677,9 @@ func UtilSeqnumNext() uint32 {
 //
 // The function takes the following parameters:
 //
-//    - object to set the argument of.
-//    - name of the argument to set.
-//    - value: string value to set.
+//   - object to set the argument of.
+//   - name of the argument to set.
+//   - value: string value to set.
 //
 func UtilSetObjectArg(object *coreglib.Object, name, value string) {
 	var _arg1 *C.GObject // out
@@ -708,11 +706,11 @@ func UtilSetObjectArg(object *coreglib.Object, name, value string) {
 //
 // The function takes the following parameters:
 //
-//    - valueStr: string to get the value from.
+//   - valueStr: string to get the value from.
 //
 // The function returns the following values:
 //
-//    - value to set.
+//   - value to set.
 //
 func UtilSetValueFromString(valueStr string) coreglib.Value {
 	var _arg1 C.GValue // in
@@ -739,17 +737,17 @@ func UtilSetValueFromString(valueStr string) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - val: number to scale.
-//    - num: numerator of the scale ratio.
-//    - denom: denominator of the scale ratio.
+//   - val: number to scale.
+//   - num: numerator of the scale ratio.
+//   - denom: denominator of the scale ratio.
 //
 // The function returns the following values:
 //
-//    - guint64: val * num / denom. In the case of an overflow, this function
-//      returns G_MAXUINT64. If the result is not exactly representable as an
-//      integer it is truncated. See also gst_util_uint64_scale_round(),
-//      gst_util_uint64_scale_ceil(), gst_util_uint64_scale_int(),
-//      gst_util_uint64_scale_int_round(), gst_util_uint64_scale_int_ceil().
+//   - guint64: val * num / denom. In the case of an overflow, this function
+//     returns G_MAXUINT64. If the result is not exactly representable as
+//     an integer it is truncated. See also gst_util_uint64_scale_round(),
+//     gst_util_uint64_scale_ceil(), gst_util_uint64_scale_int(),
+//     gst_util_uint64_scale_int_round(), gst_util_uint64_scale_int_ceil().
 //
 func UtilUint64Scale(val, num, denom uint64) uint64 {
 	var _arg1 C.guint64 // out
@@ -781,17 +779,17 @@ func UtilUint64Scale(val, num, denom uint64) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - val: number to scale.
-//    - num: numerator of the scale ratio.
-//    - denom: denominator of the scale ratio.
+//   - val: number to scale.
+//   - num: numerator of the scale ratio.
+//   - denom: denominator of the scale ratio.
 //
 // The function returns the following values:
 //
-//    - guint64: val * num / denom. In the case of an overflow, this function
-//      returns G_MAXUINT64. If the result is not exactly representable as an
-//      integer, it is rounded up. See also gst_util_uint64_scale(),
-//      gst_util_uint64_scale_round(), gst_util_uint64_scale_int(),
-//      gst_util_uint64_scale_int_round(), gst_util_uint64_scale_int_ceil().
+//   - guint64: val * num / denom. In the case of an overflow, this function
+//     returns G_MAXUINT64. If the result is not exactly representable as
+//     an integer, it is rounded up. See also gst_util_uint64_scale(),
+//     gst_util_uint64_scale_round(), gst_util_uint64_scale_int(),
+//     gst_util_uint64_scale_int_round(), gst_util_uint64_scale_int_ceil().
 //
 func UtilUint64ScaleCeil(val, num, denom uint64) uint64 {
 	var _arg1 C.guint64 // out
@@ -815,23 +813,23 @@ func UtilUint64ScaleCeil(val, num, denom uint64) uint64 {
 	return _guint64
 }
 
-// UtilUint64ScaleInt: scale val by the rational number num / denom, avoiding
-// overflows and underflows and without loss of precision. num must be
+// UtilUint64ScaleInt: scale val by the rational number num / denom,
+// avoiding overflows and underflows and without loss of precision. num must be
 // non-negative and denom must be positive.
 //
 // The function takes the following parameters:
 //
-//    - val: guint64 (such as a ClockTime) to scale.
-//    - num: numerator of the scale factor.
-//    - denom: denominator of the scale factor.
+//   - val: guint64 (such as a ClockTime) to scale.
+//   - num: numerator of the scale factor.
+//   - denom: denominator of the scale factor.
 //
 // The function returns the following values:
 //
-//    - guint64: val * num / denom. In the case of an overflow, this function
-//      returns G_MAXUINT64. If the result is not exactly representable as an
-//      integer, it is truncated. See also gst_util_uint64_scale_int_round(),
-//      gst_util_uint64_scale_int_ceil(), gst_util_uint64_scale(),
-//      gst_util_uint64_scale_round(), gst_util_uint64_scale_ceil().
+//   - guint64: val * num / denom. In the case of an overflow, this function
+//     returns G_MAXUINT64. If the result is not exactly representable as an
+//     integer, it is truncated. See also gst_util_uint64_scale_int_round(),
+//     gst_util_uint64_scale_int_ceil(), gst_util_uint64_scale(),
+//     gst_util_uint64_scale_round(), gst_util_uint64_scale_ceil().
 //
 func UtilUint64ScaleInt(val uint64, num, denom int) uint64 {
 	var _arg1 C.guint64 // out
@@ -861,17 +859,17 @@ func UtilUint64ScaleInt(val uint64, num, denom int) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - val: guint64 (such as a ClockTime) to scale.
-//    - num: numerator of the scale factor.
-//    - denom: denominator of the scale factor.
+//   - val: guint64 (such as a ClockTime) to scale.
+//   - num: numerator of the scale factor.
+//   - denom: denominator of the scale factor.
 //
 // The function returns the following values:
 //
-//    - guint64: val * num / denom. In the case of an overflow, this function
-//      returns G_MAXUINT64. If the result is not exactly representable as an
-//      integer, it is rounded up. See also gst_util_uint64_scale_int(),
-//      gst_util_uint64_scale_int_round(), gst_util_uint64_scale(),
-//      gst_util_uint64_scale_round(), gst_util_uint64_scale_ceil().
+//   - guint64: val * num / denom. In the case of an overflow, this function
+//     returns G_MAXUINT64. If the result is not exactly representable as
+//     an integer, it is rounded up. See also gst_util_uint64_scale_int(),
+//     gst_util_uint64_scale_int_round(), gst_util_uint64_scale(),
+//     gst_util_uint64_scale_round(), gst_util_uint64_scale_ceil().
 //
 func UtilUint64ScaleIntCeil(val uint64, num, denom int) uint64 {
 	var _arg1 C.guint64 // out
@@ -901,18 +899,18 @@ func UtilUint64ScaleIntCeil(val uint64, num, denom int) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - val: guint64 (such as a ClockTime) to scale.
-//    - num: numerator of the scale factor.
-//    - denom: denominator of the scale factor.
+//   - val: guint64 (such as a ClockTime) to scale.
+//   - num: numerator of the scale factor.
+//   - denom: denominator of the scale factor.
 //
 // The function returns the following values:
 //
-//    - guint64: val * num / denom. In the case of an overflow, this function
-//      returns G_MAXUINT64. If the result is not exactly representable as an
-//      integer, it is rounded to the nearest integer (half-way cases are rounded
-//      up). See also gst_util_uint64_scale_int(),
-//      gst_util_uint64_scale_int_ceil(), gst_util_uint64_scale(),
-//      gst_util_uint64_scale_round(), gst_util_uint64_scale_ceil().
+//   - guint64: val * num / denom. In the case of an overflow, this function
+//     returns G_MAXUINT64. If the result is not exactly representable
+//     as an integer, it is rounded to the nearest integer (half-way
+//     cases are rounded up). See also gst_util_uint64_scale_int(),
+//     gst_util_uint64_scale_int_ceil(), gst_util_uint64_scale(),
+//     gst_util_uint64_scale_round(), gst_util_uint64_scale_ceil().
 //
 func UtilUint64ScaleIntRound(val uint64, num, denom int) uint64 {
 	var _arg1 C.guint64 // out
@@ -944,18 +942,18 @@ func UtilUint64ScaleIntRound(val uint64, num, denom int) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - val: number to scale.
-//    - num: numerator of the scale ratio.
-//    - denom: denominator of the scale ratio.
+//   - val: number to scale.
+//   - num: numerator of the scale ratio.
+//   - denom: denominator of the scale ratio.
 //
 // The function returns the following values:
 //
-//    - guint64: val * num / denom. In the case of an overflow, this function
-//      returns G_MAXUINT64. If the result is not exactly representable as an
-//      integer, it is rounded to the nearest integer (half-way cases are rounded
-//      up). See also gst_util_uint64_scale(), gst_util_uint64_scale_ceil(),
-//      gst_util_uint64_scale_int(), gst_util_uint64_scale_int_round(),
-//      gst_util_uint64_scale_int_ceil().
+//   - guint64: val * num / denom. In the case of an overflow, this function
+//     returns G_MAXUINT64. If the result is not exactly representable as an
+//     integer, it is rounded to the nearest integer (half-way cases are rounded
+//     up). See also gst_util_uint64_scale(), gst_util_uint64_scale_ceil(),
+//     gst_util_uint64_scale_int(), gst_util_uint64_scale_int_round(),
+//     gst_util_uint64_scale_int_ceil().
 //
 func UtilUint64ScaleRound(val, num, denom uint64) uint64 {
 	var _arg1 C.guint64 // out
@@ -984,11 +982,11 @@ func UtilUint64ScaleRound(val, num, denom uint64) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - stateRet to get the name of.
+//   - stateRet to get the name of.
 //
 // The function returns the following values:
 //
-//    - utf8: string with the name of the state result.
+//   - utf8: string with the name of the state result.
 //
 func ElementStateChangeReturnGetName(stateRet StateChangeReturn) string {
 	var _arg1 C.GstStateChangeReturn // out
@@ -1010,11 +1008,11 @@ func ElementStateChangeReturnGetName(stateRet StateChangeReturn) string {
 //
 // The function takes the following parameters:
 //
-//    - state to get the name of.
+//   - state to get the name of.
 //
 // The function returns the following values:
 //
-//    - utf8: string with the name of the state.
+//   - utf8: string with the name of the state.
 //
 func ElementStateGetName(state State) string {
 	var _arg1 C.GstState // out

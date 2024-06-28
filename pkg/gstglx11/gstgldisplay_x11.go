@@ -79,16 +79,16 @@ func marshalGLDisplaYX11(p uintptr) (interface{}, error) {
 	return wrapGLDisplaYX11(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewGLDisplaYX11: create a new GLDisplayX11 from the x11 display name. See
-// XOpenDisplay() for details on what is a valid name.
+// NewGLDisplaYX11: create a new GLDisplayX11 from the x11 display name.
+// See XOpenDisplay() for details on what is a valid name.
 //
 // The function takes the following parameters:
 //
-//    - name (optional): display name.
+//   - name (optional): display name.
 //
 // The function returns the following values:
 //
-//    - glDisplayX11: new GLDisplayX11 or NULL.
+//   - glDisplayX11 (optional): new GLDisplayX11 or NULL.
 //
 func NewGLDisplaYX11(name string) *GLDisplaYX11 {
 	var _arg1 *C.gchar           // out
@@ -104,7 +104,9 @@ func NewGLDisplaYX11(name string) *GLDisplaYX11 {
 
 	var _glDisplayX11 *GLDisplaYX11 // out
 
-	_glDisplayX11 = wrapGLDisplaYX11(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_glDisplayX11 = wrapGLDisplaYX11(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _glDisplayX11
 }

@@ -116,18 +116,23 @@ type BaseSinkOverrides struct {
 	// The function returns the following values:
 	//
 	Fixate func(caps *gst.Caps) *gst.Caps
+	// Caps: called to get sink pad caps from the subclass.
+	//
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
 	Caps func(filter *gst.Caps) *gst.Caps
+	// Times: get the start and end times for syncing on this buffer.
+	//
 	// The function takes the following parameters:
 	//
-	//    - buffer
-	//    - start
-	//    - end
+	// The function returns the following values:
 	//
-	Times func(buffer *gst.Buffer, start, end *gst.ClockTime)
+	//   - start ClockTime.
+	//   - end ClockTime.
+	//
+	Times func(buffer *gst.Buffer) (start, end gst.ClockTime)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -248,21 +253,21 @@ func defaultBaseSinkOverrides(v *BaseSink) BaseSinkOverrides {
 //
 // When the element is set to PLAYING, BaseSink will synchronise on the clock
 // using the times returned from BaseSinkClass::get_times. If this function
-// returns GST_CLOCK_TIME_NONE for the start time, no synchronisation will be
-// done. Synchronisation can be disabled entirely by setting the object
+// returns GST_CLOCK_TIME_NONE for the start time, no synchronisation will
+// be done. Synchronisation can be disabled entirely by setting the object
 // BaseSink:sync property to FALSE.
 //
 // After synchronisation the virtual method BaseSinkClass::render will be
 // called. Subclasses should minimally implement this method.
 //
-// Subclasses that synchronise on the clock in the BaseSinkClass::render method
-// are supported as well. These classes typically receive a buffer in the render
-// method and can then potentially block on the clock while rendering. A typical
-// example is an audiosink. These subclasses can use
+// Subclasses that synchronise on the clock in the BaseSinkClass::render
+// method are supported as well. These classes typically receive a buffer
+// in the render method and can then potentially block on the clock while
+// rendering. A typical example is an audiosink. These subclasses can use
 // gst_base_sink_wait_preroll() to perform the blocking wait.
 //
-// Upon receiving the EOS event in the PLAYING state, BaseSink will wait for the
-// clock to reach the time indicated by the stop time of the last
+// Upon receiving the EOS event in the PLAYING state, BaseSink will wait
+// for the clock to reach the time indicated by the stop time of the last
 // BaseSinkClass::get_times call before posting an EOS message. When the element
 // receives EOS in PAUSED, preroll completes, the event is queued and an EOS
 // message is posted when going to PLAYING.
@@ -299,16 +304,16 @@ func defaultBaseSinkOverrides(v *BaseSink) BaseSinkOverrides {
 // that arrive too late in the sink. A buffer arrives too late in the sink when
 // the presentation time (as a combination of the last segment, buffer timestamp
 // and element base_time) plus the duration is before the current time of the
-// clock. If the frame is later than max-lateness, the sink will drop the buffer
-// without calling the render method. This feature is disabled if sync is
-// disabled, the BaseSinkClass::get_times method does not return a valid start
-// time or max-lateness is set to -1 (the default). Subclasses can use
+// clock. If the frame is later than max-lateness, the sink will drop the
+// buffer without calling the render method. This feature is disabled if sync
+// is disabled, the BaseSinkClass::get_times method does not return a valid
+// start time or max-lateness is set to -1 (the default). Subclasses can use
 // gst_base_sink_set_max_lateness() to configure the max-lateness value.
 //
-// The BaseSink:qos property will enable the quality-of-service features of the
-// basesink which gather statistics about the real-time performance of the clock
-// synchronisation. For each buffer received in the sink, statistics are
-// gathered and a QOS event is sent upstream with these numbers. This
+// The BaseSink:qos property will enable the quality-of-service features of
+// the basesink which gather statistics about the real-time performance of the
+// clock synchronisation. For each buffer received in the sink, statistics
+// are gathered and a QOS event is sent upstream with these numbers. This
 // information can then be used by upstream elements to reduce their processing
 // rate, for example.
 //
@@ -459,13 +464,13 @@ func BaseBaseSink(obj BaseSinker) *BaseSink {
 //
 // The function takes the following parameters:
 //
-//    - obj: mini object that caused the preroll.
+//   - obj: mini object that caused the preroll.
 //
 // The function returns the following values:
 //
-//    - flowReturn: GST_FLOW_OK if the preroll completed and processing can
-//      continue. Any other return value should be returned from the render
-//      vmethod.
+//   - flowReturn: GST_FLOW_OK if the preroll completed and processing can
+//     continue. Any other return value should be returned from the render
+//     vmethod.
 //
 func (sink *BaseSink) DoPreroll(obj *gst.MiniObject) gst.FlowReturn {
 	var _arg0 *C.GstBaseSink   // out
@@ -491,7 +496,7 @@ func (sink *BaseSink) DoPreroll(obj *gst.MiniObject) gst.FlowReturn {
 //
 // The function returns the following values:
 //
-//    - guint: number of bytes sink will pull in pull mode.
+//   - guint: number of bytes sink will pull in pull mode.
 //
 func (sink *BaseSink) Blocksize() uint {
 	var _arg0 *C.GstBaseSink // out
@@ -514,8 +519,8 @@ func (sink *BaseSink) Blocksize() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the sink is configured to drop buffers outside the current
-//      segment.
+//   - ok: TRUE if the sink is configured to drop buffers outside the current
+//     segment.
 //
 func (sink *BaseSink) DropOutOfSegment() bool {
 	var _arg0 *C.GstBaseSink // out
@@ -544,9 +549,9 @@ func (sink *BaseSink) DropOutOfSegment() bool {
 //
 // The function returns the following values:
 //
-//    - sample (optional) gst_sample_unref() after usage. This function returns
-//      NULL when no buffer has arrived in the sink yet or when the sink is not
-//      in PAUSED or PLAYING.
+//   - sample (optional) gst_sample_unref() after usage. This function returns
+//     NULL when no buffer has arrived in the sink yet or when the sink is not
+//     in PAUSED or PLAYING.
 //
 func (sink *BaseSink) LastSample() *gst.Sample {
 	var _arg0 *C.GstBaseSink // out
@@ -576,7 +581,7 @@ func (sink *BaseSink) LastSample() *gst.Sample {
 //
 // The function returns the following values:
 //
-//    - clockTime: configured latency.
+//   - clockTime: configured latency.
 //
 func (sink *BaseSink) Latency() gst.ClockTime {
 	var _arg0 *C.GstBaseSink // out
@@ -589,9 +594,7 @@ func (sink *BaseSink) Latency() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -601,7 +604,7 @@ func (sink *BaseSink) Latency() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - guint64: maximum number of bits per second sink will render.
+//   - guint64: maximum number of bits per second sink will render.
 //
 func (sink *BaseSink) MaxBitrate() uint64 {
 	var _arg0 *C.GstBaseSink // out
@@ -624,8 +627,8 @@ func (sink *BaseSink) MaxBitrate() uint64 {
 //
 // The function returns the following values:
 //
-//    - gint64: maximum time in nanoseconds that a buffer can be late before it
-//      is dropped and not rendered. A value of -1 means an unlimited time.
+//   - gint64: maximum time in nanoseconds that a buffer can be late before it
+//     is dropped and not rendered. A value of -1 means an unlimited time.
 //
 func (sink *BaseSink) MaxLateness() int64 {
 	var _arg0 *C.GstBaseSink // out
@@ -649,7 +652,7 @@ func (sink *BaseSink) MaxLateness() int64 {
 //
 // The function returns the following values:
 //
-//    - clockTime: processing deadline.
+//   - clockTime: processing deadline.
 //
 func (sink *BaseSink) ProcessingDeadline() gst.ClockTime {
 	var _arg0 *C.GstBaseSink // out
@@ -662,9 +665,7 @@ func (sink *BaseSink) ProcessingDeadline() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -674,7 +675,7 @@ func (sink *BaseSink) ProcessingDeadline() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: render delay of sink.
+//   - clockTime: render delay of sink.
 //
 func (sink *BaseSink) RenderDelay() gst.ClockTime {
 	var _arg0 *C.GstBaseSink // out
@@ -687,9 +688,7 @@ func (sink *BaseSink) RenderDelay() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -705,7 +704,7 @@ func (sink *BaseSink) RenderDelay() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - structure: pointer to Structure.
+//   - structure: pointer to Structure.
 //
 func (sink *BaseSink) Stats() *gst.Structure {
 	var _arg0 *C.GstBaseSink  // out
@@ -733,7 +732,7 @@ func (sink *BaseSink) Stats() *gst.Structure {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the sink is configured to synchronize against the clock.
+//   - ok: TRUE if the sink is configured to synchronize against the clock.
 //
 func (sink *BaseSink) Sync() bool {
 	var _arg0 *C.GstBaseSink // out
@@ -758,7 +757,7 @@ func (sink *BaseSink) Sync() bool {
 //
 // The function returns the following values:
 //
-//    - guint64: number of nanoseconds sink will put between frames.
+//   - guint64: number of nanoseconds sink will put between frames.
 //
 func (sink *BaseSink) ThrottleTime() uint64 {
 	var _arg0 *C.GstBaseSink // out
@@ -780,7 +779,7 @@ func (sink *BaseSink) ThrottleTime() uint64 {
 //
 // The function returns the following values:
 //
-//    - clockTimeDiff: synchronisation offset.
+//   - clockTimeDiff: synchronisation offset.
 //
 func (sink *BaseSink) TsOffset() gst.ClockTimeDiff {
 	var _arg0 *C.GstBaseSink     // out
@@ -793,9 +792,7 @@ func (sink *BaseSink) TsOffset() gst.ClockTimeDiff {
 
 	var _clockTimeDiff gst.ClockTimeDiff // out
 
-	_clockTimeDiff = int64(_cret)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
+	_clockTimeDiff = gst.ClockTimeDiff(_cret)
 
 	return _clockTimeDiff
 }
@@ -805,7 +802,7 @@ func (sink *BaseSink) TsOffset() gst.ClockTimeDiff {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the sink is configured to perform asynchronous state changes.
+//   - ok: TRUE if the sink is configured to perform asynchronous state changes.
 //
 func (sink *BaseSink) IsAsyncEnabled() bool {
 	var _arg0 *C.GstBaseSink // out
@@ -830,7 +827,7 @@ func (sink *BaseSink) IsAsyncEnabled() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the sink is configured to store the last received sample.
+//   - ok: TRUE if the sink is configured to store the last received sample.
 //
 func (sink *BaseSink) IsLastSampleEnabled() bool {
 	var _arg0 *C.GstBaseSink // out
@@ -855,7 +852,7 @@ func (sink *BaseSink) IsLastSampleEnabled() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the sink is configured to perform Quality-of-Service.
+//   - ok: TRUE if the sink is configured to perform Quality-of-Service.
 //
 func (sink *BaseSink) IsQosEnabled() bool {
 	var _arg0 *C.GstBaseSink // out
@@ -888,11 +885,11 @@ func (sink *BaseSink) IsQosEnabled() bool {
 //
 // The function returns the following values:
 //
-//    - live (optional): if the sink is live.
-//    - upstreamLive (optional): if an upstream element is live.
-//    - minLatency (optional): min latency of the upstream elements.
-//    - maxLatency (optional): max latency of the upstream elements.
-//    - ok: TRUE if the query succeeded.
+//   - live (optional): if the sink is live.
+//   - upstreamLive (optional): if an upstream element is live.
+//   - minLatency (optional): min latency of the upstream elements.
+//   - maxLatency (optional): max latency of the upstream elements.
+//   - ok: TRUE if the query succeeded.
 //
 func (sink *BaseSink) QueryLatency() (live, upstreamLive bool, minLatency, maxLatency gst.ClockTime, ok bool) {
 	var _arg0 *C.GstBaseSink // out
@@ -919,12 +916,8 @@ func (sink *BaseSink) QueryLatency() (live, upstreamLive bool, minLatency, maxLa
 	if _arg2 != 0 {
 		_upstreamLive = true
 	}
-	_minLatency = uint64(_arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_maxLatency = uint64(_arg4)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_minLatency = gst.ClockTime(_arg3)
+	_maxLatency = gst.ClockTime(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -939,7 +932,7 @@ func (sink *BaseSink) QueryLatency() (live, upstreamLive bool, minLatency, maxLa
 //
 // The function takes the following parameters:
 //
-//    - enabled: new async value.
+//   - enabled: new async value.
 //
 func (sink *BaseSink) SetAsyncEnabled(enabled bool) {
 	var _arg0 *C.GstBaseSink // out
@@ -960,7 +953,7 @@ func (sink *BaseSink) SetAsyncEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - blocksize in bytes.
+//   - blocksize in bytes.
 //
 func (sink *BaseSink) SetBlocksize(blocksize uint) {
 	var _arg0 *C.GstBaseSink // out
@@ -979,7 +972,7 @@ func (sink *BaseSink) SetBlocksize(blocksize uint) {
 //
 // The function takes the following parameters:
 //
-//    - dropOutOfSegment: drop buffers outside the segment.
+//   - dropOutOfSegment: drop buffers outside the segment.
 //
 func (sink *BaseSink) SetDropOutOfSegment(dropOutOfSegment bool) {
 	var _arg0 *C.GstBaseSink // out
@@ -1000,7 +993,7 @@ func (sink *BaseSink) SetDropOutOfSegment(dropOutOfSegment bool) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new enable-last-sample value.
+//   - enabled: new enable-last-sample value.
 //
 func (sink *BaseSink) SetLastSampleEnabled(enabled bool) {
 	var _arg0 *C.GstBaseSink // out
@@ -1021,7 +1014,7 @@ func (sink *BaseSink) SetLastSampleEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - maxBitrate: max_bitrate in bits per second.
+//   - maxBitrate: max_bitrate in bits per second.
 //
 func (sink *BaseSink) SetMaxBitrate(maxBitrate uint64) {
 	var _arg0 *C.GstBaseSink // out
@@ -1035,13 +1028,13 @@ func (sink *BaseSink) SetMaxBitrate(maxBitrate uint64) {
 	runtime.KeepAlive(maxBitrate)
 }
 
-// SetMaxLateness sets the new max lateness value to max_lateness. This value is
-// used to decide if a buffer should be dropped or not based on the buffer
+// SetMaxLateness sets the new max lateness value to max_lateness. This value
+// is used to decide if a buffer should be dropped or not based on the buffer
 // timestamp and the current clock time. A value of -1 means an unlimited time.
 //
 // The function takes the following parameters:
 //
-//    - maxLateness: new max lateness value.
+//   - maxLateness: new max lateness value.
 //
 func (sink *BaseSink) SetMaxLateness(maxLateness int64) {
 	var _arg0 *C.GstBaseSink // out
@@ -1063,16 +1056,14 @@ func (sink *BaseSink) SetMaxLateness(maxLateness int64) {
 //
 // The function takes the following parameters:
 //
-//    - processingDeadline: new processing deadline in nanoseconds.
+//   - processingDeadline: new processing deadline in nanoseconds.
 //
 func (sink *BaseSink) SetProcessingDeadline(processingDeadline gst.ClockTime) {
 	var _arg0 *C.GstBaseSink // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.guint64(processingDeadline)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(processingDeadline)
 
 	C.gst_base_sink_set_processing_deadline(_arg0, _arg1)
 	runtime.KeepAlive(sink)
@@ -1083,7 +1074,7 @@ func (sink *BaseSink) SetProcessingDeadline(processingDeadline gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - enabled: new qos value.
+//   - enabled: new qos value.
 //
 func (sink *BaseSink) SetQosEnabled(enabled bool) {
 	var _arg0 *C.GstBaseSink // out
@@ -1111,16 +1102,14 @@ func (sink *BaseSink) SetQosEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - delay: new delay.
+//   - delay: new delay.
 //
 func (sink *BaseSink) SetRenderDelay(delay gst.ClockTime) {
 	var _arg0 *C.GstBaseSink // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.guint64(delay)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(delay)
 
 	C.gst_base_sink_set_render_delay(_arg0, _arg1)
 	runtime.KeepAlive(sink)
@@ -1134,7 +1123,7 @@ func (sink *BaseSink) SetRenderDelay(delay gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - sync: new sync value.
+//   - sync: new sync value.
 //
 func (sink *BaseSink) SetSync(sync bool) {
 	var _arg0 *C.GstBaseSink // out
@@ -1156,7 +1145,7 @@ func (sink *BaseSink) SetSync(sync bool) {
 //
 // The function takes the following parameters:
 //
-//    - throttle time in nanoseconds.
+//   - throttle time in nanoseconds.
 //
 func (sink *BaseSink) SetThrottleTime(throttle uint64) {
 	var _arg0 *C.GstBaseSink // out
@@ -1177,16 +1166,14 @@ func (sink *BaseSink) SetThrottleTime(throttle uint64) {
 //
 // The function takes the following parameters:
 //
-//    - offset: new offset.
+//   - offset: new offset.
 //
 func (sink *BaseSink) SetTsOffset(offset gst.ClockTimeDiff) {
 	var _arg0 *C.GstBaseSink     // out
 	var _arg1 C.GstClockTimeDiff // out
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.gint64(offset)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
+	_arg1 = C.GstClockTimeDiff(offset)
 
 	C.gst_base_sink_set_ts_offset(_arg0, _arg1)
 	runtime.KeepAlive(sink)
@@ -1208,12 +1195,12 @@ func (sink *BaseSink) SetTsOffset(offset gst.ClockTimeDiff) {
 //
 // The function takes the following parameters:
 //
-//    - time to be reached.
+//   - time to be reached.
 //
 // The function returns the following values:
 //
-//    - jitter (optional) to be filled with time diff, or NULL.
-//    - flowReturn: FlowReturn.
+//   - jitter (optional) to be filled with time diff, or NULL.
+//   - flowReturn: FlowReturn.
 //
 func (sink *BaseSink) Wait(time gst.ClockTime) (gst.ClockTimeDiff, gst.FlowReturn) {
 	var _arg0 *C.GstBaseSink     // out
@@ -1222,9 +1209,7 @@ func (sink *BaseSink) Wait(time gst.ClockTime) (gst.ClockTimeDiff, gst.FlowRetur
 	var _cret C.GstFlowReturn    // in
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.guint64(time)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	_cret = C.gst_base_sink_wait(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(sink)
@@ -1233,9 +1218,7 @@ func (sink *BaseSink) Wait(time gst.ClockTime) (gst.ClockTimeDiff, gst.FlowRetur
 	var _jitter gst.ClockTimeDiff  // out
 	var _flowReturn gst.FlowReturn // out
 
-	_jitter = int64(_arg2)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
+	_jitter = gst.ClockTimeDiff(_arg2)
 	_flowReturn = gst.FlowReturn(_cret)
 
 	return _jitter, _flowReturn
@@ -1257,12 +1240,12 @@ func (sink *BaseSink) Wait(time gst.ClockTime) (gst.ClockTimeDiff, gst.FlowRetur
 //
 // The function takes the following parameters:
 //
-//    - time to be reached.
+//   - time to be reached.
 //
 // The function returns the following values:
 //
-//    - jitter (optional) to be filled with time diff, or NULL.
-//    - clockReturn: ClockReturn.
+//   - jitter (optional) to be filled with time diff, or NULL.
+//   - clockReturn: ClockReturn.
 //
 func (sink *BaseSink) WaitClock(time gst.ClockTime) (gst.ClockTimeDiff, gst.ClockReturn) {
 	var _arg0 *C.GstBaseSink     // out
@@ -1271,9 +1254,7 @@ func (sink *BaseSink) WaitClock(time gst.ClockTime) (gst.ClockTimeDiff, gst.Cloc
 	var _cret C.GstClockReturn   // in
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = C.guint64(time)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	_cret = C.gst_base_sink_wait_clock(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(sink)
@@ -1282,28 +1263,26 @@ func (sink *BaseSink) WaitClock(time gst.ClockTime) (gst.ClockTimeDiff, gst.Cloc
 	var _jitter gst.ClockTimeDiff    // out
 	var _clockReturn gst.ClockReturn // out
 
-	_jitter = int64(_arg2)
-	type _ = gst.ClockTimeDiff
-	type _ = int64
+	_jitter = gst.ClockTimeDiff(_arg2)
 	_clockReturn = gst.ClockReturn(_cret)
 
 	return _jitter, _clockReturn
 }
 
 // WaitPreroll: if the BaseSinkClass::render method performs its own
-// synchronisation against the clock it must unblock when going from PLAYING to
-// the PAUSED state and call this method before continuing to render the
+// synchronisation against the clock it must unblock when going from PLAYING
+// to the PAUSED state and call this method before continuing to render the
 // remaining data.
 //
-// If the BaseSinkClass::render method can block on something else than the
-// clock, it must also be ready to unblock immediately on the
+// If the BaseSinkClass::render method can block on something else
+// than the clock, it must also be ready to unblock immediately on the
 // BaseSinkClass::unlock method and cause the BaseSinkClass::render method to
 // immediately call this function. In this case, the subclass must be prepared
 // to continue rendering where it left off if this function returns GST_FLOW_OK.
 //
 // This function will block until a state change to PLAYING happens (in which
-// case this function returns GST_FLOW_OK) or the processing must be stopped due
-// to a state change to READY or a FLUSH event (in which case this function
+// case this function returns GST_FLOW_OK) or the processing must be stopped
+// due to a state change to READY or a FLUSH event (in which case this function
 // returns GST_FLOW_FLUSHING).
 //
 // This function should only be called with the PREROLL_LOCK held, like in the
@@ -1311,9 +1290,9 @@ func (sink *BaseSink) WaitClock(time gst.ClockTime) (gst.ClockTimeDiff, gst.Cloc
 //
 // The function returns the following values:
 //
-//    - flowReturn: GST_FLOW_OK if the preroll completed and processing can
-//      continue. Any other return value should be returned from the render
-//      vmethod.
+//   - flowReturn: GST_FLOW_OK if the preroll completed and processing can
+//     continue. Any other return value should be returned from the render
+//     vmethod.
 //
 func (sink *BaseSink) WaitPreroll() gst.FlowReturn {
 	var _arg0 *C.GstBaseSink  // out
@@ -1421,6 +1400,8 @@ func (sink *BaseSink) fixate(caps *gst.Caps) *gst.Caps {
 	return _ret
 }
 
+// Caps: called to get sink pad caps from the subclass.
+//
 // The function takes the following parameters:
 //
 // The function returns the following values:
@@ -1434,7 +1415,9 @@ func (sink *BaseSink) caps(filter *gst.Caps) *gst.Caps {
 	var _cret *C.GstCaps     // in
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
-	_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(filter)))
+	if filter != nil {
+		_arg1 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(filter)))
+	}
 
 	_cret = C._gotk4_gstbase1_BaseSink_virtual_get_caps(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(sink)
@@ -1453,35 +1436,38 @@ func (sink *BaseSink) caps(filter *gst.Caps) *gst.Caps {
 	return _caps
 }
 
+// Times: get the start and end times for syncing on this buffer.
+//
 // The function takes the following parameters:
 //
-//    - buffer
-//    - start
-//    - end
+// The function returns the following values:
 //
-func (sink *BaseSink) times(buffer *gst.Buffer, start, end *gst.ClockTime) {
+//   - start ClockTime.
+//   - end ClockTime.
+//
+func (sink *BaseSink) times(buffer *gst.Buffer) (start, end gst.ClockTime) {
 	gclass := (*C.GstBaseSinkClass)(coreglib.PeekParentClass(sink))
 	fnarg := gclass.get_times
 
-	var _arg0 *C.GstBaseSink  // out
-	var _arg1 *C.GstBuffer    // out
-	var _arg2 *C.GstClockTime // out
-	var _arg3 *C.GstClockTime // out
+	var _arg0 *C.GstBaseSink // out
+	var _arg1 *C.GstBuffer   // out
+	var _arg2 C.GstClockTime // in
+	var _arg3 C.GstClockTime // in
 
 	_arg0 = (*C.GstBaseSink)(unsafe.Pointer(coreglib.InternObject(sink).Native()))
 	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
-	_arg2 = (*C.guint64)(unsafe.Pointer(start))
-	type _ = *gst.ClockTime
-	type _ = *uint64
-	_arg3 = (*C.guint64)(unsafe.Pointer(end))
-	type _ = *gst.ClockTime
-	type _ = *uint64
 
-	C._gotk4_gstbase1_BaseSink_virtual_get_times(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	C._gotk4_gstbase1_BaseSink_virtual_get_times(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(sink)
 	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(start)
-	runtime.KeepAlive(end)
+
+	var _start gst.ClockTime // out
+	var _end gst.ClockTime   // out
+
+	_start = gst.ClockTime(_arg2)
+	_end = gst.ClockTime(_arg3)
+
+	return _start, _end
 }
 
 // The function takes the following parameters:
@@ -1816,8 +1802,8 @@ func (sink *BaseSink) waitEvent(event *gst.Event) gst.FlowReturn {
 	return _flowReturn
 }
 
-// BaseSinkClass subclasses can override any of the available virtual methods or
-// not, as needed. At the minimum, the render method should be overridden to
+// BaseSinkClass subclasses can override any of the available virtual methods
+// or not, as needed. At the minimum, the render method should be overridden to
 // output/present buffers.
 //
 // An instance of this type is always passed by reference.

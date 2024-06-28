@@ -164,8 +164,8 @@ const (
 	MessageEos MessageType = 0b1
 	// MessageError: error occurred. When the application receives an error
 	// message it should stop playback of the pipeline and not assume that more
-	// data will be played. It is possible to specify a redirection url to the
-	// error messages by setting a redirect-location field into the error
+	// data will be played. It is possible to specify a redirection url to
+	// the error messages by setting a redirect-location field into the error
 	// message, application or high level bins might use the information as
 	// required.
 	MessageError MessageType = 0b10
@@ -175,8 +175,8 @@ const (
 	MessageInfo MessageType = 0b1000
 	// MessageTag: tag was found.
 	MessageTag MessageType = 0b10000
-	// MessageBuffering: pipeline is buffering. When the application receives a
-	// buffering message in the PLAYING state for a non-live pipeline it must
+	// MessageBuffering: pipeline is buffering. When the application receives
+	// a buffering message in the PLAYING state for a non-live pipeline it must
 	// PAUSE the pipeline until the buffering completes, when the percentage
 	// field in the message is 100%. For live pipelines, no action must be
 	// performed and the buffering percentage can be used to inform the user
@@ -189,8 +189,8 @@ const (
 	MessageStateDirty MessageType = 0b10000000
 	// MessageStepDone: stepping operation finished.
 	MessageStepDone MessageType = 0b100000000
-	// MessageClockProvide: element notifies its capability of providing a
-	// clock. This message is used internally and never forwarded to the
+	// MessageClockProvide: element notifies its capability of providing
+	// a clock. This message is used internally and never forwarded to the
 	// application.
 	MessageClockProvide MessageType = 0b1000000000
 	// MessageClockLost: current clock as selected by the pipeline became
@@ -421,11 +421,11 @@ func (m MessageType) Has(other MessageType) bool {
 //
 // The function takes the following parameters:
 //
-//    - typ: message type.
+//   - typ: message type.
 //
 // The function returns the following values:
 //
-//    - utf8: reference to the static name of the message.
+//   - utf8: reference to the static name of the message.
 //
 func MessageTypeGetName(typ MessageType) string {
 	var _arg1 C.GstMessageType // out
@@ -447,11 +447,11 @@ func MessageTypeGetName(typ MessageType) string {
 //
 // The function takes the following parameters:
 //
-//    - typ: message type.
+//   - typ: message type.
 //
 // The function returns the following values:
 //
-//    - quark associated with the message type.
+//   - quark associated with the message type.
 //
 func MessageTypeToQuark(typ MessageType) glib.Quark {
 	var _arg1 C.GstMessageType // out
@@ -464,9 +464,7 @@ func MessageTypeToQuark(typ MessageType) glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -519,15 +517,13 @@ func NewMessageApplication(src GstObjector, structure *Structure) *Message {
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -541,9 +537,7 @@ func NewMessageAsyncDone(src GstObjector, runningTime ClockTime) *Message {
 	if src != nil {
 		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	}
-	_arg2 = C.guint64(runningTime)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(runningTime)
 
 	_cret = C.gst_message_new_async_done(_arg1, _arg2)
 	runtime.KeepAlive(src)
@@ -604,15 +598,13 @@ func NewMessageBuffering(src GstObjector, percent int) *Message {
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -701,15 +693,13 @@ func NewMessageCustom(typ MessageType, src GstObjector, structure *Structure) *M
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -720,7 +710,9 @@ func NewMessageDeviceAdded(src GstObjector, device Devicer) *Message {
 	var _arg2 *C.GstDevice  // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = (*C.GstDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_cret = C.gst_message_new_device_added(_arg1, _arg2)
@@ -747,7 +739,9 @@ func NewMessageDeviceChanged(src GstObjector, device Devicer, changedDevice Devi
 	var _arg3 *C.GstDevice  // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = (*C.GstDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 	_arg3 = (*C.GstDevice)(unsafe.Pointer(coreglib.InternObject(changedDevice).Native()))
 
@@ -775,7 +769,9 @@ func NewMessageDeviceRemoved(src GstObjector, device Devicer) *Message {
 	var _arg2 *C.GstDevice  // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = (*C.GstDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_cret = C.gst_message_new_device_removed(_arg1, _arg2)
@@ -838,15 +834,13 @@ func NewMessageElement(src GstObjector, structure *Structure) *Message {
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -939,15 +933,13 @@ func NewMessageErrorWithDetails(src GstObjector, err error, debug string, detail
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -1044,15 +1036,13 @@ func NewMessageInfoWithDetails(src GstObjector, err error, debug string, details
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -1063,7 +1053,9 @@ func NewMessageInstantRateRequest(src GstObjector, rateMultiplier float64) *Mess
 	var _arg2 C.gdouble     // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = C.gdouble(rateMultiplier)
 
 	_cret = C.gst_message_new_instant_rate_request(_arg1, _arg2)
@@ -1173,7 +1165,9 @@ func NewMessageProgress(src GstObjector, typ ProgressType, code string, text str
 	var _arg4 *C.gchar          // out
 	var _cret *C.GstMessage     // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = C.GstProgressType(typ)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(code)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -1188,15 +1182,13 @@ func NewMessageProgress(src GstObjector, typ ProgressType, code string, text str
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -1243,7 +1235,9 @@ func NewMessageQos(src GstObjector, live bool, runningTime uint64, streamTime ui
 	var _arg6 C.guint64     // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	if live {
 		_arg2 = C.TRUE
 	}
@@ -1259,6 +1253,47 @@ func NewMessageQos(src GstObjector, live bool, runningTime uint64, streamTime ui
 	runtime.KeepAlive(streamTime)
 	runtime.KeepAlive(timestamp)
 	runtime.KeepAlive(duration)
+
+	var _message *Message // out
+
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _message
+}
+
+// NewMessageRedirect constructs a struct Message.
+func NewMessageRedirect(src GstObjector, location string, tagList *TagList, entryStruct *Structure) *Message {
+	var _arg1 *C.GstObject    // out
+	var _arg2 *C.gchar        // out
+	var _arg3 *C.GstTagList   // out
+	var _arg4 *C.GstStructure // out
+	var _cret *C.GstMessage   // in
+
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(location)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if tagList != nil {
+		_arg3 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(tagList)), nil)
+	}
+	if entryStruct != nil {
+		_arg4 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(entryStruct)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(entryStruct)), nil)
+	}
+
+	_cret = C.gst_message_new_redirect(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(tagList)
+	runtime.KeepAlive(entryStruct)
 
 	var _message *Message // out
 
@@ -1310,9 +1345,7 @@ func NewMessageResetTime(src GstObjector, runningTime ClockTime) *Message {
 	if src != nil {
 		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	}
-	_arg2 = C.guint64(runningTime)
-	type _ = ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(runningTime)
 
 	_cret = C.gst_message_new_reset_time(_arg1, _arg2)
 	runtime.KeepAlive(src)
@@ -1464,7 +1497,9 @@ func NewMessageStepDone(src GstObjector, format Format, amount uint64, rate floa
 	var _arg8 C.gboolean    // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = C.GstFormat(format)
 	_arg3 = C.guint64(amount)
 	_arg4 = C.gdouble(rate)
@@ -1513,7 +1548,9 @@ func NewMessageStepStart(src GstObjector, active bool, format Format, amount uin
 	var _arg7 C.gboolean    // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	if active {
 		_arg2 = C.TRUE
 	}
@@ -1555,7 +1592,9 @@ func NewMessageStreamCollection(src GstObjector, collection *StreamCollection) *
 	var _arg2 *C.GstStreamCollection // out
 	var _cret *C.GstMessage          // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = (*C.GstStreamCollection)(unsafe.Pointer(coreglib.InternObject(collection).Native()))
 
 	_cret = C.gst_message_new_stream_collection(_arg1, _arg2)
@@ -1607,7 +1646,9 @@ func NewMessageStreamStatus(src GstObjector, typ StreamStatusType, owner Element
 	var _arg3 *C.GstElement         // out
 	var _cret *C.GstMessage         // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = C.GstStreamStatusType(typ)
 	_arg3 = (*C.GstElement)(unsafe.Pointer(coreglib.InternObject(owner).Native()))
 
@@ -1635,7 +1676,9 @@ func NewMessageStreamsSelected(src GstObjector, collection *StreamCollection) *M
 	var _arg2 *C.GstStreamCollection // out
 	var _cret *C.GstMessage          // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = (*C.GstStreamCollection)(unsafe.Pointer(coreglib.InternObject(collection).Native()))
 
 	_cret = C.gst_message_new_streams_selected(_arg1, _arg2)
@@ -1691,6 +1734,35 @@ func NewMessageStructureChange(src GstObjector, typ StructureChangeType, owner E
 	return _message
 }
 
+// NewMessageTag constructs a struct Message.
+func NewMessageTag(src GstObjector, tagList *TagList) *Message {
+	var _arg1 *C.GstObject  // out
+	var _arg2 *C.GstTagList // out
+	var _cret *C.GstMessage // in
+
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
+	_arg2 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(tagList)), nil)
+
+	_cret = C.gst_message_new_tag(_arg1, _arg2)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(tagList)
+
+	var _message *Message // out
+
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _message
+}
+
 // NewMessageToc constructs a struct Message.
 func NewMessageToc(src GstObjector, toc *Toc, updated bool) *Message {
 	var _arg1 *C.GstObject  // out
@@ -1698,7 +1770,9 @@ func NewMessageToc(src GstObjector, toc *Toc, updated bool) *Message {
 	var _arg3 C.gboolean    // out
 	var _cret *C.GstMessage // in
 
-	_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	if src != nil {
+		_arg1 = (*C.GstObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	}
 	_arg2 = (*C.GstToc)(gextras.StructNative(unsafe.Pointer(toc)))
 	if updated {
 		_arg3 = C.TRUE
@@ -1785,15 +1859,13 @@ func NewMessageWarningWithDetails(src GstObjector, err error, debug string, deta
 
 	var _message *Message // out
 
-	if _cret != nil {
-		_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_message)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
+	_message = (*Message)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_message)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _message
 }
@@ -1852,9 +1924,45 @@ func (m *Message) SetTimestamp(timestamp uint64) {
 	*valptr = C.guint64(timestamp)
 }
 
+// AddRedirectEntry creates and appends a new entry.
+//
+// The specified location string is copied. However, ownership over the tag list
+// and structure are transferred to the message.
+//
+// The function takes the following parameters:
+//
+//   - location string for the new entry.
+//   - tagList (optional): tag list for the new entry.
+//   - entryStruct (optional): structure for the new entry.
+//
+func (message *Message) AddRedirectEntry(location string, tagList *TagList, entryStruct *Structure) {
+	var _arg0 *C.GstMessage   // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GstTagList   // out
+	var _arg3 *C.GstStructure // out
+
+	_arg0 = (*C.GstMessage)(gextras.StructNative(unsafe.Pointer(message)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(location)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if tagList != nil {
+		_arg2 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(tagList)), nil)
+	}
+	if entryStruct != nil {
+		_arg3 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(entryStruct)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(entryStruct)), nil)
+	}
+
+	C.gst_message_add_redirect_entry(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(tagList)
+	runtime.KeepAlive(entryStruct)
+}
+
 // The function returns the following values:
 //
-//    - gsize: number of entries stored in the message.
+//   - gsize: number of entries stored in the message.
 //
 func (message *Message) NumRedirectEntries() uint {
 	var _arg0 *C.GstMessage // out
@@ -1875,21 +1983,21 @@ func (message *Message) NumRedirectEntries() uint {
 // Seqnum: retrieve the sequence number of a message.
 //
 // Messages have ever-incrementing sequence numbers, which may also be set
-// explicitly via gst_message_set_seqnum(). Sequence numbers are typically used
-// to indicate that a message corresponds to some other set of messages or
-// events, for example a SEGMENT_DONE message corresponding to a SEEK event. It
-// is considered good practice to make this correspondence when possible, though
-// it is not required.
+// explicitly via gst_message_set_seqnum(). Sequence numbers are typically
+// used to indicate that a message corresponds to some other set of messages or
+// events, for example a SEGMENT_DONE message corresponding to a SEEK event.
+// It is considered good practice to make this correspondence when possible,
+// though it is not required.
 //
-// Note that events and messages share the same sequence number incrementor; two
-// events or messages will never have the same sequence number unless that
+// Note that events and messages share the same sequence number incrementor;
+// two events or messages will never have the same sequence number unless that
 // correspondence was made explicitly.
 //
 // The function returns the following values:
 //
-//    - guint32 message's sequence number.
+//   - guint32 message's sequence number.
 //
-//      MT safe.
+//     MT safe.
 //
 func (message *Message) Seqnum() uint32 {
 	var _arg0 *C.GstMessage // out
@@ -1912,10 +2020,10 @@ func (message *Message) Seqnum() uint32 {
 //
 // The function returns the following values:
 //
-//    - value (optional): GValue containing the object that manages the streaming
-//      thread. This object is usually of type GstTask but other types can be
-//      added in the future. The object remains valid as long as message is
-//      valid.
+//   - value (optional): GValue containing the object that manages the streaming
+//     thread. This object is usually of type GstTask but other types can be
+//     added in the future. The object remains valid as long as message is
+//     valid.
 //
 func (message *Message) StreamStatusObject() *coreglib.Value {
 	var _arg0 *C.GstMessage // out
@@ -1939,11 +2047,11 @@ func (message *Message) StreamStatusObject() *coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - structure (optional) of the message. The structure is still owned by the
-//      message, which means that you should not free it and that the pointer
-//      becomes invalid when you free the message.
+//   - structure (optional) of the message. The structure is still owned by the
+//     message, which means that you should not free it and that the pointer
+//     becomes invalid when you free the message.
 //
-//      MT safe.
+//     MT safe.
 //
 func (message *Message) Structure() *Structure {
 	var _arg0 *C.GstMessage   // out
@@ -1968,11 +2076,11 @@ func (message *Message) Structure() *Structure {
 //
 // The function takes the following parameters:
 //
-//    - name to check.
+//   - name to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if name matches the name of the message structure.
+//   - ok: TRUE if name matches the name of the message structure.
 //
 func (message *Message) HasName(name string) bool {
 	var _arg0 *C.GstMessage // out
@@ -2002,7 +2110,7 @@ func (message *Message) HasName(name string) bool {
 //
 // The function returns the following values:
 //
-//    - runningTime (optional): result location for the running_time or NULL.
+//   - runningTime (optional): result location for the running_time or NULL.
 //
 func (message *Message) ParseAsyncDone() ClockTime {
 	var _arg0 *C.GstMessage  // out
@@ -2015,9 +2123,7 @@ func (message *Message) ParseAsyncDone() ClockTime {
 
 	var _runningTime ClockTime // out
 
-	_runningTime = uint64(_arg1)
-	type _ = ClockTime
-	type _ = uint64
+	_runningTime = ClockTime(_arg1)
 
 	return _runningTime
 }
@@ -2029,7 +2135,7 @@ func (message *Message) ParseAsyncDone() ClockTime {
 //
 // The function returns the following values:
 //
-//    - percent (optional): return location for the percent.
+//   - percent (optional): return location for the percent.
 //
 func (message *Message) ParseBuffering() int {
 	var _arg0 *C.GstMessage // out
@@ -2051,11 +2157,11 @@ func (message *Message) ParseBuffering() int {
 //
 // The function returns the following values:
 //
-//    - mode (optional): buffering mode, or NULL.
-//    - avgIn (optional): average input rate, or NULL.
-//    - avgOut (optional): average output rate, or NULL.
-//    - bufferingLeft (optional): amount of buffering time left in milliseconds,
-//      or NULL.
+//   - mode (optional): buffering mode, or NULL.
+//   - avgIn (optional): average input rate, or NULL.
+//   - avgOut (optional): average output rate, or NULL.
+//   - bufferingLeft (optional): amount of buffering time left in milliseconds,
+//     or NULL.
 //
 func (message *Message) ParseBufferingStats() (mode BufferingMode, avgIn int, avgOut int, bufferingLeft int64) {
 	var _arg0 *C.GstMessage      // out
@@ -2089,7 +2195,7 @@ func (message *Message) ParseBufferingStats() (mode BufferingMode, avgIn int, av
 //
 // The function returns the following values:
 //
-//    - clock (optional): pointer to hold the lost clock.
+//   - clock (optional): pointer to hold the lost clock.
 //
 func (message *Message) ParseClockLost() Clocker {
 	var _arg0 *C.GstMessage // out
@@ -2122,15 +2228,15 @@ func (message *Message) ParseClockLost() Clocker {
 	return _clock
 }
 
-// ParseClockProvide extracts the clock and ready flag from the GstMessage. The
-// clock object returned remains valid until the message is freed.
+// ParseClockProvide extracts the clock and ready flag from the GstMessage.
+// The clock object returned remains valid until the message is freed.
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - clock (optional): pointer to hold a clock object, or NULL.
-//    - ready (optional): pointer to hold the ready flag, or NULL.
+//   - clock (optional): pointer to hold a clock object, or NULL.
+//   - ready (optional): pointer to hold the ready flag, or NULL.
 //
 func (message *Message) ParseClockProvide() (Clocker, bool) {
 	var _arg0 *C.GstMessage // out
@@ -2173,8 +2279,8 @@ func (message *Message) ParseClockProvide() (Clocker, bool) {
 //
 // The function returns the following values:
 //
-//    - contextType (optional): context type, or NULL.
-//    - ok indicating if the parsing succeeded.
+//   - contextType (optional): context type, or NULL.
+//   - ok indicating if the parsing succeeded.
 //
 func (message *Message) ParseContextType() (string, bool) {
 	var _arg0 *C.GstMessage // out
@@ -2205,8 +2311,8 @@ func (message *Message) ParseContextType() (string, bool) {
 //
 // The function returns the following values:
 //
-//    - device (optional): location where to store a pointer to the new Device,
-//      or NULL.
+//   - device (optional): location where to store a pointer to the new Device,
+//     or NULL.
 //
 func (message *Message) ParseDeviceAdded() Devicer {
 	var _arg0 *C.GstMessage // out
@@ -2246,10 +2352,10 @@ func (message *Message) ParseDeviceAdded() Devicer {
 //
 // The function returns the following values:
 //
-//    - device (optional): location where to store a pointer to the updated
-//      version of the Device, or NULL.
-//    - changedDevice (optional): location where to store a pointer to the old
-//      version of the Device, or NULL.
+//   - device (optional): location where to store a pointer to the updated
+//     version of the Device, or NULL.
+//   - changedDevice (optional): location where to store a pointer to the old
+//     version of the Device, or NULL.
 //
 func (message *Message) ParseDeviceChanged() (device Devicer, changedDevice Devicer) {
 	var _arg0 *C.GstMessage // out
@@ -2306,8 +2412,8 @@ func (message *Message) ParseDeviceChanged() (device Devicer, changedDevice Devi
 //
 // The function returns the following values:
 //
-//    - device (optional): location where to store a pointer to the removed
-//      Device, or NULL.
+//   - device (optional): location where to store a pointer to the removed
+//     Device, or NULL.
 //
 func (message *Message) ParseDeviceRemoved() Devicer {
 	var _arg0 *C.GstMessage // out
@@ -2340,36 +2446,36 @@ func (message *Message) ParseDeviceRemoved() Devicer {
 	return _device
 }
 
-// ParseError extracts the GError and debug string from the GstMessage. The
-// values returned in the output arguments are copies; the caller must free them
-// when done.
+// ParseError extracts the GError and debug string from the GstMessage.
+// The values returned in the output arguments are copies; the caller must free
+// them when done.
 //
 // Typical usage of this function might be:
 //
-//      ...
-//      switch (GST_MESSAGE_TYPE (msg)) {
-//        case GST_MESSAGE_ERROR: {
-//          GError *err = NULL;
-//          gchar *dbg_info = NULL;
+//    ...
+//    switch (GST_MESSAGE_TYPE (msg)) {
+//      case GST_MESSAGE_ERROR: {
+//        GError *err = NULL;
+//        gchar *dbg_info = NULL;
 //
-//          gst_message_parse_error (msg, &err, &dbg_info);
-//          g_printerr ("ERROR from element s: s\n",
-//              GST_OBJECT_NAME (msg->src), err->message);
-//          g_printerr ("Debugging info: s\n", (dbg_info) ? dbg_info : "none");
-//          g_error_free (err);
-//          g_free (dbg_info);
-//          break;
-//        }
-//        ...
+//        gst_message_parse_error (msg, &err, &dbg_info);
+//        g_printerr ("ERROR from element s: s\n",
+//            GST_OBJECT_NAME (msg->src), err->message);
+//        g_printerr ("Debugging info: s\n", (dbg_info) ? dbg_info : "none");
+//        g_error_free (err);
+//        g_free (dbg_info);
+//        break;
 //      }
 //      ...
+//    }
+//    ...
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - gerror (optional): location for the GError.
-//    - debug (optional): location for the debug message, or NULL.
+//   - gerror (optional): location for the GError.
+//   - debug (optional): location for the debug message, or NULL.
 //
 func (message *Message) ParseError() (error, string) {
 	var _arg0 *C.GstMessage // out
@@ -2400,7 +2506,7 @@ func (message *Message) ParseError() (error, string) {
 //
 // The function returns the following values:
 //
-//    - structure: pointer to the returned details.
+//   - structure (optional): pointer to the returned details.
 //
 func (message *Message) ParseErrorDetails() *Structure {
 	var _arg0 *C.GstMessage   // out
@@ -2413,7 +2519,9 @@ func (message *Message) ParseErrorDetails() *Structure {
 
 	var _structure *Structure // out
 
-	_structure = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_structure = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _structure
 }
@@ -2422,10 +2530,11 @@ func (message *Message) ParseErrorDetails() *Structure {
 //
 // The function returns the following values:
 //
-//    - groupId (optional): result location for the group id or NULL.
-//    - ok: TRUE if the message had a group id set, FALSE otherwise
+//   - groupId (optional): result location for the group id or NULL.
 //
-//      MT safe.
+//   - ok: TRUE if the message had a group id set, FALSE otherwise
+//
+//     MT safe.
 //
 func (message *Message) ParseGroupID() (uint, bool) {
 	var _arg0 *C.GstMessage // out
@@ -2454,7 +2563,7 @@ func (message *Message) ParseGroupID() (uint, bool) {
 //
 // The function returns the following values:
 //
-//    - context (optional): result location for the context or NULL.
+//   - context (optional): result location for the context or NULL.
 //
 func (message *Message) ParseHaveContext() *Context {
 	var _arg0 *C.GstMessage // out
@@ -2488,8 +2597,8 @@ func (message *Message) ParseHaveContext() *Context {
 //
 // The function returns the following values:
 //
-//    - gerror (optional): location for the GError.
-//    - debug (optional): location for the debug message, or NULL.
+//   - gerror (optional): location for the GError.
+//   - debug (optional): location for the debug message, or NULL.
 //
 func (message *Message) ParseInfo() (error, string) {
 	var _arg0 *C.GstMessage // out
@@ -2520,7 +2629,7 @@ func (message *Message) ParseInfo() (error, string) {
 //
 // The function returns the following values:
 //
-//    - structure: pointer to the returned details structure.
+//   - structure (optional): pointer to the returned details.
 //
 func (message *Message) ParseInfoDetails() *Structure {
 	var _arg0 *C.GstMessage   // out
@@ -2533,7 +2642,9 @@ func (message *Message) ParseInfoDetails() *Structure {
 
 	var _structure *Structure // out
 
-	_structure = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_structure = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _structure
 }
@@ -2543,7 +2654,7 @@ func (message *Message) ParseInfoDetails() *Structure {
 //
 // The function returns the following values:
 //
-//    - rateMultiplier (optional): return location for the rate, or NULL.
+//   - rateMultiplier (optional): return location for the rate, or NULL.
 //
 func (message *Message) ParseInstantRateRequest() float64 {
 	var _arg0 *C.GstMessage // out
@@ -2568,7 +2679,7 @@ func (message *Message) ParseInstantRateRequest() float64 {
 //
 // The function returns the following values:
 //
-//    - clock (optional): pointer to hold the selected new clock.
+//   - clock (optional): pointer to hold the selected new clock.
 //
 func (message *Message) ParseNewClock() Clocker {
 	var _arg0 *C.GstMessage // out
@@ -2605,9 +2716,9 @@ func (message *Message) ParseNewClock() Clocker {
 //
 // The function returns the following values:
 //
-//    - typ (optional): location for the type.
-//    - code (optional): location for the code.
-//    - text (optional): location for the text.
+//   - typ (optional): location for the type.
+//   - code (optional): location for the code.
+//   - text (optional): location for the text.
 //
 func (message *Message) ParseProgress() (typ ProgressType, code string, text string) {
 	var _arg0 *C.GstMessage     // out
@@ -2637,19 +2748,19 @@ func (message *Message) ParseProgress() (typ ProgressType, code string, text str
 	return _typ, _code, _text
 }
 
-// ParsePropertyNotify parses a property-notify message. These will be posted on
-// the bus only when set up with gst_element_add_property_notify_watch() or
+// ParsePropertyNotify parses a property-notify message. These will be posted
+// on the bus only when set up with gst_element_add_property_notify_watch() or
 // gst_element_add_property_deep_notify_watch().
 //
 // The function returns the following values:
 //
-//    - object (optional): location where to store a pointer to the object whose
-//      property got changed, or NULL.
-//    - propertyName (optional): return location for the name of the property
-//      that got changed, or NULL.
-//    - propertyValue (optional): return location for the new value of the
-//      property that got changed, or NULL. This will only be set if the property
-//      notify watch was told to include the value when it was set up.
+//   - object (optional): location where to store a pointer to the object whose
+//     property got changed, or NULL.
+//   - propertyName (optional): return location for the name of the property
+//     that got changed, or NULL.
+//   - propertyValue (optional): return location for the new value of the
+//     property that got changed, or NULL. This will only be set if the property
+//     notify watch was told to include the value when it was set up.
 //
 func (message *Message) ParsePropertyNotify() (GstObjector, string, *coreglib.Value) {
 	var _arg0 *C.GstMessage // out
@@ -2702,13 +2813,13 @@ func (message *Message) ParsePropertyNotify() (GstObjector, string, *coreglib.Va
 //
 // The function returns the following values:
 //
-//    - live (optional): if the message was generated by a live element.
-//    - runningTime (optional): running time of the buffer that generated the
-//      message.
-//    - streamTime (optional): stream time of the buffer that generated the
-//      message.
-//    - timestamp (optional) timestamps of the buffer that generated the message.
-//    - duration (optional) of the buffer that generated the message.
+//   - live (optional): if the message was generated by a live element.
+//   - runningTime (optional): running time of the buffer that generated the
+//     message.
+//   - streamTime (optional): stream time of the buffer that generated the
+//     message.
+//   - timestamp (optional) timestamps of the buffer that generated the message.
+//   - duration (optional) of the buffer that generated the message.
 //
 func (message *Message) ParseQos() (live bool, runningTime uint64, streamTime uint64, timestamp uint64, duration uint64) {
 	var _arg0 *C.GstMessage // out
@@ -2750,13 +2861,13 @@ func (message *Message) ParseQos() (live bool, runningTime uint64, streamTime ui
 //
 // The function returns the following values:
 //
-//    - format (optional) units of the 'processed' and 'dropped' fields. Video
-//      sinks and video filters will use GST_FORMAT_BUFFERS (frames). Audio sinks
-//      and audio filters will likely use GST_FORMAT_DEFAULT (samples).
-//    - processed (optional): total number of units correctly processed since the
-//      last state change to READY or a flushing operation.
-//    - dropped (optional): total number of units dropped since the last state
-//      change to READY or a flushing operation.
+//   - format (optional) units of the 'processed' and 'dropped' fields. Video
+//     sinks and video filters will use GST_FORMAT_BUFFERS (frames). Audio sinks
+//     and audio filters will likely use GST_FORMAT_DEFAULT (samples).
+//   - processed (optional): total number of units correctly processed since the
+//     last state change to READY or a flushing operation.
+//   - dropped (optional): total number of units dropped since the last state
+//     change to READY or a flushing operation.
 //
 func (message *Message) ParseQosStats() (format Format, processed uint64, dropped uint64) {
 	var _arg0 *C.GstMessage // out
@@ -2787,12 +2898,12 @@ func (message *Message) ParseQosStats() (format Format, processed uint64, droppe
 //
 // The function returns the following values:
 //
-//    - jitter (optional): difference of the running-time against the deadline.
-//    - proportion (optional): long term prediction of the ideal rate relative to
-//      normal rate to get optimal quality.
-//    - quality (optional): element dependent integer value that specifies the
-//      current quality level of the element. The default maximum quality is
-//      1000000.
+//   - jitter (optional): difference of the running-time against the deadline.
+//   - proportion (optional): long term prediction of the ideal rate relative to
+//     normal rate to get optimal quality.
+//   - quality (optional): element dependent integer value that specifies the
+//     current quality level of the element. The default maximum quality is
+//     1000000.
 //
 func (message *Message) ParseQosValues() (int64, float64, int) {
 	var _arg0 *C.GstMessage // out
@@ -2816,6 +2927,55 @@ func (message *Message) ParseQosValues() (int64, float64, int) {
 	return _jitter, _proportion, _quality
 }
 
+// ParseRedirectEntry parses the location and/or structure from
+// the entry with the given index. The index must be between 0 and
+// gst_message_get_num_redirect_entries() - 1. Returned pointers are valid for
+// as long as this message exists.
+//
+// The function takes the following parameters:
+//
+//   - entryIndex: index of the entry to parse.
+//
+// The function returns the following values:
+//
+//   - location (optional): return location for the pointer to the entry's
+//     location string, or NULL.
+//   - tagList (optional): return location for the pointer to the entry's tag
+//     list, or NULL.
+//   - entryStruct (optional): return location for the pointer to the entry's
+//     structure, or NULL.
+//
+func (message *Message) ParseRedirectEntry(entryIndex uint) (string, *TagList, *Structure) {
+	var _arg0 *C.GstMessage   // out
+	var _arg1 C.gsize         // out
+	var _arg2 *C.gchar        // in
+	var _arg3 *C.GstTagList   // in
+	var _arg4 *C.GstStructure // in
+
+	_arg0 = (*C.GstMessage)(gextras.StructNative(unsafe.Pointer(message)))
+	_arg1 = C.gsize(entryIndex)
+
+	C.gst_message_parse_redirect_entry(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(entryIndex)
+
+	var _location string        // out
+	var _tagList *TagList       // out
+	var _entryStruct *Structure // out
+
+	if _arg2 != nil {
+		_location = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	}
+	if _arg3 != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	}
+	if _arg4 != nil {
+		_entryStruct = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+	}
+
+	return _location, _tagList, _entryStruct
+}
+
 // ParseRequestState: extract the requested state from the request_state
 // message.
 //
@@ -2823,7 +2983,7 @@ func (message *Message) ParseQosValues() (int64, float64, int) {
 //
 // The function returns the following values:
 //
-//    - state (optional): result location for the requested state or NULL.
+//   - state (optional): result location for the requested state or NULL.
 //
 func (message *Message) ParseRequestState() State {
 	var _arg0 *C.GstMessage // out
@@ -2847,7 +3007,7 @@ func (message *Message) ParseRequestState() State {
 //
 // The function returns the following values:
 //
-//    - runningTime (optional): result location for the running_time or NULL.
+//   - runningTime (optional): result location for the running_time or NULL.
 //
 func (message *Message) ParseResetTime() ClockTime {
 	var _arg0 *C.GstMessage  // out
@@ -2860,9 +3020,7 @@ func (message *Message) ParseResetTime() ClockTime {
 
 	var _runningTime ClockTime // out
 
-	_runningTime = uint64(_arg1)
-	type _ = ClockTime
-	type _ = uint64
+	_runningTime = ClockTime(_arg1)
 
 	return _runningTime
 }
@@ -2874,8 +3032,8 @@ func (message *Message) ParseResetTime() ClockTime {
 //
 // The function returns the following values:
 //
-//    - format (optional): result location for the format, or NULL.
-//    - position (optional): result location for the position, or NULL.
+//   - format (optional): result location for the format, or NULL.
+//   - position (optional): result location for the position, or NULL.
 //
 func (message *Message) ParseSegmentDone() (Format, int64) {
 	var _arg0 *C.GstMessage // out
@@ -2903,8 +3061,8 @@ func (message *Message) ParseSegmentDone() (Format, int64) {
 //
 // The function returns the following values:
 //
-//    - format (optional): result location for the format, or NULL.
-//    - position (optional): result location for the position, or NULL.
+//   - format (optional): result location for the format, or NULL.
+//   - position (optional): result location for the position, or NULL.
 //
 func (message *Message) ParseSegmentStart() (Format, int64) {
 	var _arg0 *C.GstMessage // out
@@ -2929,29 +3087,29 @@ func (message *Message) ParseSegmentStart() (Format, int64) {
 //
 // Typical usage of this function might be:
 //
-//      ...
-//      switch (GST_MESSAGE_TYPE (msg)) {
-//        case GST_MESSAGE_STATE_CHANGED: {
-//          GstState old_state, new_state;
+//    ...
+//    switch (GST_MESSAGE_TYPE (msg)) {
+//      case GST_MESSAGE_STATE_CHANGED: {
+//        GstState old_state, new_state;
 //
-//          gst_message_parse_state_changed (msg, &old_state, &new_state, NULL);
-//          g_print ("Element s changed state from s to s.\n",
-//              GST_OBJECT_NAME (msg->src),
-//              gst_element_state_get_name (old_state),
-//              gst_element_state_get_name (new_state));
-//          break;
-//        }
-//        ...
+//        gst_message_parse_state_changed (msg, &old_state, &new_state, NULL);
+//        g_print ("Element s changed state from s to s.\n",
+//            GST_OBJECT_NAME (msg->src),
+//            gst_element_state_get_name (old_state),
+//            gst_element_state_get_name (new_state));
+//        break;
 //      }
 //      ...
+//    }
+//    ...
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - oldstate (optional) previous state, or NULL.
-//    - newstate (optional): new (current) state, or NULL.
-//    - pending (optional) (target) state, or NULL.
+//   - oldstate (optional) previous state, or NULL.
+//   - newstate (optional): new (current) state, or NULL.
+//   - pending (optional) (target) state, or NULL.
 //
 func (message *Message) ParseStateChanged() (oldstate State, newstate State, pending State) {
 	var _arg0 *C.GstMessage // out
@@ -2981,13 +3139,13 @@ func (message *Message) ParseStateChanged() (oldstate State, newstate State, pen
 //
 // The function returns the following values:
 //
-//    - format (optional): result location for the format.
-//    - amount (optional): result location for the amount.
-//    - rate (optional): result location for the rate.
-//    - flush (optional): result location for the flush flag.
-//    - intermediate (optional): result location for the intermediate flag.
-//    - duration (optional): result location for the duration.
-//    - eos (optional): result location for the EOS flag.
+//   - format (optional): result location for the format.
+//   - amount (optional): result location for the amount.
+//   - rate (optional): result location for the rate.
+//   - flush (optional): result location for the flush flag.
+//   - intermediate (optional): result location for the intermediate flag.
+//   - duration (optional): result location for the duration.
+//   - eos (optional): result location for the EOS flag.
 //
 func (message *Message) ParseStepDone() (format Format, amount uint64, rate float64, flush bool, intermediate bool, duration uint64, eos bool) {
 	var _arg0 *C.GstMessage // out
@@ -3035,12 +3193,12 @@ func (message *Message) ParseStepDone() (format Format, amount uint64, rate floa
 //
 // The function returns the following values:
 //
-//    - active (optional): result location for the active flag.
-//    - format (optional): result location for the format.
-//    - amount (optional): result location for the amount.
-//    - rate (optional): result location for the rate.
-//    - flush (optional): result location for the flush flag.
-//    - intermediate (optional): result location for the intermediate flag.
+//   - active (optional): result location for the active flag.
+//   - format (optional): result location for the format.
+//   - amount (optional): result location for the amount.
+//   - rate (optional): result location for the rate.
+//   - flush (optional): result location for the flush flag.
+//   - intermediate (optional): result location for the intermediate flag.
 //
 func (message *Message) ParseStepStart() (active bool, format Format, amount uint64, rate float64, flush bool, intermediate bool) {
 	var _arg0 *C.GstMessage // out
@@ -3083,8 +3241,8 @@ func (message *Message) ParseStepStart() (active bool, format Format, amount uin
 //
 // The function returns the following values:
 //
-//    - collection (optional): location where to store a pointer to the
-//      StreamCollection, or NULL.
+//   - collection (optional): location where to store a pointer to the
+//     StreamCollection, or NULL.
 //
 func (message *Message) ParseStreamCollection() *StreamCollection {
 	var _arg0 *C.GstMessage          // out
@@ -3112,8 +3270,8 @@ func (message *Message) ParseStreamCollection() *StreamCollection {
 //
 // The function returns the following values:
 //
-//    - typ: pointer to hold the status type.
-//    - owner element of the message source.
+//   - typ: pointer to hold the status type.
+//   - owner element of the message source.
 //
 func (message *Message) ParseStreamStatus() (StreamStatusType, Elementer) {
 	var _arg0 *C.GstMessage         // out
@@ -3154,8 +3312,8 @@ func (message *Message) ParseStreamStatus() (StreamStatusType, Elementer) {
 //
 // The function returns the following values:
 //
-//    - collection (optional): location where to store a pointer to the
-//      StreamCollection, or NULL.
+//   - collection (optional): location where to store a pointer to the
+//     StreamCollection, or NULL.
 //
 func (message *Message) ParseStreamsSelected() *StreamCollection {
 	var _arg0 *C.GstMessage          // out
@@ -3182,10 +3340,10 @@ func (message *Message) ParseStreamsSelected() *StreamCollection {
 //
 // The function returns the following values:
 //
-//    - typ: pointer to hold the change type.
-//    - owner (optional) element of the message source.
-//    - busy (optional): pointer to hold whether the change is in progress or has
-//      been completed.
+//   - typ: pointer to hold the change type.
+//   - owner (optional) element of the message source.
+//   - busy (optional): pointer to hold whether the change is in progress or has
+//     been completed.
 //
 func (message *Message) ParseStructureChange() (StructureChangeType, Elementer, bool) {
 	var _arg0 *C.GstMessage            // out
@@ -3226,6 +3384,54 @@ func (message *Message) ParseStructureChange() (StructureChangeType, Elementer, 
 	return _typ, _owner, _busy
 }
 
+// ParseTag extracts the tag list from the GstMessage. The tag list returned in
+// the output argument is a copy; the caller must free it when done.
+//
+// Typical usage of this function might be:
+//
+//    ...
+//    switch (GST_MESSAGE_TYPE (msg)) {
+//      case GST_MESSAGE_TAG: {
+//        GstTagList *tags = NULL;
+//
+//        gst_message_parse_tag (msg, &tags);
+//        g_print ("Got tags from element s\n", GST_OBJECT_NAME (msg->src));
+//        handle_tags (tags);
+//        gst_tag_list_unref (tags);
+//        break;
+//      }
+//      ...
+//    }
+//    ...
+//
+// MT safe.
+//
+// The function returns the following values:
+//
+//   - tagList: return location for the tag-list.
+//
+func (message *Message) ParseTag() *TagList {
+	var _arg0 *C.GstMessage // out
+	var _arg1 *C.GstTagList // in
+
+	_arg0 = (*C.GstMessage)(gextras.StructNative(unsafe.Pointer(message)))
+
+	C.gst_message_parse_tag(_arg0, &_arg1)
+	runtime.KeepAlive(message)
+
+	var _tagList *TagList // out
+
+	_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tagList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _tagList
+}
+
 // ParseToc: extract the TOC from the Message. The TOC returned in the output
 // argument is a copy; the caller must free it with gst_toc_unref() when done.
 //
@@ -3233,8 +3439,8 @@ func (message *Message) ParseStructureChange() (StructureChangeType, Elementer, 
 //
 // The function returns the following values:
 //
-//    - toc: return location for the TOC.
-//    - updated: return location for the updated flag.
+//   - toc: return location for the TOC.
+//   - updated: return location for the updated flag.
 //
 func (message *Message) ParseToc() (*Toc, bool) {
 	var _arg0 *C.GstMessage // out
@@ -3263,16 +3469,16 @@ func (message *Message) ParseToc() (*Toc, bool) {
 	return _toc, _updated
 }
 
-// ParseWarning extracts the GError and debug string from the GstMessage. The
-// values returned in the output arguments are copies; the caller must free them
-// when done.
+// ParseWarning extracts the GError and debug string from the GstMessage.
+// The values returned in the output arguments are copies; the caller must free
+// them when done.
 //
 // MT safe.
 //
 // The function returns the following values:
 //
-//    - gerror (optional): location for the GError.
-//    - debug (optional): location for the debug message, or NULL.
+//   - gerror (optional): location for the GError.
+//   - debug (optional): location for the debug message, or NULL.
 //
 func (message *Message) ParseWarning() (error, string) {
 	var _arg0 *C.GstMessage // out
@@ -3303,7 +3509,7 @@ func (message *Message) ParseWarning() (error, string) {
 //
 // The function returns the following values:
 //
-//    - structure: pointer to the returned details structure.
+//   - structure (optional): pointer to the returned details.
 //
 func (message *Message) ParseWarningDetails() *Structure {
 	var _arg0 *C.GstMessage   // out
@@ -3316,7 +3522,9 @@ func (message *Message) ParseWarningDetails() *Structure {
 
 	var _structure *Structure // out
 
-	_structure = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_structure = (*Structure)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	}
 
 	return _structure
 }
@@ -3325,10 +3533,10 @@ func (message *Message) ParseWarningDetails() *Structure {
 //
 // The function takes the following parameters:
 //
-//    - mode: buffering mode.
-//    - avgIn: average input rate.
-//    - avgOut: average output rate.
-//    - bufferingLeft: amount of buffering time left in milliseconds.
+//   - mode: buffering mode.
+//   - avgIn: average input rate.
+//   - avgOut: average output rate.
+//   - bufferingLeft: amount of buffering time left in milliseconds.
 //
 func (message *Message) SetBufferingStats(mode BufferingMode, avgIn int, avgOut int, bufferingLeft int64) {
 	var _arg0 *C.GstMessage      // out
@@ -3363,7 +3571,7 @@ func (message *Message) SetBufferingStats(mode BufferingMode, avgIn int, avgOut 
 //
 // The function takes the following parameters:
 //
-//    - groupId: group id.
+//   - groupId: group id.
 //
 func (message *Message) SetGroupID(groupId uint) {
 	var _arg0 *C.GstMessage // out
@@ -3387,13 +3595,13 @@ func (message *Message) SetGroupID(groupId uint) {
 //
 // The function takes the following parameters:
 //
-//    - format units of the 'processed' and 'dropped' fields. Video sinks and
-//      video filters will use GST_FORMAT_BUFFERS (frames). Audio sinks and audio
-//      filters will likely use GST_FORMAT_DEFAULT (samples).
-//    - processed: total number of units correctly processed since the last state
-//      change to READY or a flushing operation.
-//    - dropped: total number of units dropped since the last state change to
-//      READY or a flushing operation.
+//   - format units of the 'processed' and 'dropped' fields. Video sinks and
+//     video filters will use GST_FORMAT_BUFFERS (frames). Audio sinks and audio
+//     filters will likely use GST_FORMAT_DEFAULT (samples).
+//   - processed: total number of units correctly processed since the last state
+//     change to READY or a flushing operation.
+//   - dropped: total number of units dropped since the last state change to
+//     READY or a flushing operation.
 //
 func (message *Message) SetQosStats(format Format, processed uint64, dropped uint64) {
 	var _arg0 *C.GstMessage // out
@@ -3420,11 +3628,11 @@ func (message *Message) SetQosStats(format Format, processed uint64, dropped uin
 //
 // The function takes the following parameters:
 //
-//    - jitter: difference of the running-time against the deadline.
-//    - proportion: long term prediction of the ideal rate relative to normal
-//      rate to get optimal quality.
-//    - quality: element dependent integer value that specifies the current
-//      quality level of the element. The default maximum quality is 1000000.
+//   - jitter: difference of the running-time against the deadline.
+//   - proportion: long term prediction of the ideal rate relative to normal
+//     rate to get optimal quality.
+//   - quality: element dependent integer value that specifies the current
+//     quality level of the element. The default maximum quality is 1000000.
 //
 func (message *Message) SetQosValues(jitter int64, proportion float64, quality int) {
 	var _arg0 *C.GstMessage // out
@@ -3454,7 +3662,7 @@ func (message *Message) SetQosValues(jitter int64, proportion float64, quality i
 //
 // The function takes the following parameters:
 //
-//    - seqnum: sequence number.
+//   - seqnum: sequence number.
 //
 func (message *Message) SetSeqnum(seqnum uint32) {
 	var _arg0 *C.GstMessage // out
@@ -3474,7 +3682,7 @@ func (message *Message) SetSeqnum(seqnum uint32) {
 //
 // The function takes the following parameters:
 //
-//    - object controlling the streaming.
+//   - object controlling the streaming.
 //
 func (message *Message) SetStreamStatusObject(object *coreglib.Value) {
 	var _arg0 *C.GstMessage // out
@@ -3492,7 +3700,7 @@ func (message *Message) SetStreamStatusObject(object *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - stream to add to message.
+//   - stream to add to message.
 //
 func (message *Message) StreamsSelectedAdd(stream *Stream) {
 	var _arg0 *C.GstMessage // out
@@ -3511,7 +3719,7 @@ func (message *Message) StreamsSelectedAdd(stream *Stream) {
 //
 // The function returns the following values:
 //
-//    - guint: number of streams contained within.
+//   - guint: number of streams contained within.
 //
 func (message *Message) StreamsSelectedGetSize() uint {
 	var _arg0 *C.GstMessage // out
@@ -3534,11 +3742,11 @@ func (message *Message) StreamsSelectedGetSize() uint {
 //
 // The function takes the following parameters:
 //
-//    - idx: index of the stream to retrieve.
+//   - idx: index of the stream to retrieve.
 //
 // The function returns the following values:
 //
-//    - stream (optional): Stream.
+//   - stream (optional): Stream.
 //
 func (message *Message) StreamsSelectedGetStream(idx uint) *Stream {
 	var _arg0 *C.GstMessage // out
@@ -3565,12 +3773,12 @@ func (message *Message) StreamsSelectedGetStream(idx uint) *Stream {
 //
 // The function returns the following values:
 //
-//    - structure of the message. The structure is still owned by the message,
-//      which means that you should not free it and that the pointer becomes
-//      invalid when you free the message. This function checks if message is
-//      writable and will never return NULL.
+//   - structure of the message. The structure is still owned by the message,
+//     which means that you should not free it and that the pointer becomes
+//     invalid when you free the message. This function ensures that message is
+//     writable, and if so, will never return NULL.
 //
-//      MT safe.
+//     MT safe.
 //
 func (message *Message) WritableStructure() *Structure {
 	var _arg0 *C.GstMessage   // out

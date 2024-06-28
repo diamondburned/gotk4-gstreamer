@@ -30,7 +30,7 @@ func init() {
 const GL_COLOR_CONVERT_EXT_FORMATS = ", BGR10A2_LE, RGB10A2_LE, P010_10LE, P012_LE, P016_LE, Y212_LE, Y412_LE"
 
 // GL_COLOR_CONVERT_FORMATS: currently supported formats that can be converted.
-const GL_COLOR_CONVERT_FORMATS = "{ RGBA, RGB, RGBx, BGR, BGRx, BGRA, xRGB, xBGR, ARGB, ABGR, GBRA, GBR, RGBP, BGRP, Y444, I420, YV12, Y42B, Y41B, NV12, NV21, NV16, NV61, YUY2, UYVY, Y210, AYUV, VUYA, Y410, GRAY8, GRAY16_LE, GRAY16_BE, RGB16, BGR16, ARGB64, A420, AV12"
+const GL_COLOR_CONVERT_FORMATS = "{ RGBA, RGB, RGBx, BGR, BGRx, BGRA, xRGB, xBGR, ARGB, ABGR, GBRA, GBR, RGBP, BGRP, Y444, I420, YV12, Y42B, Y41B, NV12, NV21, NV16, NV61, YUY2, UYVY, Y210, AYUV, VUYA, Y410, GRAY8, GRAY16_LE, GRAY16_BE, RGB16, BGR16, ARGB64, A420, AV12, NV12_16L32S, NV12_4L4"
 
 // GL_COLOR_CONVERT_VIDEO_CAPS: currently supported Caps that can be converted.
 const GL_COLOR_CONVERT_VIDEO_CAPS = "video/x-raw("
@@ -93,11 +93,11 @@ func marshalGLColorConvert(p uintptr) (interface{}, error) {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glColorConvert: new GLColorConvert object.
+//   - glColorConvert: new GLColorConvert object.
 //
 func NewGLColorConvert(context GLContexter) *GLColorConvert {
 	var _arg1 *C.GstGLContext      // out
@@ -120,11 +120,11 @@ func NewGLColorConvert(context GLContexter) *GLColorConvert {
 //
 // The function takes the following parameters:
 //
-//    - query: completed ALLOCATION Query.
+//   - query: completed ALLOCATION Query.
 //
 // The function returns the following values:
 //
-//    - ok: whether the allocation parameters were successfully chosen.
+//   - ok: whether the allocation parameters were successfully chosen.
 //
 func (convert *GLColorConvert) DecideAllocation(query *gst.Query) bool {
 	var _arg0 *C.GstGLColorConvert // out
@@ -152,11 +152,11 @@ func (convert *GLColorConvert) DecideAllocation(query *gst.Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - inbuf filled Buffer to convert.
+//   - inbuf filled Buffer to convert.
 //
 // The function returns the following values:
 //
-//    - buffer: converted Buffer or NULL.
+//   - buffer (optional): converted Buffer or NULL.
 //
 func (convert *GLColorConvert) Perform(inbuf *gst.Buffer) *gst.Buffer {
 	var _arg0 *C.GstGLColorConvert // out
@@ -172,13 +172,15 @@ func (convert *GLColorConvert) Perform(inbuf *gst.Buffer) *gst.Buffer {
 
 	var _buffer *gst.Buffer // out
 
-	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_buffer)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_buffer)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _buffer
 }
@@ -187,8 +189,8 @@ func (convert *GLColorConvert) Perform(inbuf *gst.Buffer) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - inCaps: input Caps.
-//    - outCaps: output Caps.
+//   - inCaps: input Caps.
+//   - outCaps: output Caps.
 //
 // The function returns the following values:
 //

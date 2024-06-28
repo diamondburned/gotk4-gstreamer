@@ -120,7 +120,9 @@ func _gotk4_gstaudio1_AudioBaseSinkClass_create_ringbuffer(arg0 *C.GstAudioBaseS
 
 	var _ AudioRingBufferer
 
-	cret = (*C.GstAudioRingBuffer)(unsafe.Pointer(coreglib.InternObject(audioRingBuffer).Native()))
+	if audioRingBuffer != nil {
+		cret = (*C.GstAudioRingBuffer)(unsafe.Pointer(coreglib.InternObject(audioRingBuffer).Native()))
+	}
 
 	return cret
 }
@@ -159,7 +161,9 @@ func _gotk4_gstaudio1_AudioBaseSrcClass_create_ringbuffer(arg0 *C.GstAudioBaseSr
 
 	var _ AudioRingBufferer
 
-	cret = (*C.GstAudioRingBuffer)(unsafe.Pointer(coreglib.InternObject(audioRingBuffer).Native()))
+	if audioRingBuffer != nil {
+		cret = (*C.GstAudioRingBuffer)(unsafe.Pointer(coreglib.InternObject(audioRingBuffer).Native()))
+	}
 
 	return cret
 }
@@ -369,8 +373,6 @@ func _gotk4_gstaudio1_AudioDecoderClass_parse(arg0 *C.GstAudioDecoder, arg1 *C.G
 	}
 
 	var _adapter *gstbase.Adapter // out
-	var _offset *int              // out
-	var _length *int              // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -378,13 +380,15 @@ func _gotk4_gstaudio1_AudioDecoderClass_parse(arg0 *C.GstAudioDecoder, arg1 *C.G
 			Object: obj,
 		}
 	}
-	_offset = (*int)(unsafe.Pointer(arg2))
-	_length = (*int)(unsafe.Pointer(arg3))
 
-	flowReturn := overrides.Parse(_adapter, _offset, _length)
+	offset, length, flowReturn := overrides.Parse(_adapter)
 
+	var _ int
+	var _ int
 	var _ gst.FlowReturn
 
+	*arg2 = C.gint(offset)
+	*arg3 = C.gint(length)
 	cret = C.GstFlowReturn(flowReturn)
 
 	return cret
@@ -1311,13 +1315,12 @@ func _gotk4_gstaudio1_AudioSinkClass_write(arg0 *C.GstAudioSink, arg1 C.gpointer
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AudioSinkOverrides.Write, got none")
 	}
 
-	var _data unsafe.Pointer // out
-	var _length uint         // out
+	var _data []byte // out
 
-	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_length = uint(arg2)
+	_data = make([]byte, arg2)
+	copy(_data, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
 
-	gint := overrides.Write(_data, _length)
+	gint := overrides.Write(_data)
 
 	var _ int
 
@@ -1412,20 +1415,17 @@ func _gotk4_gstaudio1_AudioSrcClass_read(arg0 *C.GstAudioSrc, arg1 C.gpointer, a
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AudioSrcOverrides.Read, got none")
 	}
 
-	var _data unsafe.Pointer      // out
-	var _length uint              // out
-	var _timestamp *gst.ClockTime // out
+	var _data []byte // out
 
-	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_length = uint(arg2)
-	_timestamp = (*uint64)(unsafe.Pointer(arg3))
-	type _ = *gst.ClockTime
-	type _ = *uint64
+	_data = make([]byte, arg2)
+	copy(_data, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
 
-	guint := overrides.Read(_data, _length, _timestamp)
+	timestamp, guint := overrides.Read(_data)
 
+	var _ gst.ClockTime
 	var _ uint
 
+	*arg3 = C.GstClockTime(timestamp)
 	cret = C.guint(guint)
 
 	return cret

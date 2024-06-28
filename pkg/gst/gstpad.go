@@ -252,11 +252,11 @@ func (p PadMode) String() string {
 //
 // The function takes the following parameters:
 //
-//    - mode: pad mode.
+//   - mode: pad mode.
 //
 // The function returns the following values:
 //
-//    - utf8: short mnemonic for pad mode mode.
+//   - utf8: short mnemonic for pad mode mode.
 //
 func PadModeGetName(mode PadMode) string {
 	var _arg1 C.GstPadMode // out
@@ -284,13 +284,13 @@ const (
 	// for this item and GST_FLOW_OK or TRUE is returned to the caller.
 	PadProbeDrop PadProbeReturn = iota
 	// PadProbeOK: normal probe return value. This leaves the probe in place,
-	// and defers decisions about dropping or passing data to other probes, if
-	// any. If there are no other probes, the default behaviour for the probe
+	// and defers decisions about dropping or passing data to other probes,
+	// if any. If there are no other probes, the default behaviour for the probe
 	// type applies ('block' for blocking probes, and 'pass' for non-blocking
 	// probes).
 	PadProbeOK
-	// PadProbeRemove: remove this probe, passing the data. For blocking probes
-	// this will cause data flow to unblock, unless there are also other
+	// PadProbeRemove: remove this probe, passing the data. For blocking
+	// probes this will cause data flow to unblock, unless there are also other
 	// blocking probes installed.
 	PadProbeRemove
 	// PadProbePass pass the data item in the block probe and block on the next
@@ -298,10 +298,10 @@ const (
 	// returns PASS, the data will be passed.
 	PadProbePass
 	// PadProbeHandled: data has been handled in the probe and will not be
-	// forwarded further. For events and buffers this is the same behaviour as
-	// GST_PAD_PROBE_DROP (except that in this case you need to unref the buffer
-	// or event yourself). For queries it will also return TRUE to the caller.
-	// The probe can also modify the FlowReturn value by using the
+	// forwarded further. For events and buffers this is the same behaviour
+	// as GST_PAD_PROBE_DROP (except that in this case you need to unref the
+	// buffer or event yourself). For queries it will also return TRUE to the
+	// caller. The probe can also modify the FlowReturn value by using the
 	// T_PAD_PROBE_INFO_FLOW_RETURN() accessor. Note that the resulting query
 	// must contain valid entries. Since: 1.6.
 	PadProbeHandled
@@ -454,9 +454,9 @@ const (
 	// Could be omitted if it is already known that the two elements that own
 	// the pads are in the same bin.
 	PadLinkCheckHierarchy PadLinkCheck = 0b1
-	// PadLinkCheckTemplateCaps: check if the pads are compatible by using their
-	// template caps. This is much faster than GST_PAD_LINK_CHECK_CAPS, but
-	// would be unsafe e.g. if one pad has GST_CAPS_ANY.
+	// PadLinkCheckTemplateCaps: check if the pads are compatible by using
+	// their template caps. This is much faster than GST_PAD_LINK_CHECK_CAPS,
+	// but would be unsafe e.g. if one pad has GST_CAPS_ANY.
 	PadLinkCheckTemplateCaps PadLinkCheck = 0b10
 	// PadLinkCheckCaps: check if the pads are compatible by comparing the caps
 	// returned by gst_pad_query_caps().
@@ -534,9 +534,9 @@ const (
 	PadProbeTypeEventDownstream PadProbeType = 0b1000000
 	// PadProbeTypeEventUpstream: probe upstream events.
 	PadProbeTypeEventUpstream PadProbeType = 0b10000000
-	// PadProbeTypeEventFlush: probe flush events. This probe has to be
-	// explicitly enabled and is not included in the
-	// @GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM or
+	// PadProbeTypeEventFlush: probe flush events.
+	// This probe has to be explicitly enabled and is not
+	// included in the @GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM or
 	// @GST_PAD_PROBE_TYPE_EVENT_UPSTREAM probe types.
 	PadProbeTypeEventFlush PadProbeType = 0b100000000
 	// PadProbeTypeQueryDownstream: probe downstream queries.
@@ -555,8 +555,8 @@ const (
 	PadProbeTypeDataDownstream PadProbeType = 0b1110000
 	// PadProbeTypeDataUpstream: probe upstream data (events).
 	PadProbeTypeDataUpstream PadProbeType = 0b10000000
-	// PadProbeTypeDataBoth: probe upstream and downstream data (buffers, buffer
-	// lists, and events).
+	// PadProbeTypeDataBoth: probe upstream and downstream data (buffers,
+	// buffer lists, and events).
 	PadProbeTypeDataBoth PadProbeType = 0b11110000
 	// PadProbeTypeBlockDownstream: probe and block downstream data (buffers,
 	// buffer lists, and events).
@@ -665,9 +665,9 @@ type PadProbeCallback func(pad *Pad, info *PadProbeInfo) (padProbeReturn PadProb
 // When this function returns TRUE, the next event will be returned. When FALSE
 // is returned, gst_pad_sticky_events_foreach() will return.
 //
-// When event is set to NULL, the item will be removed from the list of sticky
-// events. event can be replaced by assigning a new reference to it. This
-// function is responsible for unreffing the old event when removing or
+// When event is set to NULL, the item will be removed from the list of
+// sticky events. event can be replaced by assigning a new reference to it.
+// This function is responsible for unreffing the old event when removing or
 // modifying.
 type PadStickyEventsForEachFunction func(pad *Pad, event *Event) (ok bool)
 
@@ -675,11 +675,11 @@ type PadStickyEventsForEachFunction func(pad *Pad, event *Event) (ok bool)
 //
 // The function takes the following parameters:
 //
-//    - ret to get the name of.
+//   - ret to get the name of.
 //
 // The function returns the following values:
 //
-//    - utf8: static string with the name of the flow return.
+//   - utf8: static string with the name of the flow return.
 //
 func FlowGetName(ret FlowReturn) string {
 	var _arg1 C.GstFlowReturn // out
@@ -701,12 +701,12 @@ func FlowGetName(ret FlowReturn) string {
 //
 // The function takes the following parameters:
 //
-//    - ret to get the quark of.
+//   - ret to get the quark of.
 //
 // The function returns the following values:
 //
-//    - quark associated with the flow return or 0 if an invalid return was
-//      specified.
+//   - quark associated with the flow return or 0 if an invalid return was
+//     specified.
 //
 func FlowToQuark(ret FlowReturn) glib.Quark {
 	var _arg1 C.GstFlowReturn // out
@@ -719,9 +719,7 @@ func FlowToQuark(ret FlowReturn) glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -765,9 +763,9 @@ func defaultPadOverrides(v *Pad) PadOverrides {
 // gst_pad_get_parent() will retrieve the Element that owns the pad.
 //
 // After two pads are retrieved from an element by gst_element_get_static_pad(),
-// the pads can be linked with gst_pad_link(). (For quick links, you can also
-// use gst_element_link(), which will make the obvious link for you if it's
-// straightforward.). Pads can be unlinked again with gst_pad_unlink().
+// the pads can be linked with gst_pad_link(). (For quick links, you can
+// also use gst_element_link(), which will make the obvious link for you if
+// it's straightforward.). Pads can be unlinked again with gst_pad_unlink().
 // gst_pad_get_peer() can be used to check what the pad is linked to.
 //
 // Before dataflow is possible on the pads, they need to be activated with
@@ -777,9 +775,9 @@ func defaultPadOverrides(v *Pad) PadOverrides {
 // properties of the pad and the stream.
 //
 // To send a Event on a pad, use gst_pad_send_event() and gst_pad_push_event().
-// Some events will be sticky on the pad, meaning that after they pass on the
-// pad they can be queried later with gst_pad_get_sticky_event() and
-// gst_pad_sticky_events_foreach(). gst_pad_get_current_caps() and
+// Some events will be sticky on the pad, meaning that after they pass
+// on the pad they can be queried later with gst_pad_get_sticky_event()
+// and gst_pad_sticky_events_foreach(). gst_pad_get_current_caps() and
 // gst_pad_has_current_caps() are convenience functions to query the current
 // sticky CAPS event on a pad.
 //
@@ -797,8 +795,8 @@ func defaultPadOverrides(v *Pad) PadOverrides {
 // offset will be applied to the running_time of all data passing over the pad.
 // gst_pad_set_offset() can be used to change the offset.
 //
-// Convenience functions exist to start, pause and stop the task on a pad with
-// gst_pad_start_task(), gst_pad_pause_task() and gst_pad_stop_task()
+// Convenience functions exist to start, pause and stop the task on a pad
+// with gst_pad_start_task(), gst_pad_pause_task() and gst_pad_stop_task()
 // respectively.
 type Pad struct {
 	_ [0]func() // equal guard
@@ -859,20 +857,20 @@ func (pad *Pad) ConnectUnlinked(f func(peer *Pad)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(pad, "unlinked", false, unsafe.Pointer(C._gotk4_gst1_Pad_ConnectUnlinked), f)
 }
 
-// NewPad creates a new pad with the given name in the given direction. If name
-// is NULL, a guaranteed unique name (across all pads) will be assigned. This
-// function makes a copy of the name so you can safely free the name.
+// NewPad creates a new pad with the given name in the given direction.
+// If name is NULL, a guaranteed unique name (across all pads) will be assigned.
+// This function makes a copy of the name so you can safely free the name.
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the new pad.
-//    - direction of the pad.
+//   - name (optional) of the new pad.
+//   - direction of the pad.
 //
 // The function returns the following values:
 //
-//    - pad: new Pad.
+//   - pad: new Pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func NewPad(name string, direction PadDirection) *Pad {
 	var _arg1 *C.gchar          // out
@@ -903,12 +901,12 @@ func NewPad(name string, direction PadDirection) *Pad {
 //
 // The function takes the following parameters:
 //
-//    - templ to use.
-//    - name of the pad.
+//   - templ to use.
+//   - name of the pad.
 //
 // The function returns the following values:
 //
-//    - pad: new Pad.
+//   - pad: new Pad.
 //
 func NewPadFromStaticTemplate(templ *StaticPadTemplate, name string) *Pad {
 	var _arg1 *C.GstStaticPadTemplate // out
@@ -937,12 +935,12 @@ func NewPadFromStaticTemplate(templ *StaticPadTemplate, name string) *Pad {
 //
 // The function takes the following parameters:
 //
-//    - templ: pad template to use.
-//    - name (optional) of the pad.
+//   - templ: pad template to use.
+//   - name (optional) of the pad.
 //
 // The function returns the following values:
 //
-//    - pad: new Pad.
+//   - pad: new Pad.
 //
 func NewPadFromTemplate(templ *PadTemplate, name string) *Pad {
 	var _arg1 *C.GstPadTemplate // out
@@ -974,14 +972,14 @@ func NewPadFromTemplate(templ *PadTemplate, name string) *Pad {
 //
 // The function takes the following parameters:
 //
-//    - mode: requested activation mode.
-//    - active: whether or not the pad should be active.
+//   - mode: requested activation mode.
+//   - active: whether or not the pad should be active.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the operation was successful.
+//   - ok: TRUE if the operation was successful.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) ActivateMode(mode PadMode, active bool) bool {
 	var _arg0 *C.GstPad    // out
@@ -1020,17 +1018,17 @@ func (pad *Pad) ActivateMode(mode PadMode, active bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - mask: probe mask.
-//    - callback that will be called with notifications of the pad state.
+//   - mask: probe mask.
+//   - callback that will be called with notifications of the pad state.
 //
 // The function returns the following values:
 //
-//    - gulong: id or 0 if no probe is pending. The id can be used to remove the
-//      probe with gst_pad_remove_probe(). When using GST_PAD_PROBE_TYPE_IDLE it
-//      can happen that the probe can be run immediately and if the probe returns
-//      GST_PAD_PROBE_REMOVE this functions returns 0.
+//   - gulong: id or 0 if no probe is pending. The id can be used to remove the
+//     probe with gst_pad_remove_probe(). When using GST_PAD_PROBE_TYPE_IDLE it
+//     can happen that the probe can be run immediately and if the probe returns
+//     GST_PAD_PROBE_REMOVE this functions returns 0.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) AddProbe(mask PadProbeType, callback PadProbeCallback) uint32 {
 	var _arg0 *C.GstPad             // out
@@ -1063,11 +1061,11 @@ func (pad *Pad) AddProbe(mask PadProbeType, callback PadProbeCallback) uint32 {
 //
 // The function takes the following parameters:
 //
-//    - sinkpad: sink Pad.
+//   - sinkpad: sink Pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pads can be linked.
+//   - ok: TRUE if the pads can be linked.
 //
 func (srcpad *Pad) CanLink(sinkpad *Pad) bool {
 	var _arg0 *C.GstPad  // out
@@ -1107,13 +1105,13 @@ func (srcpad *Pad) CanLink(sinkpad *Pad) bool {
 //
 // The function takes the following parameters:
 //
-//    - buffer to send, return GST_FLOW_ERROR if not.
+//   - buffer to send, return GST_FLOW_ERROR if not.
 //
 // The function returns the following values:
 //
-//    - flowReturn from the pad.
+//   - flowReturn from the pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) Chain(buffer *Buffer) FlowReturn {
 	var _arg0 *C.GstPad       // out
@@ -1143,8 +1141,8 @@ func (pad *Pad) Chain(buffer *Buffer) FlowReturn {
 // T_FLOW_NOT_NEGOTIATED.
 //
 // The function proceeds calling the chainlist function installed on pad (see
-// gst_pad_set_chain_list_function()) and the return value of that function is
-// returned to the caller. T_FLOW_NOT_SUPPORTED is returned if pad has no
+// gst_pad_set_chain_list_function()) and the return value of that function
+// is returned to the caller. T_FLOW_NOT_SUPPORTED is returned if pad has no
 // chainlist function.
 //
 // In all cases, success or failure, the caller loses its reference to list
@@ -1154,11 +1152,11 @@ func (pad *Pad) Chain(buffer *Buffer) FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - list to send, return GST_FLOW_ERROR if not.
+//   - list to send, return GST_FLOW_ERROR if not.
 //
 // The function returns the following values:
 //
-//    - flowReturn from the pad.
+//   - flowReturn from the pad.
 //
 func (pad *Pad) ChainList(list *BufferList) FlowReturn {
 	var _arg0 *C.GstPad        // out
@@ -1185,7 +1183,7 @@ func (pad *Pad) ChainList(list *BufferList) FlowReturn {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is the GST_PAD_FLAG_NEED_RECONFIGURE flag was set on pad.
+//   - ok: TRUE is the GST_PAD_FLAG_NEED_RECONFIGURE flag was set on pad.
 //
 func (pad *Pad) CheckReconfigure() bool {
 	var _arg0 *C.GstPad  // out
@@ -1212,9 +1210,9 @@ func (pad *Pad) CheckReconfigure() bool {
 //
 // This function generates an unique stream-id by getting the upstream
 // stream-start event stream ID and appending stream_id to it. If the element
-// has no sinkpad it will generate an upstream stream-id by doing an URI query
-// on the element and in the worst case just uses a random number. Source
-// elements that don't implement the URI handler interface should ideally
+// has no sinkpad it will generate an upstream stream-id by doing an URI
+// query on the element and in the worst case just uses a random number.
+// Source elements that don't implement the URI handler interface should ideally
 // generate a unique, deterministic stream-id manually instead.
 //
 // Since stream IDs are sorted alphabetically, any numbers in the stream ID
@@ -1223,12 +1221,12 @@ func (pad *Pad) CheckReconfigure() bool {
 //
 // The function takes the following parameters:
 //
-//    - parent: parent Element of pad.
-//    - streamId (optional): stream-id.
+//   - parent: parent Element of pad.
+//   - streamId (optional): stream-id.
 //
 // The function returns the following values:
 //
-//    - utf8: stream-id for pad. g_free() after usage.
+//   - utf8: stream-id for pad. g_free() after usage.
 //
 func (pad *Pad) CreateStreamID(parent Elementer, streamId string) string {
 	var _arg0 *C.GstPad     // out
@@ -1266,12 +1264,12 @@ func (pad *Pad) CreateStreamID(parent Elementer, streamId string) string {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) of pad or NULL.
-//    - event to handle.
+//   - parent (optional) of pad or NULL.
+//   - event to handle.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was sent successfully.
+//   - ok: TRUE if the event was sent successfully.
 //
 func (pad *Pad) EventDefault(parent GstObjector, event *Event) bool {
 	var _arg0 *C.GstPad    // out
@@ -1308,11 +1306,11 @@ func (pad *Pad) EventDefault(parent GstObjector, event *Event) bool {
 //
 // The function takes the following parameters:
 //
-//    - forward: PadForwardFunction.
+//   - forward: PadForwardFunction.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if one of the dispatcher functions returned TRUE.
+//   - ok: TRUE if one of the dispatcher functions returned TRUE.
 //
 func (pad *Pad) Forward(forward PadForwardFunction) bool {
 	var _arg0 *C.GstPad               // out
@@ -1347,10 +1345,10 @@ func (pad *Pad) Forward(forward PadForwardFunction) bool {
 //
 // The function returns the following values:
 //
-//    - caps (optional): allowed Caps of the pad link. Unref the caps when you no
-//      longer need it. This function returns NULL when pad has no peer.
+//   - caps (optional): allowed Caps of the pad link. Unref the caps when you no
+//     longer need it. This function returns NULL when pad has no peer.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) AllowedCaps() *Caps {
 	var _arg0 *C.GstPad  // out
@@ -1381,8 +1379,8 @@ func (pad *Pad) AllowedCaps() *Caps {
 //
 // The function returns the following values:
 //
-//    - caps (optional): current caps of the pad with incremented ref-count or
-//      NULL when pad has no caps. Unref after usage.
+//   - caps (optional): current caps of the pad with incremented ref-count or
+//     NULL when pad has no caps. Unref after usage.
 //
 func (pad *Pad) CurrentCaps() *Caps {
 	var _arg0 *C.GstPad  // out
@@ -1413,9 +1411,9 @@ func (pad *Pad) CurrentCaps() *Caps {
 //
 // The function returns the following values:
 //
-//    - padDirection of the pad.
+//   - padDirection of the pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) Direction() PadDirection {
 	var _arg0 *C.GstPad         // out
@@ -1438,7 +1436,7 @@ func (pad *Pad) Direction() PadDirection {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) to the private data.
+//   - gpointer (optional) to the private data.
 //
 func (pad *Pad) ElementPrivate() unsafe.Pointer {
 	var _arg0 *C.GstPad  // out
@@ -1482,7 +1480,7 @@ func (pad *Pad) LastFlowReturn() FlowReturn {
 //
 // The function returns the following values:
 //
-//    - gint64: offset.
+//   - gint64: offset.
 //
 func (pad *Pad) Offset() int64 {
 	var _arg0 *C.GstPad // out
@@ -1504,8 +1502,8 @@ func (pad *Pad) Offset() int64 {
 //
 // The function returns the following values:
 //
-//    - padTemplate (optional) from which this pad was instantiated, or NULL if
-//      this pad has no template. Unref after usage.
+//   - padTemplate (optional) from which this pad was instantiated, or NULL if
+//     this pad has no template. Unref after usage.
 //
 func (pad *Pad) PadTemplate() *PadTemplate {
 	var _arg0 *C.GstPad         // out
@@ -1529,7 +1527,7 @@ func (pad *Pad) PadTemplate() *PadTemplate {
 //
 // The function returns the following values:
 //
-//    - caps of this pad template. Unref after usage.
+//   - caps of this pad template. Unref after usage.
 //
 func (pad *Pad) PadTemplateCaps() *Caps {
 	var _arg0 *C.GstPad  // out
@@ -1558,10 +1556,10 @@ func (pad *Pad) PadTemplateCaps() *Caps {
 //
 // The function returns the following values:
 //
-//    - element (optional): parent of the pad. The caller has a reference on the
-//      parent, so unref when you're finished with it.
+//   - element (optional): parent of the pad. The caller has a reference on the
+//     parent, so unref when you're finished with it.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) ParentElement() Elementer {
 	var _arg0 *C.GstPad     // out
@@ -1599,9 +1597,9 @@ func (pad *Pad) ParentElement() Elementer {
 //
 // The function returns the following values:
 //
-//    - ret (optional): peer Pad. Unref after usage.
+//   - ret (optional): peer Pad. Unref after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) Peer() *Pad {
 	var _arg0 *C.GstPad // out
@@ -1633,8 +1631,8 @@ func (pad *Pad) Peer() *Pad {
 // freed with gst_buffer_unref() after usage.
 //
 // When buffer points to a variable that points to a valid Buffer, the buffer
-// will be filled with the result data when this function returns T_FLOW_OK. If
-// the provided buffer is larger than size, only size bytes will be filled in
+// will be filled with the result data when this function returns T_FLOW_OK.
+// If the provided buffer is larger than size, only size bytes will be filled in
 // the result buffer and its size will be updated accordingly.
 //
 // Note that less than size bytes can be returned in buffer when, for example,
@@ -1648,15 +1646,16 @@ func (pad *Pad) Peer() *Pad {
 //
 // The function takes the following parameters:
 //
-//    - offset: start offset of the buffer.
-//    - size: length of the buffer.
+//   - offset: start offset of the buffer.
+//   - size: length of the buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: pointer to hold the Buffer, returns T_FLOW_ERROR if NULL.
-//    - flowReturn from the pad.
+//   - buffer: pointer to hold the Buffer, returns T_FLOW_ERROR if NULL.
 //
-//      MT safe.
+//   - flowReturn from the pad.
+//
+//     MT safe.
 //
 func (pad *Pad) Range(offset uint64, size uint) (*Buffer, FlowReturn) {
 	var _arg0 *C.GstPad       // out
@@ -1689,13 +1688,13 @@ func (pad *Pad) Range(offset uint64, size uint) (*Buffer, FlowReturn) {
 	return _buffer, _flowReturn
 }
 
-// SingleInternalLink: if there is a single internal link of the given pad, this
-// function will return it. Otherwise, it will return NULL.
+// SingleInternalLink: if there is a single internal link of the given pad,
+// this function will return it. Otherwise, it will return NULL.
 //
 // The function returns the following values:
 //
-//    - ret (optional) or NULL if pad has none or more than one internal links.
-//      Unref returned pad with gst_object_unref().
+//   - ret (optional) or NULL if pad has none or more than one internal links.
+//     Unref returned pad with gst_object_unref().
 //
 func (pad *Pad) SingleInternalLink() *Pad {
 	var _arg0 *C.GstPad // out
@@ -1720,13 +1719,13 @@ func (pad *Pad) SingleInternalLink() *Pad {
 //
 // The function takes the following parameters:
 //
-//    - eventType that should be retrieved.
-//    - idx: index of the event.
+//   - eventType that should be retrieved.
+//   - idx: index of the event.
 //
 // The function returns the following values:
 //
-//    - event (optional) of type event_type or NULL when no event of event_type
-//      was on pad. Unref after usage.
+//   - event (optional) of type event_type or NULL when no event of event_type
+//     was on pad. Unref after usage.
 //
 func (pad *Pad) StickyEvent(eventType EventType, idx uint) *Event {
 	var _arg0 *C.GstPad      // out
@@ -1766,8 +1765,8 @@ func (pad *Pad) StickyEvent(eventType EventType, idx uint) *Event {
 //
 // The function returns the following values:
 //
-//    - stream (optional): current Stream for pad, or NULL. unref the returned
-//      stream when no longer needed.
+//   - stream (optional): current Stream for pad, or NULL. unref the returned
+//     stream when no longer needed.
 //
 func (pad *Pad) Stream() *Stream {
 	var _arg0 *C.GstPad    // out
@@ -1793,13 +1792,13 @@ func (pad *Pad) Stream() *Stream {
 // This is a convenience wrapper around gst_pad_get_sticky_event() and
 // gst_event_parse_stream_start().
 //
-// The returned stream-id string should be treated as an opaque string, its
-// contents should not be interpreted.
+// The returned stream-id string should be treated as an opaque string,
+// its contents should not be interpreted.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly-allocated copy of the stream-id for pad, or NULL.
-//      g_free() the returned string when no longer needed.
+//   - utf8 (optional): newly-allocated copy of the stream-id for pad, or NULL.
+//     g_free() the returned string when no longer needed.
 //
 func (pad *Pad) StreamID() string {
 	var _arg0 *C.GstPad // out
@@ -1825,7 +1824,7 @@ func (pad *Pad) StreamID() string {
 //
 // The function returns the following values:
 //
-//    - taskState: current state of pad's task.
+//   - taskState: current state of pad's task.
 //
 func (pad *Pad) TaskState() TaskState {
 	var _arg0 *C.GstPad      // out
@@ -1847,7 +1846,7 @@ func (pad *Pad) TaskState() TaskState {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when pad has caps associated with it.
+//   - ok: TRUE when pad has caps associated with it.
 //
 func (pad *Pad) HasCurrentCaps() bool {
 	var _arg0 *C.GstPad  // out
@@ -1871,9 +1870,9 @@ func (pad *Pad) HasCurrentCaps() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad is active.
+//   - ok: TRUE if the pad is active.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) IsActive() bool {
 	var _arg0 *C.GstPad  // out
@@ -1893,15 +1892,15 @@ func (pad *Pad) IsActive() bool {
 	return _ok
 }
 
-// IsBlocked checks if the pad is blocked or not. This function returns the last
-// requested state of the pad. It is not certain that the pad is actually
+// IsBlocked checks if the pad is blocked or not. This function returns the
+// last requested state of the pad. It is not certain that the pad is actually
 // blocking at this point (see gst_pad_is_blocking()).
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad is blocked.
+//   - ok: TRUE if the pad is blocked.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) IsBlocked() bool {
 	var _arg0 *C.GstPad  // out
@@ -1926,9 +1925,9 @@ func (pad *Pad) IsBlocked() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad is blocking.
+//   - ok: TRUE if the pad is blocking.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) IsBlocking() bool {
 	var _arg0 *C.GstPad  // out
@@ -1952,9 +1951,9 @@ func (pad *Pad) IsBlocking() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad is linked, FALSE otherwise.
+//   - ok: TRUE if the pad is linked, FALSE otherwise.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) IsLinked() bool {
 	var _arg0 *C.GstPad  // out
@@ -1977,16 +1976,16 @@ func (pad *Pad) IsLinked() bool {
 // IterateInternalLinks gets an iterator for the pads to which the given pad is
 // linked to inside of the parent element.
 //
-// Each Pad element yielded by the iterator will have its refcount increased, so
-// unref after use.
+// Each Pad element yielded by the iterator will have its refcount increased,
+// so unref after use.
 //
 // Free-function: gst_iterator_free.
 //
 // The function returns the following values:
 //
-//    - iterator (optional): new Iterator of Pad or NULL when the pad does not
-//      have an iterator function configured. Use gst_iterator_free() after
-//      usage.
+//   - iterator (optional): new Iterator of Pad or NULL when the pad does not
+//     have an iterator function configured. Use gst_iterator_free() after
+//     usage.
 //
 func (pad *Pad) IterateInternalLinks() *Iterator {
 	var _arg0 *C.GstPad      // out
@@ -2012,21 +2011,21 @@ func (pad *Pad) IterateInternalLinks() *Iterator {
 	return _iterator
 }
 
-// IterateInternalLinksDefault: iterate the list of pads to which the given pad
-// is linked to inside of the parent element. This is the default handler, and
-// thus returns an iterator of all of the pads inside the parent element with
-// opposite direction.
+// IterateInternalLinksDefault: iterate the list of pads to which the given
+// pad is linked to inside of the parent element. This is the default handler,
+// and thus returns an iterator of all of the pads inside the parent element
+// with opposite direction.
 //
 // The caller must free this iterator after use with gst_iterator_free().
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) of pad or NULL.
+//   - parent (optional) of pad or NULL.
 //
 // The function returns the following values:
 //
-//    - iterator (optional) of Pad, or NULL if pad has no parent. Unref each
-//      returned pad with gst_object_unref().
+//   - iterator (optional) of Pad, or NULL if pad has no parent. Unref each
+//     returned pad with gst_object_unref().
 //
 func (pad *Pad) IterateInternalLinksDefault(parent GstObjector) *Iterator {
 	var _arg0 *C.GstPad      // out
@@ -2061,14 +2060,14 @@ func (pad *Pad) IterateInternalLinksDefault(parent GstObjector) *Iterator {
 //
 // The function takes the following parameters:
 //
-//    - sinkpad: sink Pad to link.
+//   - sinkpad: sink Pad to link.
 //
 // The function returns the following values:
 //
-//    - padLinkReturn: result code indicating if the connection worked or what
-//      went wrong.
+//   - padLinkReturn: result code indicating if the connection worked or what
+//     went wrong.
 //
-//      MT Safe.
+//     MT Safe.
 //
 func (srcpad *Pad) Link(sinkpad *Pad) PadLinkReturn {
 	var _arg0 *C.GstPad          // out
@@ -2093,21 +2092,21 @@ func (srcpad *Pad) Link(sinkpad *Pad) PadLinkReturn {
 //
 // This variant of #gst_pad_link provides a more granular control on the checks
 // being done when linking. While providing some considerable speedups the
-// caller of this method must be aware that wrong usage of those flags can cause
-// severe issues. Refer to the documentation of PadLinkCheck for more
+// caller of this method must be aware that wrong usage of those flags can
+// cause severe issues. Refer to the documentation of PadLinkCheck for more
 // information.
 //
 // MT Safe.
 //
 // The function takes the following parameters:
 //
-//    - sinkpad: sink Pad to link.
-//    - flags checks to validate when linking.
+//   - sinkpad: sink Pad to link.
+//   - flags checks to validate when linking.
 //
 // The function returns the following values:
 //
-//    - padLinkReturn: result code indicating if the connection worked or what
-//      went wrong.
+//   - padLinkReturn: result code indicating if the connection worked or what
+//     went wrong.
 //
 func (srcpad *Pad) LinkFull(sinkpad *Pad, flags PadLinkCheck) PadLinkReturn {
 	var _arg0 *C.GstPad          // out
@@ -2142,11 +2141,11 @@ func (srcpad *Pad) LinkFull(sinkpad *Pad, flags PadLinkCheck) PadLinkReturn {
 //
 // The function takes the following parameters:
 //
-//    - sink: Pad.
+//   - sink: Pad.
 //
 // The function returns the following values:
 //
-//    - ok: whether the link succeeded.
+//   - ok: whether the link succeeded.
 //
 func (src *Pad) LinkMaybeGhosting(sink *Pad) bool {
 	var _arg0 *C.GstPad  // out
@@ -2184,12 +2183,12 @@ func (src *Pad) LinkMaybeGhosting(sink *Pad) bool {
 //
 // The function takes the following parameters:
 //
-//    - sink: Pad.
-//    - flags: some PadLinkCheck flags.
+//   - sink: Pad.
+//   - flags: some PadLinkCheck flags.
 //
 // The function returns the following values:
 //
-//    - ok: whether the link succeeded.
+//   - ok: whether the link succeeded.
 //
 func (src *Pad) LinkMaybeGhostingFull(sink *Pad, flags PadLinkCheck) bool {
 	var _arg0 *C.GstPad         // out
@@ -2231,7 +2230,7 @@ func (pad *Pad) MarkReconfigure() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is the GST_PAD_FLAG_NEED_RECONFIGURE flag is set on pad.
+//   - ok: TRUE is the GST_PAD_FLAG_NEED_RECONFIGURE flag is set on pad.
 //
 func (pad *Pad) NeedsReconfigure() bool {
 	var _arg0 *C.GstPad  // out
@@ -2257,7 +2256,7 @@ func (pad *Pad) NeedsReconfigure() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be paused or FALSE when the pad has no task.
+//   - ok: TRUE if the task could be paused or FALSE when the pad has no task.
 //
 func (pad *Pad) PauseTask() bool {
 	var _arg0 *C.GstPad  // out
@@ -2284,12 +2283,12 @@ func (pad *Pad) PauseTask() bool {
 //
 // The function takes the following parameters:
 //
-//    - query to perform.
+//   - query to perform.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query could be performed. This function returns FALSE if
-//      pad has no peer.
+//   - ok: TRUE if the query could be performed. This function returns FALSE if
+//     pad has no peer.
 //
 func (pad *Pad) PeerQuery(query *Query) bool {
 	var _arg0 *C.GstPad   // out
@@ -2317,11 +2316,11 @@ func (pad *Pad) PeerQuery(query *Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps to check on the pad.
+//   - caps to check on the pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the peer of pad can accept the caps or pad has no peer.
+//   - ok: TRUE if the peer of pad can accept the caps or pad has no peer.
 //
 func (pad *Pad) PeerQueryAcceptCaps(caps *Caps) bool {
 	var _arg0 *C.GstPad  // out
@@ -2354,12 +2353,12 @@ func (pad *Pad) PeerQueryAcceptCaps(caps *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - filter (optional) filter, or NULL.
+//   - filter (optional) filter, or NULL.
 //
 // The function returns the following values:
 //
-//    - caps of the peer pad with incremented ref-count. When there is no peer
-//      pad, this function returns filter or, when filter is NULL, ANY caps.
+//   - caps of the peer pad with incremented ref-count. When there is no peer
+//     pad, this function returns filter or, when filter is NULL, ANY caps.
 //
 func (pad *Pad) PeerQueryCaps(filter *Caps) *Caps {
 	var _arg0 *C.GstPad  // out
@@ -2393,14 +2392,14 @@ func (pad *Pad) PeerQueryCaps(filter *Caps) *Caps {
 //
 // The function takes the following parameters:
 //
-//    - srcFormat to convert from.
-//    - srcVal: value to convert.
-//    - destFormat to convert to.
+//   - srcFormat to convert from.
+//   - srcVal: value to convert.
+//   - destFormat to convert to.
 //
 // The function returns the following values:
 //
-//    - destVal: pointer to the result.
-//    - ok: TRUE if the query could be performed.
+//   - destVal: pointer to the result.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) PeerQueryConvert(srcFormat Format, srcVal int64, destFormat Format) (int64, bool) {
 	var _arg0 *C.GstPad   // out
@@ -2437,13 +2436,13 @@ func (pad *Pad) PeerQueryConvert(srcFormat Format, srcVal int64, destFormat Form
 //
 // The function takes the following parameters:
 //
-//    - format: Format requested.
+//   - format: Format requested.
 //
 // The function returns the following values:
 //
-//    - duration (optional): location in which to store the total duration, or
-//      NULL.
-//    - ok: TRUE if the query could be performed.
+//   - duration (optional): location in which to store the total duration,
+//     or NULL.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) PeerQueryDuration(format Format) (int64, bool) {
 	var _arg0 *C.GstPad   // out
@@ -2474,12 +2473,12 @@ func (pad *Pad) PeerQueryDuration(format Format) (int64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - format: Format requested.
+//   - format: Format requested.
 //
 // The function returns the following values:
 //
-//    - cur (optional): location in which to store the current position, or NULL.
-//    - ok: TRUE if the query could be performed.
+//   - cur (optional): location in which to store the current position, or NULL.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) PeerQueryPosition(format Format) (int64, bool) {
 	var _arg0 *C.GstPad   // out
@@ -2514,11 +2513,11 @@ func (pad *Pad) PeerQueryPosition(format Format) (int64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - query: ACCEPT_CAPS Query.
+//   - query: ACCEPT_CAPS Query.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if query could be executed.
+//   - ok: TRUE if query could be executed.
 //
 func (pad *Pad) ProxyQueryAcceptCaps(query *Query) bool {
 	var _arg0 *C.GstPad   // out
@@ -2550,11 +2549,11 @@ func (pad *Pad) ProxyQueryAcceptCaps(query *Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - query: CAPS Query.
+//   - query: CAPS Query.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if query could be executed.
+//   - ok: TRUE if query could be executed.
 //
 func (pad *Pad) ProxyQueryCaps(query *Query) bool {
 	var _arg0 *C.GstPad   // out
@@ -2581,14 +2580,14 @@ func (pad *Pad) ProxyQueryCaps(query *Query) bool {
 //
 // This function will first trigger the pad block signal if it was installed.
 //
-// When pad is not linked T_FLOW_NOT_LINKED is returned else this function
-// returns the result of gst_pad_get_range() on the peer pad. See
+// When pad is not linked T_FLOW_NOT_LINKED is returned else this
+// function returns the result of gst_pad_get_range() on the peer pad. See
 // gst_pad_get_range() for a list of return values and for the semantics of the
 // arguments of this function.
 //
 // If buffer points to a variable holding NULL, a valid new Buffer will be
-// placed in buffer when this function returns T_FLOW_OK. The new buffer must be
-// freed with gst_buffer_unref() after usage. When this function returns any
+// placed in buffer when this function returns T_FLOW_OK. The new buffer must
+// be freed with gst_buffer_unref() after usage. When this function returns any
 // other result value, buffer will still point to NULL.
 //
 // When buffer points to a variable that points to a valid Buffer, the buffer
@@ -2603,15 +2602,16 @@ func (pad *Pad) ProxyQueryCaps(query *Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - offset: start offset of the buffer.
-//    - size: length of the buffer.
+//   - offset: start offset of the buffer.
+//   - size: length of the buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: pointer to hold the Buffer, returns GST_FLOW_ERROR if NULL.
-//    - flowReturn from the peer pad.
+//   - buffer: pointer to hold the Buffer, returns GST_FLOW_ERROR if NULL.
 //
-//      MT safe.
+//   - flowReturn from the peer pad.
+//
+//     MT safe.
 //
 func (pad *Pad) PullRange(offset uint64, size uint) (*Buffer, FlowReturn) {
 	var _arg0 *C.GstPad       // out
@@ -2649,8 +2649,8 @@ func (pad *Pad) PullRange(offset uint64, size uint) (*Buffer, FlowReturn) {
 // This function will call installed block probes before triggering any
 // installed data probes.
 //
-// The function proceeds calling gst_pad_chain() on the peer pad and returns the
-// value from that function. If pad has no peer, T_FLOW_NOT_LINKED will be
+// The function proceeds calling gst_pad_chain() on the peer pad and returns
+// the value from that function. If pad has no peer, T_FLOW_NOT_LINKED will be
 // returned.
 //
 // In all cases, success or failure, the caller loses its reference to buffer
@@ -2658,13 +2658,13 @@ func (pad *Pad) PullRange(offset uint64, size uint) (*Buffer, FlowReturn) {
 //
 // The function takes the following parameters:
 //
-//    - buffer to push returns GST_FLOW_ERROR if not.
+//   - buffer to push returns GST_FLOW_ERROR if not.
 //
 // The function returns the following values:
 //
-//    - flowReturn from the peer pad.
+//   - flowReturn from the peer pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) Push(buffer *Buffer) FlowReturn {
 	var _arg0 *C.GstPad       // out
@@ -2694,13 +2694,13 @@ func (pad *Pad) Push(buffer *Buffer) FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - event to send to the pad.
+//   - event to send to the pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was handled.
+//   - ok: TRUE if the event was handled.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) PushEvent(event *Event) bool {
 	var _arg0 *C.GstPad   // out
@@ -2740,13 +2740,13 @@ func (pad *Pad) PushEvent(event *Event) bool {
 //
 // The function takes the following parameters:
 //
-//    - list to push returns GST_FLOW_ERROR if not.
+//   - list to push returns GST_FLOW_ERROR if not.
 //
 // The function returns the following values:
 //
-//    - flowReturn from the peer pad.
+//   - flowReturn from the peer pad.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) PushList(list *BufferList) FlowReturn {
 	var _arg0 *C.GstPad        // out
@@ -2781,11 +2781,11 @@ func (pad *Pad) PushList(list *BufferList) FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - query to perform.
+//   - query to perform.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query could be performed.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) Query(query *Query) bool {
 	var _arg0 *C.GstPad   // out
@@ -2812,11 +2812,11 @@ func (pad *Pad) Query(query *Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps to check on the pad.
+//   - caps to check on the pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pad can accept the caps.
+//   - ok: TRUE if the pad can accept the caps.
 //
 func (pad *Pad) QueryAcceptCaps(caps *Caps) bool {
 	var _arg0 *C.GstPad  // out
@@ -2839,9 +2839,9 @@ func (pad *Pad) QueryAcceptCaps(caps *Caps) bool {
 	return _ok
 }
 
-// QueryCaps gets the capabilities this pad can produce or consume. Note that
-// this method doesn't necessarily return the caps set by sending a
-// gst_event_new_caps() - use gst_pad_get_current_caps() for that instead.
+// QueryCaps gets the capabilities this pad can produce or consume.
+// Note that this method doesn't necessarily return the caps set by sending
+// a gst_event_new_caps() - use gst_pad_get_current_caps() for that instead.
 // gst_pad_query_caps returns all possible caps a pad can operate with, using
 // the pad's CAPS query function, If the query fails, this function will return
 // filter, if not NULL, otherwise ANY.
@@ -2856,11 +2856,11 @@ func (pad *Pad) QueryAcceptCaps(caps *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - filter (optional): suggested Caps, or NULL.
+//   - filter (optional): suggested Caps, or NULL.
 //
 // The function returns the following values:
 //
-//    - caps of the pad with incremented ref-count.
+//   - caps of the pad with incremented ref-count.
 //
 func (pad *Pad) QueryCaps(filter *Caps) *Caps {
 	var _arg0 *C.GstPad  // out
@@ -2893,14 +2893,14 @@ func (pad *Pad) QueryCaps(filter *Caps) *Caps {
 //
 // The function takes the following parameters:
 //
-//    - srcFormat to convert from.
-//    - srcVal: value to convert.
-//    - destFormat to convert to.
+//   - srcFormat to convert from.
+//   - srcVal: value to convert.
+//   - destFormat to convert to.
 //
 // The function returns the following values:
 //
-//    - destVal: pointer to the result.
-//    - ok: TRUE if the query could be performed.
+//   - destVal: pointer to the result.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) QueryConvert(srcFormat Format, srcVal int64, destFormat Format) (int64, bool) {
 	var _arg0 *C.GstPad   // out
@@ -2939,12 +2939,12 @@ func (pad *Pad) QueryConvert(srcFormat Format, srcVal int64, destFormat Format) 
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) of pad or NULL.
-//    - query to handle.
+//   - parent (optional) of pad or NULL.
+//   - query to handle.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the query was performed successfully.
+//   - ok: TRUE if the query was performed successfully.
 //
 func (pad *Pad) QueryDefault(parent GstObjector, query *Query) bool {
 	var _arg0 *C.GstPad    // out
@@ -2976,13 +2976,13 @@ func (pad *Pad) QueryDefault(parent GstObjector, query *Query) bool {
 //
 // The function takes the following parameters:
 //
-//    - format: Format requested.
+//   - format: Format requested.
 //
 // The function returns the following values:
 //
-//    - duration (optional): location in which to store the total duration, or
-//      NULL.
-//    - ok: TRUE if the query could be performed.
+//   - duration (optional): location in which to store the total duration,
+//     or NULL.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) QueryDuration(format Format) (int64, bool) {
 	var _arg0 *C.GstPad   // out
@@ -3012,12 +3012,12 @@ func (pad *Pad) QueryDuration(format Format) (int64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - format: Format requested.
+//   - format: Format requested.
 //
 // The function returns the following values:
 //
-//    - cur (optional): location in which to store the current position, or NULL.
-//    - ok: TRUE if the query could be performed.
+//   - cur (optional): location in which to store the current position, or NULL.
+//   - ok: TRUE if the query could be performed.
 //
 func (pad *Pad) QueryPosition(format Format) (int64, bool) {
 	var _arg0 *C.GstPad   // out
@@ -3049,7 +3049,7 @@ func (pad *Pad) QueryPosition(format Format) (int64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - id: probe id to remove.
+//   - id: probe id to remove.
 //
 func (pad *Pad) RemoveProbe(id uint32) {
 	var _arg0 *C.GstPad // out
@@ -3074,8 +3074,8 @@ func (pad *Pad) RemoveProbe(id uint32) {
 // be serialized with data flow, this function will take the pad's stream lock
 // while calling its event function.
 //
-// To find out whether an event type is upstream, downstream, or downstream and
-// serialized, see EventTypeFlags, gst_event_type_get_flags(),
+// To find out whether an event type is upstream, downstream, or downstream
+// and serialized, see EventTypeFlags, gst_event_type_get_flags(),
 // T_EVENT_IS_UPSTREAM, T_EVENT_IS_DOWNSTREAM, and T_EVENT_IS_SERIALIZED. Note
 // that in practice that an application or plugin doesn't need to bother itself
 // with this information; the core handles all necessary locks and checks.
@@ -3085,11 +3085,11 @@ func (pad *Pad) RemoveProbe(id uint32) {
 //
 // The function takes the following parameters:
 //
-//    - event to send to the pad.
+//   - event to send to the pad.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was handled.
+//   - ok: TRUE if the event was handled.
 //
 func (pad *Pad) SendEvent(event *Event) bool {
 	var _arg0 *C.GstPad   // out
@@ -3125,13 +3125,13 @@ func (pad *Pad) SendEvent(event *Event) bool {
 //
 // The function takes the following parameters:
 //
-//    - active: whether or not the pad should be active.
+//   - active: whether or not the pad should be active.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the operation was successful.
+//   - ok: TRUE if the operation was successful.
 //
-//      MT safe.
+//     MT safe.
 //
 func (pad *Pad) SetActive(active bool) bool {
 	var _arg0 *C.GstPad  // out
@@ -3162,7 +3162,7 @@ func (pad *Pad) SetActive(active bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - priv (optional): private data to attach to the pad.
+//   - priv (optional): private data to attach to the pad.
 //
 func (pad *Pad) SetElementPrivate(priv unsafe.Pointer) {
 	var _arg0 *C.GstPad  // out
@@ -3180,7 +3180,7 @@ func (pad *Pad) SetElementPrivate(priv unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - offset: offset.
+//   - offset: offset.
 //
 func (pad *Pad) SetOffset(offset int64) {
 	var _arg0 *C.GstPad // out
@@ -3201,11 +3201,11 @@ func (pad *Pad) SetOffset(offset int64) {
 //
 // The function takes the following parameters:
 //
-//    - fn: task function to call.
+//   - fn: task function to call.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be started.
+//   - ok: TRUE if the task could be started.
 //
 func (pad *Pad) StartTask(fn TaskFunction) bool {
 	var _arg0 *C.GstPad         // out
@@ -3238,7 +3238,7 @@ func (pad *Pad) StartTask(fn TaskFunction) bool {
 //
 // The function takes the following parameters:
 //
-//    - foreachFunc that should be called for every event.
+//   - foreachFunc that should be called for every event.
 //
 func (pad *Pad) StickyEventsForEach(foreachFunc PadStickyEventsForEachFunction) {
 	var _arg0 *C.GstPad                           // out
@@ -3267,7 +3267,7 @@ func (pad *Pad) StickyEventsForEach(foreachFunc PadStickyEventsForEachFunction) 
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task could be stopped or FALSE on error.
+//   - ok: TRUE if the task could be stopped or FALSE on error.
 //
 func (pad *Pad) StopTask() bool {
 	var _arg0 *C.GstPad  // out
@@ -3291,12 +3291,12 @@ func (pad *Pad) StopTask() bool {
 //
 // The function takes the following parameters:
 //
-//    - event: Event.
+//   - event: Event.
 //
 // The function returns the following values:
 //
-//    - flowReturn on success, T_FLOW_FLUSHING when the pad was flushing or
-//      T_FLOW_EOS when the pad was EOS.
+//   - flowReturn on success, T_FLOW_FLUSHING when the pad was flushing or
+//     T_FLOW_EOS when the pad was EOS.
 //
 func (pad *Pad) StoreStickyEvent(event *Event) FlowReturn {
 	var _arg0 *C.GstPad       // out
@@ -3322,14 +3322,14 @@ func (pad *Pad) StoreStickyEvent(event *Event) FlowReturn {
 //
 // The function takes the following parameters:
 //
-//    - sinkpad: sink Pad to unlink.
+//   - sinkpad: sink Pad to unlink.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pads were unlinked. This function returns FALSE if the
-//      pads were not linked together.
+//   - ok: TRUE if the pads were unlinked. This function returns FALSE if the
+//     pads were not linked together.
 //
-//      MT safe.
+//     MT safe.
 //
 func (srcpad *Pad) Unlink(sinkpad *Pad) bool {
 	var _arg0 *C.GstPad  // out
@@ -3496,7 +3496,7 @@ func (p *PadProbeInfo) SetSize(size uint) {
 
 // The function returns the following values:
 //
-//    - buffer (optional) from the probe.
+//   - buffer (optional) from the probe.
 //
 func (info *PadProbeInfo) Buffer() *Buffer {
 	var _arg0 *C.GstPadProbeInfo // out
@@ -3518,7 +3518,7 @@ func (info *PadProbeInfo) Buffer() *Buffer {
 
 // The function returns the following values:
 //
-//    - bufferList (optional) from the probe.
+//   - bufferList (optional) from the probe.
 //
 func (info *PadProbeInfo) BufferList() *BufferList {
 	var _arg0 *C.GstPadProbeInfo // out
@@ -3540,7 +3540,7 @@ func (info *PadProbeInfo) BufferList() *BufferList {
 
 // The function returns the following values:
 //
-//    - event (optional) from the probe.
+//   - event (optional) from the probe.
 //
 func (info *PadProbeInfo) Event() *Event {
 	var _arg0 *C.GstPadProbeInfo // out
@@ -3562,7 +3562,7 @@ func (info *PadProbeInfo) Event() *Event {
 
 // The function returns the following values:
 //
-//    - query (optional) from the probe.
+//   - query (optional) from the probe.
 //
 func (info *PadProbeInfo) Query() *Query {
 	var _arg0 *C.GstPadProbeInfo // out

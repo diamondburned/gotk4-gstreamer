@@ -38,8 +38,8 @@ type VideoTileMode C.gint
 const (
 	// VideoTileModeUnknown: unknown or unset tile mode.
 	VideoTileModeUnknown VideoTileMode = 0
-	// VideoTileModeZflipz2X2: every four adjacent blocks - two horizontally and
-	// two vertically are grouped together and are located in memory in Z or
+	// VideoTileModeZflipz2X2: every four adjacent blocks - two horizontally
+	// and two vertically are grouped together and are located in memory in Z or
 	// flipped Z order. In case of odd rows, the last row of blocks is arranged
 	// in linear order.
 	VideoTileModeZflipz2X2 VideoTileMode = 65536

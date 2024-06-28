@@ -15,11 +15,11 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glMemoryAllocator: default GLMemoryAllocator supported by context.
+//   - glMemoryAllocator: default GLMemoryAllocator supported by context.
 //
 func GLMemoryAllocatorGetDefault(context GLContexter) *GLMemoryAllocator {
 	var _arg1 *C.GstGLContext         // out

@@ -50,13 +50,34 @@ func marshalNetTimePacket(p uintptr) (interface{}, error) {
 	return &NetTimePacket{&netTimePacket{(*C.GstNetTimePacket)(b)}}, nil
 }
 
+// NewNetTimePacket constructs a struct NetTimePacket.
+func NewNetTimePacket(buffer [16]byte) *NetTimePacket {
+	var _arg1 *C.guint8           // out
+	var _cret *C.GstNetTimePacket // in
+
+	_arg1 = (*C.guint8)(unsafe.Pointer(&buffer))
+
+	_cret = C.gst_net_time_packet_new(_arg1)
+	runtime.KeepAlive(buffer)
+
+	var _netTimePacket *NetTimePacket // out
+
+	_netTimePacket = (*NetTimePacket)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_netTimePacket)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gst_net_time_packet_free((*C.GstNetTimePacket)(intern.C))
+		},
+	)
+
+	return _netTimePacket
+}
+
 // LocalTime: local time when this packet was sent.
 func (n *NetTimePacket) LocalTime() gst.ClockTime {
 	valptr := &n.native.local_time
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -64,9 +85,7 @@ func (n *NetTimePacket) LocalTime() gst.ClockTime {
 func (n *NetTimePacket) RemoteTime() gst.ClockTime {
 	valptr := &n.native.remote_time
 	var _v gst.ClockTime // out
-	_v = uint64(*valptr)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_v = gst.ClockTime(*valptr)
 	return _v
 }
 
@@ -74,7 +93,7 @@ func (n *NetTimePacket) RemoteTime() gst.ClockTime {
 //
 // The function returns the following values:
 //
-//    - netTimePacket: copy of packet, free with gst_net_time_packet_free().
+//   - netTimePacket: copy of packet, free with gst_net_time_packet_free().
 //
 func (packet *NetTimePacket) Copy() *NetTimePacket {
 	var _arg0 *C.GstNetTimePacket // out
@@ -104,8 +123,8 @@ func (packet *NetTimePacket) Copy() *NetTimePacket {
 //
 // The function takes the following parameters:
 //
-//    - socket to send the time packet on.
-//    - destAddress address to send the time packet to.
+//   - socket to send the time packet on.
+//   - destAddress address to send the time packet to.
 //
 func (packet *NetTimePacket) Send(socket *gio.Socket, destAddress gio.SocketAddresser) error {
 	var _arg0 *C.GstNetTimePacket // out
@@ -140,9 +159,9 @@ func (packet *NetTimePacket) Send(socket *gio.Socket, destAddress gio.SocketAddr
 //
 // The function returns the following values:
 //
-//    - guint8: newly allocated sequence of T_NET_TIME_PACKET_SIZE bytes.
+//   - guint8s: newly allocated sequence of T_NET_TIME_PACKET_SIZE bytes.
 //
-func (packet *NetTimePacket) Serialize() *byte {
+func (packet *NetTimePacket) Serialize() [16]byte {
 	var _arg0 *C.GstNetTimePacket // out
 	var _cret *C.guint8           // in
 
@@ -151,11 +170,11 @@ func (packet *NetTimePacket) Serialize() *byte {
 	_cret = C.gst_net_time_packet_serialize(_arg0)
 	runtime.KeepAlive(packet)
 
-	var _guint8 *byte // out
+	var _guint8s [16]byte // out
 
-	_guint8 = (*byte)(unsafe.Pointer(_cret))
+	_guint8s = *(*[16]byte)(unsafe.Pointer(&_cret))
 
-	return _guint8
+	return _guint8s
 }
 
 // NetTimePacketReceive receives a NetTimePacket over a socket. Handles
@@ -163,13 +182,13 @@ func (packet *NetTimePacket) Serialize() *byte {
 //
 // The function takes the following parameters:
 //
-//    - socket to receive the time packet on.
+//   - socket to receive the time packet on.
 //
 // The function returns the following values:
 //
-//    - srcAddress address of variable to return sender address.
-//    - netTimePacket: new NetTimePacket, or NULL on error. Free with
-//      gst_net_time_packet_free() when done.
+//   - srcAddress (optional) address of variable to return sender address.
+//   - netTimePacket: new NetTimePacket, or NULL on error. Free with
+//     gst_net_time_packet_free() when done.
 //
 func NetTimePacketReceive(socket *gio.Socket) (gio.SocketAddresser, *NetTimePacket, error) {
 	var _arg1 *C.GSocket          // out
@@ -186,22 +205,21 @@ func NetTimePacketReceive(socket *gio.Socket) (gio.SocketAddresser, *NetTimePack
 	var _netTimePacket *NetTimePacket   // out
 	var _goerr error                    // out
 
-	{
-		objptr := unsafe.Pointer(_arg2)
-		if objptr == nil {
-			panic("object of type gio.SocketAddresser is nil")
-		}
+	if _arg2 != nil {
+		{
+			objptr := unsafe.Pointer(_arg2)
 
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gio.SocketAddresser)
-			return ok
-		})
-		rv, ok := casted.(gio.SocketAddresser)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddresser")
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(gio.SocketAddresser)
+				return ok
+			})
+			rv, ok := casted.(gio.SocketAddresser)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddresser")
+			}
+			_srcAddress = rv
 		}
-		_srcAddress = rv
 	}
 	_netTimePacket = (*NetTimePacket)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(

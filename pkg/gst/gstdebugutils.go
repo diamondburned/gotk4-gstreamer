@@ -103,12 +103,12 @@ func (d DebugGraphDetails) Has(other DebugGraphDetails) bool {
 //
 // The function takes the following parameters:
 //
-//    - bin: top-level pipeline that should be analyzed.
-//    - details: type of DebugGraphDetails to use.
+//   - bin: top-level pipeline that should be analyzed.
+//   - details: type of DebugGraphDetails to use.
 //
 // The function returns the following values:
 //
-//    - utf8: string containing the pipeline in graphviz dot format.
+//   - utf8: string containing the pipeline in graphviz dot format.
 //
 func DebugBinToDotData(bin *Bin, details DebugGraphDetails) string {
 	var _arg1 *C.GstBin              // out
@@ -138,9 +138,9 @@ func DebugBinToDotData(bin *Bin, details DebugGraphDetails) string {
 //
 // The function takes the following parameters:
 //
-//    - bin: top-level pipeline that should be analyzed.
-//    - details: type of DebugGraphDetails to use.
-//    - fileName: output base filename (e.g. "myplayer").
+//   - bin: top-level pipeline that should be analyzed.
+//   - details: type of DebugGraphDetails to use.
+//   - fileName: output base filename (e.g. "myplayer").
 //
 func DebugBinToDotFile(bin *Bin, details DebugGraphDetails, fileName string) {
 	var _arg1 *C.GstBin              // out
@@ -158,15 +158,15 @@ func DebugBinToDotFile(bin *Bin, details DebugGraphDetails, fileName string) {
 	runtime.KeepAlive(fileName)
 }
 
-// DebugBinToDotFileWithTs: this works like gst_debug_bin_to_dot_file(), but
-// adds the current timestamp to the filename, so that it can be used to take
-// multiple snapshots.
+// DebugBinToDotFileWithTs: this works like gst_debug_bin_to_dot_file(),
+// but adds the current timestamp to the filename, so that it can be used to
+// take multiple snapshots.
 //
 // The function takes the following parameters:
 //
-//    - bin: top-level pipeline that should be analyzed.
-//    - details: type of DebugGraphDetails to use.
-//    - fileName: output base filename (e.g. "myplayer").
+//   - bin: top-level pipeline that should be analyzed.
+//   - details: type of DebugGraphDetails to use.
+//   - fileName: output base filename (e.g. "myplayer").
 //
 func DebugBinToDotFileWithTs(bin *Bin, details DebugGraphDetails, fileName string) {
 	var _arg1 *C.GstBin              // out

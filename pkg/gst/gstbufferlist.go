@@ -111,7 +111,7 @@ func NewBufferListSized(size uint) *BufferList {
 //
 // The function returns the following values:
 //
-//    - gsize: size of the data contained in list in bytes.
+//   - gsize: size of the data contained in list in bytes.
 //
 func (list *BufferList) CalculateSize() uint {
 	var _arg0 *C.GstBufferList // out
@@ -134,7 +134,7 @@ func (list *BufferList) CalculateSize() uint {
 //
 // The function returns the following values:
 //
-//    - bufferList: new copy of list.
+//   - bufferList: new copy of list.
 //
 func (list *BufferList) CopyDeep() *BufferList {
 	var _arg0 *C.GstBufferList // out
@@ -166,12 +166,12 @@ func (list *BufferList) CopyDeep() *BufferList {
 //
 // The function takes the following parameters:
 //
-//    - fn to call.
+//   - fn to call.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when func returned TRUE for each buffer in list or when list is
-//      empty.
+//   - ok: TRUE when func returned TRUE for each buffer in list or when list is
+//     empty.
 //
 func (list *BufferList) ForEach(fn BufferListFunc) bool {
 	var _arg0 *C.GstBufferList    // out
@@ -203,13 +203,13 @@ func (list *BufferList) ForEach(fn BufferListFunc) bool {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
+//   - idx: index.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) at idx in group or NULL when there is no buffer. The
-//      buffer remains valid as long as list is valid and buffer is not removed
-//      from the list.
+//   - buffer (optional) at idx in group or NULL when there is no buffer. The
+//     buffer remains valid as long as list is valid and buffer is not removed
+//     from the list.
 //
 func (list *BufferList) Get(idx uint) *Buffer {
 	var _arg0 *C.GstBufferList // out
@@ -238,12 +238,12 @@ func (list *BufferList) Get(idx uint) *Buffer {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
+//   - idx: index.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) at idx in group. The returned buffer remains valid as
-//      long as list is valid and the buffer is not removed from the list.
+//   - buffer (optional) at idx in group. The returned buffer remains valid as
+//     long as list is valid and the buffer is not removed from the list.
 //
 func (list *BufferList) Writable(idx uint) *Buffer {
 	var _arg0 *C.GstBufferList // out
@@ -273,8 +273,8 @@ func (list *BufferList) Writable(idx uint) *Buffer {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - buffer: Buffer.
+//   - idx: index.
+//   - buffer: Buffer.
 //
 func (list *BufferList) Insert(idx int, buffer *Buffer) {
 	var _arg0 *C.GstBufferList // out
@@ -296,7 +296,7 @@ func (list *BufferList) Insert(idx int, buffer *Buffer) {
 //
 // The function returns the following values:
 //
-//    - guint: number of buffers in the buffer list.
+//   - guint: number of buffers in the buffer list.
 //
 func (list *BufferList) Length() uint {
 	var _arg0 *C.GstBufferList // out
@@ -319,8 +319,8 @@ func (list *BufferList) Length() uint {
 //
 // The function takes the following parameters:
 //
-//    - idx: index.
-//    - length: amount to remove.
+//   - idx: index.
+//   - length: amount to remove.
 //
 func (list *BufferList) Remove(idx uint, length uint) {
 	var _arg0 *C.GstBufferList // out

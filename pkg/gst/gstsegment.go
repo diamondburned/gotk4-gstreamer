@@ -73,8 +73,8 @@ func (s SeekType) String() string {
 // A non flushing seek might take some time to perform as the currently playing
 // data in the pipeline will not be cleared.
 //
-// An accurate seek might be slower for formats that don't have any indexes or
-// timestamp markers in the stream. Specifying this flag might require a
+// An accurate seek might be slower for formats that don't have any indexes
+// or timestamp markers in the stream. Specifying this flag might require a
 // complete scan of the file in those cases.
 //
 // When performing a segment seek: after the playback of the segment completes,
@@ -85,14 +85,14 @@ func (s SeekType) String() string {
 // looping or simple linear editing.
 //
 // When only changing the playback rate and not the direction, the
-// GST_SEEK_FLAG_INSTANT_RATE_CHANGE flag can be used for a non-flushing seek to
-// signal that the rate change should be applied immediately. This requires
-// special support in the seek handlers (e.g. demuxers) and any elements
-// synchronizing to the clock, and in general can't work in all cases (for
-// example UDP streaming where the delivery rate is controlled by a remote
+// GST_SEEK_FLAG_INSTANT_RATE_CHANGE flag can be used for a non-flushing
+// seek to signal that the rate change should be applied immediately.
+// This requires special support in the seek handlers (e.g. demuxers) and any
+// elements synchronizing to the clock, and in general can't work in all cases
+// (for example UDP streaming where the delivery rate is controlled by a remote
 // server). The instant-rate-change mode supports changing the trickmode-related
-// GST_SEEK_ flags, but can't be used in conjunction with other seek flags that
-// affect the new playback position - as the playback position will not be
+// GST_SEEK_ flags, but can't be used in conjunction with other seek flags
+// that affect the new playback position - as the playback position will not be
 // changing.
 //
 // When doing fast forward (rate > 1.0) or fast reverse (rate < -1.0) trickmode
@@ -100,20 +100,20 @@ func (s SeekType) String() string {
 // and demuxers to adjust the playback rate by skipping frames. This can improve
 // performance and decrease CPU usage because not all frames need to be decoded.
 //
-// Beyond that, the GST_SEEK_FLAG_TRICKMODE_KEY_UNITS flag can be used to
-// request that decoders skip all frames except key units, and
+// Beyond that, the GST_SEEK_FLAG_TRICKMODE_KEY_UNITS flag can be
+// used to request that decoders skip all frames except key units, and
 // GST_SEEK_FLAG_TRICKMODE_NO_AUDIO flags can be used to request that audio
 // decoders do no decoding at all, and simple output silence.
 //
 // The GST_SEEK_FLAG_SNAP_BEFORE flag can be used to snap to the previous
 // relevant location, and the GST_SEEK_FLAG_SNAP_AFTER flag can be used to
 // select the next relevant location. If GST_SEEK_FLAG_KEY_UNIT is specified,
-// the relevant location is a keyframe. If both flags are specified, the nearest
-// of these locations will be selected. If none are specified, the
-// implementation is free to select whichever it wants.
+// the relevant location is a keyframe. If both flags are specified,
+// the nearest of these locations will be selected. If none are specified,
+// the implementation is free to select whichever it wants.
 //
-// The before and after here are in running time, so when playing backwards, the
-// next location refers to the one that will played in next, and not the one
+// The before and after here are in running time, so when playing backwards,
+// the next location refers to the one that will played in next, and not the one
 // that is located after in the actual source stream.
 //
 // Also see part-seeking.txt in the GStreamer design documentation for more
@@ -164,8 +164,9 @@ const (
 	SeekFlagTrickmodeNoAudio SeekFlags = 0b100000000
 	// SeekFlagTrickmodeForwardPredicted: when doing fast forward or fast
 	// reverse playback, request that elements only decode keyframes and forward
-	// predicted frames and skip all other content (for example B-Frames), for
-	// formats that have keyframes and forward predicted frames. (Since: 1.18).
+	// predicted frames and skip all other content (for example B-Frames),
+	// for formats that have keyframes and forward predicted frames. (Since:
+	// 1.18).
 	SeekFlagTrickmodeForwardPredicted SeekFlags = 0b1000000000
 	// SeekFlagInstantRateChange signals that a rate change should be applied
 	// immediately. Only valid if start/stop position are GST_CLOCK_TIME_NONE,
@@ -313,8 +314,8 @@ func (s SegmentFlags) Has(other SegmentFlags) bool {
 //
 // The structure can be used for two purposes:
 //
-//    * performing seeks (handling seek events)
-//    * tracking playback regions (handling newsegment events)
+//   - performing seeks (handling seek events)
+//   - tracking playback regions (handling newsegment events)
 //
 // The segment is usually configured by the application with a seek event which
 // is propagated upstream and eventually handled by an element that performs the
@@ -325,8 +326,8 @@ func (s SegmentFlags) Has(other SegmentFlags) bool {
 //
 // A segment structure is initialized with gst_segment_init(), which takes a
 // Format that will be used as the format of the segment values. The segment
-// will be configured with a start value of 0 and a stop/duration of -1, which
-// is undefined. The default rate and applied_rate is 1.0.
+// will be configured with a start value of 0 and a stop/duration of -1,
+// which is undefined. The default rate and applied_rate is 1.0.
 //
 // The public duration field contains the duration of the segment. When using
 // the segment for seeking, the start and time members should normally be left
@@ -343,10 +344,10 @@ func (s SegmentFlags) Has(other SegmentFlags) bool {
 // playback continues from the position position, possibly with updated flags or
 // rate.
 //
-// For elements that want to use Segment to track the playback region, update
-// the segment fields with the information from the newsegment event. The
-// gst_segment_clip() method can be used to check and clip the media data to the
-// segment boundaries.
+// For elements that want to use Segment to track the playback region,
+// update the segment fields with the information from the newsegment event.
+// The gst_segment_clip() method can be used to check and clip the media data to
+// the segment boundaries.
 //
 // For elements that want to synchronize to the pipeline clock,
 // gst_segment_to_running_time() can be used to convert a timestamp to a value
@@ -400,16 +401,16 @@ func (s *Segment) Flags() SegmentFlags {
 	return _v
 }
 
-// Rate: playback rate of the segment is set in response to a seek event and,
-// without any seek, the value should be 1.0. This value is used by elements
-// that synchronize buffer [running
+// Rate: playback rate of the segment is set in response to a
+// seek event and, without any seek, the value should be 1.0.
+// This value is used by elements that synchronize buffer [running
 // times](additional/design/synchronisation.md#running-time) on the clock
-// (usually the sink elements), leading to consuming buffers faster (for a value
-// > 1.0) or slower (for 0.0 < value < 1.0) than normal playback speed. The rate
-// also defines the playback direction, meaning that when the value is lower
-// than 0.0, the playback happens in reverse, and the stream-time
-// (additional/design/synchronisation.md#stream-time) is going backward. The
-// rate value should never be 0.0.
+// (usually the sink elements), leading to consuming buffers faster (for a
+// value > 1.0) or slower (for 0.0 < value < 1.0) than normal playback speed.
+// The rate also defines the playback direction, meaning that when the value
+// is lower than 0.0, the playback happens in reverse, and the stream-time
+// (additional/design/synchronisation.md#stream-time) is going backward.
+// The rate value should never be 0.0.
 func (s *Segment) Rate() float64 {
 	valptr := &s.native.rate
 	var _v float64 // out
@@ -418,14 +419,14 @@ func (s *Segment) Rate() float64 {
 }
 
 // AppliedRate: applied rate is the rate that has been applied to the stream.
-// The effective/resulting playback rate of a stream is rate * applied_rate. The
-// applied rate can be set by source elements when a server is sending the
-// stream with an already modified playback speed rate. Filter elements that
-// modify the stream in a way that modifies the playback speed should also
-// modify the applied rate. For example the #videorate element when its
-// #videorate:rate property is set will set the applied rate of the segment it
-// pushed downstream. Also #scaletempo applies the input segment rate to the
-// stream and outputs a segment with rate=1.0 and
+// The effective/resulting playback rate of a stream is rate * applied_rate.
+// The applied rate can be set by source elements when a server is
+// sending the stream with an already modified playback speed rate.
+// Filter elements that modify the stream in a way that modifies the playback
+// speed should also modify the applied rate. For example the #videorate
+// element when its #videorate:rate property is set will set the applied
+// rate of the segment it pushed downstream. Also #scaletempo applies the
+// input segment rate to the stream and outputs a segment with rate=1.0 and
 // applied_rate=<inputsegment.rate>.
 func (s *Segment) AppliedRate() float64 {
 	valptr := &s.native.applied_rate
@@ -473,8 +474,8 @@ func (s *Segment) Start() uint64 {
 }
 
 // Stop: stop time of the segment (in buffer timestamps) (PTS) (GstBuffer.pts),
-// that is the timestamp of the last buffer to output inside the segment (first
-// one during reverse playback). For example decoders will clip
+// that is the timestamp of the last buffer to output inside the segment
+// (first one during reverse playback). For example decoders will clip
 // (gst_segment_clip) out buffers after the stop time.
 func (s *Segment) Stop() uint64 {
 	valptr := &s.native.stop
@@ -493,9 +494,9 @@ func (s *Segment) Time() uint64 {
 }
 
 // Position: buffer timestamp position in the segment is supposed to be updated
-// by elements such as sources, demuxers or parsers to track progress by setting
-// it to the last pushed buffer' end time (timestamp (GstBuffer.pts) +
-// Buffer.duration) for that specific segment. The position is used when
+// by elements such as sources, demuxers or parsers to track progress by
+// setting it to the last pushed buffer' end time (timestamp (GstBuffer.pts)
+// + Buffer.duration) for that specific segment. The position is used when
 // reconfiguring the segment with #gst_segment_do_seek when the seek is only
 // updating the segment (see offset (GstSegment.offset)).
 func (s *Segment) Position() uint64 {
@@ -517,30 +518,30 @@ func (s *Segment) Duration() uint64 {
 	return _v
 }
 
-// Rate: playback rate of the segment is set in response to a seek event and,
-// without any seek, the value should be 1.0. This value is used by elements
-// that synchronize buffer [running
+// Rate: playback rate of the segment is set in response to a
+// seek event and, without any seek, the value should be 1.0.
+// This value is used by elements that synchronize buffer [running
 // times](additional/design/synchronisation.md#running-time) on the clock
-// (usually the sink elements), leading to consuming buffers faster (for a value
-// > 1.0) or slower (for 0.0 < value < 1.0) than normal playback speed. The rate
-// also defines the playback direction, meaning that when the value is lower
-// than 0.0, the playback happens in reverse, and the stream-time
-// (additional/design/synchronisation.md#stream-time) is going backward. The
-// rate value should never be 0.0.
+// (usually the sink elements), leading to consuming buffers faster (for a
+// value > 1.0) or slower (for 0.0 < value < 1.0) than normal playback speed.
+// The rate also defines the playback direction, meaning that when the value
+// is lower than 0.0, the playback happens in reverse, and the stream-time
+// (additional/design/synchronisation.md#stream-time) is going backward.
+// The rate value should never be 0.0.
 func (s *Segment) SetRate(rate float64) {
 	valptr := &s.native.rate
 	*valptr = C.gdouble(rate)
 }
 
 // AppliedRate: applied rate is the rate that has been applied to the stream.
-// The effective/resulting playback rate of a stream is rate * applied_rate. The
-// applied rate can be set by source elements when a server is sending the
-// stream with an already modified playback speed rate. Filter elements that
-// modify the stream in a way that modifies the playback speed should also
-// modify the applied rate. For example the #videorate element when its
-// #videorate:rate property is set will set the applied rate of the segment it
-// pushed downstream. Also #scaletempo applies the input segment rate to the
-// stream and outputs a segment with rate=1.0 and
+// The effective/resulting playback rate of a stream is rate * applied_rate.
+// The applied rate can be set by source elements when a server is
+// sending the stream with an already modified playback speed rate.
+// Filter elements that modify the stream in a way that modifies the playback
+// speed should also modify the applied rate. For example the #videorate
+// element when its #videorate:rate property is set will set the applied
+// rate of the segment it pushed downstream. Also #scaletempo applies the
+// input segment rate to the stream and outputs a segment with rate=1.0 and
 // applied_rate=<inputsegment.rate>.
 func (s *Segment) SetAppliedRate(appliedRate float64) {
 	valptr := &s.native.applied_rate
@@ -572,8 +573,8 @@ func (s *Segment) SetStart(start uint64) {
 }
 
 // Stop: stop time of the segment (in buffer timestamps) (PTS) (GstBuffer.pts),
-// that is the timestamp of the last buffer to output inside the segment (first
-// one during reverse playback). For example decoders will clip
+// that is the timestamp of the last buffer to output inside the segment
+// (first one during reverse playback). For example decoders will clip
 // (gst_segment_clip) out buffers after the stop time.
 func (s *Segment) SetStop(stop uint64) {
 	valptr := &s.native.stop
@@ -588,9 +589,9 @@ func (s *Segment) SetTime(time uint64) {
 }
 
 // Position: buffer timestamp position in the segment is supposed to be updated
-// by elements such as sources, demuxers or parsers to track progress by setting
-// it to the last pushed buffer' end time (timestamp (GstBuffer.pts) +
-// Buffer.duration) for that specific segment. The position is used when
+// by elements such as sources, demuxers or parsers to track progress by
+// setting it to the last pushed buffer' end time (timestamp (GstBuffer.pts)
+// + Buffer.duration) for that specific segment. The position is used when
 // reconfiguring the segment with #gst_segment_do_seek when the seek is only
 // updating the segment (see offset (GstSegment.offset)).
 func (s *Segment) SetPosition(position uint64) {
@@ -615,25 +616,25 @@ func (s *Segment) SetDuration(duration uint64) {
 // If the function returns FALSE, start and stop are known to fall outside of
 // segment and clip_start and clip_stop are not updated.
 //
-// When the function returns TRUE, clip_start and clip_stop will be updated. If
-// clip_start or clip_stop are different from start or stop respectively, the
-// region fell partially in the segment.
+// When the function returns TRUE, clip_start and clip_stop will be updated.
+// If clip_start or clip_stop are different from start or stop respectively,
+// the region fell partially in the segment.
 //
 // Note that when stop is -1, clip_stop will be set to the end of the segment.
 // Depending on the use case, this may or may not be what you want.
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - start position in the segment.
-//    - stop position in the segment.
+//   - format of the segment.
+//   - start position in the segment.
+//   - stop position in the segment.
 //
 // The function returns the following values:
 //
-//    - clipStart (optional): clipped start position in the segment.
-//    - clipStop (optional): clipped stop position in the segment.
-//    - ok: TRUE if the given start and stop times fall partially or completely
-//      in segment, FALSE if the values are completely outside of the segment.
+//   - clipStart (optional): clipped start position in the segment.
+//   - clipStop (optional): clipped stop position in the segment.
+//   - ok: TRUE if the given start and stop times fall partially or completely
+//     in segment, FALSE if the values are completely outside of the segment.
 //
 func (segment *Segment) Clip(format Format, start uint64, stop uint64) (clipStart uint64, clipStop uint64, ok bool) {
 	var _arg0 *C.GstSegment // out
@@ -674,7 +675,7 @@ func (segment *Segment) Clip(format Format, start uint64, stop uint64) (clipStar
 //
 // The function returns the following values:
 //
-//    - ret: new Segment, free with gst_segment_free().
+//   - ret: new Segment, free with gst_segment_free().
 //
 func (segment *Segment) Copy() *Segment {
 	var _arg0 *C.GstSegment // out
@@ -702,7 +703,7 @@ func (segment *Segment) Copy() *Segment {
 //
 // The function takes the following parameters:
 //
-//    - dest: Segment.
+//   - dest: Segment.
 //
 func (src *Segment) CopyInto(dest *Segment) {
 	var _arg0 *C.GstSegment // out
@@ -745,18 +746,18 @@ func (src *Segment) CopyInto(dest *Segment) {
 //
 // The function takes the following parameters:
 //
-//    - rate of the segment.
-//    - format of the segment.
-//    - flags: segment flags for the segment.
-//    - startType: seek method.
-//    - start: seek start value.
-//    - stopType: seek method.
-//    - stop: seek stop value.
+//   - rate of the segment.
+//   - format of the segment.
+//   - flags: segment flags for the segment.
+//   - startType: seek method.
+//   - start: seek start value.
+//   - stopType: seek method.
+//   - stop: seek stop value.
 //
 // The function returns the following values:
 //
-//    - update (optional): boolean holding whether position was updated.
-//    - ok: TRUE if the seek could be performed.
+//   - update (optional): boolean holding whether position was updated.
+//   - ok: TRUE if the seek could be performed.
 //
 func (segment *Segment) DoSeek(rate float64, format Format, flags SeekFlags, startType SeekType, start uint64, stopType SeekType, stop uint64) (update bool, ok bool) {
 	var _arg0 *C.GstSegment  // out
@@ -809,7 +810,7 @@ func (segment *Segment) DoSeek(rate float64, format Format, flags SeekFlags, sta
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
+//   - format of the segment.
 //
 func (segment *Segment) Init(format Format) {
 	var _arg0 *C.GstSegment // out
@@ -828,11 +829,11 @@ func (segment *Segment) Init(format Format) {
 //
 // The function takes the following parameters:
 //
-//    - s1: Segment structure.
+//   - s1: Segment structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the segments are equal, FALSE otherwise.
+//   - ok: TRUE if the segments are equal, FALSE otherwise.
 //
 func (s0 *Segment) IsEqual(s1 *Segment) bool {
 	var _arg0 *C.GstSegment // out
@@ -860,13 +861,13 @@ func (s0 *Segment) IsEqual(s1 *Segment) bool {
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - offset to apply in the segment.
+//   - format of the segment.
+//   - offset to apply in the segment.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the segment could be updated successfully. If FALSE is
-//      returned, offset is not in segment.
+//   - ok: TRUE if the segment could be updated successfully. If FALSE is
+//     returned, offset is not in segment.
 //
 func (segment *Segment) OffsetRunningTime(format Format, offset int64) bool {
 	var _arg0 *C.GstSegment // out
@@ -892,19 +893,19 @@ func (segment *Segment) OffsetRunningTime(format Format, offset int64) bool {
 	return _ok
 }
 
-// PositionFromRunningTime: convert running_time into a position in the segment
-// so that gst_segment_to_running_time() with that position returns
+// PositionFromRunningTime: convert running_time into a position in the
+// segment so that gst_segment_to_running_time() with that position returns
 // running_time.
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - runningTime: running_time in the segment.
+//   - format of the segment.
+//   - runningTime: running_time in the segment.
 //
 // The function returns the following values:
 //
-//    - guint64: position in the segment for running_time. This function returns
-//      -1 when running_time is -1 or when it is not inside segment.
+//   - guint64: position in the segment for running_time. This function returns
+//     -1 when running_time is -1 or when it is not inside segment.
 //
 func (segment *Segment) PositionFromRunningTime(format Format, runningTime uint64) uint64 {
 	var _arg0 *C.GstSegment // out
@@ -928,8 +929,8 @@ func (segment *Segment) PositionFromRunningTime(format Format, runningTime uint6
 	return _guint64
 }
 
-// PositionFromRunningTimeFull: translate running_time to the segment position
-// using the currently configured segment. Compared to
+// PositionFromRunningTimeFull: translate running_time to the segment
+// position using the currently configured segment. Compared to
 // gst_segment_position_from_running_time() this function can return negative
 // segment position.
 //
@@ -948,13 +949,13 @@ func (segment *Segment) PositionFromRunningTime(format Format, runningTime uint6
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - runningTime: running-time.
+//   - format of the segment.
+//   - runningTime: running-time.
 //
 // The function returns the following values:
 //
-//    - position: resulting position in the segment.
-//    - gint: 1 or -1 on success, 0 on failure.
+//   - position: resulting position in the segment.
+//   - gint: 1 or -1 on success, 0 on failure.
 //
 func (segment *Segment) PositionFromRunningTimeFull(format Format, runningTime uint64) (uint64, int) {
 	var _arg0 *C.GstSegment // out
@@ -986,13 +987,13 @@ func (segment *Segment) PositionFromRunningTimeFull(format Format, runningTime u
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - streamTime: stream_time in the segment.
+//   - format of the segment.
+//   - streamTime: stream_time in the segment.
 //
 // The function returns the following values:
 //
-//    - guint64: position in the segment for stream_time. This function returns
-//      -1 when stream_time is -1 or when it is not inside segment.
+//   - guint64: position in the segment for stream_time. This function returns
+//     -1 when stream_time is -1 or when it is not inside segment.
 //
 func (segment *Segment) PositionFromStreamTime(format Format, streamTime uint64) uint64 {
 	var _arg0 *C.GstSegment // out
@@ -1016,8 +1017,8 @@ func (segment *Segment) PositionFromStreamTime(format Format, streamTime uint64)
 	return _guint64
 }
 
-// PositionFromStreamTimeFull: translate stream_time to the segment position
-// using the currently configured segment. Compared to
+// PositionFromStreamTimeFull: translate stream_time to the segment
+// position using the currently configured segment. Compared to
 // gst_segment_position_from_stream_time() this function can return negative
 // segment position.
 //
@@ -1035,13 +1036,13 @@ func (segment *Segment) PositionFromStreamTime(format Format, streamTime uint64)
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - streamTime: stream-time.
+//   - format of the segment.
+//   - streamTime: stream-time.
 //
 // The function returns the following values:
 //
-//    - position: resulting position in the segment.
-//    - gint: 1 or -1 on success, 0 on failure.
+//   - position: resulting position in the segment.
+//   - gint: 1 or -1 on success, 0 on failure.
 //
 func (segment *Segment) PositionFromStreamTimeFull(format Format, streamTime uint64) (uint64, int) {
 	var _arg0 *C.GstSegment // out
@@ -1073,13 +1074,13 @@ func (segment *Segment) PositionFromStreamTimeFull(format Format, streamTime uin
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - runningTime: running_time in the segment.
+//   - format of the segment.
+//   - runningTime: running_time in the segment.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the segment could be updated successfully. If FALSE is
-//      returned, running_time is -1 or not in segment.
+//   - ok: TRUE if the segment could be updated successfully. If FALSE is
+//     returned, running_time is -1 or not in segment.
 //
 func (segment *Segment) SetRunningTime(format Format, runningTime uint64) bool {
 	var _arg0 *C.GstSegment // out
@@ -1112,13 +1113,13 @@ func (segment *Segment) SetRunningTime(format Format, runningTime uint64) bool {
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - runningTime: running_time in the segment.
+//   - format of the segment.
+//   - runningTime: running_time in the segment.
 //
 // The function returns the following values:
 //
-//    - guint64: position in the segment for running_time. This function returns
-//      -1 when running_time is -1 or when it is not inside segment.
+//   - guint64: position in the segment for running_time. This function returns
+//     -1 when running_time is -1 or when it is not inside segment.
 //
 func (segment *Segment) ToPosition(format Format, runningTime uint64) uint64 {
 	var _arg0 *C.GstSegment // out
@@ -1156,13 +1157,13 @@ func (segment *Segment) ToPosition(format Format, runningTime uint64) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - position in the segment.
+//   - format of the segment.
+//   - position in the segment.
 //
 // The function returns the following values:
 //
-//    - guint64: position as the total running time or -1 when an invalid
-//      position was given.
+//   - guint64: position as the total running time or -1 when an invalid
+//     position was given.
 //
 func (segment *Segment) ToRunningTime(format Format, position uint64) uint64 {
 	var _arg0 *C.GstSegment // out
@@ -1204,13 +1205,13 @@ func (segment *Segment) ToRunningTime(format Format, position uint64) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - position in the segment.
+//   - format of the segment.
+//   - position in the segment.
 //
 // The function returns the following values:
 //
-//    - runningTime (optional): result running-time.
-//    - gint: 1 or -1 on success, 0 on failure.
+//   - runningTime (optional): result running-time.
+//   - gint: 1 or -1 on success, 0 on failure.
 //
 func (segment *Segment) ToRunningTimeFull(format Format, position uint64) (uint64, int) {
 	var _arg0 *C.GstSegment // out
@@ -1242,20 +1243,20 @@ func (segment *Segment) ToRunningTimeFull(format Format, position uint64) (uint6
 // value.
 //
 // This function is typically used by elements that need to operate on the
-// stream time of the buffers it receives, such as effect plugins. In those use
-// cases, position is typically the buffer timestamp or clock time that one
+// stream time of the buffers it receives, such as effect plugins. In those
+// use cases, position is typically the buffer timestamp or clock time that one
 // wants to convert to the stream time. The stream time is always between 0 and
 // the total duration of the media stream.
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - position in the segment.
+//   - format of the segment.
+//   - position in the segment.
 //
 // The function returns the following values:
 //
-//    - guint64: position in stream_time or -1 when an invalid position was
-//      given.
+//   - guint64: position in stream_time or -1 when an invalid position was
+//     given.
 //
 func (segment *Segment) ToStreamTime(format Format, position uint64) uint64 {
 	var _arg0 *C.GstSegment // out
@@ -1297,13 +1298,13 @@ func (segment *Segment) ToStreamTime(format Format, position uint64) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - format of the segment.
-//    - position in the segment.
+//   - format of the segment.
+//   - position in the segment.
 //
 // The function returns the following values:
 //
-//    - streamTime: result stream-time.
-//    - gint: 1 or -1 on success, 0 on failure.
+//   - streamTime: result stream-time.
+//   - gint: 1 or -1 on success, 0 on failure.
 //
 func (segment *Segment) ToStreamTimeFull(format Format, position uint64) (uint64, int) {
 	var _arg0 *C.GstSegment // out

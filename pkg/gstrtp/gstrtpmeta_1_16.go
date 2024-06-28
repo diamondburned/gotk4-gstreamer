@@ -18,36 +18,34 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - ssrc (optional): pointer to the SSRC.
-//    - csrc (optional): pointer to the CSRCs.
-//    - csrcCount: number of elements in csrc.
+//   - buffer: Buffer.
+//   - ssrc (optional): pointer to the SSRC.
+//   - csrc (optional): pointer to the CSRCs.
 //
 // The function returns the following values:
 //
-//    - rtpSourceMeta on buffer.
+//   - rtpSourceMeta on buffer.
 //
-func BufferAddRtpSourceMeta(buffer *gst.Buffer, ssrc, csrc *uint32, csrcCount uint) *RTPSourceMeta {
-	var _arg1 *C.GstBuffer        // out
-	var _arg2 *C.guint32          // out
-	var _arg3 *C.guint32          // out
-	var _arg4 C.guint             // out
+func BufferAddRtpSourceMeta(buffer *gst.Buffer, ssrc *uint32, csrc []uint32) *RTPSourceMeta {
+	var _arg1 *C.GstBuffer // out
+	var _arg2 *C.guint32   // out
+	var _arg3 *C.guint32   // out
+	var _arg4 C.guint
 	var _cret *C.GstRTPSourceMeta // in
 
 	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
 	if ssrc != nil {
 		_arg2 = (*C.guint32)(unsafe.Pointer(ssrc))
 	}
-	if csrc != nil {
-		_arg3 = (*C.guint32)(unsafe.Pointer(csrc))
+	_arg4 = (C.guint)(len(csrc))
+	if len(csrc) > 0 {
+		_arg3 = (*C.guint32)(unsafe.Pointer(&csrc[0]))
 	}
-	_arg4 = C.guint(csrcCount)
 
 	_cret = C.gst_buffer_add_rtp_source_meta(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(ssrc)
 	runtime.KeepAlive(csrc)
-	runtime.KeepAlive(csrcCount)
 
 	var _rtpSourceMeta *RTPSourceMeta // out
 
@@ -60,11 +58,12 @@ func BufferAddRtpSourceMeta(buffer *gst.Buffer, ssrc, csrc *uint32, csrcCount ui
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - rtpSourceMeta or NULL when there is no such metadata on buffer.
+//   - rtpSourceMeta (optional) or NULL when there is no such metadata on
+//     buffer.
 //
 func BufferGetRtpSourceMeta(buffer *gst.Buffer) *RTPSourceMeta {
 	var _arg1 *C.GstBuffer        // out
@@ -77,7 +76,9 @@ func BufferGetRtpSourceMeta(buffer *gst.Buffer) *RTPSourceMeta {
 
 	var _rtpSourceMeta *RTPSourceMeta // out
 
-	_rtpSourceMeta = (*RTPSourceMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_rtpSourceMeta = (*RTPSourceMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _rtpSourceMeta
 }
@@ -154,27 +155,27 @@ func (r *RTPSourceMeta) SetCsrcCount(csrcCount uint) {
 //
 // The function takes the following parameters:
 //
-//    - csrc csrcs to append.
-//    - csrcCount: number of elements in csrc.
+//   - csrc csrcs to append.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if all elements in csrc was added, FALSE otherwise.
+//   - ok: TRUE if all elements in csrc was added, FALSE otherwise.
 //
-func (meta *RTPSourceMeta) AppendCsrc(csrc *uint32, csrcCount uint) bool {
+func (meta *RTPSourceMeta) AppendCsrc(csrc []uint32) bool {
 	var _arg0 *C.GstRTPSourceMeta // out
 	var _arg1 *C.guint32          // out
-	var _arg2 C.guint             // out
-	var _cret C.gboolean          // in
+	var _arg2 C.guint
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GstRTPSourceMeta)(gextras.StructNative(unsafe.Pointer(meta)))
-	_arg1 = (*C.guint32)(unsafe.Pointer(csrc))
-	_arg2 = C.guint(csrcCount)
+	_arg2 = (C.guint)(len(csrc))
+	if len(csrc) > 0 {
+		_arg1 = (*C.guint32)(unsafe.Pointer(&csrc[0]))
+	}
 
 	_cret = C.gst_rtp_source_meta_append_csrc(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(meta)
 	runtime.KeepAlive(csrc)
-	runtime.KeepAlive(csrcCount)
 
 	var _ok bool // out
 
@@ -190,7 +191,7 @@ func (meta *RTPSourceMeta) AppendCsrc(csrc *uint32, csrcCount uint) bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of RTP sources.
+//   - guint: number of RTP sources.
 //
 func (meta *RTPSourceMeta) SourceCount() uint {
 	var _arg0 *C.GstRTPSourceMeta // out
@@ -212,11 +213,11 @@ func (meta *RTPSourceMeta) SourceCount() uint {
 //
 // The function takes the following parameters:
 //
-//    - ssrc (optional): pointer to the SSRC.
+//   - ssrc (optional): pointer to the SSRC.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success, FALSE otherwise.
+//   - ok: TRUE on success, FALSE otherwise.
 //
 func (meta *RTPSourceMeta) SetSsrc(ssrc *uint32) bool {
 	var _arg0 *C.GstRTPSourceMeta // out

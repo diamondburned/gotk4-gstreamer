@@ -26,9 +26,9 @@ func init() {
 	})
 }
 
-// Context is a container object used to store contexts like a device context, a
-// display server connection and similar concepts that should be shared between
-// multiple elements.
+// Context is a container object used to store contexts like a device context,
+// a display server connection and similar concepts that should be shared
+// between multiple elements.
 //
 // Applications can set a context on a complete pipeline by using
 // gst_element_set_context(), which will then be propagated to all child
@@ -49,10 +49,10 @@ func init() {
 // known context on the element that asks for it if possible. Otherwise the
 // application should provide one if it can.
 //
-// Context can be persistent. A persistent Context is kept in elements when they
-// reach GST_STATE_NULL, non-persistent ones will be removed. Also, a
-// non-persistent context won't override a previous persistent context set to an
-// element.
+// Context can be persistent. A persistent Context is kept in elements when
+// they reach GST_STATE_NULL, non-persistent ones will be removed. Also,
+// a non-persistent context won't override a previous persistent context set to
+// an element.
 //
 // An instance of this type is always passed by reference.
 type Context struct {
@@ -102,7 +102,7 @@ func NewContext(contextType string, persistent bool) *Context {
 //
 // The function returns the following values:
 //
-//    - utf8: type of the context.
+//   - utf8: type of the context.
 //
 func (context *Context) ContextType() string {
 	var _arg0 *C.GstContext // out
@@ -124,9 +124,9 @@ func (context *Context) ContextType() string {
 //
 // The function returns the following values:
 //
-//    - structure of the context. The structure is still owned by the context,
-//      which means that you should not modify it, free it and that the pointer
-//      becomes invalid when you free the context.
+//   - structure of the context. The structure is still owned by the context,
+//     which means that you should not modify it, free it and that the pointer
+//     becomes invalid when you free the context.
 //
 func (context *Context) Structure() *Structure {
 	var _arg0 *C.GstContext   // out
@@ -148,11 +148,11 @@ func (context *Context) Structure() *Structure {
 //
 // The function takes the following parameters:
 //
-//    - contextType: context type to check.
+//   - contextType: context type to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if context has context_type.
+//   - ok: TRUE if context has context_type.
 //
 func (context *Context) HasContextType(contextType string) bool {
 	var _arg0 *C.GstContext // out
@@ -180,7 +180,7 @@ func (context *Context) HasContextType(contextType string) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the context is persistent.
+//   - ok: TRUE if the context is persistent.
 //
 func (context *Context) IsPersistent() bool {
 	var _arg0 *C.GstContext // out
@@ -204,10 +204,10 @@ func (context *Context) IsPersistent() bool {
 //
 // The function returns the following values:
 //
-//    - structure of the context. The structure is still owned by the context,
-//      which means that you should not free it and that the pointer becomes
-//      invalid when you free the context. This function checks if context is
-//      writable.
+//   - structure of the context. The structure is still owned by the context,
+//     which means that you should not free it and that the pointer becomes
+//     invalid when you free the context. This function checks if context is
+//     writable.
 //
 func (context *Context) WritableStructure() *Structure {
 	var _arg0 *C.GstContext   // out

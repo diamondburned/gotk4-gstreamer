@@ -108,8 +108,8 @@ func marshalDmaBufAllocator(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - dmaBufAllocator: new dmabuf allocator, or NULL if the allocator isn't
-//      available. Use gst_object_unref() to release the allocator after usage.
+//   - dmaBufAllocator: new dmabuf allocator. Use gst_object_unref() to release
+//     the allocator after usage.
 //
 func NewDmaBufAllocator() *DmaBufAllocator {
 	var _cret *C.GstAllocator // in

@@ -15,14 +15,14 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
+//   - context: GLContext.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - utf8: passthrough shader string for copying an input external-oes texture
-//      to the output.
+//   - utf8: passthrough shader string for copying an input external-oes texture
+//     to the output.
 //
 func GLShaderStringFragmentExternalOesGetDefault(context GLContexter, version GLSLVersion, profile GLSLProfile) string {
 	var _arg1 *C.GstGLContext  // out
@@ -49,14 +49,14 @@ func GLShaderStringFragmentExternalOesGetDefault(context GLContexter, version GL
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
+//   - context: GLContext.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - utf8: passthrough shader string for copying an input texture to the
-//      output.
+//   - utf8: passthrough shader string for copying an input texture to the
+//     output.
 //
 func GLShaderStringFragmentGetDefault(context GLContexter, version GLSLVersion, profile GLSLProfile) string {
 	var _arg1 *C.GstGLContext  // out
@@ -92,14 +92,14 @@ func GLShaderStringFragmentGetDefault(context GLContexter, version GLSLVersion, 
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
+//   - context: GLContext.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - utf8: shader string defining the precision of float types based on
-//      context, version and profile.
+//   - utf8: shader string defining the precision of float types based on
+//     context, version and profile.
 //
 func GLShaderStringGetHighestPrecision(context GLContexter, version GLSLVersion, profile GLSLProfile) string {
 	var _arg1 *C.GstGLContext  // out

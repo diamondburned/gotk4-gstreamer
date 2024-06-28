@@ -17,19 +17,17 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - id: ClockID.
+//   - id: ClockID.
 //
 // The function returns the following values:
 //
-//    - clock (optional) or NULL when the underlying clock has been freed.
+//   - clock (optional) or NULL when the underlying clock has been freed.
 //
 func ClockIDGetClock(id ClockID) Clocker {
 	var _arg1 C.GstClockID // out
 	var _cret *C.GstClock  // in
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 
 	_cret = C.gst_clock_id_get_clock(_arg1)
 	runtime.KeepAlive(id)
@@ -63,21 +61,19 @@ func ClockIDGetClock(id ClockID) Clocker {
 //
 // The function takes the following parameters:
 //
-//    - id to check.
-//    - clock to compare against.
+//   - id to check.
+//   - clock to compare against.
 //
 // The function returns the following values:
 //
-//    - ok: whether the clock id uses the same underlying Clock clock.
+//   - ok: whether the clock id uses the same underlying Clock clock.
 //
 func ClockIDUsesClock(id ClockID, clock Clocker) bool {
 	var _arg1 C.GstClockID // out
 	var _arg2 *C.GstClock  // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 	_arg2 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
 
 	_cret = C.gst_clock_id_uses_clock(_arg1, _arg2)

@@ -3,6 +3,7 @@
 package gsttag
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/OmegaRogue/gotk4-gstreamer/pkg/gst"
@@ -13,6 +14,14 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gst/tag/tag.h>
+// extern GstBuffer* _gotk4_gsttag1_TagMuxClass_render_start_tag(GstTagMux*, GstTagList*);
+// extern GstBuffer* _gotk4_gsttag1_TagMuxClass_render_end_tag(GstTagMux*, GstTagList*);
+// GstBuffer* _gotk4_gsttag1_TagMux_virtual_render_end_tag(void* fnptr, GstTagMux* arg0, GstTagList* arg1) {
+//   return ((GstBuffer* (*)(GstTagMux*, GstTagList*))(fnptr))(arg0, arg1);
+// };
+// GstBuffer* _gotk4_gsttag1_TagMux_virtual_render_start_tag(void* fnptr, GstTagMux* arg0, GstTagList* arg1) {
+//   return ((GstBuffer* (*)(GstTagMux*, GstTagList*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -28,27 +37,39 @@ func init() {
 
 // TagMuxOverrides contains methods that are overridable.
 type TagMuxOverrides struct {
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
+	RenderEndTag func(tagList *gst.TagList) *gst.Buffer
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
+	RenderStartTag func(tagList *gst.TagList) *gst.Buffer
 }
 
 func defaultTagMuxOverrides(v *TagMux) TagMuxOverrides {
-	return TagMuxOverrides{}
+	return TagMuxOverrides{
+		RenderEndTag:   v.renderEndTag,
+		RenderStartTag: v.renderStartTag,
+	}
 }
 
 // TagMux provides a base class for adding tags at the beginning or end of a
 // stream.
 //
-//
-// Deriving from GstTagMux
+// # Deriving from GstTagMux
 //
 // Subclasses have to do the following things:
 //
-//    * In their base init function, they must add pad templates for the sink
-//      pad and the source pad to the element class, describing the media type
-//      they accept and output in the caps of the pad template.
-//    * In their class init function, they must override the
-//      GST_TAG_MUX_CLASS(mux_klass)->render_start_tag and/or
-//      GST_TAG_MUX_CLASS(mux_klass)->render_end_tag vfuncs and set up a render
-//      function.
+//   - In their base init function, they must add pad templates for the sink pad
+//     and the source pad to the element class, describing the media type they
+//     accept and output in the caps of the pad template.
+//   - In their class init function, they must override the
+//     GST_TAG_MUX_CLASS(mux_klass)->render_start_tag and/or
+//     GST_TAG_MUX_CLASS(mux_klass)->render_end_tag vfuncs and set up a render
+//     function.
 type TagMux struct {
 	_ [0]func() // equal guard
 	gst.Element
@@ -81,6 +102,16 @@ func init() {
 }
 
 func initTagMuxClass(gclass unsafe.Pointer, overrides TagMuxOverrides, classInitFunc func(*TagMuxClass)) {
+	pclass := (*C.GstTagMuxClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTagMux))))
+
+	if overrides.RenderEndTag != nil {
+		pclass.render_end_tag = (*[0]byte)(C._gotk4_gsttag1_TagMuxClass_render_end_tag)
+	}
+
+	if overrides.RenderStartTag != nil {
+		pclass.render_start_tag = (*[0]byte)(C._gotk4_gsttag1_TagMuxClass_render_start_tag)
+	}
+
 	if classInitFunc != nil {
 		class := (*TagMuxClass)(gextras.NewStructNative(gclass))
 		classInitFunc(class)
@@ -119,6 +150,70 @@ func (v *TagMux) baseTagMux() *TagMux {
 // BaseTagMux returns the underlying base object.
 func BaseTagMux(obj TagMuxer) *TagMux {
 	return obj.baseTagMux()
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (mux *TagMux) renderEndTag(tagList *gst.TagList) *gst.Buffer {
+	gclass := (*C.GstTagMuxClass)(coreglib.PeekParentClass(mux))
+	fnarg := gclass.render_end_tag
+
+	var _arg0 *C.GstTagMux  // out
+	var _arg1 *C.GstTagList // out
+	var _cret *C.GstBuffer  // in
+
+	_arg0 = (*C.GstTagMux)(unsafe.Pointer(coreglib.InternObject(mux).Native()))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+
+	_cret = C._gotk4_gsttag1_TagMux_virtual_render_end_tag(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(mux)
+	runtime.KeepAlive(tagList)
+
+	var _buffer *gst.Buffer // out
+
+	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_buffer)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _buffer
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (mux *TagMux) renderStartTag(tagList *gst.TagList) *gst.Buffer {
+	gclass := (*C.GstTagMuxClass)(coreglib.PeekParentClass(mux))
+	fnarg := gclass.render_start_tag
+
+	var _arg0 *C.GstTagMux  // out
+	var _arg1 *C.GstTagList // out
+	var _cret *C.GstBuffer  // in
+
+	_arg0 = (*C.GstTagMux)(unsafe.Pointer(coreglib.InternObject(mux).Native()))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(tagList)))
+
+	_cret = C._gotk4_gsttag1_TagMux_virtual_render_start_tag(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(mux)
+	runtime.KeepAlive(tagList)
+
+	var _buffer *gst.Buffer // out
+
+	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_buffer)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _buffer
 }
 
 // TagMuxClass structure. Subclasses need to override at least one of the two

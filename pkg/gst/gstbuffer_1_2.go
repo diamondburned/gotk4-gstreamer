@@ -14,7 +14,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - guint: maximum amount of memory blocks that a buffer can hold.
+//   - guint: maximum amount of memory blocks that a buffer can hold.
 //
 func BufferGetMaxMemory() uint {
 	var _cret C.guint // in

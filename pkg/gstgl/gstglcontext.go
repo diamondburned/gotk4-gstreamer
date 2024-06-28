@@ -136,11 +136,11 @@ type GLContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - activate: TRUE to activate, FALSE to deactivate.
+	//   - activate: TRUE to activate, FALSE to deactivate.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the activation succeeded.
+	//   - ok: whether the activation succeeded.
 	//
 	Activate func(activate bool) bool
 	// CheckFeature: check for an OpenGL feature being supported.
@@ -151,18 +151,18 @@ type GLContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - feature: platform specific feature.
+	//   - feature: platform specific feature.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether feature is supported by context.
+	//   - ok: whether feature is supported by context.
 	//
 	CheckFeature func(feature string) bool
 	ChooseFormat func() error
 	// The function takes the following parameters:
 	//
-	//    - glApi
-	//    - otherContext
+	//   - glApi
+	//   - otherContext
 	//
 	CreateContext  func(glApi GLAPI, otherContext GLContexter) error
 	DestroyContext func()
@@ -175,7 +175,7 @@ type GLContextOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - structure (optional): configuration chosen for this OpenGL context.
+	//   - structure (optional): configuration chosen for this OpenGL context.
 	//
 	Config func() *gst.Structure
 	// GLApi: get the currently enabled OpenGL api.
@@ -185,30 +185,30 @@ type GLContextOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - glapI: available OpenGL api.
+	//   - glapI: available OpenGL api.
 	//
 	GLApi func() GLAPI
 	// GLContext gets the backing OpenGL context used by context.
 	//
 	// The function returns the following values:
 	//
-	//    - guintptr: platform specific backing OpenGL context.
+	//   - guintptr: platform specific backing OpenGL context.
 	//
 	GLContext func() uintptr
 	// GLPlatform gets the OpenGL platform that used by context.
 	//
 	// The function returns the following values:
 	//
-	//    - glPlatform: platform specific backing OpenGL context.
+	//   - glPlatform: platform specific backing OpenGL context.
 	//
 	GLPlatform func() GLPlatform
-	// GLPlatformVersion: get the version of the OpenGL platform (GLX, EGL, etc)
-	// used. Only valid after a call to gst_gl_context_create().
+	// GLPlatformVersion: get the version of the OpenGL platform (GLX, EGL,
+	// etc) used. Only valid after a call to gst_gl_context_create().
 	//
 	// The function returns the following values:
 	//
-	//    - major: return for the major version.
-	//    - minor: return for the minor version.
+	//   - major: return for the major version.
+	//   - minor: return for the minor version.
 	//
 	GLPlatformVersion func() (major, minor int)
 	// RequestConfig: set the OpenGL configuration for this context. The context
@@ -226,12 +226,12 @@ type GLContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - glConfig (optional): configuration structure for configuring the
-	//      OpenGL context.
+	//   - glConfig (optional): configuration structure for configuring the
+	//     OpenGL context.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether gl_config could be successfully set on context.
+	//   - ok: whether gl_config could be successfully set on context.
 	//
 	RequestConfig func(glConfig *gst.Structure) bool
 	// SwapBuffers: swap the front and back buffers on the window attached to
@@ -270,9 +270,9 @@ func defaultGLContextOverrides(v *GLContext) GLContextOverrides {
 // with. Depending on the platform and the dependencies available build-time,
 // the available values are, 'glx', 'egl', 'cgl', 'wgl', and 'eagl'
 //
-// - GST_GL_CONFIG: select the configuration used for creating the OpenGL
-// context and OpenGL surface. Written out as a GstStructure that has been
-// serialized to string. e.g.
+// - GST_GL_CONFIG: select the configuration used for creating
+// the OpenGL context and OpenGL surface. Written out as a
+// GstStructure that has been serialized to string. e.g.
 // GST_GL_CONFIG="gst-gl-context-config,red-size=8,green-size=8,blue-size=8,alpha-size=8,depth-size=16".
 // Not all platforms will support the same level of functionality.
 type GLContext struct {
@@ -388,11 +388,11 @@ func BaseGLContext(obj GLContexter) *GLContext {
 //
 // The function takes the following parameters:
 //
-//    - display: GLDisplay.
+//   - display: GLDisplay.
 //
 // The function returns the following values:
 //
-//    - glContext: new GLContext.
+//   - glContext: new GLContext.
 //
 func NewGLContext(display *GLDisplay) *GLContext {
 	var _arg1 *C.GstGLDisplay // out
@@ -421,14 +421,14 @@ func NewGLContext(display *GLDisplay) *GLContext {
 //
 // The function takes the following parameters:
 //
-//    - display: GLDisplay.
-//    - handle: openGL context to wrap.
-//    - contextType specifying the type of context in handle.
-//    - availableApis containing the available OpenGL apis in handle.
+//   - display: GLDisplay.
+//   - handle: openGL context to wrap.
+//   - contextType specifying the type of context in handle.
+//   - availableApis containing the available OpenGL apis in handle.
 //
 // The function returns the following values:
 //
-//    - glContext wrapping handle.
+//   - glContext (optional) wrapping handle.
 //
 func NewGLContextWrapped(display *GLDisplay, handle uintptr, contextType GLPlatform, availableApis GLAPI) *GLContext {
 	var _arg1 *C.GstGLDisplay // out
@@ -438,7 +438,7 @@ func NewGLContextWrapped(display *GLDisplay, handle uintptr, contextType GLPlatf
 	var _cret *C.GstGLContext // in
 
 	_arg1 = (*C.GstGLDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg2 = (C.guintptr)(unsafe.Pointer(handle))
+	_arg2 = C.guintptr(handle)
 	_arg3 = C.GstGLPlatform(contextType)
 	_arg4 = C.GstGLAPI(availableApis)
 
@@ -450,7 +450,9 @@ func NewGLContextWrapped(display *GLDisplay, handle uintptr, contextType GLPlatf
 
 	var _glContext *GLContext // out
 
-	_glContext = wrapGLContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_glContext = wrapGLContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _glContext
 }
@@ -462,11 +464,11 @@ func NewGLContextWrapped(display *GLDisplay, handle uintptr, contextType GLPlatf
 //
 // The function takes the following parameters:
 //
-//    - activate: TRUE to activate, FALSE to deactivate.
+//   - activate: TRUE to activate, FALSE to deactivate.
 //
 // The function returns the following values:
 //
-//    - ok: whether the activation succeeded.
+//   - ok: whether the activation succeeded.
 //
 func (context *GLContext) Activate(activate bool) bool {
 	var _arg0 *C.GstGLContext // out
@@ -495,11 +497,11 @@ func (context *GLContext) Activate(activate bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - otherContext: another GLContext.
+//   - otherContext: another GLContext.
 //
 // The function returns the following values:
 //
-//    - ok: whether context and other_context are able to share OpenGL resources.
+//   - ok: whether context and other_context are able to share OpenGL resources.
 //
 func (context *GLContext) CanShare(otherContext GLContexter) bool {
 	var _arg0 *C.GstGLContext // out
@@ -529,11 +531,11 @@ func (context *GLContext) CanShare(otherContext GLContexter) bool {
 //
 // The function takes the following parameters:
 //
-//    - feature: platform specific feature.
+//   - feature: platform specific feature.
 //
 // The function returns the following values:
 //
-//    - ok: whether feature is supported by context.
+//   - ok: whether feature is supported by context.
 //
 func (context *GLContext) CheckFeature(feature string) bool {
 	var _arg0 *C.GstGLContext // out
@@ -561,12 +563,12 @@ func (context *GLContext) CheckFeature(feature string) bool {
 //
 // The function takes the following parameters:
 //
-//    - fboTarget: GL value of the framebuffer target, GL_FRAMEBUFFER,
-//      GL_READ_FRAMEBUFFER, GL_DRAW_FRAMEBUFFER.
+//   - fboTarget: GL value of the framebuffer target, GL_FRAMEBUFFER,
+//     GL_READ_FRAMEBUFFER, GL_DRAW_FRAMEBUFFER.
 //
 // The function returns the following values:
 //
-//    - ok: whether whether the current framebuffer is complete.
+//   - ok: whether whether the current framebuffer is complete.
 //
 func (context *GLContext) CheckFramebufferStatus(fboTarget uint) bool {
 	var _arg0 *C.GstGLContext // out
@@ -591,14 +593,14 @@ func (context *GLContext) CheckFramebufferStatus(fboTarget uint) bool {
 
 // The function takes the following parameters:
 //
-//    - api type required.
-//    - maj: major version required.
-//    - min: minor version required.
+//   - api type required.
+//   - maj: major version required.
+//   - min: minor version required.
 //
 // The function returns the following values:
 //
-//    - ok: whether OpenGL context implements the required api and specified
-//      version.
+//   - ok: whether OpenGL context implements the required api and specified
+//     version.
 //
 func (context *GLContext) CheckGLVersion(api GLAPI, maj, min int) bool {
 	var _arg0 *C.GstGLContext // out
@@ -670,7 +672,7 @@ func (context *GLContext) ClearShader() {
 //
 // The function takes the following parameters:
 //
-//    - otherContext (optional) to share OpenGL objects with.
+//   - otherContext (optional) to share OpenGL objects with.
 //
 func (context *GLContext) Create(otherContext GLContexter) error {
 	var _arg0 *C.GstGLContext // out
@@ -737,7 +739,7 @@ func (context *GLContext) FillInfo() error {
 //
 // The function returns the following values:
 //
-//    - structure (optional): configuration chosen for this OpenGL context.
+//   - structure (optional): configuration chosen for this OpenGL context.
 //
 func (context *GLContext) Config() *gst.Structure {
 	var _arg0 *C.GstGLContext // out
@@ -765,7 +767,7 @@ func (context *GLContext) Config() *gst.Structure {
 
 // The function returns the following values:
 //
-//    - glDisplay associated with this context.
+//   - glDisplay associated with this context.
 //
 func (context *GLContext) Display() *GLDisplay {
 	var _arg0 *C.GstGLContext // out
@@ -790,7 +792,7 @@ func (context *GLContext) Display() *GLDisplay {
 //
 // The function returns the following values:
 //
-//    - glapI: available OpenGL api.
+//   - glapI: available OpenGL api.
 //
 func (context *GLContext) GLApi() GLAPI {
 	var _arg0 *C.GstGLContext // out
@@ -812,7 +814,7 @@ func (context *GLContext) GLApi() GLAPI {
 //
 // The function returns the following values:
 //
-//    - guintptr: platform specific backing OpenGL context.
+//   - guintptr: platform specific backing OpenGL context.
 //
 func (context *GLContext) GLContext() uintptr {
 	var _arg0 *C.GstGLContext // out
@@ -825,7 +827,7 @@ func (context *GLContext) GLContext() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
@@ -834,7 +836,7 @@ func (context *GLContext) GLContext() uintptr {
 //
 // The function returns the following values:
 //
-//    - glPlatform: platform specific backing OpenGL context.
+//   - glPlatform: platform specific backing OpenGL context.
 //
 func (context *GLContext) GLPlatform() GLPlatform {
 	var _arg0 *C.GstGLContext // out
@@ -857,8 +859,8 @@ func (context *GLContext) GLPlatform() GLPlatform {
 //
 // The function returns the following values:
 //
-//    - major: return for the major version.
-//    - minor: return for the minor version.
+//   - major: return for the major version.
+//   - minor: return for the minor version.
 //
 func (context *GLContext) GLPlatformVersion() (major, minor int) {
 	var _arg0 *C.GstGLContext // out
@@ -885,8 +887,8 @@ func (context *GLContext) GLPlatformVersion() (major, minor int) {
 //
 // The function returns the following values:
 //
-//    - maj: resulting major version.
-//    - min: resulting minor version.
+//   - maj: resulting major version.
+//   - min: resulting minor version.
 //
 func (context *GLContext) GLVersion() (maj, min int) {
 	var _arg0 *C.GstGLContext // out
@@ -907,8 +909,8 @@ func (context *GLContext) GLVersion() (maj, min int) {
 	return _maj, _min
 }
 
-// ProcAddress: get a function pointer to a specified opengl function, name. If
-// the the specific function does not exist, NULL is returned instead.
+// ProcAddress: get a function pointer to a specified opengl function, name.
+// If the the specific function does not exist, NULL is returned instead.
 //
 // Platform specific functions (names starting 'egl', 'glX', 'wgl', etc) can
 // also be retrieved using this method.
@@ -926,11 +928,11 @@ func (context *GLContext) GLVersion() (maj, min int) {
 //
 // The function takes the following parameters:
 //
-//    - name: opengl function name.
+//   - name: opengl function name.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): function pointer or NULL.
+//   - gpointer (optional): function pointer or NULL.
 //
 func (context *GLContext) ProcAddress(name string) unsafe.Pointer {
 	var _arg0 *C.GstGLContext // out
@@ -954,7 +956,7 @@ func (context *GLContext) ProcAddress(name string) unsafe.Pointer {
 
 // The function returns the following values:
 //
-//    - glWindow (optional): currently set window.
+//   - glWindow (optional): currently set window.
 //
 func (context *GLContext) Window() GLWindower {
 	var _arg0 *C.GstGLContext // out
@@ -989,7 +991,7 @@ func (context *GLContext) Window() GLWindower {
 
 // The function returns the following values:
 //
-//    - ok: whether the GLContext has been shared with another GLContext.
+//   - ok: whether the GLContext has been shared with another GLContext.
 //
 func (context *GLContext) IsShared() bool {
 	var _arg0 *C.GstGLContext // out
@@ -1024,12 +1026,12 @@ func (context *GLContext) IsShared() bool {
 //
 // The function takes the following parameters:
 //
-//    - glConfig (optional): configuration structure for configuring the OpenGL
-//      context.
+//   - glConfig (optional): configuration structure for configuring the OpenGL
+//     context.
 //
 // The function returns the following values:
 //
-//    - ok: whether gl_config could be successfully set on context.
+//   - ok: whether gl_config could be successfully set on context.
 //
 func (context *GLContext) RequestConfig(glConfig *gst.Structure) bool {
 	var _arg0 *C.GstGLContext // out
@@ -1059,7 +1061,7 @@ func (context *GLContext) RequestConfig(glConfig *gst.Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - share: another GLContext.
+//   - share: another GLContext.
 //
 func (context *GLContext) SetSharedWith(share GLContexter) {
 	var _arg0 *C.GstGLContext // out
@@ -1079,11 +1081,11 @@ func (context *GLContext) SetSharedWith(share GLContexter) {
 //
 // The function takes the following parameters:
 //
-//    - window: GLWindow.
+//   - window: GLWindow.
 //
 // The function returns the following values:
 //
-//    - ok: whether the window was successfully updated.
+//   - ok: whether the window was successfully updated.
 //
 func (context *GLContext) SetWindow(window GLWindower) bool {
 	var _arg0 *C.GstGLContext // out
@@ -1109,12 +1111,12 @@ func (context *GLContext) SetWindow(window GLWindower) bool {
 
 // The function takes the following parameters:
 //
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - ok: whether context supports the combination of version with profile.
+//   - ok: whether context supports the combination of version with profile.
 //
 func (context *GLContext) SupportsGlslProfileVersion(version GLSLVersion, profile GLSLProfile) bool {
 	var _arg0 *C.GstGLContext  // out
@@ -1142,12 +1144,12 @@ func (context *GLContext) SupportsGlslProfileVersion(version GLSLVersion, profil
 
 // The function takes the following parameters:
 //
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - ok: whether context supports the 'precision' specifier in GLSL shaders.
+//   - ok: whether context supports the 'precision' specifier in GLSL shaders.
 //
 func (context *GLContext) SupportsPrecision(version GLSLVersion, profile GLSLProfile) bool {
 	var _arg0 *C.GstGLContext  // out
@@ -1175,13 +1177,13 @@ func (context *GLContext) SupportsPrecision(version GLSLVersion, profile GLSLPro
 
 // The function takes the following parameters:
 //
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
 //
 // The function returns the following values:
 //
-//    - ok: whether context supports the 'precision highp' specifier in GLSL
-//      shaders.
+//   - ok: whether context supports the 'precision highp' specifier in GLSL
+//     shaders.
 //
 func (context *GLContext) SupportsPrecisionHighp(version GLSLVersion, profile GLSLProfile) bool {
 	var _arg0 *C.GstGLContext  // out
@@ -1225,11 +1227,11 @@ func (context *GLContext) SwapBuffers() {
 //
 // The function takes the following parameters:
 //
-//    - activate: TRUE to activate, FALSE to deactivate.
+//   - activate: TRUE to activate, FALSE to deactivate.
 //
 // The function returns the following values:
 //
-//    - ok: whether the activation succeeded.
+//   - ok: whether the activation succeeded.
 //
 func (context *GLContext) activate(activate bool) bool {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1264,11 +1266,11 @@ func (context *GLContext) activate(activate bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - feature: platform specific feature.
+//   - feature: platform specific feature.
 //
 // The function returns the following values:
 //
-//    - ok: whether feature is supported by context.
+//   - ok: whether feature is supported by context.
 //
 func (context *GLContext) checkFeature(feature string) bool {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1318,8 +1320,8 @@ func (context *GLContext) chooseFormat() error {
 
 // The function takes the following parameters:
 //
-//    - glApi
-//    - otherContext
+//   - glApi
+//   - otherContext
 //
 func (context *GLContext) createContext(glApi GLAPI, otherContext GLContexter) error {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1368,7 +1370,7 @@ func (context *GLContext) destroyContext() {
 //
 // The function returns the following values:
 //
-//    - structure (optional): configuration chosen for this OpenGL context.
+//   - structure (optional): configuration chosen for this OpenGL context.
 //
 func (context *GLContext) config() *gst.Structure {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1404,7 +1406,7 @@ func (context *GLContext) config() *gst.Structure {
 //
 // The function returns the following values:
 //
-//    - glapI: available OpenGL api.
+//   - glapI: available OpenGL api.
 //
 func (context *GLContext) glApi() GLAPI {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1429,7 +1431,7 @@ func (context *GLContext) glApi() GLAPI {
 //
 // The function returns the following values:
 //
-//    - guintptr: platform specific backing OpenGL context.
+//   - guintptr: platform specific backing OpenGL context.
 //
 func (context *GLContext) glContext() uintptr {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1445,7 +1447,7 @@ func (context *GLContext) glContext() uintptr {
 
 	var _guintptr uintptr // out
 
-	_guintptr = (uintptr)(unsafe.Pointer(_cret))
+	_guintptr = uintptr(_cret)
 
 	return _guintptr
 }
@@ -1454,7 +1456,7 @@ func (context *GLContext) glContext() uintptr {
 //
 // The function returns the following values:
 //
-//    - glPlatform: platform specific backing OpenGL context.
+//   - glPlatform: platform specific backing OpenGL context.
 //
 func (context *GLContext) glPlatform() GLPlatform {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1480,8 +1482,8 @@ func (context *GLContext) glPlatform() GLPlatform {
 //
 // The function returns the following values:
 //
-//    - major: return for the major version.
-//    - minor: return for the minor version.
+//   - major: return for the major version.
+//   - minor: return for the minor version.
 //
 func (context *GLContext) glPlatformVersion() (major, minor int) {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))
@@ -1520,12 +1522,12 @@ func (context *GLContext) glPlatformVersion() (major, minor int) {
 //
 // The function takes the following parameters:
 //
-//    - glConfig (optional): configuration structure for configuring the OpenGL
-//      context.
+//   - glConfig (optional): configuration structure for configuring the OpenGL
+//     context.
 //
 // The function returns the following values:
 //
-//    - ok: whether gl_config could be successfully set on context.
+//   - ok: whether gl_config could be successfully set on context.
 //
 func (context *GLContext) requestConfig(glConfig *gst.Structure) bool {
 	gclass := (*C.GstGLContextClass)(coreglib.PeekParentClass(context))

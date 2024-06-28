@@ -35,12 +35,12 @@ func defaultDirectControlBindingOverrides(v *DirectControlBinding) DirectControl
 	return DirectControlBindingOverrides{}
 }
 
-// DirectControlBinding: value mapping object that attaches control sources to
-// gobject properties. It will map the control values directly to the target
-// property range. If a non-absolute direct control binding is used, the value
-// range [0.0 ... 1.0] is mapped to full target property range, and all values
-// outside the range will be clipped. An absolute control binding will not do
-// any value transformations.
+// DirectControlBinding: value mapping object that attaches control sources
+// to gobject properties. It will map the control values directly to the
+// target property range. If a non-absolute direct control binding is used,
+// the value range [0.0 ... 1.0] is mapped to full target property range,
+// and all values outside the range will be clipped. An absolute control binding
+// will not do any value transformations.
 type DirectControlBinding struct {
 	_ [0]func() // equal guard
 	gst.ControlBinding
@@ -89,13 +89,13 @@ func marshalDirectControlBinding(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - object of the property.
-//    - propertyName: property-name to attach the control source.
-//    - cs: control source.
+//   - object of the property.
+//   - propertyName: property-name to attach the control source.
+//   - cs: control source.
 //
 // The function returns the following values:
 //
-//    - directControlBinding: new DirectControlBinding.
+//   - directControlBinding: new DirectControlBinding.
 //
 func NewDirectControlBinding(object gst.GstObjector, propertyName string, cs gst.ControlSourcer) *DirectControlBinding {
 	var _arg1 *C.GstObject         // out
@@ -126,13 +126,13 @@ func NewDirectControlBinding(object gst.GstObjector, propertyName string, cs gst
 //
 // The function takes the following parameters:
 //
-//    - object of the property.
-//    - propertyName: property-name to attach the control source.
-//    - cs: control source.
+//   - object of the property.
+//   - propertyName: property-name to attach the control source.
+//   - cs: control source.
 //
 // The function returns the following values:
 //
-//    - directControlBinding: new DirectControlBinding.
+//   - directControlBinding: new DirectControlBinding.
 //
 func NewDirectControlBindingAbsolute(object gst.GstObjector, propertyName string, cs gst.ControlSourcer) *DirectControlBinding {
 	var _arg1 *C.GstObject         // out

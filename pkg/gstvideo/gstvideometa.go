@@ -38,17 +38,17 @@ const CAPS_FEATURE_META_GST_VIDEO_META = "meta:GstVideoMeta"
 type VideoGLTextureOrientation C.gint
 
 const (
-	// VideoGLTextureOrientationXNormalYNormal: top line first in memory, left
-	// row first.
+	// VideoGLTextureOrientationXNormalYNormal: top line first in memory,
+	// left row first.
 	VideoGLTextureOrientationXNormalYNormal VideoGLTextureOrientation = iota
-	// VideoGLTextureOrientationXNormalYFlip: bottom line first in memory, left
-	// row first.
+	// VideoGLTextureOrientationXNormalYFlip: bottom line first in memory,
+	// left row first.
 	VideoGLTextureOrientationXNormalYFlip
 	// VideoGLTextureOrientationXFlipYNormal: top line first in memory, right
 	// row first.
 	VideoGLTextureOrientationXFlipYNormal
-	// VideoGLTextureOrientationXFlipYFlip: bottom line first in memory, right
-	// row first.
+	// VideoGLTextureOrientationXFlipYFlip: bottom line first in memory,
+	// right row first.
 	VideoGLTextureOrientationXFlipYFlip
 )
 
@@ -127,15 +127,15 @@ func (v VideoGLTextureType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - flags: VideoFrameFlags.
-//    - format: VideoFormat.
-//    - width: width.
-//    - height: height.
+//   - buffer: Buffer.
+//   - flags: VideoFrameFlags.
+//   - format: VideoFormat.
+//   - width: width.
+//   - height: height.
 //
 // The function returns the following values:
 //
-//    - videoMeta on buffer.
+//   - videoMeta on buffer.
 //
 func BufferAddVideoMeta(buffer *gst.Buffer, flags VideoFrameFlags, format VideoFormat, width, height uint) *VideoMeta {
 	var _arg1 *C.GstBuffer         // out
@@ -170,18 +170,18 @@ func BufferAddVideoMeta(buffer *gst.Buffer, flags VideoFrameFlags, format VideoF
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - flags: VideoFrameFlags.
-//    - format: VideoFormat.
-//    - width: width.
-//    - height: height.
-//    - nPlanes: number of planes.
-//    - offset of each plane.
-//    - stride of each plane.
+//   - buffer: Buffer.
+//   - flags: VideoFrameFlags.
+//   - format: VideoFormat.
+//   - width: width.
+//   - height: height.
+//   - nPlanes: number of planes.
+//   - offset of each plane.
+//   - stride of each plane.
 //
 // The function returns the following values:
 //
-//    - videoMeta on buffer.
+//   - videoMeta on buffer.
 //
 func BufferAddVideoMetaFull(buffer *gst.Buffer, flags VideoFrameFlags, format VideoFormat, width, height, nPlanes uint, offset [4]uint, stride [4]int) *VideoMeta {
 	var _arg1 *C.GstBuffer         // out
@@ -231,16 +231,16 @@ func BufferAddVideoMetaFull(buffer *gst.Buffer, flags VideoFrameFlags, format Vi
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - roiType: type of the region of interest (e.g. "face").
-//    - x: x position.
-//    - y: y position.
-//    - w: width.
-//    - h: height.
+//   - buffer: Buffer.
+//   - roiType: type of the region of interest (e.g. "face").
+//   - x: x position.
+//   - y: y position.
+//   - w: width.
+//   - h: height.
 //
 // The function returns the following values:
 //
-//    - videoRegionOfInterestMeta on buffer.
+//   - videoRegionOfInterestMeta on buffer.
 //
 func BufferAddVideoRegionOfInterestMeta(buffer *gst.Buffer, roiType string, x, y, w, h uint) *VideoRegionOfInterestMeta {
 	var _arg1 *C.GstBuffer                    // out
@@ -279,16 +279,16 @@ func BufferAddVideoRegionOfInterestMeta(buffer *gst.Buffer, roiType string, x, y
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - roiType: type of the region of interest (e.g. "face").
-//    - x: x position.
-//    - y: y position.
-//    - w: width.
-//    - h: height.
+//   - buffer: Buffer.
+//   - roiType: type of the region of interest (e.g. "face").
+//   - x: x position.
+//   - y: y position.
+//   - w: width.
+//   - h: height.
 //
 // The function returns the following values:
 //
-//    - videoRegionOfInterestMeta on buffer.
+//   - videoRegionOfInterestMeta on buffer.
 //
 func BufferAddVideoRegionOfInterestMetaID(buffer *gst.Buffer, roiType glib.Quark, x, y, w, h uint) *VideoRegionOfInterestMeta {
 	var _arg1 *C.GstBuffer                    // out
@@ -300,9 +300,7 @@ func BufferAddVideoRegionOfInterestMetaID(buffer *gst.Buffer, roiType glib.Quark
 	var _cret *C.GstVideoRegionOfInterestMeta // in
 
 	_arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
-	_arg2 = C.guint32(roiType)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg2 = C.GQuark(roiType)
 	_arg3 = C.guint(x)
 	_arg4 = C.guint(y)
 	_arg5 = C.guint(w)
@@ -330,12 +328,12 @@ func BufferAddVideoRegionOfInterestMetaID(buffer *gst.Buffer, roiType glib.Quark
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 // The function returns the following values:
 //
-//    - videoMeta with lowest id (usually 0) or NULL when there is no such
-//      metadata on buffer.
+//   - videoMeta (optional) with lowest id (usually 0) or NULL when there is no
+//     such metadata on buffer.
 //
 func BufferGetVideoMeta(buffer *gst.Buffer) *VideoMeta {
 	var _arg1 *C.GstBuffer    // out
@@ -348,7 +346,9 @@ func BufferGetVideoMeta(buffer *gst.Buffer) *VideoMeta {
 
 	var _videoMeta *VideoMeta // out
 
-	_videoMeta = (*VideoMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_videoMeta = (*VideoMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _videoMeta
 }
@@ -360,12 +360,13 @@ func BufferGetVideoMeta(buffer *gst.Buffer) *VideoMeta {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - id: metadata id.
+//   - buffer: Buffer.
+//   - id: metadata id.
 //
 // The function returns the following values:
 //
-//    - videoMeta with id or NULL when there is no such metadata on buffer.
+//   - videoMeta (optional) with id or NULL when there is no such metadata on
+//     buffer.
 //
 func BufferGetVideoMetaID(buffer *gst.Buffer, id int) *VideoMeta {
 	var _arg1 *C.GstBuffer    // out
@@ -381,7 +382,9 @@ func BufferGetVideoMetaID(buffer *gst.Buffer, id int) *VideoMeta {
 
 	var _videoMeta *VideoMeta // out
 
-	_videoMeta = (*VideoMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_videoMeta = (*VideoMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _videoMeta
 }
@@ -394,13 +397,13 @@ func BufferGetVideoMetaID(buffer *gst.Buffer, id int) *VideoMeta {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - id: metadata id.
+//   - buffer: Buffer.
+//   - id: metadata id.
 //
 // The function returns the following values:
 //
-//    - videoRegionOfInterestMeta with id or NULL when there is no such metadata
-//      on buffer.
+//   - videoRegionOfInterestMeta (optional) with id or NULL when there is no
+//     such metadata on buffer.
 //
 func BufferGetVideoRegionOfInterestMetaID(buffer *gst.Buffer, id int) *VideoRegionOfInterestMeta {
 	var _arg1 *C.GstBuffer                    // out
@@ -416,7 +419,9 @@ func BufferGetVideoRegionOfInterestMetaID(buffer *gst.Buffer, id int) *VideoRegi
 
 	var _videoRegionOfInterestMeta *VideoRegionOfInterestMeta // out
 
-	_videoRegionOfInterestMeta = (*VideoRegionOfInterestMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_videoRegionOfInterestMeta = (*VideoRegionOfInterestMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _videoRegionOfInterestMeta
 }
@@ -638,11 +643,11 @@ func (v *VideoGLTextureUploadMeta) SetNTextures(nTextures uint) {
 //
 // The function takes the following parameters:
 //
-//    - textureId: texture IDs to upload to.
+//   - textureId: texture IDs to upload to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if uploading succeeded, FALSE otherwise.
+//   - ok: TRUE if uploading succeeded, FALSE otherwise.
 //
 func (meta *VideoGLTextureUploadMeta) Upload(textureId *uint) bool {
 	var _arg0 *C.GstVideoGLTextureUploadMeta // out
@@ -681,8 +686,8 @@ func VideoGLTextureUploadMetaGetInfo() *gst.MetaInfo {
 
 // VideoMeta: extra buffer metadata describing image properties
 //
-// This meta can also be used by downstream elements to specifiy their buffer
-// layout requirements for upstream. Upstream should try to fit those
+// This meta can also be used by downstream elements to specifiy their
+// buffer layout requirements for upstream. Upstream should try to fit those
 // requirements, if possible, in order to prevent buffer copies.
 //
 // This is done by passing a custom Structure to gst_query_add_allocation_meta()
@@ -796,8 +801,8 @@ func (v *VideoMeta) Stride() [4]int {
 	return _v
 }
 
-// Alignment paddings and alignment constraints of the video buffer. It is up to
-// the caller of gst_buffer_add_video_meta_full() to set it using
+// Alignment paddings and alignment constraints of the video buffer.
+// It is up to the caller of gst_buffer_add_video_meta_full() to set it using
 // gst_video_meta_set_alignment(), if they did not it defaults to no padding and
 // no alignment. Since: 1.18.
 func (v *VideoMeta) Alignment() *VideoAlignment {
@@ -839,9 +844,9 @@ func (v *VideoMeta) SetNPlanes(nPlanes uint) {
 //
 // The function returns the following values:
 //
-//    - planeHeight: array used to store the plane height.
-//    - ok: TRUE if meta's alignment is valid and plane_height has been updated,
-//      FALSE otherwise.
+//   - planeHeight: array used to store the plane height.
+//   - ok: TRUE if meta's alignment is valid and plane_height has been updated,
+//     FALSE otherwise.
 //
 func (meta *VideoMeta) PlaneHeight() ([4]uint, bool) {
 	var _arg0 *C.GstVideoMeta // out
@@ -874,9 +879,9 @@ func (meta *VideoMeta) PlaneHeight() ([4]uint, bool) {
 //
 // The function returns the following values:
 //
-//    - planeSize: array used to store the plane sizes.
-//    - ok: TRUE if meta's alignment is valid and plane_size has been updated,
-//      FALSE otherwise.
+//   - planeSize: array used to store the plane sizes.
+//   - ok: TRUE if meta's alignment is valid and plane_size has been updated,
+//     FALSE otherwise.
 //
 func (meta *VideoMeta) PlaneSize() ([4]uint, bool) {
 	var _arg0 *C.GstVideoMeta // out
@@ -904,15 +909,15 @@ func (meta *VideoMeta) PlaneSize() ([4]uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - plane: plane.
-//    - info: MapInfo.
-//    - flags: GstMapFlags.
+//   - plane: plane.
+//   - info: MapInfo.
+//   - flags: GstMapFlags.
 //
 // The function returns the following values:
 //
-//    - data (optional) of plane.
-//    - stride of plane.
-//    - ok: TRUE if the map operation was successful.
+//   - data (optional) of plane.
+//   - stride of plane.
+//   - ok: TRUE if the map operation was successful.
 //
 func (meta *VideoMeta) Map(plane uint, info *gst.MapInfo, flags gst.MapFlags) (unsafe.Pointer, int, bool) {
 	var _arg0 *C.GstVideoMeta // out
@@ -953,11 +958,11 @@ func (meta *VideoMeta) Map(plane uint, info *gst.MapInfo, flags gst.MapFlags) (u
 //
 // The function takes the following parameters:
 //
-//    - alignment: VideoAlignment.
+//   - alignment: VideoAlignment.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if alignment's meta has been updated, FALSE if not.
+//   - ok: TRUE if alignment's meta has been updated, FALSE if not.
 //
 func (meta *VideoMeta) SetAlignment(alignment *VideoAlignment) bool {
 	var _arg0 *C.GstVideoMeta     // out
@@ -984,12 +989,12 @@ func (meta *VideoMeta) SetAlignment(alignment *VideoAlignment) bool {
 //
 // The function takes the following parameters:
 //
-//    - plane: plane.
-//    - info: MapInfo.
+//   - plane: plane.
+//   - info: MapInfo.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the memory was successfully unmapped.
+//   - ok: TRUE if the memory was successfully unmapped.
 //
 func (meta *VideoMeta) Unmap(plane uint, info *gst.MapInfo) bool {
 	var _arg0 *C.GstVideoMeta // out
@@ -1063,7 +1068,7 @@ func (v *VideoMetaTransform) OutInfo() *VideoInfo {
 //
 // The function returns the following values:
 //
-//    - quark: #GQuark.
+//   - quark: #GQuark.
 //
 func VideoMetaTransformScaleGetQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -1072,9 +1077,7 @@ func VideoMetaTransformScaleGetQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -1100,14 +1103,12 @@ func (v *VideoRegionOfInterestMeta) Meta() *gst.Meta {
 	return _v
 }
 
-// RoiType: GQuark describing the semantic of the Roi (f.i. a face, a
-// pedestrian).
+// RoiType: GQuark describing the semantic of the Roi (f.i. a face,
+// a pedestrian).
 func (v *VideoRegionOfInterestMeta) RoiType() glib.Quark {
 	valptr := &v.native.roi_type
 	var _v glib.Quark // out
-	_v = uint32(*valptr)
-	type _ = glib.Quark
-	type _ = uint32
+	_v = glib.Quark(*valptr)
 	return _v
 }
 
@@ -1201,13 +1202,13 @@ func (v *VideoRegionOfInterestMeta) SetH(h uint) {
 //
 // This is typically used to tell encoders how they should encode this specific
 // region. For example, a structure named "roi/x264enc" could be used to give
-// the QP offsets this encoder should use when encoding the region described in
-// meta. Multiple parameters can be defined for the same meta so different
+// the QP offsets this encoder should use when encoding the region described
+// in meta. Multiple parameters can be defined for the same meta so different
 // encoders can be supported by cross platform applications).
 //
 // The function takes the following parameters:
 //
-//    - s: Structure.
+//   - s: Structure.
 //
 func (meta *VideoRegionOfInterestMeta) AddParam(s *gst.Structure) {
 	var _arg0 *C.GstVideoRegionOfInterestMeta // out
@@ -1227,11 +1228,11 @@ func (meta *VideoRegionOfInterestMeta) AddParam(s *gst.Structure) {
 //
 // The function takes the following parameters:
 //
-//    - name: name.
+//   - name: name.
 //
 // The function returns the following values:
 //
-//    - structure (optional): Structure.
+//   - structure (optional): Structure.
 //
 func (meta *VideoRegionOfInterestMeta) Param(name string) *gst.Structure {
 	var _arg0 *C.GstVideoRegionOfInterestMeta // out

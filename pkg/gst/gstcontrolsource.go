@@ -34,19 +34,19 @@ func defaultControlSourceOverrides(v *ControlSource) ControlSourceOverrides {
 	return ControlSourceOverrides{}
 }
 
-// ControlSource is a base class for control value sources that could be used to
-// get timestamp-value pairs. A control source essentially is a function over
+// ControlSource is a base class for control value sources that could be used
+// to get timestamp-value pairs. A control source essentially is a function over
 // time.
 //
 // A ControlSource is used by first getting an instance of a specific
 // control-source, creating a binding for the control-source to the target
-// property of the element and then adding the binding to the element. The
-// binding will convert the data types and value range to fit to the bound
+// property of the element and then adding the binding to the element.
+// The binding will convert the data types and value range to fit to the bound
 // property.
 //
 // For implementing a new ControlSource one has to implement
-// ControlSourceGetValue and ControlSourceGetValueArray functions. These are
-// then used by gst_control_source_get_value() and
+// ControlSourceGetValue and ControlSourceGetValueArray functions.
+// These are then used by gst_control_source_get_value() and
 // gst_control_source_get_value_array() to get values for specific timestamps.
 type ControlSource struct {
 	_ [0]func() // equal guard
@@ -112,12 +112,12 @@ func BaseControlSource(obj ControlSourcer) *ControlSource {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: time for which the value should be returned.
+//   - timestamp: time for which the value should be returned.
 //
 // The function returns the following values:
 //
-//    - value: value.
-//    - ok: FALSE if the value couldn't be returned, TRUE otherwise.
+//   - value: value.
+//   - ok: FALSE if the value couldn't be returned, TRUE otherwise.
 //
 func (self *ControlSource) ControlSourceGetValue(timestamp ClockTime) (float64, bool) {
 	var _arg0 *C.GstControlSource // out
@@ -126,9 +126,7 @@ func (self *ControlSource) ControlSourceGetValue(timestamp ClockTime) (float64, 
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GstControlSource)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_control_source_get_value(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(self)
@@ -150,13 +148,13 @@ func (self *ControlSource) ControlSourceGetValue(timestamp ClockTime) (float64, 
 //
 // The function takes the following parameters:
 //
-//    - timestamp: first timestamp.
-//    - interval: time steps.
-//    - values: array to put control-values in.
+//   - timestamp: first timestamp.
+//   - interval: time steps.
+//   - values: array to put control-values in.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the given array could be filled, FALSE otherwise.
+//   - ok: TRUE if the given array could be filled, FALSE otherwise.
 //
 func (self *ControlSource) ControlSourceGetValueArray(timestamp, interval ClockTime, values []float64) bool {
 	var _arg0 *C.GstControlSource // out
@@ -167,12 +165,8 @@ func (self *ControlSource) ControlSourceGetValueArray(timestamp, interval ClockT
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GstControlSource)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint64(timestamp)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timestamp)
+	_arg2 = C.GstClockTime(interval)
 	_arg3 = (C.guint)(len(values))
 	if len(values) > 0 {
 		_arg4 = (*C.gdouble)(unsafe.Pointer(&values[0]))
@@ -229,9 +223,7 @@ type timedValue struct {
 func (t *TimedValue) Timestamp() ClockTime {
 	valptr := &t.native.timestamp
 	var _v ClockTime // out
-	_v = uint64(*valptr)
-	type _ = ClockTime
-	type _ = uint64
+	_v = ClockTime(*valptr)
 	return _v
 }
 

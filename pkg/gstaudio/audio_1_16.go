@@ -14,8 +14,8 @@ import (
 // #include <gst/audio/audio.h>
 import "C"
 
-// AudioBufferTruncate: truncate the buffer to finally have samples number of
-// samples, removing the necessary amount of samples from the end and trim
+// AudioBufferTruncate: truncate the buffer to finally have samples number
+// of samples, removing the necessary amount of samples from the end and trim
 // number of samples from the beginning.
 //
 // This function does not know the audio rate, therefore the caller is
@@ -29,17 +29,17 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer to truncate.
-//    - bpf: size of one audio frame in bytes. This is the size of one sample *
-//      number of channels.
-//    - trim: number of samples to remove from the beginning of the buffer.
-//    - samples: final number of samples that should exist in this buffer or -1
-//      to use all the remaining samples if you are only removing samples from
-//      the beginning.
+//   - buffer to truncate.
+//   - bpf: size of one audio frame in bytes. This is the size of one sample *
+//     number of channels.
+//   - trim: number of samples to remove from the beginning of the buffer.
+//   - samples: final number of samples that should exist in this buffer or -1
+//     to use all the remaining samples if you are only removing samples from
+//     the beginning.
 //
 // The function returns the following values:
 //
-//    - ret: truncated buffer or NULL if the arguments were invalid.
+//   - ret: truncated buffer.
 //
 func AudioBufferTruncate(buffer *gst.Buffer, bpf int, trim, samples uint) *gst.Buffer {
 	var _arg1 *C.GstBuffer // out

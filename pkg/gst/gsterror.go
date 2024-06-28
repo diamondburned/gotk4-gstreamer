@@ -346,22 +346,20 @@ func (s StreamError) String() string {
 //
 // The function takes the following parameters:
 //
-//    - domain: GStreamer error domain this error belongs to.
-//    - code: error code belonging to the domain.
+//   - domain: GStreamer error domain this error belongs to.
+//   - code: error code belonging to the domain.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string describing the error message (in UTF-8
-//      encoding).
+//   - utf8: newly allocated string describing the error message (in UTF-8
+//     encoding).
 //
 func ErrorGetMessage(domain glib.Quark, code int) string {
 	var _arg1 C.GQuark // out
 	var _arg2 C.gint   // out
 	var _cret *C.gchar // in
 
-	_arg1 = C.guint32(domain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(domain)
 	_arg2 = C.gint(code)
 
 	_cret = C.gst_error_get_message(_arg1, _arg2)

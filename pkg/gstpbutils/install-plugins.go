@@ -42,8 +42,8 @@ type InstallPluginsReturn C.gint
 const (
 	// InstallPluginsSuccess: all of the requested plugins could be installed.
 	InstallPluginsSuccess InstallPluginsReturn = 0
-	// InstallPluginsNotFound: no appropriate installation candidate for any of
-	// the requested plugins could be found. Only return this if nothing has
+	// InstallPluginsNotFound: no appropriate installation candidate for any
+	// of the requested plugins could be found. Only return this if nothing has
 	// been installed. Return T_INSTALL_PLUGINS_PARTIAL_SUCCESS if some (but not
 	// all) of the requested plugins could be installed.
 	InstallPluginsNotFound InstallPluginsReturn = 1
@@ -117,11 +117,11 @@ func (i InstallPluginsReturn) String() string {
 //
 // The function takes the following parameters:
 //
-//    - ret: return status code.
+//   - ret: return status code.
 //
 // The function returns the following values:
 //
-//    - utf8: descriptive string for the status code in ret.
+//   - utf8: descriptive string for the status code in ret.
 //
 func InstallPluginsReturnGetName(ret InstallPluginsReturn) string {
 	var _arg1 C.GstInstallPluginsReturn // out
@@ -148,8 +148,8 @@ type InstallPluginsResultFunc func(result InstallPluginsReturn)
 // plugins have been installed or installation has failed, func will be called
 // with the result of the installation and your provided user_data pointer.
 //
-// This function requires a running GLib/Gtk main loop. If you are not running a
-// GLib/Gtk main loop, make sure to regularly call
+// This function requires a running GLib/Gtk main loop. If you are
+// not running a GLib/Gtk main loop, make sure to regularly call
 // g_main_context_iteration(NULL,FALSE).
 //
 // The installer strings that make up detail are typically obtained by calling
@@ -163,14 +163,14 @@ type InstallPluginsResultFunc func(result InstallPluginsReturn)
 //
 // The function takes the following parameters:
 //
-//    - details: NULL-terminated array of installer string details (see below).
-//    - ctx (optional) or NULL.
-//    - fn: function to call when the installer program returns.
+//   - details: NULL-terminated array of installer string details (see below).
+//   - ctx (optional) or NULL.
+//   - fn: function to call when the installer program returns.
 //
 // The function returns the following values:
 //
-//    - installPluginsReturn: result code whether an external installer could be
-//      started.
+//   - installPluginsReturn: result code whether an external installer could be
+//     started.
 //
 func InstallPluginsAsync(details []string, ctx *InstallPluginsContext, fn InstallPluginsResultFunc) InstallPluginsReturn {
 	var _arg1 **C.gchar                     // out
@@ -215,7 +215,7 @@ func InstallPluginsAsync(details []string, ctx *InstallPluginsContext, fn Instal
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if plugin installation is in progress, otherwise FALSE.
+//   - ok: TRUE if plugin installation is in progress, otherwise FALSE.
 //
 func InstallPluginsInstallationInProgress() bool {
 	var _cret C.gboolean // in
@@ -238,7 +238,7 @@ func InstallPluginsInstallationInProgress() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if plugin installation is likely to be supported.
+//   - ok: TRUE if plugin installation is likely to be supported.
 //
 func InstallPluginsSupported() bool {
 	var _cret C.gboolean // in
@@ -257,20 +257,20 @@ func InstallPluginsSupported() bool {
 // InstallPluginsSync requests plugin installation and block until the plugins
 // have been installed or installation has failed.
 //
-// This function should almost never be used, it only exists for cases where a
-// non-GLib main loop is running and the user wants to run it in a separate
-// thread and marshal the result back asynchronously into the main thread using
-// the other non-GLib main loop. You should almost always use
+// This function should almost never be used, it only exists for cases
+// where a non-GLib main loop is running and the user wants to run it in a
+// separate thread and marshal the result back asynchronously into the main
+// thread using the other non-GLib main loop. You should almost always use
 // gst_install_plugins_async() instead of this function.
 //
 // The function takes the following parameters:
 //
-//    - details: NULL-terminated array of installer string details.
-//    - ctx (optional) or NULL.
+//   - details: NULL-terminated array of installer string details.
+//   - ctx (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - installPluginsReturn: result of the installation.
+//   - installPluginsReturn: result of the installation.
 //
 func InstallPluginsSync(details []string, ctx *InstallPluginsContext) InstallPluginsReturn {
 	var _arg1 **C.gchar                   // out
@@ -346,7 +346,7 @@ func NewInstallPluginsContext() *InstallPluginsContext {
 //
 // The function returns the following values:
 //
-//    - installPluginsContext: copy of ctx.
+//   - installPluginsContext: copy of ctx.
 //
 func (ctx *InstallPluginsContext) Copy() *InstallPluginsContext {
 	var _arg0 *C.GstInstallPluginsContext // out
@@ -379,8 +379,8 @@ func (ctx *InstallPluginsContext) Copy() *InstallPluginsContext {
 //
 // The function takes the following parameters:
 //
-//    - confirmSearch: whether to ask for confirmation before searching for
-//      plugins.
+//   - confirmSearch: whether to ask for confirmation before searching for
+//     plugins.
 //
 func (ctx *InstallPluginsContext) SetConfirmSearch(confirmSearch bool) {
 	var _arg0 *C.GstInstallPluginsContext // out
@@ -407,7 +407,7 @@ func (ctx *InstallPluginsContext) SetConfirmSearch(confirmSearch bool) {
 //
 // The function takes the following parameters:
 //
-//    - desktopId: desktop file ID of the calling application.
+//   - desktopId: desktop file ID of the calling application.
 //
 func (ctx *InstallPluginsContext) SetDesktopID(desktopId string) {
 	var _arg0 *C.GstInstallPluginsContext // out
@@ -428,8 +428,8 @@ func (ctx *InstallPluginsContext) SetDesktopID(desktopId string) {
 // This is typically used to to pass the current X11 event timestamp to the
 // external installer process.
 //
-// Startup notification IDs are defined in the FreeDesktop.Org Startup
-// Notifications standard
+// Startup notification IDs are defined in the
+// FreeDesktop.Org Startup Notifications standard
 // (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 //
 // If set, the ID will be passed to the installer via a
@@ -444,7 +444,7 @@ func (ctx *InstallPluginsContext) SetDesktopID(desktopId string) {
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup notification ID.
+//   - startupId: startup notification ID.
 //
 func (ctx *InstallPluginsContext) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GstInstallPluginsContext // out
@@ -461,8 +461,8 @@ func (ctx *InstallPluginsContext) SetStartupNotificationID(startupId string) {
 
 // SetXid: this function is for X11-based applications (such as most Gtk/Qt
 // applications on linux/unix) only. You can use it to tell the external
-// installer the XID of your main application window. That way the installer can
-// make its own window transient to your application window during the
+// installer the XID of your main application window. That way the installer
+// can make its own window transient to your application window during the
 // installation.
 //
 // If set, the XID will be passed to the installer via a --transient-for=XID
@@ -483,7 +483,7 @@ func (ctx *InstallPluginsContext) SetStartupNotificationID(startupId string) {
 //
 // The function takes the following parameters:
 //
-//    - xid: XWindow ID (XID) of the top-level application.
+//   - xid: XWindow ID (XID) of the top-level application.
 //
 func (ctx *InstallPluginsContext) SetXid(xid uint) {
 	var _arg0 *C.GstInstallPluginsContext // out

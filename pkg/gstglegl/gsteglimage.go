@@ -29,8 +29,8 @@ func init() {
 
 // EGLImage represents and holds an EGLImage handle.
 //
-// A EGLImage can be created from a dmabuf with gst_egl_image_from_dmabuf(), or
-// gst_egl_image_from_dmabuf_direct(), or GLMemoryEGL provides a Allocator to
+// A EGLImage can be created from a dmabuf with gst_egl_image_from_dmabuf(),
+// or gst_egl_image_from_dmabuf_direct(), or GLMemoryEGL provides a Allocator to
 // allocate EGLImage's bound to and OpenGL texture.
 //
 // An instance of this type is always passed by reference.
@@ -50,7 +50,7 @@ func marshalEGLImage(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - gpointer (optional): EGLImage of image.
+//   - gpointer (optional): EGLImage of image.
 //
 func (image *EGLImage) Image() unsafe.Pointer {
 	var _arg0 *C.GstEGLImage // out
@@ -70,13 +70,13 @@ func (image *EGLImage) Image() unsafe.Pointer {
 
 // The function takes the following parameters:
 //
-//    - context (must be an EGL context).
-//    - glMem: GLMemory.
-//    - attribs: additional attributes to add to the eglCreateImage() call.
+//   - context (must be an EGL context).
+//   - glMem: GLMemory.
+//   - attribs: additional attributes to add to the eglCreateImage() call.
 //
 // The function returns the following values:
 //
-//    - eglImage wrapping gl_mem or NULL on failure.
+//   - eglImage (optional) wrapping gl_mem or NULL on failure.
 //
 func EGLImageFromTexture(context gstgl.GLContexter, glMem *gstgl.GLMemory, attribs *uintptr) *EGLImage {
 	var _arg1 *C.GstGLContext // out
@@ -95,13 +95,15 @@ func EGLImageFromTexture(context gstgl.GLContexter, glMem *gstgl.GLMemory, attri
 
 	var _eglImage *EGLImage // out
 
-	_eglImage = (*EGLImage)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_eglImage)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_eglImage = (*EGLImage)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_eglImage)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _eglImage
 }

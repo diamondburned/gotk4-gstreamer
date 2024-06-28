@@ -27,8 +27,8 @@ func init() {
 	})
 }
 
-// BUFFER_POOL_OPTION_VIDEO_ALIGNMENT: bufferpool option to enable extra
-// padding. When a bufferpool supports this option,
+// BUFFER_POOL_OPTION_VIDEO_ALIGNMENT: bufferpool option to
+// enable extra padding. When a bufferpool supports this option,
 // gst_buffer_pool_config_set_video_alignment() can be called.
 //
 // When this option is enabled on the bufferpool,
@@ -44,12 +44,12 @@ const BUFFER_POOL_OPTION_VIDEO_META = "GstBufferPoolOptionVideoMeta"
 //
 // The function takes the following parameters:
 //
-//    - config: Structure.
-//    - align: VideoAlignment.
+//   - config: Structure.
+//   - align: VideoAlignment.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if config could be parsed correctly.
+//   - ok: TRUE if config could be parsed correctly.
 //
 func BufferPoolConfigGetVideoAlignment(config *gst.Structure, align *VideoAlignment) bool {
 	var _arg1 *C.GstStructure      // out
@@ -77,8 +77,8 @@ func BufferPoolConfigGetVideoAlignment(config *gst.Structure, align *VideoAlignm
 //
 // The function takes the following parameters:
 //
-//    - config: Structure.
-//    - align: VideoAlignment.
+//   - config: Structure.
+//   - align: VideoAlignment.
 //
 func BufferPoolConfigSetVideoAlignment(config *gst.Structure, align *VideoAlignment) {
 	var _arg1 *C.GstStructure      // out
@@ -146,7 +146,7 @@ func marshalVideoBufferPool(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - videoBufferPool: new BufferPool to allocate video frames.
+//   - videoBufferPool: new BufferPool to allocate video frames.
 //
 func NewVideoBufferPool() *VideoBufferPool {
 	var _cret *C.GstBufferPool // in

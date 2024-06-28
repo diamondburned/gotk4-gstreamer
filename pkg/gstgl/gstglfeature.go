@@ -13,12 +13,12 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - name: extension to search for.
-//    - ext: list of possible extensions.
+//   - name: extension to search for.
+//   - ext: list of possible extensions.
 //
 // The function returns the following values:
 //
-//    - ok: whether name is in the space separated list of ext.
+//   - ok: whether name is in the space separated list of ext.
 //
 func GLCheckExtension(name, ext string) bool {
 	var _arg1 *C.char    // out

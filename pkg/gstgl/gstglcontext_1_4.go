@@ -19,12 +19,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - glApi: GLAPI.
-//    - name: then function to get the address of.
+//   - glApi: GLAPI.
+//   - name: then function to get the address of.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) address pointing to name or NULL.
+//   - gpointer (optional) address pointing to name or NULL.
 //
 func GLContextDefaultGetProcAddress(glApi GLAPI, name string) unsafe.Pointer {
 	var _arg1 C.GstGLAPI // out

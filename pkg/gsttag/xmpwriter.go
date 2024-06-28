@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/OmegaRogue/gotk4-gstreamer/pkg/gst"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -33,9 +34,9 @@ type TagXmpWriterOverrider interface {
 // TagXmpWriter: this interface is implemented by elements that are able to do
 // XMP serialization. Examples for such elements are #jifmux and #qtmux.
 //
-// Applications can use this interface to configure which XMP schemas should be
-// used when serializing tags into XMP. Schemas are represented by their names,
-// a full list of the supported schemas can be obtained from
+// Applications can use this interface to configure which XMP schemas
+// should be used when serializing tags into XMP. Schemas are represented
+// by their names, a full list of the supported schemas can be obtained from
 // gst_tag_xmp_list_schemas(). By default, all schemas are used.
 //
 // TagXmpWriter wraps an interface. This means the user can get the
@@ -63,6 +64,7 @@ type TagXmpWriterer interface {
 	RemoveAllSchemas()
 	// RemoveSchema removes a schema from the list of schemas to use.
 	RemoveSchema(schema string)
+	TagListToXmpBuffer(taglist *gst.TagList, readOnly bool) *gst.Buffer
 }
 
 var _ TagXmpWriterer = (*TagXmpWriter)(nil)
@@ -101,7 +103,7 @@ func (config *TagXmpWriter) AddAllSchemas() {
 //
 // The function takes the following parameters:
 //
-//    - schema to be added.
+//   - schema to be added.
 //
 func (config *TagXmpWriter) AddSchema(schema string) {
 	var _arg0 *C.GstTagXmpWriter // out
@@ -120,11 +122,11 @@ func (config *TagXmpWriter) AddSchema(schema string) {
 //
 // The function takes the following parameters:
 //
-//    - schema to test.
+//   - schema to test.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if it is going to be used.
+//   - ok: TRUE if it is going to be used.
 //
 func (config *TagXmpWriter) HasSchema(schema string) bool {
 	var _arg0 *C.GstTagXmpWriter // out
@@ -164,7 +166,7 @@ func (config *TagXmpWriter) RemoveAllSchemas() {
 //
 // The function takes the following parameters:
 //
-//    - schema to remove.
+//   - schema to remove.
 //
 func (config *TagXmpWriter) RemoveSchema(schema string) {
 	var _arg0 *C.GstTagXmpWriter // out
@@ -177,6 +179,43 @@ func (config *TagXmpWriter) RemoveSchema(schema string) {
 	C.gst_tag_xmp_writer_remove_schema(_arg0, _arg1)
 	runtime.KeepAlive(config)
 	runtime.KeepAlive(schema)
+}
+
+// The function takes the following parameters:
+//
+//   - taglist
+//   - readOnly
+//
+// The function returns the following values:
+//
+func (config *TagXmpWriter) TagListToXmpBuffer(taglist *gst.TagList, readOnly bool) *gst.Buffer {
+	var _arg0 *C.GstTagXmpWriter // out
+	var _arg1 *C.GstTagList      // out
+	var _arg2 C.gboolean         // out
+	var _cret *C.GstBuffer       // in
+
+	_arg0 = (*C.GstTagXmpWriter)(unsafe.Pointer(coreglib.InternObject(config).Native()))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(taglist)))
+	if readOnly {
+		_arg2 = C.TRUE
+	}
+
+	_cret = C.gst_tag_xmp_writer_tag_list_to_xmp_buffer(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(config)
+	runtime.KeepAlive(taglist)
+	runtime.KeepAlive(readOnly)
+
+	var _buffer *gst.Buffer // out
+
+	_buffer = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_buffer)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _buffer
 }
 
 // TagXmpWriterInterface: instance of this type is always passed by reference.

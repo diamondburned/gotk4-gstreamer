@@ -2,9 +2,38 @@
 
 package gst
 
+import (
+	"fmt"
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+)
+
 // #include <stdlib.h>
+// #include <glib-object.h>
 // #include <gst/gst.h>
+// extern void _gotk4_gst1_TagForEachFunc(GstTagList*, gchar*, gpointer);
 import "C"
+
+// GType values.
+var (
+	GTypeTagFlag      = coreglib.Type(C.gst_tag_flag_get_type())
+	GTypeTagMergeMode = coreglib.Type(C.gst_tag_merge_mode_get_type())
+	GTypeTagScope     = coreglib.Type(C.gst_tag_scope_get_type())
+	GTypeTagList      = coreglib.Type(C.gst_tag_list_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTagFlag, F: marshalTagFlag},
+		coreglib.TypeMarshaler{T: GTypeTagMergeMode, F: marshalTagMergeMode},
+		coreglib.TypeMarshaler{T: GTypeTagScope, F: marshalTagScope},
+		coreglib.TypeMarshaler{T: GTypeTagList, F: marshalTagList},
+	})
+}
 
 // TAG_ALBUM: album containing this data (string)
 //
@@ -118,8 +147,8 @@ const TAG_DEVICE_MODEL = "device-model"
 // integer).
 const TAG_DURATION = "duration"
 
-// TAG_ENCODED_BY: name of the person or organisation that encoded the file. May
-// contain a copyright message if the person or organisation also holds the
+// TAG_ENCODED_BY: name of the person or organisation that encoded the file.
+// May contain a copyright message if the person or organisation also holds the
 // copyright (string)
 //
 // Note: do not use this field to describe the encoding application. Use
@@ -249,9 +278,9 @@ const TAG_LANGUAGE_CODE = "language-code"
 
 // TAG_LANGUAGE_NAME: name of the language the content is in (string)
 //
-// Free-form name of the language the content is in, if a language code is not
-// available. This tag should not be set in addition to a language code. It is
-// undefined what language or locale the language name is in.
+// Free-form name of the language the content is in, if a language code is
+// not available. This tag should not be set in addition to a language code.
+// It is undefined what language or locale the language name is in.
 const TAG_LANGUAGE_NAME = "language-name"
 
 // TAG_LICENSE: license of data (string).
@@ -343,3 +372,1872 @@ const TAG_VERSION = "version"
 
 // TAG_VIDEO_CODEC: codec the video data is stored in (string).
 const TAG_VIDEO_CODEC = "video-codec"
+
+// TagFlag: extra tag flags used when registering tags.
+type TagFlag C.gint
+
+const (
+	// TagFlagUndefined: undefined flag.
+	TagFlagUndefined TagFlag = iota
+	// TagFlagMeta: tag is meta data.
+	TagFlagMeta
+	// TagFlagEncoded: tag is encoded.
+	TagFlagEncoded
+	// TagFlagDecoded: tag is decoded.
+	TagFlagDecoded
+	// TagFlagCount: number of tag flags.
+	TagFlagCount
+)
+
+func marshalTagFlag(p uintptr) (interface{}, error) {
+	return TagFlag(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TagFlag.
+func (t TagFlag) String() string {
+	switch t {
+	case TagFlagUndefined:
+		return "Undefined"
+	case TagFlagMeta:
+		return "Meta"
+	case TagFlagEncoded:
+		return "Encoded"
+	case TagFlagDecoded:
+		return "Decoded"
+	case TagFlagCount:
+		return "Count"
+	default:
+		return fmt.Sprintf("TagFlag(%d)", t)
+	}
+}
+
+// TagMergeMode: different tag merging modes are basically replace, overwrite
+// and append, but they can be seen from two directions. Given two taglists:
+// (A) the tags already in the element and (B) the ones that are supplied to the
+// element ( e.g. via gst_tag_setter_merge_tags() / gst_tag_setter_add_tags() or
+// a GST_EVENT_TAG), how are these tags merged? In the table below this is shown
+// for the cases that a tag exists in the list (A) or does not exists (!A) and
+// combinations thereof.
+//
+// | merge mode | A + B | A + !B | !A + B | !A + !B | | ----------- | ----- |
+// ------ | ------ | ------- | | REPLACE_ALL | B | ø | B | ø | | REPLACE | B | A
+// | B | ø | | APPEND | A, B | A | B | ø | | PREPEND | B, A | A | B | ø | | KEEP
+// | A | A | B | ø | | KEEP_ALL | A | A | ø | ø |.
+type TagMergeMode C.gint
+
+const (
+	// TagMergeUndefined: undefined merge mode.
+	TagMergeUndefined TagMergeMode = iota
+	// TagMergeReplaceAll: replace all tags (clear list and append).
+	TagMergeReplaceAll
+	// TagMergeReplace: replace tags.
+	TagMergeReplace
+	// TagMergeAppend: append tags.
+	TagMergeAppend
+	// TagMergePrepend: prepend tags.
+	TagMergePrepend
+	// TagMergeKeep: keep existing tags.
+	TagMergeKeep
+	// TagMergeKeepAll: keep all existing tags.
+	TagMergeKeepAll
+	// TagMergeCount: number of merge modes.
+	TagMergeCount
+)
+
+func marshalTagMergeMode(p uintptr) (interface{}, error) {
+	return TagMergeMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TagMergeMode.
+func (t TagMergeMode) String() string {
+	switch t {
+	case TagMergeUndefined:
+		return "Undefined"
+	case TagMergeReplaceAll:
+		return "ReplaceAll"
+	case TagMergeReplace:
+		return "Replace"
+	case TagMergeAppend:
+		return "Append"
+	case TagMergePrepend:
+		return "Prepend"
+	case TagMergeKeep:
+		return "Keep"
+	case TagMergeKeepAll:
+		return "KeepAll"
+	case TagMergeCount:
+		return "Count"
+	default:
+		return fmt.Sprintf("TagMergeMode(%d)", t)
+	}
+}
+
+// TagScope specifies if a taglist applies to the complete medium or only to one
+// single stream.
+type TagScope C.gint
+
+const (
+	// TagScopeStream tags specific to this single stream.
+	TagScopeStream TagScope = iota
+	// TagScopeGlobal: global tags for the complete medium.
+	TagScopeGlobal
+)
+
+func marshalTagScope(p uintptr) (interface{}, error) {
+	return TagScope(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TagScope.
+func (t TagScope) String() string {
+	switch t {
+	case TagScopeStream:
+		return "Stream"
+	case TagScopeGlobal:
+		return "Global"
+	default:
+		return fmt.Sprintf("TagScope(%d)", t)
+	}
+}
+
+// TagForEachFunc: function that will be called in gst_tag_list_foreach().
+// The function may not modify the tag list.
+type TagForEachFunc func(list *TagList, tag string)
+
+// TagExists checks if the given type is already registered.
+//
+// The function takes the following parameters:
+//
+//   - tag: name of the tag.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the type is already registered.
+//
+func TagExists(tag string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_exists(_arg1)
+	runtime.KeepAlive(tag)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TagGetDescription returns the human-readable description of this tag,
+// You must not change or free this string.
+//
+// The function takes the following parameters:
+//
+//   - tag: tag.
+//
+// The function returns the following values:
+//
+//   - utf8: human-readable description of this tag.
+//
+func TagGetDescription(tag string) string {
+	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_get_description(_arg1)
+	runtime.KeepAlive(tag)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// TagGetFlag gets the flag of tag.
+//
+// The function takes the following parameters:
+//
+//   - tag: tag.
+//
+// The function returns the following values:
+//
+//   - tagFlag: flag of this tag.
+//
+func TagGetFlag(tag string) TagFlag {
+	var _arg1 *C.gchar     // out
+	var _cret C.GstTagFlag // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_get_flag(_arg1)
+	runtime.KeepAlive(tag)
+
+	var _tagFlag TagFlag // out
+
+	_tagFlag = TagFlag(_cret)
+
+	return _tagFlag
+}
+
+// TagGetNick returns the human-readable name of this tag, You must not change
+// or free this string.
+//
+// The function takes the following parameters:
+//
+//   - tag: tag.
+//
+// The function returns the following values:
+//
+//   - utf8: human-readable name of this tag.
+//
+func TagGetNick(tag string) string {
+	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_get_nick(_arg1)
+	runtime.KeepAlive(tag)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// TagGetType gets the #GType used for this tag.
+//
+// The function takes the following parameters:
+//
+//   - tag: tag.
+//
+// The function returns the following values:
+//
+//   - gType of this tag.
+//
+func TagGetType(tag string) coreglib.Type {
+	var _arg1 *C.gchar // out
+	var _cret C.GType  // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_get_type(_arg1)
+	runtime.KeepAlive(tag)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// TagIsFixed checks if the given tag is fixed. A fixed tag can only contain one
+// value. Unfixed tags can contain lists of values.
+//
+// The function takes the following parameters:
+//
+//   - tag to check.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE, if the given tag is fixed.
+//
+func TagIsFixed(tag string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_is_fixed(_arg1)
+	runtime.KeepAlive(tag)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TagMergeStringsWithComma: this is a convenience function for the func
+// argument of gst_tag_register(). It concatenates all given strings using a
+// comma. The tag must be registered as a G_TYPE_STRING or this function will
+// fail.
+//
+// The function takes the following parameters:
+//
+//   - src: GValue to copy from.
+//
+// The function returns the following values:
+//
+//   - dest: uninitialized GValue to store result in.
+//
+func TagMergeStringsWithComma(src *coreglib.Value) coreglib.Value {
+	var _arg1 C.GValue  // in
+	var _arg2 *C.GValue // out
+
+	_arg2 = (*C.GValue)(unsafe.Pointer(src.Native()))
+
+	C.gst_tag_merge_strings_with_comma(&_arg1, _arg2)
+	runtime.KeepAlive(src)
+
+	var _dest coreglib.Value // out
+
+	_dest = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _dest
+}
+
+// TagMergeUseFirst: this is a convenience function for the func argument of
+// gst_tag_register(). It creates a copy of the first value from the list.
+//
+// The function takes the following parameters:
+//
+//   - src: GValue to copy from.
+//
+// The function returns the following values:
+//
+//   - dest: uninitialized GValue to store result in.
+//
+func TagMergeUseFirst(src *coreglib.Value) coreglib.Value {
+	var _arg1 C.GValue  // in
+	var _arg2 *C.GValue // out
+
+	_arg2 = (*C.GValue)(unsafe.Pointer(src.Native()))
+
+	C.gst_tag_merge_use_first(&_arg1, _arg2)
+	runtime.KeepAlive(src)
+
+	var _dest coreglib.Value // out
+
+	_dest = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _dest
+}
+
+// TagList: list of tags and values used to describe media metadata.
+//
+// Strings in structures must be ASCII or UTF-8 encoded. Other encodings are not
+// allowed. Strings must not be empty or NULL.
+//
+// An instance of this type is always passed by reference.
+type TagList struct {
+	*tagList
+}
+
+// tagList is the struct that's finalized.
+type tagList struct {
+	native *C.GstTagList
+}
+
+func marshalTagList(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TagList{&tagList{(*C.GstTagList)(b)}}, nil
+}
+
+// NewTagListEmpty constructs a struct TagList.
+func NewTagListEmpty() *TagList {
+	var _cret *C.GstTagList // in
+
+	_cret = C.gst_tag_list_new_empty()
+
+	var _tagList *TagList // out
+
+	_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tagList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _tagList
+}
+
+// NewTagListFromString constructs a struct TagList.
+func NewTagListFromString(str string) *TagList {
+	var _arg1 *C.gchar      // out
+	var _cret *C.GstTagList // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_new_from_string(_arg1)
+	runtime.KeepAlive(str)
+
+	var _tagList *TagList // out
+
+	if _cret != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _tagList
+}
+
+// MiniObject: parent type.
+func (t *TagList) MiniObject() *MiniObject {
+	valptr := &t.native.mini_object
+	var _v *MiniObject // out
+	_v = (*MiniObject)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
+}
+
+// AddValue sets the GValue for a given tag using the specified mode.
+//
+// The function takes the following parameters:
+//
+//   - mode to use.
+//   - tag: tag.
+//   - value: GValue for this tag.
+//
+func (list *TagList) AddValue(mode TagMergeMode, tag string, value *coreglib.Value) {
+	var _arg0 *C.GstTagList     // out
+	var _arg1 C.GstTagMergeMode // out
+	var _arg2 *C.gchar          // out
+	var _arg3 *C.GValue         // out
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = C.GstTagMergeMode(mode)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gst_tag_list_add_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(mode)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(value)
+}
+
+// Copy creates a new TagList as a copy of the old taglist. The new taglist will
+// have a refcount of 1, owned by the caller, and will be writable as a result.
+//
+// Note that this function is the semantic equivalent of a gst_tag_list_ref()
+// followed by a gst_tag_list_make_writable(). If you only want to hold on to a
+// reference to the data, you should use gst_tag_list_ref().
+//
+// When you are finished with the taglist, call gst_tag_list_unref() on it.
+//
+// The function returns the following values:
+//
+//   - tagList: new TagList.
+//
+func (taglist *TagList) Copy() *TagList {
+	var _arg0 *C.GstTagList // out
+	var _cret *C.GstTagList // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(taglist)))
+
+	_cret = C.gst_tag_list_copy(_arg0)
+	runtime.KeepAlive(taglist)
+
+	var _tagList *TagList // out
+
+	_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tagList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _tagList
+}
+
+// ForEach calls the given function for each tag inside the tag list. Note that
+// if there is no tag, the function won't be called at all.
+//
+// The function takes the following parameters:
+//
+//   - fn: function to be called for each tag.
+//
+func (list *TagList) ForEach(fn TagForEachFunc) {
+	var _arg0 *C.GstTagList       // out
+	var _arg1 C.GstTagForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*[0]byte)(C._gotk4_gst1_TagForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	C.gst_tag_list_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(fn)
+}
+
+// Boolean copies the contents for the given tag into the value, merging
+// multiple values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Boolean(tag string) (value bool, ok bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gboolean    // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_boolean(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value bool // out
+	var _ok bool    // out
+
+	if _arg2 != 0 {
+		_value = true
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// BooleanIndex gets the value that is at the given index for the given tag in
+// the given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) BooleanIndex(tag string, index uint) (value bool, ok bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.gboolean    // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_boolean_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value bool // out
+	var _ok bool    // out
+
+	if _arg3 != 0 {
+		_value = true
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// DateTime copies the first datetime for the given tag in the taglist into the
+// variable pointed to by value. Unref the date with gst_date_time_unref() when
+// it is no longer needed.
+//
+// Free-function: gst_date_time_unref.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value address of a DateTime pointer variable to store the result into.
+//   - ok: TRUE, if a datetime was copied, FALSE if the tag didn't exist in the
+//     given list or if it was NULL.
+//
+func (list *TagList) DateTime(tag string) (*DateTime, bool) {
+	var _arg0 *C.GstTagList  // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.GstDateTime // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_date_time(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value *DateTime // out
+	var _ok bool         // out
+
+	_value = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gst_date_time_unref((*C.GstDateTime)(intern.C))
+		},
+	)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// DateTimeIndex gets the datetime that is at the given index for the given
+// tag in the given list and copies it into the variable pointed to by value.
+// Unref the datetime with gst_date_time_unref() when it is no longer needed.
+//
+// Free-function: gst_date_time_unref.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list or if it was NULL.
+//
+func (list *TagList) DateTimeIndex(tag string, index uint) (*DateTime, bool) {
+	var _arg0 *C.GstTagList  // out
+	var _arg1 *C.gchar       // out
+	var _arg2 C.guint        // out
+	var _arg3 *C.GstDateTime // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_date_time_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value *DateTime // out
+	var _ok bool         // out
+
+	_value = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gst_date_time_unref((*C.GstDateTime)(intern.C))
+		},
+	)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Double copies the contents for the given tag into the value, merging multiple
+// values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Double(tag string) (float64, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gdouble     // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_double(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value float64 // out
+	var _ok bool       // out
+
+	_value = float64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// DoubleIndex gets the value that is at the given index for the given tag in
+// the given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) DoubleIndex(tag string, index uint) (float64, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.gdouble     // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_double_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value float64 // out
+	var _ok bool       // out
+
+	_value = float64(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Float copies the contents for the given tag into the value, merging multiple
+// values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Float(tag string) (float32, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gfloat      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_float(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value float32 // out
+	var _ok bool       // out
+
+	_value = float32(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// FloatIndex gets the value that is at the given index for the given tag in the
+// given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) FloatIndex(tag string, index uint) (float32, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.gfloat      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_float_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value float32 // out
+	var _ok bool       // out
+
+	_value = float32(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Int copies the contents for the given tag into the value, merging multiple
+// values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Int(tag string) (int, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gint        // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_int(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value int // out
+	var _ok bool   // out
+
+	_value = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Int64 copies the contents for the given tag into the value, merging multiple
+// values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Int64(tag string) (int64, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gint64      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_int64(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value int64 // out
+	var _ok bool     // out
+
+	_value = int64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Int64Index gets the value that is at the given index for the given tag in the
+// given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Int64Index(tag string, index uint) (int64, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.gint64      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_int64_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value int64 // out
+	var _ok bool     // out
+
+	_value = int64(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// IntIndex gets the value that is at the given index for the given tag in the
+// given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) IntIndex(tag string, index uint) (int, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.gint        // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_int_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value int // out
+	var _ok bool   // out
+
+	_value = int(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Pointer copies the contents for the given tag into the value, merging
+// multiple values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value (optional): location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Pointer(tag string) (unsafe.Pointer, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gpointer    // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_pointer(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value unsafe.Pointer // out
+	var _ok bool              // out
+
+	_value = (unsafe.Pointer)(unsafe.Pointer(_arg2))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// PointerIndex gets the value that is at the given index for the given tag in
+// the given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value (optional): location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) PointerIndex(tag string, index uint) (unsafe.Pointer, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.gpointer    // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_pointer_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value unsafe.Pointer // out
+	var _ok bool              // out
+
+	_value = (unsafe.Pointer)(unsafe.Pointer(_arg3))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Sample copies the first sample for the given tag in the taglist into the
+// variable pointed to by sample. Free the sample with gst_sample_unref()
+// when it is no longer needed. You can retrieve the buffer from the sample
+// using gst_sample_get_buffer() and the associated caps (if any) with
+// gst_sample_get_caps().
+//
+// Free-function: gst_sample_unref.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - sample address of a GstSample pointer variable to store the result into.
+//   - ok: TRUE, if a sample was returned, FALSE if the tag didn't exist in the
+//     given list or if it was NULL.
+//
+func (list *TagList) Sample(tag string) (*Sample, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GstSample  // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_sample(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _sample *Sample // out
+	var _ok bool        // out
+
+	_sample = (*Sample)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_sample)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _sample, _ok
+}
+
+// SampleIndex gets the sample that is at the given index for the given tag in
+// the given list and copies it into the variable pointed to by sample. Free the
+// sample with gst_sample_unref() when it is no longer needed. You can retrieve
+// the buffer from the sample using gst_sample_get_buffer() and the associated
+// caps (if any) with gst_sample_get_caps().
+//
+// Free-function: gst_sample_unref.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - sample address of a GstSample pointer variable to store the result into.
+//   - ok: TRUE, if a sample was copied, FALSE if the tag didn't exist in the
+//     given list or if it was NULL.
+//
+func (list *TagList) SampleIndex(tag string, index uint) (*Sample, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 *C.GstSample  // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_sample_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _sample *Sample // out
+	var _ok bool        // out
+
+	_sample = (*Sample)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_sample)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _sample, _ok
+}
+
+// Scope gets the scope of list.
+//
+// The function returns the following values:
+//
+//   - tagScope: scope of list.
+//
+func (list *TagList) Scope() TagScope {
+	var _arg0 *C.GstTagList // out
+	var _cret C.GstTagScope // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.gst_tag_list_get_scope(_arg0)
+	runtime.KeepAlive(list)
+
+	var _tagScope TagScope // out
+
+	_tagScope = TagScope(_cret)
+
+	return _tagScope
+}
+
+// String copies the contents for the given tag into the value, possibly merging
+// multiple values into one if multiple values are associated with the tag.
+//
+// Use gst_tag_list_get_string_index (list, tag, 0, value) if you want to
+// retrieve the first string associated with this tag unmodified.
+//
+// The resulting string in value will be in UTF-8 encoding and should be freed
+// by the caller using g_free when no longer needed. The returned string is also
+// guaranteed to be non-NULL and non-empty.
+//
+// Free-function: g_free.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) String(tag string) (string, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.gchar      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_string(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value string // out
+	var _ok bool      // out
+
+	_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// StringIndex gets the value that is at the given index for the given tag in
+// the given list.
+//
+// The resulting string in value will be in UTF-8 encoding and should be freed
+// by the caller using g_free when no longer needed. The returned string is also
+// guaranteed to be non-NULL and non-empty.
+//
+// Free-function: g_free.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) StringIndex(tag string, index uint) (string, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 *C.gchar      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_string_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value string // out
+	var _ok bool      // out
+
+	_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// TagSize checks how many value are stored in this tag list for the given tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to query.
+//
+// The function returns the following values:
+//
+//   - guint: number of tags stored.
+//
+func (list *TagList) TagSize(tag string) uint {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_tag_size(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Uint copies the contents for the given tag into the value, merging multiple
+// values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Uint(tag string) (uint, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_uint(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value uint // out
+	var _ok bool    // out
+
+	_value = uint(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Uint64 copies the contents for the given tag into the value, merging multiple
+// values into one if multiple values are associated with the tag.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Uint64(tag string) (uint64, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint64     // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gst_tag_list_get_uint64(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _value uint64 // out
+	var _ok bool      // out
+
+	_value = uint64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Uint64Index gets the value that is at the given index for the given tag in
+// the given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) Uint64Index(tag string, index uint) (uint64, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.guint64     // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_uint64_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value uint64 // out
+	var _ok bool      // out
+
+	_value = uint64(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// UintIndex gets the value that is at the given index for the given tag in the
+// given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func (list *TagList) UintIndex(tag string, index uint) (uint, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 C.guint       // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_uint_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value uint // out
+	var _ok bool    // out
+
+	_value = uint(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// ValueIndex gets the value that is at the given index for the given tag in the
+// given list.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value (optional): GValue for the specified entry or NULL if the tag
+//     wasn't available or the tag doesn't have as many entries.
+//
+func (list *TagList) ValueIndex(tag string, index uint) *coreglib.Value {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _cret *C.GValue     // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_get_value_index(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value *coreglib.Value // out
+
+	if _cret != nil {
+		_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
+	}
+
+	return _value
+}
+
+// Insert inserts the tags of the from list into the first list using the given
+// mode.
+//
+// The function takes the following parameters:
+//
+//   - from: list to merge from.
+//   - mode to use.
+//
+func (into *TagList) Insert(from *TagList, mode TagMergeMode) {
+	var _arg0 *C.GstTagList     // out
+	var _arg1 *C.GstTagList     // out
+	var _arg2 C.GstTagMergeMode // out
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(into)))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(from)))
+	_arg2 = C.GstTagMergeMode(mode)
+
+	C.gst_tag_list_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(into)
+	runtime.KeepAlive(from)
+	runtime.KeepAlive(mode)
+}
+
+// IsEmpty checks if the given taglist is empty.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the taglist is empty, otherwise FALSE.
+//
+func (list *TagList) IsEmpty() bool {
+	var _arg0 *C.GstTagList // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.gst_tag_list_is_empty(_arg0)
+	runtime.KeepAlive(list)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsEqual checks if the two given taglists are equal.
+//
+// The function takes the following parameters:
+//
+//   - list2: TagList.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the taglists are equal, otherwise FALSE.
+//
+func (list1 *TagList) IsEqual(list2 *TagList) bool {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.GstTagList // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list1)))
+	_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list2)))
+
+	_cret = C.gst_tag_list_is_equal(_arg0, _arg1)
+	runtime.KeepAlive(list1)
+	runtime.KeepAlive(list2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Merge merges the two given lists into a new list. If one of the lists is
+// NULL, a copy of the other is returned. If both lists are NULL, NULL is
+// returned.
+//
+// Free-function: gst_tag_list_unref.
+//
+// The function takes the following parameters:
+//
+//   - list2 (optional): second list to merge.
+//   - mode to use.
+//
+// The function returns the following values:
+//
+//   - tagList (optional): new list.
+//
+func (list1 *TagList) Merge(list2 *TagList, mode TagMergeMode) *TagList {
+	var _arg0 *C.GstTagList     // out
+	var _arg1 *C.GstTagList     // out
+	var _arg2 C.GstTagMergeMode // out
+	var _cret *C.GstTagList     // in
+
+	if list1 != nil {
+		_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list1)))
+	}
+	if list2 != nil {
+		_arg1 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list2)))
+	}
+	_arg2 = C.GstTagMergeMode(mode)
+
+	_cret = C.gst_tag_list_merge(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(list1)
+	runtime.KeepAlive(list2)
+	runtime.KeepAlive(mode)
+
+	var _tagList *TagList // out
+
+	if _cret != nil {
+		_tagList = (*TagList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tagList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
+
+	return _tagList
+}
+
+// NTags: get the number of tags in list.
+//
+// The function returns the following values:
+//
+//   - gint: number of tags in list.
+//
+func (list *TagList) NTags() int {
+	var _arg0 *C.GstTagList // out
+	var _cret C.gint        // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.gst_tag_list_n_tags(_arg0)
+	runtime.KeepAlive(list)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NthTagName: get the name of the tag in list at index.
+//
+// The function takes the following parameters:
+//
+//   - index: index.
+//
+// The function returns the following values:
+//
+//   - utf8: name of the tag at index.
+//
+func (list *TagList) NthTagName(index uint) string {
+	var _arg0 *C.GstTagList // out
+	var _arg1 C.guint       // out
+	var _cret *C.gchar      // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = C.guint(index)
+
+	_cret = C.gst_tag_list_nth_tag_name(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(index)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// PeekStringIndex peeks at the value that is at the given index for the given
+// tag in the given list.
+//
+// The resulting string in value will be in UTF-8 encoding and doesn't need to
+// be freed by the caller. The returned string is also guaranteed to be non-NULL
+// and non-empty.
+//
+// The function takes the following parameters:
+//
+//   - tag to read out.
+//   - index: number of entry to read out.
+//
+// The function returns the following values:
+//
+//   - value: location for the result.
+//   - ok: TRUE, if a value was set, FALSE if the tag didn't exist in the given
+//     list.
+//
+func (list *TagList) PeekStringIndex(tag string, index uint) (string, bool) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint       // out
+	var _arg3 *C.gchar      // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(index)
+
+	_cret = C.gst_tag_list_peek_string_index(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(index)
+
+	var _value string // out
+	var _ok bool      // out
+
+	_value = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// RemoveTag removes the given tag from the taglist.
+//
+// The function takes the following parameters:
+//
+//   - tag to remove.
+//
+func (list *TagList) RemoveTag(tag string) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 *C.gchar      // out
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gst_tag_list_remove_tag(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+}
+
+// SetScope sets the scope of list to scope. By default the scope of a taglist
+// is stream scope.
+//
+// The function takes the following parameters:
+//
+//   - scope: new scope for list.
+//
+func (list *TagList) SetScope(scope TagScope) {
+	var _arg0 *C.GstTagList // out
+	var _arg1 C.GstTagScope // out
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = C.GstTagScope(scope)
+
+	C.gst_tag_list_set_scope(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(scope)
+}
+
+// ToString serializes a tag list to a string.
+//
+// The function returns the following values:
+//
+//   - utf8: newly-allocated string. The string must be freed with g_free() when
+//     no longer needed.
+//
+func (list *TagList) ToString() string {
+	var _arg0 *C.GstTagList // out
+	var _cret *C.gchar      // in
+
+	_arg0 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.gst_tag_list_to_string(_arg0)
+	runtime.KeepAlive(list)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// TagListCopyValue copies the contents for the given tag into the value,
+// merging multiple values into one if multiple values are associated with the
+// tag. You must g_value_unset() the value after use.
+//
+// The function takes the following parameters:
+//
+//   - list to get the tag from.
+//   - tag to read out.
+//
+// The function returns the following values:
+//
+//   - dest: uninitialized #GValue to copy into.
+//   - ok: TRUE, if a value was copied, FALSE if the tag didn't exist in the
+//     given list.
+//
+func TagListCopyValue(list *TagList, tag string) (coreglib.Value, bool) {
+	var _arg1 C.GValue      // in
+	var _arg2 *C.GstTagList // out
+	var _arg3 *C.gchar      // out
+	var _cret C.gboolean    // in
+
+	_arg2 = (*C.GstTagList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tag)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	_cret = C.gst_tag_list_copy_value(&_arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(tag)
+
+	var _dest coreglib.Value // out
+	var _ok bool             // out
+
+	_dest = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _dest, _ok
+}

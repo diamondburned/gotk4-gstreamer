@@ -93,27 +93,27 @@ func (v VideoAFDSpec) String() string {
 // Notes:
 //
 // 1) AFD 0 is undefined for ATSC and SMPTE ST2016-1, indicating that AFD data
-// is not available: If Bar Data is not present, AFD '0000' indicates that exact
-// information is not available and the active image should be assumed to be the
-// same as the coded frame. AFD '0000'. AFD '0000' accompanied by Bar Data
-// signals that the active image’s aspect ratio is narrower than 16:9, but is
-// not 4:3 or 14:9. As the exact aspect ratio cannot be conveyed by AFD alone,
-// wherever possible, AFD ‘0000’ should be accompanied by Bar Data to define the
-// exact vertical or horizontal extent of the active image. 2) AFD 0 is reserved
-// for DVB/ETSI 3) values 1, 5, 6, 7, and 12 are reserved for both ATSC and
-// DVB/ETSI 4) values 2 and 3 are not recommended for ATSC, but are valid for
-// DVB/ETSI.
+// is not available: If Bar Data is not present, AFD '0000' indicates that
+// exact information is not available and the active image should be assumed
+// to be the same as the coded frame. AFD '0000'. AFD '0000' accompanied by Bar
+// Data signals that the active image’s aspect ratio is narrower than 16:9,
+// but is not 4:3 or 14:9. As the exact aspect ratio cannot be conveyed by
+// AFD alone, wherever possible, AFD ‘0000’ should be accompanied by Bar Data
+// to define the exact vertical or horizontal extent of the active image.
+// 2) AFD 0 is reserved for DVB/ETSI 3) values 1, 5, 6, 7, and 12 are reserved
+// for both ATSC and DVB/ETSI 4) values 2 and 3 are not recommended for ATSC,
+// but are valid for DVB/ETSI.
 type VideoAFDValue C.gint
 
 const (
 	// VideoAfdUnavailable: unavailable (see note 0 below).
 	VideoAfdUnavailable VideoAFDValue = 0
-	// VideoAfd169_TopAligned: for 4:3 coded frame, letterbox 16:9 image, at top
-	// of the coded frame. For 16:9 coded frame, full frame 16:9 image, the same
-	// as the coded frame.
+	// VideoAfd169_TopAligned: for 4:3 coded frame, letterbox 16:9 image,
+	// at top of the coded frame. For 16:9 coded frame, full frame 16:9 image,
+	// the same as the coded frame.
 	VideoAfd169_TopAligned VideoAFDValue = 2
-	// VideoAfd149_TopAligned: for 4:3 coded frame, letterbox 14:9 image, at top
-	// of the coded frame. For 16:9 coded frame, pillarbox 14:9 image,
+	// VideoAfd149_TopAligned: for 4:3 coded frame, letterbox 14:9 image,
+	// at top of the coded frame. For 16:9 coded frame, pillarbox 14:9 image,
 	// horizontally centered in the coded frame.
 	VideoAfd149_TopAligned VideoAFDValue = 3
 	// VideoAfdGreaterThan169: for 4:3 coded frame, letterbox image with an
@@ -121,12 +121,12 @@ const (
 	// For 16:9 coded frame, letterbox image with an aspect ratio greater than
 	// 16:9.
 	VideoAfdGreaterThan169 VideoAFDValue = 4
-	// VideoAfd43_Full169_Full: for 4:3 coded frame, full frame 4:3 image, the
-	// same as the coded frame. For 16:9 coded frame, full frame 16:9 image, the
-	// same as the coded frame.
+	// VideoAfd43_Full169_Full: for 4:3 coded frame, full frame 4:3 image,
+	// the same as the coded frame. For 16:9 coded frame, full frame 16:9 image,
+	// the same as the coded frame.
 	VideoAfd43_Full169_Full VideoAFDValue = 8
-	// VideoAfd43_Full43_Pillar: for 4:3 coded frame, full frame 4:3 image, the
-	// same as the coded frame. For 16:9 coded frame, pillarbox 4:3 image,
+	// VideoAfd43_Full43_Pillar: for 4:3 coded frame, full frame 4:3 image,
+	// the same as the coded frame. For 16:9 coded frame, pillarbox 4:3 image,
 	// horizontally centered in the coded frame.
 	VideoAfd43_Full43_Pillar VideoAFDValue = 9
 	// VideoAfd169_Letter169_Full: for 4:3 coded frame, letterbox 16:9 image,
@@ -191,14 +191,14 @@ func (v VideoAFDValue) String() string {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - field: 0 for progressive or field 1 and 1 for field 2.
-//    - spec that applies to AFD value.
-//    - afd AFD enumeration.
+//   - buffer: Buffer.
+//   - field: 0 for progressive or field 1 and 1 for field 2.
+//   - spec that applies to AFD value.
+//   - afd AFD enumeration.
 //
 // The function returns the following values:
 //
-//    - videoAFDMeta on buffer.
+//   - videoAFDMeta on buffer.
 //
 func BufferAddVideoAfdMeta(buffer *gst.Buffer, field byte, spec VideoAFDSpec, afd VideoAFDValue) *VideoAFDMeta {
 	var _arg1 *C.GstBuffer       // out
@@ -230,27 +230,26 @@ func BufferAddVideoAfdMeta(buffer *gst.Buffer, field byte, spec VideoAFDSpec, af
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - field: 0 for progressive or field 1 and 1 for field 2.
-//    - isLetterbox: if true then bar data specifies letterbox, otherwise
-//      pillarbox.
-//    - barData1: if is_letterbox is true, then the value specifies the last line
-//      of a horizontal letterbox bar area at top of reconstructed frame.
-//      Otherwise, it specifies the last horizontal luminance sample of a
-//      vertical pillarbox bar area at the left side of the reconstructed frame.
-//    - barData2: if is_letterbox is true, then the value specifies the first
-//      line of a horizontal letterbox bar area at bottom of reconstructed frame.
-//      Otherwise, it specifies the first horizontal luminance sample of a
-//      vertical pillarbox bar area at the right side of the reconstructed frame.
+//   - buffer: Buffer.
+//   - field: 0 for progressive or field 1 and 1 for field 2.
+//   - isLetterbox: if true then bar data specifies letterbox, otherwise
+//     pillarbox.
+//   - barData1: if is_letterbox is true, then the value specifies the last
+//     line of a horizontal letterbox bar area at top of reconstructed frame.
+//     Otherwise, it specifies the last horizontal luminance sample of a
+//     vertical pillarbox bar area at the left side of the reconstructed frame.
+//   - barData2: if is_letterbox is true, then the value specifies the first
+//     line of a horizontal letterbox bar area at bottom of reconstructed frame.
+//     Otherwise, it specifies the first horizontal luminance sample of a
+//     vertical pillarbox bar area at the right side of the reconstructed frame.
 //
 // The function returns the following values:
 //
-//    - videoBarMeta on buffer.
+//   - videoBarMeta on buffer.
 //
+//     # See Table 6.11 Bar Data Syntax
 //
-//      See Table 6.11 Bar Data Syntax
-//
-//      https://www.atsc.org/wp-content/uploads/2015/03/a_53-Part-4-2009.pdf.
+//     https://www.atsc.org/wp-content/uploads/2015/03/a_53-Part-4-2009.pdf.
 //
 func BufferAddVideoBarMeta(buffer *gst.Buffer, field byte, isLetterbox bool, barData1, barData2 uint) *VideoBarMeta {
 	var _arg1 *C.GstBuffer       // out
@@ -346,8 +345,8 @@ func (v *VideoAFDMeta) SetField(field byte) {
 }
 
 // VideoBarMeta: bar data should be included in video user data whenever the
-// rectangular picture area containing useful information does not extend to the
-// full height or width of the coded frame and AFD alone is insufficient to
+// rectangular picture area containing useful information does not extend to
+// the full height or width of the coded frame and AFD alone is insufficient to
 // describe the extent of the image.
 //
 // Note: either vertical or horizontal bars are specified, but not both.
@@ -395,8 +394,8 @@ func (v *VideoBarMeta) IsLetterbox() bool {
 }
 
 // BarData1: if is_letterbox is true, then the value specifies the last line of
-// a horizontal letterbox bar area at top of reconstructed frame. Otherwise, it
-// specifies the last horizontal luminance sample of a vertical pillarbox bar
+// a horizontal letterbox bar area at top of reconstructed frame. Otherwise,
+// it specifies the last horizontal luminance sample of a vertical pillarbox bar
 // area at the left side of the reconstructed frame.
 func (v *VideoBarMeta) BarData1() uint {
 	valptr := &v.native.bar_data1
@@ -431,8 +430,8 @@ func (v *VideoBarMeta) SetIsLetterbox(isLetterbox bool) {
 }
 
 // BarData1: if is_letterbox is true, then the value specifies the last line of
-// a horizontal letterbox bar area at top of reconstructed frame. Otherwise, it
-// specifies the last horizontal luminance sample of a vertical pillarbox bar
+// a horizontal letterbox bar area at top of reconstructed frame. Otherwise,
+// it specifies the last horizontal luminance sample of a vertical pillarbox bar
 // area at the left side of the reconstructed frame.
 func (v *VideoBarMeta) SetBarData1(barData1 uint) {
 	valptr := &v.native.bar_data1

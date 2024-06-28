@@ -130,13 +130,15 @@ func NewAudioInfoFromCaps(caps *gst.Caps) *AudioInfo {
 
 	var _audioInfo *AudioInfo // out
 
-	_audioInfo = (*AudioInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_audioInfo)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gst_audio_info_free((*C.GstAudioInfo)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_audioInfo = (*AudioInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_audioInfo)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gst_audio_info_free((*C.GstAudioInfo)(intern.C))
+			},
+		)
+	}
 
 	return _audioInfo
 }
@@ -224,14 +226,14 @@ func (a *AudioInfo) SetBpf(bpf int) {
 //
 // The function takes the following parameters:
 //
-//    - srcFmt of the src_val.
-//    - srcVal: value to convert.
-//    - destFmt of the dest_val.
+//   - srcFmt of the src_val.
+//   - srcVal: value to convert.
+//   - destFmt of the dest_val.
 //
 // The function returns the following values:
 //
-//    - destVal: pointer to destination value.
-//    - ok: TRUE if the conversion was successful.
+//   - destVal: pointer to destination value.
+//   - ok: TRUE if the conversion was successful.
 //
 func (info *AudioInfo) Convert(srcFmt gst.Format, srcVal int64, destFmt gst.Format) (int64, bool) {
 	var _arg0 *C.GstAudioInfo // out
@@ -267,7 +269,7 @@ func (info *AudioInfo) Convert(srcFmt gst.Format, srcVal int64, destFmt gst.Form
 //
 // The function returns the following values:
 //
-//    - audioInfo: new AudioInfo. free with gst_audio_info_free.
+//   - audioInfo: new AudioInfo. free with gst_audio_info_free.
 //
 func (info *AudioInfo) Copy() *AudioInfo {
 	var _arg0 *C.GstAudioInfo // out
@@ -295,11 +297,11 @@ func (info *AudioInfo) Copy() *AudioInfo {
 //
 // The function takes the following parameters:
 //
-//    - other: AudioInfo.
+//   - other: AudioInfo.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if info and other are equal, else FALSE.
+//   - ok: TRUE if info and other are equal, else FALSE.
 //
 func (info *AudioInfo) IsEqual(other *AudioInfo) bool {
 	var _arg0 *C.GstAudioInfo // out
@@ -329,10 +331,10 @@ func (info *AudioInfo) IsEqual(other *AudioInfo) bool {
 //
 // The function takes the following parameters:
 //
-//    - format: format.
-//    - rate: samplerate.
-//    - channels: number of channels.
-//    - position (optional): channel positions.
+//   - format: format.
+//   - rate: samplerate.
+//   - channels: number of channels.
+//   - position (optional): channel positions.
 //
 func (info *AudioInfo) SetFormat(format AudioFormat, rate int, channels int, position [64]AudioChannelPosition) {
 	var _arg0 *C.GstAudioInfo            // out
@@ -359,7 +361,7 @@ func (info *AudioInfo) SetFormat(format AudioFormat, rate int, channels int, pos
 //
 // The function returns the following values:
 //
-//    - caps: new Caps containing the info of info.
+//   - caps: new Caps containing the info of info.
 //
 func (info *AudioInfo) ToCaps() *gst.Caps {
 	var _arg0 *C.GstAudioInfo // out
@@ -387,12 +389,12 @@ func (info *AudioInfo) ToCaps() *gst.Caps {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 // The function returns the following values:
 //
-//    - info: AudioInfo.
-//    - ok: TRUE if caps could be parsed.
+//   - info: AudioInfo.
+//   - ok: TRUE if caps could be parsed.
 //
 func AudioInfoFromCaps(caps *gst.Caps) (*AudioInfo, bool) {
 	var _arg1 C.GstAudioInfo // in
@@ -419,7 +421,7 @@ func AudioInfoFromCaps(caps *gst.Caps) (*AudioInfo, bool) {
 //
 // The function returns the following values:
 //
-//    - info: AudioInfo.
+//   - info: AudioInfo.
 //
 func AudioInfoInit() *AudioInfo {
 	var _arg1 C.GstAudioInfo // in

@@ -38,8 +38,8 @@ func init() {
 // g_object_unref().
 //
 // The theory of operation is like this: All buffers received are put into the
-// adapter using gst_adapter_push() and the data is then read back in chunks of
-// the desired size using gst_adapter_map()/gst_adapter_unmap() and/or
+// adapter using gst_adapter_push() and the data is then read back in chunks
+// of the desired size using gst_adapter_map()/gst_adapter_unmap() and/or
 // gst_adapter_copy(). After the data has been processed, it is freed using
 // gst_adapter_unmap().
 //
@@ -89,8 +89,8 @@ func init() {
 // The adapter will keep track of the timestamps of the buffers that were
 // pushed. The last seen timestamp before the current position can be queried
 // with gst_adapter_prev_pts(). This function can optionally return the number
-// of bytes between the start of the buffer that carried the timestamp and the
-// current adapter position. The distance is useful when dealing with, for
+// of bytes between the start of the buffer that carried the timestamp and
+// the current adapter position. The distance is useful when dealing with, for
 // example, raw audio samples because it allows you to calculate the timestamp
 // of the current adapter position by using the last seen timestamp and the
 // amount of bytes since. Additionally, the gst_adapter_prev_pts_at_offset() can
@@ -103,27 +103,27 @@ func init() {
 // optionally return the number of bytes between the start of the buffer that
 // carried the offset and the current adapter position.
 //
-// Additionally the adapter also keeps track of the PTS, DTS and buffer offset
-// at the last discontinuity, which can be retrieved with
-// gst_adapter_pts_at_discont(), gst_adapter_dts_at_discont() and
+// Additionally the adapter also keeps track of the PTS, DTS and
+// buffer offset at the last discontinuity, which can be retrieved
+// with gst_adapter_pts_at_discont(), gst_adapter_dts_at_discont() and
 // gst_adapter_offset_at_discont(). The number of bytes that were consumed since
 // then can be queried with gst_adapter_distance_from_discont().
 //
 // A last thing to note is that while Adapter is pretty optimized, merging
 // buffers still might be an operation that requires a malloc() and memcpy()
-// operation, and these operations are not the fastest. Because of this, some
-// functions like gst_adapter_available_fast() are provided to help speed up
-// such cases should you want to. To avoid repeated memory allocations,
+// operation, and these operations are not the fastest. Because of this,
+// some functions like gst_adapter_available_fast() are provided to help speed
+// up such cases should you want to. To avoid repeated memory allocations,
 // gst_adapter_copy() can be used to copy data into a (statically allocated)
 // user provided buffer.
 //
-// Adapter is not MT safe. All operations on an adapter must be serialized by
-// the caller. This is not normally a problem, however, as the normal use case
-// of Adapter is inside one pad's chain function, in which case access is
+// Adapter is not MT safe. All operations on an adapter must be serialized
+// by the caller. This is not normally a problem, however, as the normal use
+// case of Adapter is inside one pad's chain function, in which case access is
 // serialized via the pad's STREAM_LOCK.
 //
-// Note that gst_adapter_push() takes ownership of the buffer passed. Use
-// gst_buffer_ref() before pushing it into the adapter if you still want to
+// Note that gst_adapter_push() takes ownership of the buffer passed.
+// Use gst_buffer_ref() before pushing it into the adapter if you still want to
 // access the buffer later. The adapter will never modify the data in the buffer
 // pushed in it.
 type Adapter struct {
@@ -149,7 +149,7 @@ func marshalAdapter(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - adapter: new Adapter.
+//   - adapter: new Adapter.
 //
 func NewAdapter() *Adapter {
 	var _cret *C.GstAdapter // in
@@ -169,7 +169,7 @@ func NewAdapter() *Adapter {
 //
 // The function returns the following values:
 //
-//    - gsize: number of bytes available in adapter.
+//   - gsize: number of bytes available in adapter.
 //
 func (adapter *Adapter) Available() uint {
 	var _arg0 *C.GstAdapter // out
@@ -193,8 +193,8 @@ func (adapter *Adapter) Available() uint {
 //
 // The function returns the following values:
 //
-//    - gsize: number of bytes that are available in adapter without expensive
-//      operations.
+//   - gsize: number of bytes that are available in adapter without expensive
+//     operations.
 //
 func (adapter *Adapter) AvailableFast() uint {
 	var _arg0 *C.GstAdapter // out
@@ -230,12 +230,12 @@ func (adapter *Adapter) Clear() {
 //
 // The function takes the following parameters:
 //
-//    - offset bytes offset in the adapter to start from.
-//    - size: number of bytes to copy.
+//   - offset bytes offset in the adapter to start from.
+//   - size: number of bytes to copy.
 //
 // The function returns the following values:
 //
-//    - bytes: new #GBytes structure containing the copied data.
+//   - bytes: new #GBytes structure containing the copied data.
 //
 func (adapter *Adapter) Copy(offset, size uint) *glib.Bytes {
 	var _arg0 *C.GstAdapter // out
@@ -274,7 +274,7 @@ func (adapter *Adapter) Copy(offset, size uint) *glib.Bytes {
 //
 // The function returns the following values:
 //
-//    - guint64: offset. Can be GST_BUFFER_OFFSET_NONE.
+//   - guint64: offset. Can be GST_BUFFER_OFFSET_NONE.
 //
 func (adapter *Adapter) DistanceFromDiscont() uint64 {
 	var _arg0 *C.GstAdapter // out
@@ -297,7 +297,7 @@ func (adapter *Adapter) DistanceFromDiscont() uint64 {
 //
 // The function returns the following values:
 //
-//    - clockTime: DTS at the last discont or GST_CLOCK_TIME_NONE.
+//   - clockTime: DTS at the last discont or GST_CLOCK_TIME_NONE.
 //
 func (adapter *Adapter) DtsAtDiscont() gst.ClockTime {
 	var _arg0 *C.GstAdapter  // out
@@ -310,9 +310,7 @@ func (adapter *Adapter) DtsAtDiscont() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -324,7 +322,7 @@ func (adapter *Adapter) DtsAtDiscont() gst.ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - flush: number of bytes to flush.
+//   - flush: number of bytes to flush.
 //
 func (adapter *Adapter) Flush(flush uint) {
 	var _arg0 *C.GstAdapter // out
@@ -348,12 +346,12 @@ func (adapter *Adapter) Flush(flush uint) {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to get.
+//   - nbytes: number of bytes to get.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) containing the first nbytes of the adapter, or NULL if
-//      nbytes bytes are not available. gst_buffer_unref() when no longer needed.
+//   - buffer (optional) containing the first nbytes of the adapter, or NULL if
+//     nbytes bytes are not available. gst_buffer_unref() when no longer needed.
 //
 func (adapter *Adapter) Buffer(nbytes uint) *gst.Buffer {
 	var _arg0 *C.GstAdapter // out
@@ -382,9 +380,9 @@ func (adapter *Adapter) Buffer(nbytes uint) *gst.Buffer {
 	return _buffer
 }
 
-// BufferFast returns a Buffer containing the first nbytes of the adapter, but
-// does not flush them from the adapter. See gst_adapter_take_buffer_fast() for
-// details.
+// BufferFast returns a Buffer containing the first nbytes of the adapter,
+// but does not flush them from the adapter. See gst_adapter_take_buffer_fast()
+// for details.
 //
 // Caller owns a reference to the returned buffer. gst_buffer_unref() after
 // usage.
@@ -393,12 +391,12 @@ func (adapter *Adapter) Buffer(nbytes uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to get.
+//   - nbytes: number of bytes to get.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) containing the first nbytes of the adapter, or NULL if
-//      nbytes bytes are not available. gst_buffer_unref() when no longer needed.
+//   - buffer (optional) containing the first nbytes of the adapter, or NULL if
+//     nbytes bytes are not available. gst_buffer_unref() when no longer needed.
 //
 func (adapter *Adapter) BufferFast(nbytes uint) *gst.Buffer {
 	var _arg0 *C.GstAdapter // out
@@ -427,8 +425,8 @@ func (adapter *Adapter) BufferFast(nbytes uint) *gst.Buffer {
 	return _buffer
 }
 
-// BufferList returns a BufferList of buffers containing the first nbytes bytes
-// of the adapter but does not flush them from the adapter. See
+// BufferList returns a BufferList of buffers containing the first nbytes
+// bytes of the adapter but does not flush them from the adapter. See
 // gst_adapter_take_buffer_list() for details.
 //
 // Caller owns the returned list. Call gst_buffer_list_unref() to free the list
@@ -436,12 +434,12 @@ func (adapter *Adapter) BufferFast(nbytes uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to get.
+//   - nbytes: number of bytes to get.
 //
 // The function returns the following values:
 //
-//    - bufferList (optional) of buffers containing the first nbytes of the
-//      adapter, or NULL if nbytes bytes are not available.
+//   - bufferList (optional) of buffers containing the first nbytes of the
+//     adapter, or NULL if nbytes bytes are not available.
 //
 func (adapter *Adapter) BufferList(nbytes uint) *gst.BufferList {
 	var _arg0 *C.GstAdapter    // out
@@ -470,8 +468,8 @@ func (adapter *Adapter) BufferList(nbytes uint) *gst.BufferList {
 	return _bufferList
 }
 
-// List returns a #GList of buffers containing the first nbytes bytes of the
-// adapter, but does not flush them from the adapter. See
+// List returns a #GList of buffers containing the first nbytes bytes
+// of the adapter, but does not flush them from the adapter. See
 // gst_adapter_take_list() for details.
 //
 // Caller owns returned list and contained buffers. gst_buffer_unref() each
@@ -479,12 +477,12 @@ func (adapter *Adapter) BufferList(nbytes uint) *gst.BufferList {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to get.
+//   - nbytes: number of bytes to get.
 //
 // The function returns the following values:
 //
-//    - list (optional) of buffers containing the first nbytes of the adapter, or
-//      NULL if nbytes bytes are not available.
+//   - list (optional) of buffers containing the first nbytes of the adapter,
+//     or NULL if nbytes bytes are not available.
 //
 func (adapter *Adapter) List(nbytes uint) []*gst.Buffer {
 	var _arg0 *C.GstAdapter // out
@@ -534,34 +532,30 @@ func (adapter *Adapter) List(nbytes uint) []*gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - mask to apply to data before matching against pattern.
-//    - pattern to match (after mask is applied).
-//    - offset into the adapter data from which to start scanning, returns the
-//      last scanned position.
-//    - size: number of bytes to scan from offset.
+//   - mask to apply to data before matching against pattern.
+//   - pattern to match (after mask is applied).
+//   - offset into the adapter data from which to start scanning, returns the
+//     last scanned position.
+//   - size: number of bytes to scan from offset.
 //
 // The function returns the following values:
 //
-//    - gssize: offset of the first match, or -1 if no match was found.
+//   - gssize: offset of the first match, or -1 if no match was found.
 //
-//      Example:
+//     Example:
 //
-//         // Assume the adapter contains 0x00 0x01 0x02 ... 0xfe 0xff
+//     // Assume the adapter contains 0x00 0x01 0x02 ... 0xfe 0xff
 //
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffffffff, 0x00010203, 0, 256);
-//         // -> returns 0
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffffffff, 0x00010203, 1, 255);
-//         // -> returns -1
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffffffff, 0x01020304, 1, 255);
-//         // -> returns 1
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffff, 0x0001, 0, 256);
-//         // -> returns -1
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffff, 0x0203, 0, 256);
-//         // -> returns 0
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffff0000, 0x02030000, 0, 256);
-//         // -> returns 2
-//         gst_adapter_masked_scan_uint32 (adapter, 0xffff0000, 0x02030000, 0, 4);
-//         // -> returns -1.
+//     gst_adapter_masked_scan_uint32 (adapter, 0xffffffff, 0x00010203, 0, 256);
+//     // -> returns 0 gst_adapter_masked_scan_uint32 (adapter, 0xffffffff,
+//     0x00010203, 1, 255); // -> returns -1 gst_adapter_masked_scan_uint32
+//     (adapter, 0xffffffff, 0x01020304, 1, 255); // -> returns 1
+//     gst_adapter_masked_scan_uint32 (adapter, 0xffff, 0x0001, 0, 256);
+//     // -> returns -1 gst_adapter_masked_scan_uint32 (adapter, 0xffff,
+//     0x0203, 0, 256); // -> returns 0 gst_adapter_masked_scan_uint32
+//     (adapter, 0xffff0000, 0x02030000, 0, 256); // -> returns 2
+//     gst_adapter_masked_scan_uint32 (adapter, 0xffff0000, 0x02030000, 0, 4);
+//     // -> returns -1.
 //
 func (adapter *Adapter) MaskedScanUint32(mask, pattern uint32, offset, size uint) int {
 	var _arg0 *C.GstAdapter // out
@@ -604,16 +598,16 @@ func (adapter *Adapter) MaskedScanUint32(mask, pattern uint32, offset, size uint
 //
 // The function takes the following parameters:
 //
-//    - mask to apply to data before matching against pattern.
-//    - pattern to match (after mask is applied).
-//    - offset into the adapter data from which to start scanning, returns the
-//      last scanned position.
-//    - size: number of bytes to scan from offset.
+//   - mask to apply to data before matching against pattern.
+//   - pattern to match (after mask is applied).
+//   - offset into the adapter data from which to start scanning, returns the
+//     last scanned position.
+//   - size: number of bytes to scan from offset.
 //
 // The function returns the following values:
 //
-//    - value (optional): pointer to uint32 to return matching data.
-//    - gssize: offset of the first match, or -1 if no match was found.
+//   - value (optional): pointer to uint32 to return matching data.
+//   - gssize: offset of the first match, or -1 if no match was found.
 //
 func (adapter *Adapter) MaskedScanUint32Peek(mask, pattern uint32, offset, size uint) (uint32, int) {
 	var _arg0 *C.GstAdapter // out
@@ -651,7 +645,7 @@ func (adapter *Adapter) MaskedScanUint32Peek(mask, pattern uint32, offset, size 
 //
 // The function returns the following values:
 //
-//    - guint64: offset at the last discont or GST_BUFFER_OFFSET_NONE.
+//   - guint64: offset at the last discont or GST_BUFFER_OFFSET_NONE.
 //
 func (adapter *Adapter) OffsetAtDiscont() uint64 {
 	var _arg0 *C.GstAdapter // out
@@ -669,8 +663,8 @@ func (adapter *Adapter) OffsetAtDiscont() uint64 {
 	return _guint64
 }
 
-// PrevDts: get the dts that was before the current byte in the adapter. When
-// distance is given, the amount of bytes between the dts and the current
+// PrevDts: get the dts that was before the current byte in the adapter.
+// When distance is given, the amount of bytes between the dts and the current
 // position is returned.
 //
 // The dts is reset to GST_CLOCK_TIME_NONE and the distance is set to 0 when the
@@ -680,8 +674,8 @@ func (adapter *Adapter) OffsetAtDiscont() uint64 {
 //
 // The function returns the following values:
 //
-//    - distance (optional): pointer to location for distance, or NULL.
-//    - clockTime: previously seen dts.
+//   - distance (optional): pointer to location for distance, or NULL.
+//   - clockTime: previously seen dts.
 //
 func (adapter *Adapter) PrevDts() (uint64, gst.ClockTime) {
 	var _arg0 *C.GstAdapter  // out
@@ -697,9 +691,7 @@ func (adapter *Adapter) PrevDts() (uint64, gst.ClockTime) {
 	var _clockTime gst.ClockTime // out
 
 	_distance = uint64(_arg1)
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _distance, _clockTime
 }
@@ -715,12 +707,12 @@ func (adapter *Adapter) PrevDts() (uint64, gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - offset in the adapter at which to get timestamp.
+//   - offset in the adapter at which to get timestamp.
 //
 // The function returns the following values:
 //
-//    - distance (optional): pointer to location for distance, or NULL.
-//    - clockTime: previously seen dts at given offset.
+//   - distance (optional): pointer to location for distance, or NULL.
+//   - clockTime: previously seen dts at given offset.
 //
 func (adapter *Adapter) PrevDtsAtOffset(offset uint) (uint64, gst.ClockTime) {
 	var _arg0 *C.GstAdapter  // out
@@ -739,9 +731,7 @@ func (adapter *Adapter) PrevDtsAtOffset(offset uint) (uint64, gst.ClockTime) {
 	var _clockTime gst.ClockTime // out
 
 	_distance = uint64(_arg2)
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _distance, _clockTime
 }
@@ -757,8 +747,8 @@ func (adapter *Adapter) PrevDtsAtOffset(offset uint) (uint64, gst.ClockTime) {
 //
 // The function returns the following values:
 //
-//    - distance (optional): pointer to a location for distance, or NULL.
-//    - guint64 previous seen offset.
+//   - distance (optional): pointer to a location for distance, or NULL.
+//   - guint64 previous seen offset.
 //
 func (adapter *Adapter) PrevOffset() (distance, guint64 uint64) {
 	var _arg0 *C.GstAdapter // out
@@ -779,8 +769,8 @@ func (adapter *Adapter) PrevOffset() (distance, guint64 uint64) {
 	return _distance, _guint64
 }
 
-// PrevPts: get the pts that was before the current byte in the adapter. When
-// distance is given, the amount of bytes between the pts and the current
+// PrevPts: get the pts that was before the current byte in the adapter.
+// When distance is given, the amount of bytes between the pts and the current
 // position is returned.
 //
 // The pts is reset to GST_CLOCK_TIME_NONE and the distance is set to 0 when the
@@ -790,8 +780,8 @@ func (adapter *Adapter) PrevOffset() (distance, guint64 uint64) {
 //
 // The function returns the following values:
 //
-//    - distance (optional): pointer to location for distance, or NULL.
-//    - clockTime: previously seen pts.
+//   - distance (optional): pointer to location for distance, or NULL.
+//   - clockTime: previously seen pts.
 //
 func (adapter *Adapter) PrevPts() (uint64, gst.ClockTime) {
 	var _arg0 *C.GstAdapter  // out
@@ -807,9 +797,7 @@ func (adapter *Adapter) PrevPts() (uint64, gst.ClockTime) {
 	var _clockTime gst.ClockTime // out
 
 	_distance = uint64(_arg1)
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _distance, _clockTime
 }
@@ -825,12 +813,12 @@ func (adapter *Adapter) PrevPts() (uint64, gst.ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - offset in the adapter at which to get timestamp.
+//   - offset in the adapter at which to get timestamp.
 //
 // The function returns the following values:
 //
-//    - distance (optional): pointer to location for distance, or NULL.
-//    - clockTime: previously seen pts at given offset.
+//   - distance (optional): pointer to location for distance, or NULL.
+//   - clockTime: previously seen pts at given offset.
 //
 func (adapter *Adapter) PrevPtsAtOffset(offset uint) (uint64, gst.ClockTime) {
 	var _arg0 *C.GstAdapter  // out
@@ -849,9 +837,7 @@ func (adapter *Adapter) PrevPtsAtOffset(offset uint) (uint64, gst.ClockTime) {
 	var _clockTime gst.ClockTime // out
 
 	_distance = uint64(_arg2)
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _distance, _clockTime
 }
@@ -861,7 +847,7 @@ func (adapter *Adapter) PrevPtsAtOffset(offset uint) (uint64, gst.ClockTime) {
 //
 // The function returns the following values:
 //
-//    - clockTime: PTS at the last discont or GST_CLOCK_TIME_NONE.
+//   - clockTime: PTS at the last discont or GST_CLOCK_TIME_NONE.
 //
 func (adapter *Adapter) PtsAtDiscont() gst.ClockTime {
 	var _arg0 *C.GstAdapter  // out
@@ -874,9 +860,7 @@ func (adapter *Adapter) PtsAtDiscont() gst.ClockTime {
 
 	var _clockTime gst.ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_clockTime = gst.ClockTime(_cret)
 
 	return _clockTime
 }
@@ -886,7 +870,7 @@ func (adapter *Adapter) PtsAtDiscont() gst.ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - buf to add to queue in the adapter.
+//   - buf to add to queue in the adapter.
 //
 func (adapter *Adapter) Push(buf *gst.Buffer) {
 	var _arg0 *C.GstAdapter // out
@@ -921,12 +905,12 @@ func (adapter *Adapter) Push(buf *gst.Buffer) {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to take.
+//   - nbytes: number of bytes to take.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) containing the first nbytes of the adapter, or NULL if
-//      nbytes bytes are not available. gst_buffer_unref() when no longer needed.
+//   - buffer (optional) containing the first nbytes of the adapter, or NULL if
+//     nbytes bytes are not available. gst_buffer_unref() when no longer needed.
 //
 func (adapter *Adapter) TakeBuffer(nbytes uint) *gst.Buffer {
 	var _arg0 *C.GstAdapter // out
@@ -957,8 +941,8 @@ func (adapter *Adapter) TakeBuffer(nbytes uint) *gst.Buffer {
 
 // TakeBufferFast returns a Buffer containing the first nbytes of the adapter.
 // The returned bytes will be flushed from the adapter. This function is
-// potentially more performant than gst_adapter_take_buffer() since it can reuse
-// the memory in pushed buffers by subbuffering or merging. Unlike
+// potentially more performant than gst_adapter_take_buffer() since it can
+// reuse the memory in pushed buffers by subbuffering or merging. Unlike
 // gst_adapter_take_buffer(), the returned buffer may be composed of multiple
 // non-contiguous Memory objects, no copies are made.
 //
@@ -979,12 +963,12 @@ func (adapter *Adapter) TakeBuffer(nbytes uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to take.
+//   - nbytes: number of bytes to take.
 //
 // The function returns the following values:
 //
-//    - buffer (optional) containing the first nbytes of the adapter, or NULL if
-//      nbytes bytes are not available. gst_buffer_unref() when no longer needed.
+//   - buffer (optional) containing the first nbytes of the adapter, or NULL if
+//     nbytes bytes are not available. gst_buffer_unref() when no longer needed.
 //
 func (adapter *Adapter) TakeBufferFast(nbytes uint) *gst.Buffer {
 	var _arg0 *C.GstAdapter // out
@@ -1023,12 +1007,12 @@ func (adapter *Adapter) TakeBufferFast(nbytes uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to take.
+//   - nbytes: number of bytes to take.
 //
 // The function returns the following values:
 //
-//    - bufferList (optional) of buffers containing the first nbytes of the
-//      adapter, or NULL if nbytes bytes are not available.
+//   - bufferList (optional) of buffers containing the first nbytes of the
+//     adapter, or NULL if nbytes bytes are not available.
 //
 func (adapter *Adapter) TakeBufferList(nbytes uint) *gst.BufferList {
 	var _arg0 *C.GstAdapter    // out
@@ -1067,12 +1051,12 @@ func (adapter *Adapter) TakeBufferList(nbytes uint) *gst.BufferList {
 //
 // The function takes the following parameters:
 //
-//    - nbytes: number of bytes to take.
+//   - nbytes: number of bytes to take.
 //
 // The function returns the following values:
 //
-//    - list (optional) of buffers containing the first nbytes of the adapter, or
-//      NULL if nbytes bytes are not available.
+//   - list (optional) of buffers containing the first nbytes of the adapter,
+//     or NULL if nbytes bytes are not available.
 //
 func (adapter *Adapter) TakeList(nbytes uint) []*gst.Buffer {
 	var _arg0 *C.GstAdapter // out

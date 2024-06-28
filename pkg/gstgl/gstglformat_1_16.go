@@ -15,13 +15,13 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - format to check is supported by context.
+//   - context: GLContext.
+//   - format to check is supported by context.
 //
 // The function returns the following values:
 //
-//    - ok: whether format is supported by context based on the OpenGL API,
-//      version, or available OpenGL extension/s.
+//   - ok: whether format is supported by context based on the OpenGL API,
+//     version, or available OpenGL extension/s.
 //
 func GLFormatIsSupported(context GLContexter, format GLFormat) bool {
 	var _arg1 *C.GstGLContext // out
@@ -50,12 +50,12 @@ func GLFormatIsSupported(context GLContexter, format GLFormat) bool {
 //
 // The function takes the following parameters:
 //
-//    - format: sized internal GLFormat.
+//   - format: sized internal GLFormat.
 //
 // The function returns the following values:
 //
-//    - unsizedFormat: location for the resulting unsized GLFormat.
-//    - glType: location for the resulting GL type.
+//   - unsizedFormat: location for the resulting unsized GLFormat.
+//   - glType: location for the resulting GL type.
 //
 func GLFormatTypeFromSizedGLFormat(format GLFormat) (GLFormat, uint) {
 	var _arg1 C.GstGLFormat // out

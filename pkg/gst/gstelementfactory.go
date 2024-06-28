@@ -52,15 +52,15 @@ type ElementFactoryListType = uint64
 //
 // The function takes the following parameters:
 //
-//    - plugin (optional) to register the element with, or NULL for a static
-//      element.
-//    - name of elements of this type.
-//    - rank of element (higher rank means more importance when autoplugging).
-//    - typ: GType of element to register.
+//   - plugin (optional) to register the element with, or NULL for a static
+//     element.
+//   - name of elements of this type.
+//   - rank of element (higher rank means more importance when autoplugging).
+//   - typ: GType of element to register.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the registering succeeded, FALSE on error.
+//   - ok: TRUE, if the registering succeeded, FALSE on error.
 //
 func ElementRegister(plugin *Plugin, name string, rank uint, typ coreglib.Type) bool {
 	var _arg1 *C.GstPlugin // out
@@ -103,18 +103,18 @@ func ElementRegister(plugin *Plugin, name string, rank uint, typ coreglib.Type) 
 //
 // Using an element factory
 //
-//      #include <gst/gst.h>
+//    #include <gst/gst.h>
 //
-//      GstElement *src;
-//      GstElementFactory *srcfactory;
+//    GstElement *src;
+//    GstElementFactory *srcfactory;
 //
-//      gst_init (&argc, &argv);
+//    gst_init (&argc, &argv);
 //
-//      srcfactory = gst_element_factory_find ("filesrc");
-//      g_return_if_fail (srcfactory != NULL);
-//      src = gst_element_factory_create (srcfactory, "src");
-//      g_return_if_fail (src != NULL);
-//      ...
+//    srcfactory = gst_element_factory_find ("filesrc");
+//    g_return_if_fail (srcfactory != NULL);
+//    src = gst_element_factory_create (srcfactory, "src");
+//    g_return_if_fail (src != NULL);
+//    ...
 type ElementFactory struct {
 	_ [0]func() // equal guard
 	PluginFeature
@@ -144,11 +144,11 @@ func marshalElementFactory(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - caps to check.
+//   - caps to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps are fully compatible.
+//   - ok: TRUE if the caps are fully compatible.
 //
 func (factory *ElementFactory) CanSinkAllCaps(caps *Caps) bool {
 	var _arg0 *C.GstElementFactory // out
@@ -175,11 +175,11 @@ func (factory *ElementFactory) CanSinkAllCaps(caps *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps to check.
+//   - caps to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps have a common subset.
+//   - ok: TRUE if the caps have a common subset.
 //
 func (factory *ElementFactory) CanSinkAnyCaps(caps *Caps) bool {
 	var _arg0 *C.GstElementFactory // out
@@ -206,11 +206,11 @@ func (factory *ElementFactory) CanSinkAnyCaps(caps *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps to check.
+//   - caps to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps are fully compatible.
+//   - ok: TRUE if the caps are fully compatible.
 //
 func (factory *ElementFactory) CanSrcAllCaps(caps *Caps) bool {
 	var _arg0 *C.GstElementFactory // out
@@ -237,11 +237,11 @@ func (factory *ElementFactory) CanSrcAllCaps(caps *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - caps to check.
+//   - caps to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the caps have a common subset.
+//   - ok: TRUE if the caps have a common subset.
 //
 func (factory *ElementFactory) CanSrcAnyCaps(caps *Caps) bool {
 	var _arg0 *C.GstElementFactory // out
@@ -270,13 +270,13 @@ func (factory *ElementFactory) CanSrcAnyCaps(caps *Caps) bool {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of new element, or NULL to automatically create a unique
-//      name.
+//   - name (optional) of new element, or NULL to automatically create a unique
+//     name.
 //
 // The function returns the following values:
 //
-//    - element (optional): new Element or NULL if the element couldn't be
-//      created.
+//   - element (optional): new Element or NULL if the element couldn't be
+//     created.
 //
 func (factory *ElementFactory) Create(name string) Elementer {
 	var _arg0 *C.GstElementFactory // out
@@ -321,13 +321,13 @@ func (factory *ElementFactory) Create(name string) Elementer {
 //
 // The function takes the following parameters:
 //
-//    - names (optional): array of properties names.
-//    - values (optional): array of associated properties values.
+//   - names (optional): array of properties names.
+//   - values (optional): array of associated properties values.
 //
 // The function returns the following values:
 //
-//    - element (optional): new Element or NULL if the element couldn't be
-//      created.
+//   - element (optional): new Element or NULL if the element couldn't be
+//     created.
 //
 func (factory *ElementFactory) CreateWithProperties(names []string, values []coreglib.Value) Elementer {
 	var _arg0 *C.GstElementFactory // out
@@ -390,8 +390,8 @@ func (factory *ElementFactory) CreateWithProperties(names []string, values []cor
 //
 // The function returns the following values:
 //
-//    - gType for elements managed by this factory or 0 if the factory is not
-//      loaded.
+//   - gType for elements managed by this factory or 0 if the factory is not
+//     loaded.
 //
 func (factory *ElementFactory) ElementType() coreglib.Type {
 	var _arg0 *C.GstElementFactory // out
@@ -413,12 +413,12 @@ func (factory *ElementFactory) ElementType() coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - key: key.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): metadata with key on factory or NULL when there was no
-//      metadata with the given key.
+//   - utf8 (optional): metadata with key on factory or NULL when there was no
+//     metadata with the given key.
 //
 func (factory *ElementFactory) Metadata(key string) string {
 	var _arg0 *C.GstElementFactory // out
@@ -446,8 +446,8 @@ func (factory *ElementFactory) Metadata(key string) string {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): a NULL-terminated array of key strings, or NULL when
-//      there is no metadata. Free with g_strfreev() when no longer needed.
+//   - utf8s (optional): a NULL-terminated array of key strings, or NULL when
+//     there is no metadata. Free with g_strfreev() when no longer needed.
 //
 func (factory *ElementFactory) MetadataKeys() []string {
 	var _arg0 *C.GstElementFactory // out
@@ -485,7 +485,7 @@ func (factory *ElementFactory) MetadataKeys() []string {
 //
 // The function returns the following values:
 //
-//    - guint: number of pad_templates.
+//   - guint: number of pad_templates.
 //
 func (factory *ElementFactory) NumPadTemplates() uint {
 	var _arg0 *C.GstElementFactory // out
@@ -508,7 +508,7 @@ func (factory *ElementFactory) NumPadTemplates() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if documentation should be skipped.
+//   - ok: TRUE if documentation should be skipped.
 //
 func (factory *ElementFactory) SkipDocumentation() bool {
 	var _arg0 *C.GstElementFactory // out
@@ -532,7 +532,7 @@ func (factory *ElementFactory) SkipDocumentation() bool {
 //
 // The function returns the following values:
 //
-//    - list: the static pad templates.
+//   - list: the static pad templates.
 //
 func (factory *ElementFactory) StaticPadTemplates() []*StaticPadTemplate {
 	var _arg0 *C.GstElementFactory // out
@@ -563,7 +563,7 @@ func (factory *ElementFactory) StaticPadTemplates() []*StaticPadTemplate {
 //
 // The function returns the following values:
 //
-//    - utf8s: supported protocols or NULL.
+//   - utf8s: supported protocols or NULL.
 //
 func (factory *ElementFactory) URIProtocols() []string {
 	var _arg0 *C.GstElementFactory // out
@@ -597,7 +597,7 @@ func (factory *ElementFactory) URIProtocols() []string {
 //
 // The function returns the following values:
 //
-//    - uriType: type of URIs this element supports.
+//   - uriType: type of URIs this element supports.
 //
 func (factory *ElementFactory) URIType() URIType {
 	var _arg0 *C.GstElementFactory // out
@@ -620,11 +620,11 @@ func (factory *ElementFactory) URIType() URIType {
 //
 // The function takes the following parameters:
 //
-//    - interfacename: interface name.
+//   - interfacename: interface name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when factory implement the interface.
+//   - ok: TRUE when factory implement the interface.
 //
 func (factory *ElementFactory) HasInterface(interfacename string) bool {
 	var _arg0 *C.GstElementFactory // out
@@ -652,11 +652,11 @@ func (factory *ElementFactory) HasInterface(interfacename string) bool {
 //
 // The function takes the following parameters:
 //
-//    - typ: ElementFactoryListType.
+//   - typ: ElementFactoryListType.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if factory is of type.
+//   - ok: TRUE if factory is of type.
 //
 func (factory *ElementFactory) ListIsType(typ ElementFactoryListType) bool {
 	var _arg0 *C.GstElementFactory        // out
@@ -664,9 +664,7 @@ func (factory *ElementFactory) ListIsType(typ ElementFactoryListType) bool {
 	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GstElementFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	_arg1 = C.guint64(typ)
-	type _ = ElementFactoryListType
-	type _ = uint64
+	_arg1 = C.GstElementFactoryListType(typ)
 
 	_cret = C.gst_element_factory_list_is_type(_arg0, _arg1)
 	runtime.KeepAlive(factory)
@@ -686,11 +684,11 @@ func (factory *ElementFactory) ListIsType(typ ElementFactoryListType) bool {
 //
 // The function takes the following parameters:
 //
-//    - name of factory to find.
+//   - name of factory to find.
 //
 // The function returns the following values:
 //
-//    - elementFactory (optional) if found, NULL otherwise.
+//   - elementFactory (optional) if found, NULL otherwise.
 //
 func ElementFactoryFind(name string) *ElementFactory {
 	var _arg1 *C.gchar             // out
@@ -714,21 +712,21 @@ func ElementFactoryFind(name string) *ElementFactory {
 // ElementFactoryListFilter: filter out all the elementfactories in list that
 // can handle caps in the given direction.
 //
-// If subsetonly is TRUE, then only the elements whose pads templates are a
-// complete superset of caps will be returned. Else any element whose pad
+// If subsetonly is TRUE, then only the elements whose pads templates are
+// a complete superset of caps will be returned. Else any element whose pad
 // templates caps can intersect with caps will be returned.
 //
 // The function takes the following parameters:
 //
-//    - list of ElementFactory to filter.
-//    - caps: Caps.
-//    - direction to filter on.
-//    - subsetonly: whether to filter on caps subsets or not.
+//   - list of ElementFactory to filter.
+//   - caps: Caps.
+//   - direction to filter on.
+//   - subsetonly: whether to filter on caps subsets or not.
 //
 // The function returns the following values:
 //
-//    - ret of ElementFactory elements that match the given requisites. Use
-//      #gst_plugin_feature_list_free after usage.
+//   - ret of ElementFactory elements that match the given requisites. Use
+//     #gst_plugin_feature_list_free after usage.
 //
 func ElementFactoryListFilter(list []*ElementFactory, caps *Caps, direction PadDirection, subsetonly bool) []*ElementFactory {
 	var _arg1 *C.GList          // out
@@ -775,22 +773,20 @@ func ElementFactoryListFilter(list []*ElementFactory, caps *Caps, direction PadD
 //
 // The function takes the following parameters:
 //
-//    - typ: ElementFactoryListType.
-//    - minrank: minimum rank.
+//   - typ: ElementFactoryListType.
+//   - minrank: minimum rank.
 //
 // The function returns the following values:
 //
-//    - list of ElementFactory elements. Use gst_plugin_feature_list_free() after
-//      usage.
+//   - list of ElementFactory elements. Use gst_plugin_feature_list_free() after
+//     usage.
 //
 func ElementFactoryListGetElements(typ ElementFactoryListType, minrank Rank) []*ElementFactory {
 	var _arg1 C.GstElementFactoryListType // out
 	var _arg2 C.GstRank                   // out
 	var _cret *C.GList                    // in
 
-	_arg1 = C.guint64(typ)
-	type _ = ElementFactoryListType
-	type _ = uint64
+	_arg1 = C.GstElementFactoryListType(typ)
 	_arg2 = C.GstRank(minrank)
 
 	_cret = C.gst_element_factory_list_get_elements(_arg1, _arg2)
@@ -817,13 +813,13 @@ func ElementFactoryListGetElements(typ ElementFactoryListType, minrank Rank) []*
 //
 // The function takes the following parameters:
 //
-//    - factoryname: named factory to instantiate.
-//    - name (optional) of new element, or NULL to automatically create a unique
-//      name.
+//   - factoryname: named factory to instantiate.
+//   - name (optional) of new element, or NULL to automatically create a unique
+//     name.
 //
 // The function returns the following values:
 //
-//    - element (optional): new Element or NULL if unable to create element.
+//   - element (optional): new Element or NULL if unable to create element.
 //
 func ElementFactoryMake(factoryname, name string) Elementer {
 	var _arg1 *C.gchar      // out

@@ -70,8 +70,7 @@ func marshalGLAllocationParams(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - glAllocationParams: copy of the GLAllocationParams specified by src or
-//      NULL on failure.
+//   - glAllocationParams: copy of the GLAllocationParams specified by src.
 //
 func (src *GLAllocationParams) Copy() *GLAllocationParams {
 	var _arg0 *C.GstGLAllocationParams // out
@@ -100,7 +99,7 @@ func (src *GLAllocationParams) Copy() *GLAllocationParams {
 //
 // The function takes the following parameters:
 //
-//    - dest: destination GLAllocationParams.
+//   - dest: destination GLAllocationParams.
 //
 func (src *GLAllocationParams) CopyData(dest *GLAllocationParams) {
 	var _arg0 *C.GstGLAllocationParams // out
@@ -228,7 +227,7 @@ func (g *GLBaseMemory) SetGLMapCount(glMapCount int) {
 //
 // The function returns the following values:
 //
-//    - ok: whether the system memory could be allocated.
+//   - ok: whether the system memory could be allocated.
 //
 func (glMem *GLBaseMemory) AllocData() bool {
 	var _arg0 *C.GstGLBaseMemory // out
@@ -250,13 +249,13 @@ func (glMem *GLBaseMemory) AllocData() bool {
 
 // The function takes the following parameters:
 //
-//    - dest: destination GLBaseMemory.
-//    - offset to start at.
-//    - size: number of bytes to copy.
+//   - dest: destination GLBaseMemory.
+//   - offset to start at.
+//   - size: number of bytes to copy.
 //
 // The function returns the following values:
 //
-//    - ok: whether the copy succeeded.
+//   - ok: whether the copy succeeded.
 //
 func (src *GLBaseMemory) Memcpy(dest *GLBaseMemory, offset int, size int) bool {
 	var _arg0 *C.GstGLBaseMemory // out

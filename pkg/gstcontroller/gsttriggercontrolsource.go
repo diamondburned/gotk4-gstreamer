@@ -89,7 +89,7 @@ func marshalTriggerControlSource(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - triggerControlSource: new, unbound TriggerControlSource.
+//   - triggerControlSource: new, unbound TriggerControlSource.
 //
 func NewTriggerControlSource() *TriggerControlSource {
 	var _cret *C.GstControlSource // in

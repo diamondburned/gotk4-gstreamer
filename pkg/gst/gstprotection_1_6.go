@@ -17,21 +17,21 @@ import "C"
 // signal the UUID of the protection system.
 const PROTECTION_SYSTEM_ID_CAPS_FIELD = "protection-system"
 
-// ProtectionSelectSystem iterates the supplied list of UUIDs and checks the
-// GstRegistry for an element that supports one of the supplied UUIDs. If more
-// than one element matches, the system ID of the highest ranked element is
-// selected.
+// ProtectionSelectSystem iterates the supplied list of UUIDs and checks
+// the GstRegistry for an element that supports one of the supplied UUIDs.
+// If more than one element matches, the system ID of the highest ranked element
+// is selected.
 //
 // The function takes the following parameters:
 //
-//    - systemIdentifiers: null terminated array of strings that contains the
-//      UUID values of each protection system that is to be checked.
+//   - systemIdentifiers: null terminated array of strings that contains the
+//     UUID values of each protection system that is to be checked.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): one of the strings from system_identifiers that
-//      indicates the highest ranked element that implements the protection
-//      system indicated by that system ID, or NULL if no element has been found.
+//   - utf8 (optional): one of the strings from system_identifiers that
+//     indicates the highest ranked element that implements the protection
+//     system indicated by that system ID, or NULL if no element has been found.
 //
 func ProtectionSelectSystem(systemIdentifiers []string) string {
 	var _arg1 **C.gchar // out

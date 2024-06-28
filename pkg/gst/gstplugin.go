@@ -76,7 +76,7 @@ func (p PluginError) String() string {
 //
 // The function returns the following values:
 //
-//    - quark: error quark used in GError messages.
+//   - quark: error quark used in GError messages.
 //
 func PluginErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -85,9 +85,7 @@ func PluginErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -263,28 +261,28 @@ func marshalPlugin(p uintptr) (interface{}, error) {
 // feature set of this plugin (ie. the elements or typefinders associated with
 // it).
 //
-// GStreamer will re-inspect plugins with external dependencies whenever any of
-// the external dependencies change. This is useful for plugins which wrap other
-// plugin systems, e.g. a plugin which wraps a plugin-based visualisation
+// GStreamer will re-inspect plugins with external dependencies whenever any
+// of the external dependencies change. This is useful for plugins which wrap
+// other plugin systems, e.g. a plugin which wraps a plugin-based visualisation
 // library and makes visualisations available as GStreamer elements, or a codec
 // loader which exposes elements and/or caps dependent on what external codec
 // libraries are currently installed.
 //
 // The function takes the following parameters:
 //
-//    - envVars (optional): NULL-terminated array of environment variables
-//      affecting the feature set of the plugin (e.g. an environment variable
-//      containing paths where to look for additional modules/plugins of a
-//      library), or NULL. Environment variable names may be followed by a path
-//      component which will be added to the content of the environment variable,
-//      e.g. "HOME/.mystuff/plugins".
-//    - paths (optional): NULL-terminated array of directories/paths where
-//      dependent files may be, or NULL.
-//    - names (optional): NULL-terminated array of file names (or file name
-//      suffixes, depending on flags) to be used in combination with the paths
-//      from paths and/or the paths extracted from the environment variables in
-//      env_vars, or NULL.
-//    - flags: optional flags, or T_PLUGIN_DEPENDENCY_FLAG_NONE.
+//   - envVars (optional): NULL-terminated array of environment variables
+//     affecting the feature set of the plugin (e.g. an environment variable
+//     containing paths where to look for additional modules/plugins of a
+//     library), or NULL. Environment variable names may be followed by a path
+//     component which will be added to the content of the environment variable,
+//     e.g. "HOME/.mystuff/plugins".
+//   - paths (optional): NULL-terminated array of directories/paths where
+//     dependent files may be, or NULL.
+//   - names (optional): NULL-terminated array of file names (or file name
+//     suffixes, depending on flags) to be used in combination with the paths
+//     from paths and/or the paths extracted from the environment variables in
+//     env_vars, or NULL.
+//   - flags: optional flags, or T_PLUGIN_DEPENDENCY_FLAG_NONE.
 //
 func (plugin *Plugin) AddDependency(envVars, paths, names []string, flags PluginDependencyFlags) {
 	var _arg0 *C.GstPlugin               // out
@@ -347,9 +345,9 @@ func (plugin *Plugin) AddDependency(envVars, paths, names []string, flags Plugin
 // affect the feature set of this plugin (ie. the elements or typefinders
 // associated with it).
 //
-// GStreamer will re-inspect plugins with external dependencies whenever any of
-// the external dependencies change. This is useful for plugins which wrap other
-// plugin systems, e.g. a plugin which wraps a plugin-based visualisation
+// GStreamer will re-inspect plugins with external dependencies whenever any
+// of the external dependencies change. This is useful for plugins which wrap
+// other plugin systems, e.g. a plugin which wraps a plugin-based visualisation
 // library and makes visualisations available as GStreamer elements, or a codec
 // loader which exposes elements and/or caps dependent on what external codec
 // libraries are currently installed.
@@ -360,15 +358,15 @@ func (plugin *Plugin) AddDependency(envVars, paths, names []string, flags Plugin
 //
 // The function takes the following parameters:
 //
-//    - envVars (optional): one or more environment variables (separated by ':',
-//      ';' or ','), or NULL. Environment variable names may be followed by a
-//      path component which will be added to the content of the environment
-//      variable, e.g. "HOME/.mystuff/plugins:MYSTUFF_PLUGINS_PATH".
-//    - paths (optional): one ore more directory paths (separated by ':' or ';'
-//      or ','), or NULL. Example: "/usr/lib/mystuff/plugins".
-//    - names (optional): one or more file names or file name suffixes (separated
-//      by commas), or NULL.
-//    - flags: optional flags, or T_PLUGIN_DEPENDENCY_FLAG_NONE.
+//   - envVars (optional): one or more environment variables (separated by ':',
+//     ';' or ','), or NULL. Environment variable names may be followed by a
+//     path component which will be added to the content of the environment
+//     variable, e.g. "HOME/.mystuff/plugins:MYSTUFF_PLUGINS_PATH".
+//   - paths (optional): one ore more directory paths (separated by ':' or ';'
+//     or ','), or NULL. Example: "/usr/lib/mystuff/plugins".
+//   - names (optional): one or more file names or file name suffixes (separated
+//     by commas), or NULL.
+//   - flags: optional flags, or T_PLUGIN_DEPENDENCY_FLAG_NONE.
 //
 func (plugin *Plugin) AddDependencySimple(envVars, paths, names string, flags PluginDependencyFlags) {
 	var _arg0 *C.GstPlugin               // out
@@ -405,7 +403,7 @@ func (plugin *Plugin) AddDependencySimple(envVars, paths, names string, flags Pl
 //
 // The function returns the following values:
 //
-//    - structure (optional): cached data as a Structure or NULL.
+//   - structure (optional): cached data as a Structure or NULL.
 //
 func (plugin *Plugin) CacheData() *Structure {
 	var _arg0 *C.GstPlugin    // out
@@ -429,7 +427,7 @@ func (plugin *Plugin) CacheData() *Structure {
 //
 // The function returns the following values:
 //
-//    - utf8: long name of the plugin.
+//   - utf8: long name of the plugin.
 //
 func (plugin *Plugin) Description() string {
 	var _arg0 *C.GstPlugin // out
@@ -451,7 +449,7 @@ func (plugin *Plugin) Description() string {
 //
 // The function returns the following values:
 //
-//    - filename (optional) of the plugin.
+//   - filename (optional) of the plugin.
 //
 func (plugin *Plugin) Filename() string {
 	var _arg0 *C.GstPlugin // out
@@ -475,7 +473,7 @@ func (plugin *Plugin) Filename() string {
 //
 // The function returns the following values:
 //
-//    - utf8: license of the plugin.
+//   - utf8: license of the plugin.
 //
 func (plugin *Plugin) License() string {
 	var _arg0 *C.GstPlugin // out
@@ -497,7 +495,7 @@ func (plugin *Plugin) License() string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the plugin.
+//   - utf8: name of the plugin.
 //
 func (plugin *Plugin) Name() string {
 	var _arg0 *C.GstPlugin // out
@@ -519,7 +517,7 @@ func (plugin *Plugin) Name() string {
 //
 // The function returns the following values:
 //
-//    - utf8: origin of the plugin.
+//   - utf8: origin of the plugin.
 //
 func (plugin *Plugin) Origin() string {
 	var _arg0 *C.GstPlugin // out
@@ -541,7 +539,7 @@ func (plugin *Plugin) Origin() string {
 //
 // The function returns the following values:
 //
-//    - utf8: package of the plugin.
+//   - utf8: package of the plugin.
 //
 func (plugin *Plugin) Package() string {
 	var _arg0 *C.GstPlugin // out
@@ -563,15 +561,15 @@ func (plugin *Plugin) Package() string {
 // string, if available.
 //
 // For normal GStreamer plugin releases this will usually just be a date in the
-// form of "YYYY-MM-DD", while pre-releases and builds from git may contain a
-// time component after the date as well, in which case the string will be
+// form of "YYYY-MM-DD", while pre-releases and builds from git may contain
+// a time component after the date as well, in which case the string will be
 // formatted like "YYYY-MM-DDTHH:MMZ" (e.g. "2012-04-30T09:30Z").
 //
 // There may be plugins that do not have a valid release date set on them.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): date string of the plugin, or NULL if not available.
+//   - utf8 (optional): date string of the plugin, or NULL if not available.
 //
 func (plugin *Plugin) ReleaseDateString() string {
 	var _arg0 *C.GstPlugin // out
@@ -595,7 +593,7 @@ func (plugin *Plugin) ReleaseDateString() string {
 //
 // The function returns the following values:
 //
-//    - utf8: source of the plugin.
+//   - utf8: source of the plugin.
 //
 func (plugin *Plugin) Source() string {
 	var _arg0 *C.GstPlugin // out
@@ -617,7 +615,7 @@ func (plugin *Plugin) Source() string {
 //
 // The function returns the following values:
 //
-//    - utf8: version of the plugin.
+//   - utf8: version of the plugin.
 //
 func (plugin *Plugin) Version() string {
 	var _arg0 *C.GstPlugin // out
@@ -639,7 +637,7 @@ func (plugin *Plugin) Version() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is loaded, FALSE otherwise.
+//   - ok: TRUE is loaded, FALSE otherwise.
 //
 func (plugin *Plugin) IsLoaded() bool {
 	var _arg0 *C.GstPlugin // out
@@ -659,8 +657,8 @@ func (plugin *Plugin) IsLoaded() bool {
 	return _ok
 }
 
-// Load loads plugin. Note that the *return value* is the loaded plugin; plugin
-// is untouched. The normal use pattern of this function goes like this:
+// Load loads plugin. Note that the *return value* is the loaded plugin;
+// plugin is untouched. The normal use pattern of this function goes like this:
 //
 //    GstPlugin *loaded_plugin;
 //    loaded_plugin = gst_plugin_load (plugin);
@@ -670,7 +668,7 @@ func (plugin *Plugin) IsLoaded() bool {
 //
 // The function returns the following values:
 //
-//    - ret (optional): reference to a loaded plugin, or NULL on error.
+//   - ret (optional): reference to a loaded plugin, or NULL on error.
 //
 func (plugin *Plugin) Load() *Plugin {
 	var _arg0 *C.GstPlugin // out
@@ -697,7 +695,7 @@ func (plugin *Plugin) Load() *Plugin {
 //
 // The function takes the following parameters:
 //
-//    - cacheData: structure containing the data to cache.
+//   - cacheData: structure containing the data to cache.
 //
 func (plugin *Plugin) SetCacheData(cacheData *Structure) {
 	var _arg0 *C.GstPlugin    // out
@@ -716,11 +714,11 @@ func (plugin *Plugin) SetCacheData(cacheData *Structure) {
 //
 // The function takes the following parameters:
 //
-//    - name of plugin to load.
+//   - name of plugin to load.
 //
 // The function returns the following values:
 //
-//    - plugin (optional): reference to a loaded plugin, or NULL on error.
+//   - plugin (optional): reference to a loaded plugin, or NULL on error.
 //
 func PluginLoadByName(name string) *Plugin {
 	var _arg1 *C.gchar     // out
@@ -746,12 +744,12 @@ func PluginLoadByName(name string) *Plugin {
 //
 // The function takes the following parameters:
 //
-//    - filename: plugin filename to load.
+//   - filename: plugin filename to load.
 //
 // The function returns the following values:
 //
-//    - plugin: reference to the existing loaded GstPlugin, a reference to the
-//      newly-loaded GstPlugin, or NULL if an error occurred.
+//   - plugin: reference to the existing loaded GstPlugin, a reference to the
+//     newly-loaded GstPlugin, or NULL if an error occurred.
 //
 func PluginLoadFile(filename string) (*Plugin, error) {
 	var _arg1 *C.gchar     // out
@@ -776,9 +774,9 @@ func PluginLoadFile(filename string) (*Plugin, error) {
 }
 
 // PluginRegisterStaticFull registers a static plugin, ie. a plugin which is
-// private to an application or library and contained within the application or
-// library (as opposed to being shipped as a separate module file) with a
-// PluginInitFullFunc which allows user data to be passed to the callback
+// private to an application or library and contained within the application
+// or library (as opposed to being shipped as a separate module file) with
+// a PluginInitFullFunc which allows user data to be passed to the callback
 // function (useful for bindings).
 //
 // You must make sure that GStreamer has been initialised (with gst_init() or
@@ -786,25 +784,25 @@ func PluginLoadFile(filename string) (*Plugin, error) {
 //
 // The function takes the following parameters:
 //
-//    - majorVersion: major version number of the GStreamer core that the plugin
-//      was compiled for, you can just use GST_VERSION_MAJOR here.
-//    - minorVersion: minor version number of the GStreamer core that the plugin
-//      was compiled for, you can just use GST_VERSION_MINOR here.
-//    - name: unique name of the plugin (ideally prefixed with an application- or
-//      library-specific namespace prefix in order to avoid name conflicts in
-//      case a similar plugin with the same name ever gets added to GStreamer).
-//    - description of the plugin.
-//    - initFullFunc: pointer to the init function with user data of this plugin.
-//    - version string of the plugin.
-//    - license: effective license of plugin. Must be one of the approved
-//      licenses (see PluginDesc above) or the plugin will not be registered.
-//    - source module plugin belongs to.
-//    - pkg: shipped package plugin belongs to.
-//    - origin: URL to provider of plugin.
+//   - majorVersion: major version number of the GStreamer core that the plugin
+//     was compiled for, you can just use GST_VERSION_MAJOR here.
+//   - minorVersion: minor version number of the GStreamer core that the plugin
+//     was compiled for, you can just use GST_VERSION_MINOR here.
+//   - name: unique name of the plugin (ideally prefixed with an application-
+//     or library-specific namespace prefix in order to avoid name conflicts in
+//     case a similar plugin with the same name ever gets added to GStreamer).
+//   - description of the plugin.
+//   - initFullFunc: pointer to the init function with user data of this plugin.
+//   - version string of the plugin.
+//   - license: effective license of plugin. Must be one of the approved
+//     licenses (see PluginDesc above) or the plugin will not be registered.
+//   - source module plugin belongs to.
+//   - pkg: shipped package plugin belongs to.
+//   - origin: URL to provider of plugin.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the plugin was registered correctly, otherwise FALSE.
+//   - ok: TRUE if the plugin was registered correctly, otherwise FALSE.
 //
 func PluginRegisterStaticFull(majorVersion, minorVersion int, name, description string, initFullFunc PluginInitFullFunc, version, license, source, pkg, origin string) bool {
 	var _arg1 C.gint                  // out

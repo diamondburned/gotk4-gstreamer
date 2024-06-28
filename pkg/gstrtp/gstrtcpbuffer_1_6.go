@@ -24,11 +24,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - data to validate.
+//   - data to validate.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the data points to a valid RTCP packet.
+//   - ok: TRUE if the data points to a valid RTCP packet.
 //
 func RTCPBufferValidateDataReduced(data []byte) bool {
 	var _arg1 *C.guint8 // out
@@ -57,11 +57,11 @@ func RTCPBufferValidateDataReduced(data []byte) bool {
 //
 // The function takes the following parameters:
 //
-//    - buffer to validate.
+//   - buffer to validate.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if buffer is a valid RTCP packet.
+//   - ok: TRUE if buffer is a valid RTCP packet.
 //
 func RTCPBufferValidateReduced(buffer *gst.Buffer) bool {
 	var _arg1 *C.GstBuffer // out

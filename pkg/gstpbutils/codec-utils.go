@@ -14,22 +14,22 @@ import (
 // #include <gst/pbutils/pbutils.h>
 import "C"
 
-// CodecUtilsAacCapsSetLevelAndProfile sets the level and profile on caps if it
-// can be determined from audio_config. See gst_codec_utils_aac_get_level() and
-// gst_codec_utils_aac_get_profile() for more details on the parameters. caps
-// must be audio/mpeg caps with an "mpegversion" field of either 2 or 4. If
-// mpegversion is 4, the "base-profile" field is also set in caps.
+// CodecUtilsAacCapsSetLevelAndProfile sets the level and profile on caps if
+// it can be determined from audio_config. See gst_codec_utils_aac_get_level()
+// and gst_codec_utils_aac_get_profile() for more details on the parameters.
+// caps must be audio/mpeg caps with an "mpegversion" field of either 2 or 4.
+// If mpegversion is 4, the "base-profile" field is also set in caps.
 //
 // The function takes the following parameters:
 //
-//    - caps to which level and profile fields are to be added.
-//    - audioConfig: pointer to the AudioSpecificConfig as specified in the
-//      Elementary Stream Descriptor (esds) in ISO/IEC 14496-1. (See below for
-//      more details).
+//   - caps to which level and profile fields are to be added.
+//   - audioConfig: pointer to the AudioSpecificConfig as specified in the
+//     Elementary Stream Descriptor (esds) in ISO/IEC 14496-1. (See below for
+//     more details).
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the level and profile could be set, FALSE otherwise.
+//   - ok: TRUE if the level and profile could be set, FALSE otherwise.
 //
 func CodecUtilsAacCapsSetLevelAndProfile(caps *gst.Caps, audioConfig []byte) bool {
 	var _arg1 *C.GstCaps // out
@@ -61,12 +61,12 @@ func CodecUtilsAacCapsSetLevelAndProfile(caps *gst.Caps, audioConfig []byte) boo
 //
 // The function takes the following parameters:
 //
-//    - rate: sample rate.
+//   - rate: sample rate.
 //
 // The function returns the following values:
 //
-//    - gint: AAC index for this sample rate, -1 if the rate is not a valid AAC
-//      sample rate.
+//   - gint: AAC index for this sample rate, -1 if the rate is not a valid AAC
+//     sample rate.
 //
 func CodecUtilsAacGetIndexFromSampleRate(rate uint) int {
 	var _arg1 C.guint // out
@@ -91,22 +91,22 @@ func CodecUtilsAacGetIndexFromSampleRate(rate uint) int {
 // The audio_config parameter follows the following format, starting from the
 // most significant bit of the first byte:
 //
-//    * Bit 0:4 contains the AudioObjectType (if this is 0x5, then the
-//      real AudioObjectType is carried after the rate and channel data)
-//    * Bit 5:8 contains the sample frequency index (if this is 0xf, then the
-//      next 24 bits define the actual sample frequency, and subsequent
-//      fields are appropriately shifted).
-//    * Bit 9:12 contains the channel configuration.
+//   - Bit 0:4 contains the AudioObjectType (if this is 0x5, then the real
+//     AudioObjectType is carried after the rate and channel data)
+//   - Bit 5:8 contains the sample frequency index (if this is 0xf, then the
+//     next 24 bits define the actual sample frequency, and subsequent fields
+//     are appropriately shifted).
+//   - Bit 9:12 contains the channel configuration.
 //
 // The function takes the following parameters:
 //
-//    - audioConfig: pointer to the AudioSpecificConfig as specified in the
-//      Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
+//   - audioConfig: pointer to the AudioSpecificConfig as specified in the
+//     Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): level as a const string and NULL if the level could not
-//      be determined.
+//   - utf8 (optional): level as a const string and NULL if the level could not
+//     be determined.
 //
 func CodecUtilsAacGetLevel(audioConfig []byte) string {
 	var _arg1 *C.guint8 // out
@@ -136,13 +136,13 @@ func CodecUtilsAacGetLevel(audioConfig []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - audioConfig: pointer to the AudioSpecificConfig as specified in the
-//      Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
+//   - audioConfig: pointer to the AudioSpecificConfig as specified in the
+//     Elementary Stream Descriptor (esds) in ISO/IEC 14496-1.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): profile as a const string and NULL if the profile could
-//      not be determined.
+//   - utf8 (optional): profile as a const string and NULL if the profile could
+//     not be determined.
 //
 func CodecUtilsAacGetProfile(audioConfig []byte) string {
 	var _arg1 *C.guint8 // out
@@ -171,12 +171,12 @@ func CodecUtilsAacGetProfile(audioConfig []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - srIdx: sample rate index as from the AudioSpecificConfig (MPEG-4
-//      container) or ADTS frame header.
+//   - srIdx: sample rate index as from the AudioSpecificConfig (MPEG-4
+//     container) or ADTS frame header.
 //
 // The function returns the following values:
 //
-//    - guint: sample rate if sr_idx is valid, 0 otherwise.
+//   - guint: sample rate if sr_idx is valid, 0 otherwise.
 //
 func CodecUtilsAacGetSampleRateFromIndex(srIdx uint) uint {
 	var _arg1 C.guint // out
@@ -194,18 +194,18 @@ func CodecUtilsAacGetSampleRateFromIndex(srIdx uint) uint {
 	return _guint
 }
 
-// CodecUtilsH264CapsSetLevelAndProfile sets the level and profile in caps if it
-// can be determined from sps. See gst_codec_utils_h264_get_level() and
+// CodecUtilsH264CapsSetLevelAndProfile sets the level and profile in caps
+// if it can be determined from sps. See gst_codec_utils_h264_get_level() and
 // gst_codec_utils_h264_get_profile() for more details on the parameters.
 //
 // The function takes the following parameters:
 //
-//    - caps to which the level and profile are to be added.
-//    - sps: pointer to the sequence parameter set for the stream.
+//   - caps to which the level and profile are to be added.
+//   - sps: pointer to the sequence parameter set for the stream.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the level and profile could be set, FALSE otherwise.
+//   - ok: TRUE if the level and profile could be set, FALSE otherwise.
 //
 func CodecUtilsH264CapsSetLevelAndProfile(caps *gst.Caps, sps []byte) bool {
 	var _arg1 *C.GstCaps // out
@@ -238,11 +238,11 @@ func CodecUtilsH264CapsSetLevelAndProfile(caps *gst.Caps, sps []byte) bool {
 //
 // The function takes the following parameters:
 //
-//    - sps: pointer to the sequence parameter set for the stream.
+//   - sps: pointer to the sequence parameter set for the stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): level as a const string, or NULL if there is an error.
+//   - utf8 (optional): level as a const string, or NULL if there is an error.
 //
 func CodecUtilsH264GetLevel(sps []byte) string {
 	var _arg1 *C.guint8 // out
@@ -271,11 +271,11 @@ func CodecUtilsH264GetLevel(sps []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - level string from caps.
+//   - level string from caps.
 //
 // The function returns the following values:
 //
-//    - guint8: level_idc or 0 if the level is unknown.
+//   - guint8: level_idc or 0 if the level is unknown.
 //
 func CodecUtilsH264GetLevelIdc(level string) byte {
 	var _arg1 *C.gchar // out
@@ -294,24 +294,24 @@ func CodecUtilsH264GetLevelIdc(level string) byte {
 	return _guint8
 }
 
-// CodecUtilsH264GetProfile converts the profile indication (profile_idc) in the
-// stream's sequence parameter set into a string. The SPS is expected to have
-// the following format, as defined in the H.264 specification. The SPS is
+// CodecUtilsH264GetProfile converts the profile indication (profile_idc) in
+// the stream's sequence parameter set into a string. The SPS is expected to
+// have the following format, as defined in the H.264 specification. The SPS is
 // viewed as a bitstream here, with bit 0 being the most significant bit of the
 // first byte.
 //
-// * Bit 0:7 - Profile indication * Bit 8 - constraint_set0_flag * Bit 9 -
-// constraint_set1_flag * Bit 10 - constraint_set2_flag * Bit 11 -
+// * Bit 0:7 - Profile indication * Bit 8 - constraint_set0_flag * Bit
+// 9 - constraint_set1_flag * Bit 10 - constraint_set2_flag * Bit 11 -
 // constraint_set3_flag * Bit 12 - constraint_set3_flag * Bit 13:15 - Reserved *
 // Bit 16:24 - Level indication.
 //
 // The function takes the following parameters:
 //
-//    - sps: pointer to the sequence parameter set for the stream.
+//   - sps: pointer to the sequence parameter set for the stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): profile as a const string, or NULL if there is an error.
+//   - utf8 (optional): profile as a const string, or NULL if there is an error.
 //
 func CodecUtilsH264GetProfile(sps []byte) string {
 	var _arg1 *C.guint8 // out
@@ -335,19 +335,19 @@ func CodecUtilsH264GetProfile(sps []byte) string {
 	return _utf8
 }
 
-// CodecUtilsMpeg4VideoCapsSetLevelAndProfile sets the level and profile in caps
-// if it can be determined from vis_obj_seq. See
-// gst_codec_utils_mpeg4video_get_level() and
+// CodecUtilsMpeg4VideoCapsSetLevelAndProfile sets the
+// level and profile in caps if it can be determined from
+// vis_obj_seq. See gst_codec_utils_mpeg4video_get_level() and
 // gst_codec_utils_mpeg4video_get_profile() for more details on the parameters.
 //
 // The function takes the following parameters:
 //
-//    - caps to which the level and profile are to be added.
-//    - visObjSeq: pointer to the visual object sequence for the stream.
+//   - caps to which the level and profile are to be added.
+//   - visObjSeq: pointer to the visual object sequence for the stream.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the level and profile could be set, FALSE otherwise.
+//   - ok: TRUE if the level and profile could be set, FALSE otherwise.
 //
 func CodecUtilsMpeg4VideoCapsSetLevelAndProfile(caps *gst.Caps, visObjSeq []byte) bool {
 	var _arg1 *C.GstCaps // out
@@ -375,17 +375,17 @@ func CodecUtilsMpeg4VideoCapsSetLevelAndProfile(caps *gst.Caps, visObjSeq []byte
 }
 
 // CodecUtilsMpeg4VideoGetLevel converts the level indication in the stream's
-// visual object sequence into a string. vis_obj_seq is expected to be the data
-// following the visual object sequence start code. Only the first byte
+// visual object sequence into a string. vis_obj_seq is expected to be the
+// data following the visual object sequence start code. Only the first byte
 // (profile_and_level_indication) is used.
 //
 // The function takes the following parameters:
 //
-//    - visObjSeq: pointer to the visual object sequence for the stream.
+//   - visObjSeq: pointer to the visual object sequence for the stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): level as a const string, or NULL if there is an error.
+//   - utf8 (optional): level as a const string, or NULL if there is an error.
 //
 func CodecUtilsMpeg4VideoGetLevel(visObjSeq []byte) string {
 	var _arg1 *C.guint8 // out
@@ -416,11 +416,11 @@ func CodecUtilsMpeg4VideoGetLevel(visObjSeq []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - visObjSeq: pointer to the visual object sequence for the stream.
+//   - visObjSeq: pointer to the visual object sequence for the stream.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): profile as a const string, or NULL if there is an error.
+//   - utf8 (optional): profile as a const string, or NULL if there is an error.
 //
 func CodecUtilsMpeg4VideoGetProfile(visObjSeq []byte) string {
 	var _arg1 *C.guint8 // out

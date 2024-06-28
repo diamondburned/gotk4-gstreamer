@@ -24,10 +24,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - list of GstCheckABIStruct to be verified.
-//    - haveAbiSizes: whether there is a reference ABI size already specified, if
-//      it is FALSE and the GST_ABI environment variable is set, usable code for
-//      list will be printed.
+//   - list of GstCheckABIStruct to be verified.
+//   - haveAbiSizes: whether there is a reference ABI size already specified,
+//     if it is FALSE and the GST_ABI environment variable is set, usable code
+//     for list will be printed.
 //
 func CheckAbiList(list *CheckABIStruct, haveAbiSizes bool) {
 	var _arg1 *C.GstCheckABIStruct // out
@@ -47,9 +47,9 @@ func CheckAbiList(list *CheckABIStruct, haveAbiSizes bool) {
 //
 // The function takes the following parameters:
 //
-//    - buffer to compare.
-//    - data (optional) to compare to.
-//    - size of data to compare.
+//   - buffer to compare.
+//   - data (optional) to compare to.
+//   - size of data to compare.
 //
 func CheckBufferData(buffer *gst.Buffer, data unsafe.Pointer, size uint) {
 	var _arg1 *C.GstBuffer    // out
@@ -71,8 +71,8 @@ func CheckBufferData(buffer *gst.Buffer, data unsafe.Pointer, size uint) {
 //
 // The function takes the following parameters:
 //
-//    - caps1: first caps to compare.
-//    - caps2: second caps to compare.
+//   - caps1: first caps to compare.
+//   - caps2: second caps to compare.
 //
 func CheckCapsEqual(caps1, caps2 *gst.Caps) {
 	var _arg1 *C.GstCaps // out
@@ -91,9 +91,9 @@ func CheckCapsEqual(caps1, caps2 *gst.Caps) {
 //
 // The function takes the following parameters:
 //
-//    - pad
-//    - parent
-//    - buffer
+//   - pad
+//   - parent
+//   - buffer
 //
 // The function returns the following values:
 //
@@ -132,11 +132,11 @@ func CheckDropBuffers() {
 //
 // The function takes the following parameters:
 //
-//    - elementName: name of the element that needs to be created.
-//    - bufferIn: push this buffer to the element.
-//    - capsIn expected of the sinkpad of the element.
-//    - bufferOut: compare the result with this buffer.
-//    - capsOut expected of the srcpad of the element.
+//   - elementName: name of the element that needs to be created.
+//   - bufferIn: push this buffer to the element.
+//   - capsIn expected of the sinkpad of the element.
+//   - bufferOut: compare the result with this buffer.
+//   - capsOut expected of the srcpad of the element.
 //
 func CheckElementPushBuffer(elementName string, bufferIn *gst.Buffer, capsIn *gst.Caps, bufferOut *gst.Buffer, capsOut *gst.Caps) {
 	var _arg1 *C.gchar     // out
@@ -165,18 +165,18 @@ func CheckElementPushBuffer(elementName string, bufferIn *gst.Buffer, capsIn *gs
 // should create the buffers equal to the buffers in buffer_out. We only check
 // the size and the data of the buffers. This function unrefs the buffers in the
 // two lists. The last_flow_return parameter indicates the expected flow return
-// value from pushing the final buffer in the list. This can be used to set up a
-// test which pushes some buffers and then an invalid buffer, when the final
+// value from pushing the final buffer in the list. This can be used to set up
+// a test which pushes some buffers and then an invalid buffer, when the final
 // buffer is expected to fail, for example.
 //
 // The function takes the following parameters:
 //
-//    - elementName: name of the element that needs to be created.
-//    - bufferIn: list of buffers that needs to be pushed to the element.
-//    - capsIn expected of the sinkpad of the element.
-//    - bufferOut: list of buffers that we expect from the element.
-//    - capsOut expected of the srcpad of the element.
-//    - lastFlowReturn: last buffer push needs to give this GstFlowReturn.
+//   - elementName: name of the element that needs to be created.
+//   - bufferIn: list of buffers that needs to be pushed to the element.
+//   - capsIn expected of the sinkpad of the element.
+//   - bufferOut: list of buffers that we expect from the element.
+//   - capsOut expected of the srcpad of the element.
+//   - lastFlowReturn: last buffer push needs to give this GstFlowReturn.
 //
 func CheckElementPushBufferList(elementName string, bufferIn []*gst.Buffer, capsIn *gst.Caps, bufferOut []*gst.Buffer, capsOut *gst.Caps, lastFlowReturn gst.FlowReturn) {
 	var _arg1 *C.gchar        // out
@@ -217,10 +217,10 @@ func CheckElementPushBufferList(elementName string, bufferIn []*gst.Buffer, caps
 
 // The function takes the following parameters:
 //
-//    - message
-//    - typ
-//    - domain
-//    - code
+//   - message
+//   - typ
+//   - domain
+//   - code
 //
 func CheckMessageError(message *gst.Message, typ gst.MessageType, domain glib.Quark, code int) {
 	var _arg1 *C.GstMessage    // out
@@ -230,9 +230,7 @@ func CheckMessageError(message *gst.Message, typ gst.MessageType, domain glib.Qu
 
 	_arg1 = (*C.GstMessage)(gextras.StructNative(unsafe.Pointer(message)))
 	_arg2 = C.GstMessageType(typ)
-	_arg3 = C.guint32(domain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg3 = C.GQuark(domain)
 	_arg4 = C.gint(code)
 
 	C.gst_check_message_error(_arg1, _arg2, _arg3, _arg4)
@@ -247,11 +245,11 @@ func CheckMessageError(message *gst.Message, typ gst.MessageType, domain glib.Qu
 //
 // The function takes the following parameters:
 //
-//    - factory: factory.
+//   - factory: factory.
 //
 // The function returns the following values:
 //
-//    - element: new element.
+//   - element: new element.
 //
 func CheckSetupElement(factory string) gst.Elementer {
 	var _arg1 *C.gchar      // out
@@ -286,17 +284,17 @@ func CheckSetupElement(factory string) gst.Elementer {
 	return _element
 }
 
-// CheckSetupEvents: push stream-start, caps and segment event, which consist of
-// the minimum required events to allow streaming. Caps is optional to allow raw
-// src testing. If element has more than one src or sink pad, use
-// gst_check_setup_events_with_stream_id() instead.
+// CheckSetupEvents: push stream-start, caps and segment event, which consist
+// of the minimum required events to allow streaming. Caps is optional to
+// allow raw src testing. If element has more than one src or sink pad,
+// use gst_check_setup_events_with_stream_id() instead.
 //
 // The function takes the following parameters:
 //
-//    - srcpad: src Pad to push on.
-//    - element use to create the stream id.
-//    - caps (optional) in case caps event must be sent.
-//    - format of the default segment to send.
+//   - srcpad: src Pad to push on.
+//   - element use to create the stream id.
+//   - caps (optional) in case caps event must be sent.
+//   - format of the default segment to send.
 //
 func CheckSetupEvents(srcpad *gst.Pad, element gst.Elementer, caps *gst.Caps, format gst.Format) {
 	var _arg1 *C.GstPad     // out
@@ -324,11 +322,11 @@ func CheckSetupEvents(srcpad *gst.Pad, element gst.Elementer, caps *gst.Caps, fo
 //
 // The function takes the following parameters:
 //
-//    - srcpad: src Pad to push on.
-//    - element use to create the stream id.
-//    - caps (optional) in case caps event must be sent.
-//    - format of the default segment to send.
-//    - streamId: unique identifier for the stream.
+//   - srcpad: src Pad to push on.
+//   - element use to create the stream id.
+//   - caps (optional) in case caps event must be sent.
+//   - format of the default segment to send.
+//   - streamId: unique identifier for the stream.
 //
 func CheckSetupEventsWithStreamID(srcpad *gst.Pad, element gst.Elementer, caps *gst.Caps, format gst.Format, streamId string) {
 	var _arg1 *C.GstPad     // out
@@ -359,12 +357,12 @@ func CheckSetupEventsWithStreamID(srcpad *gst.Pad, element gst.Elementer, caps *
 //
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
+//   - element to setup pad on.
+//   - tmpl: pad template.
 //
 // The function returns the following values:
 //
-//    - pad: new pad that can be used to check the output of element.
+//   - pad: new pad that can be used to check the output of element.
 //
 func CheckSetupSinkPad(element gst.Elementer, tmpl *gst.StaticPadTemplate) *gst.Pad {
 	var _arg1 *C.GstElement           // out
@@ -401,14 +399,14 @@ func CheckSetupSinkPad(element gst.Elementer, tmpl *gst.StaticPadTemplate) *gst.
 //
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
-//    - name: name of the element src pad that will be linked to the sink pad
-//      that will be setup.
+//   - element to setup pad on.
+//   - tmpl: pad template.
+//   - name: name of the element src pad that will be linked to the sink pad
+//     that will be setup.
 //
 // The function returns the following values:
 //
-//    - pad: new pad that can be used to check the output of element.
+//   - pad: new pad that can be used to check the output of element.
 //
 func CheckSetupSinkPadByName(element gst.Elementer, tmpl *gst.StaticPadTemplate, name string) *gst.Pad {
 	var _arg1 *C.GstElement           // out
@@ -447,12 +445,12 @@ func CheckSetupSinkPadByName(element gst.Elementer, tmpl *gst.StaticPadTemplate,
 //
 // The function takes the following parameters:
 //
-//    - element to setup pad on.
-//    - tmpl: pad template.
+//   - element to setup pad on.
+//   - tmpl: pad template.
 //
 // The function returns the following values:
 //
-//    - pad: new pad that can be used to inject data on element.
+//   - pad: new pad that can be used to inject data on element.
 //
 func CheckSetupSrcPad(element gst.Elementer, tmpl *gst.StaticPadTemplate) *gst.Pad {
 	var _arg1 *C.GstElement           // out
@@ -483,8 +481,8 @@ func CheckSetupSrcPad(element gst.Elementer, tmpl *gst.StaticPadTemplate) *gst.P
 }
 
 // CheckSetupSrcPadByName creates a new src pad (based on the given tmpl) and
-// links it to the given element sink pad (the pad that matches the given name).
-// Before using the src pad to push data on element you need to call
+// links it to the given element sink pad (the pad that matches the given
+// name). Before using the src pad to push data on element you need to call
 // #gst_check_setup_events on the created src pad.
 //
 // Example of how to push a buffer on element:
@@ -519,14 +517,14 @@ func CheckSetupSrcPad(element gst.Elementer, tmpl *gst.StaticPadTemplate) *gst.P
 //
 // The function takes the following parameters:
 //
-//    - element to setup src pad on.
-//    - tmpl: pad template.
-//    - name: name of the element sink pad that will be linked to the src pad
-//      that will be setup.
+//   - element to setup src pad on.
+//   - tmpl: pad template.
+//   - name: name of the element sink pad that will be linked to the src pad
+//     that will be setup.
 //
 // The function returns the following values:
 //
-//    - pad: new pad that can be used to inject data on element.
+//   - pad: new pad that can be used to inject data on element.
 //
 func CheckSetupSrcPadByName(element gst.Elementer, tmpl *gst.StaticPadTemplate, name string) *gst.Pad {
 	var _arg1 *C.GstElement           // out
@@ -573,8 +571,8 @@ func CheckTeardownElement(element gst.Elementer) {
 
 // The function takes the following parameters:
 //
-//    - element
-//    - name
+//   - element
+//   - name
 //
 func CheckTeardownPadByName(element gst.Elementer, name string) {
 	var _arg1 *C.GstElement // out

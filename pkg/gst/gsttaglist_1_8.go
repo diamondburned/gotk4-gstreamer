@@ -15,8 +15,8 @@ const TAG_CONDUCTOR = "conductor"
 // sample's info Structure may contain any extra information that identifies the
 // origin or meaning of the data.
 //
-// Private frames in ID3v2 tags ('PRIV' frames) will be represented using this
-// tag, in which case the GstStructure will be named "ID3PrivateFrame" and
-// contain a field named "owner" of type string which contains the
+// Private frames in ID3v2 tags ('PRIV' frames) will be represented using
+// this tag, in which case the GstStructure will be named "ID3PrivateFrame"
+// and contain a field named "owner" of type string which contains the
 // owner-identification string from the tag.
 const TAG_PRIVATE_DATA = "private-data"

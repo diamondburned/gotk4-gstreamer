@@ -451,8 +451,8 @@ func (r *RTSPTransport) SetSsrc(ssrc uint) {
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the RTSP transport or NULL when the transport is
-//      invalid.
+//   - utf8 (optional): string describing the RTSP transport or NULL when the
+//     transport is invalid.
 //
 func (transport *RTSPTransport) AsText() string {
 	var _arg0 *C.GstRTSPTransport // out
@@ -465,8 +465,10 @@ func (transport *RTSPTransport) AsText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -476,8 +478,8 @@ func (transport *RTSPTransport) AsText() string {
 //
 // The function returns the following values:
 //
-//    - mediaType: media type of transport.
-//    - rtspResult: T_RTSP_OK.
+//   - mediaType: media type of transport.
+//   - rtspResult: T_RTSP_OK.
 //
 func (transport *RTSPTransport) MediaType() (string, RTSPResult) {
 	var _arg0 *C.GstRTSPTransport // out
@@ -498,28 +500,6 @@ func (transport *RTSPTransport) MediaType() (string, RTSPResult) {
 	return _mediaType, _rtspResult
 }
 
-// Init: initialize transport so that it can be used.
-//
-// The function returns the following values:
-//
-//    - rtspResult: T_RTSP_OK.
-//
-func (transport *RTSPTransport) Init() RTSPResult {
-	var _arg0 *C.GstRTSPTransport // out
-	var _cret C.GstRTSPResult     // in
-
-	_arg0 = (*C.GstRTSPTransport)(gextras.StructNative(unsafe.Pointer(transport)))
-
-	_cret = C.gst_rtsp_transport_init(_arg0)
-	runtime.KeepAlive(transport)
-
-	var _rtspResult RTSPResult // out
-
-	_rtspResult = RTSPResult(_cret)
-
-	return _rtspResult
-}
-
 // RTSPTransportGetManager: get the Element that can handle the buffers
 // transported over trans.
 //
@@ -531,13 +511,13 @@ func (transport *RTSPTransport) Init() RTSPResult {
 //
 // The function takes the following parameters:
 //
-//    - trans: RTSPTransMode.
-//    - option index.
+//   - trans: RTSPTransMode.
+//   - option index.
 //
 // The function returns the following values:
 //
-//    - manager (optional): location to hold the result.
-//    - rtspResult: T_RTSP_OK.
+//   - manager (optional): location to hold the result.
+//   - rtspResult: T_RTSP_OK.
 //
 func RTSPTransportGetManager(trans RTSPTransMode, option uint) (string, RTSPResult) {
 	var _arg1 C.GstRTSPTransMode // out
@@ -563,33 +543,119 @@ func RTSPTransportGetManager(trans RTSPTransMode, option uint) (string, RTSPResu
 	return _manager, _rtspResult
 }
 
+// RTSPTransportGetMIME: get the mime type of the transport mode trans. This
+// mime type is typically used to generate Caps events.
+//
+// Deprecated: This functions only deals with the GstRTSPTransMode
+// and only returns the mime type for T_RTSP_PROFILE_AVP. Use
+// gst_rtsp_transport_get_media_type() instead.
+//
+// The function takes the following parameters:
+//
+//   - trans: RTSPTransMode.
+//
+// The function returns the following values:
+//
+//   - mime: location to hold the result.
+//   - rtspResult: T_RTSP_OK.
+//
+func RTSPTransportGetMIME(trans RTSPTransMode) (string, RTSPResult) {
+	var _arg1 C.GstRTSPTransMode // out
+	var _arg2 *C.gchar           // in
+	var _cret C.GstRTSPResult    // in
+
+	_arg1 = C.GstRTSPTransMode(trans)
+
+	_cret = C.gst_rtsp_transport_get_mime(_arg1, &_arg2)
+	runtime.KeepAlive(trans)
+
+	var _mime string           // out
+	var _rtspResult RTSPResult // out
+
+	_mime = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	_rtspResult = RTSPResult(_cret)
+
+	return _mime, _rtspResult
+}
+
+// RTSPTransportInit: initialize transport so that it can be used.
+//
+// The function returns the following values:
+//
+//   - transport: RTSPTransport.
+//   - rtspResult: T_RTSP_OK.
+//
+func RTSPTransportInit() (*RTSPTransport, RTSPResult) {
+	var _arg1 C.GstRTSPTransport // in
+	var _cret C.GstRTSPResult    // in
+
+	_cret = C.gst_rtsp_transport_init(&_arg1)
+
+	var _transport *RTSPTransport // out
+	var _rtspResult RTSPResult    // out
+
+	_transport = (*RTSPTransport)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rtspResult = RTSPResult(_cret)
+
+	return _transport, _rtspResult
+}
+
+// NewRTSPTransport: allocate a new initialized RTSPTransport. Use
+// gst_rtsp_transport_free() after usage.
+//
+// The function returns the following values:
+//
+//   - transport: location to hold the new RTSPTransport.
+//   - rtspResult: RTSPResult.
+//
+func NewRTSPTransport() (*RTSPTransport, RTSPResult) {
+	var _arg1 *C.GstRTSPTransport // in
+	var _cret C.GstRTSPResult     // in
+
+	_cret = C.gst_rtsp_transport_new(&_arg1)
+
+	var _transport *RTSPTransport // out
+	var _rtspResult RTSPResult    // out
+
+	_transport = (*RTSPTransport)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transport)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gst_rtsp_transport_free((*C.GstRTSPTransport)(intern.C))
+		},
+	)
+	_rtspResult = RTSPResult(_cret)
+
+	return _transport, _rtspResult
+}
+
 // RTSPTransportParse: parse the RTSP transport string str into transport.
 //
 // The function takes the following parameters:
 //
-//    - str: transport string.
-//    - transport: RTSPTransport.
+//   - str: transport string.
 //
 // The function returns the following values:
 //
-//    - rtspResult: RTSPResult.
+//   - transport: RTSPTransport.
+//   - rtspResult: RTSPResult.
 //
-func RTSPTransportParse(str string, transport *RTSPTransport) RTSPResult {
-	var _arg1 *C.gchar            // out
-	var _arg2 *C.GstRTSPTransport // out
-	var _cret C.GstRTSPResult     // in
+func RTSPTransportParse(str string) (*RTSPTransport, RTSPResult) {
+	var _arg1 *C.gchar           // out
+	var _arg2 C.GstRTSPTransport // in
+	var _cret C.GstRTSPResult    // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GstRTSPTransport)(gextras.StructNative(unsafe.Pointer(transport)))
 
-	_cret = C.gst_rtsp_transport_parse(_arg1, _arg2)
+	_cret = C.gst_rtsp_transport_parse(_arg1, &_arg2)
 	runtime.KeepAlive(str)
-	runtime.KeepAlive(transport)
 
-	var _rtspResult RTSPResult // out
+	var _transport *RTSPTransport // out
+	var _rtspResult RTSPResult    // out
 
+	_transport = (*RTSPTransport)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	_rtspResult = RTSPResult(_cret)
 
-	return _rtspResult
+	return _transport, _rtspResult
 }

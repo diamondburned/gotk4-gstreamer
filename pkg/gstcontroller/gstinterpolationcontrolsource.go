@@ -131,7 +131,7 @@ func marshalInterpolationControlSource(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - interpolationControlSource: new, unbound InterpolationControlSource.
+//   - interpolationControlSource: new, unbound InterpolationControlSource.
 //
 func NewInterpolationControlSource() *InterpolationControlSource {
 	var _cret *C.GstControlSource // in

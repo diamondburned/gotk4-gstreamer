@@ -15,16 +15,16 @@ import (
 import "C"
 
 // META_TAG_MEMORY_STR: this metadata stays relevant as long as memory layout is
-// unchanged.
+// unchanged. In hindsight, this tag should have been called "memory-layout".
 const META_TAG_MEMORY_STR = "memory"
 
 // The function takes the following parameters:
 //
-//    - api: API.
+//   - api: API.
 //
 // The function returns the following values:
 //
-//    - utf8s: array of tags as strings.
+//   - utf8s: array of tags as strings.
 //
 func MetaApiTypeGetTags(api coreglib.Type) []string {
 	var _arg1 C.GType   // out

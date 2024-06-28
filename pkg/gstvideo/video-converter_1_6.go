@@ -35,15 +35,15 @@ func init() {
 type VideoAlphaMode C.gint
 
 const (
-	// VideoAlphaModeCopy: when input and output have alpha, it will be copied.
-	// When the input has no alpha, alpha will be set to
+	// VideoAlphaModeCopy: when input and output have alpha, it will
+	// be copied. When the input has no alpha, alpha will be set to
 	// T_VIDEO_CONVERTER_OPT_ALPHA_VALUE.
 	VideoAlphaModeCopy VideoAlphaMode = iota
 	// VideoAlphaModeSet: set all alpha to T_VIDEO_CONVERTER_OPT_ALPHA_VALUE.
 	VideoAlphaModeSet
 	// VideoAlphaModeMult: multiply all alpha with
-	// T_VIDEO_CONVERTER_OPT_ALPHA_VALUE. When the input format has no alpha but
-	// the output format has, the alpha value will be set to
+	// T_VIDEO_CONVERTER_OPT_ALPHA_VALUE. When the input format has no
+	// alpha but the output format has, the alpha value will be set to
 	// T_VIDEO_CONVERTER_OPT_ALPHA_VALUE.
 	VideoAlphaModeMult
 )

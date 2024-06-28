@@ -91,9 +91,9 @@ type AllocatorOverrides struct {
 	// Alloc: use allocator to allocate a new memory block with memory that is
 	// at least size big.
 	//
-	// The optional params can specify the prefix and padding for the memory. If
-	// NULL is passed, no flags, no extra prefix/padding and a default alignment
-	// is used.
+	// The optional params can specify the prefix and padding for the memory.
+	// If NULL is passed, no flags, no extra prefix/padding and a default
+	// alignment is used.
 	//
 	// The prefix/padding will be filled with 0 if flags contains
 	// T_MEMORY_FLAG_ZERO_PREFIXED and T_MEMORY_FLAG_ZERO_PADDED respectively.
@@ -101,17 +101,17 @@ type AllocatorOverrides struct {
 	// When allocator is NULL, the default allocator will be used.
 	//
 	// The alignment in params is given as a bitmask so that align + 1 equals
-	// the amount of bytes to align to. For example, to align to 8 bytes, use an
-	// alignment of 7.
+	// the amount of bytes to align to. For example, to align to 8 bytes,
+	// use an alignment of 7.
 	//
 	// The function takes the following parameters:
 	//
-	//    - size of the visible memory area.
-	//    - params (optional): optional parameters.
+	//   - size of the visible memory area.
+	//   - params (optional): optional parameters.
 	//
 	// The function returns the following values:
 	//
-	//    - memory (optional): new Memory.
+	//   - memory (optional): new Memory.
 	//
 	Alloc func(size uint, params *AllocationParams) *Memory
 }
@@ -123,8 +123,8 @@ func defaultAllocatorOverrides(v *Allocator) AllocatorOverrides {
 }
 
 // Allocator: memory is usually created by allocators with a
-// gst_allocator_alloc() method call. When NULL is used as the allocator, the
-// default allocator will be used.
+// gst_allocator_alloc() method call. When NULL is used as the allocator,
+// the default allocator will be used.
 //
 // New allocators can be registered with gst_allocator_register(). Allocators
 // are identified by name and can be retrieved with gst_allocator_find().
@@ -200,27 +200,27 @@ func BaseAllocator(obj Allocatorrer) *Allocator {
 // Alloc: use allocator to allocate a new memory block with memory that is at
 // least size big.
 //
-// The optional params can specify the prefix and padding for the memory. If
-// NULL is passed, no flags, no extra prefix/padding and a default alignment is
-// used.
+// The optional params can specify the prefix and padding for the memory.
+// If NULL is passed, no flags, no extra prefix/padding and a default alignment
+// is used.
 //
 // The prefix/padding will be filled with 0 if flags contains
 // T_MEMORY_FLAG_ZERO_PREFIXED and T_MEMORY_FLAG_ZERO_PADDED respectively.
 //
 // When allocator is NULL, the default allocator will be used.
 //
-// The alignment in params is given as a bitmask so that align + 1 equals the
-// amount of bytes to align to. For example, to align to 8 bytes, use an
+// The alignment in params is given as a bitmask so that align + 1 equals
+// the amount of bytes to align to. For example, to align to 8 bytes, use an
 // alignment of 7.
 //
 // The function takes the following parameters:
 //
-//    - size of the visible memory area.
-//    - params (optional): optional parameters.
+//   - size of the visible memory area.
+//   - params (optional): optional parameters.
 //
 // The function returns the following values:
 //
-//    - memory (optional): new Memory.
+//   - memory (optional): new Memory.
 //
 func (allocator *Allocator) Alloc(size uint, params *AllocationParams) *Memory {
 	var _arg0 *C.GstAllocator        // out
@@ -270,27 +270,27 @@ func (allocator *Allocator) SetDefault() {
 // Alloc: use allocator to allocate a new memory block with memory that is at
 // least size big.
 //
-// The optional params can specify the prefix and padding for the memory. If
-// NULL is passed, no flags, no extra prefix/padding and a default alignment is
-// used.
+// The optional params can specify the prefix and padding for the memory.
+// If NULL is passed, no flags, no extra prefix/padding and a default alignment
+// is used.
 //
 // The prefix/padding will be filled with 0 if flags contains
 // T_MEMORY_FLAG_ZERO_PREFIXED and T_MEMORY_FLAG_ZERO_PADDED respectively.
 //
 // When allocator is NULL, the default allocator will be used.
 //
-// The alignment in params is given as a bitmask so that align + 1 equals the
-// amount of bytes to align to. For example, to align to 8 bytes, use an
+// The alignment in params is given as a bitmask so that align + 1 equals
+// the amount of bytes to align to. For example, to align to 8 bytes, use an
 // alignment of 7.
 //
 // The function takes the following parameters:
 //
-//    - size of the visible memory area.
-//    - params (optional): optional parameters.
+//   - size of the visible memory area.
+//   - params (optional): optional parameters.
 //
 // The function returns the following values:
 //
-//    - memory (optional): new Memory.
+//   - memory (optional): new Memory.
 //
 func (allocator *Allocator) alloc(size uint, params *AllocationParams) *Memory {
 	gclass := (*C.GstAllocatorClass)(coreglib.PeekParentClass(allocator))
@@ -334,12 +334,12 @@ func (allocator *Allocator) alloc(size uint, params *AllocationParams) *Memory {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of the allocator.
+//   - name (optional) of the allocator.
 //
 // The function returns the following values:
 //
-//    - allocator (optional) or NULL when the allocator with name was not
-//      registered.
+//   - allocator (optional) or NULL when the allocator with name was not
+//     registered.
 //
 func AllocatorFind(name string) Allocatorrer {
 	var _arg1 *C.gchar        // out
@@ -379,8 +379,8 @@ func AllocatorFind(name string) Allocatorrer {
 //
 // The function takes the following parameters:
 //
-//    - name of the allocator.
-//    - allocator: Allocator.
+//   - name of the allocator.
+//   - allocator: Allocator.
 //
 func AllocatorRegister(name string, allocator Allocatorrer) {
 	var _arg1 *C.gchar        // out
@@ -486,7 +486,7 @@ func (a *AllocationParams) SetPadding(padding uint) {
 //
 // The function returns the following values:
 //
-//    - allocationParams (optional): new AllocationParams.
+//   - allocationParams (optional): new AllocationParams.
 //
 func (params *AllocationParams) Copy() *AllocationParams {
 	var _arg0 *C.GstAllocationParams // out

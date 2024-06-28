@@ -68,7 +68,7 @@ func init() {
 //
 // Example:
 //
-//    C printf("%" GST_TIME_FORMAT "\n", GST_TIME_ARGS(ts));.
+//	C printf("%" GST_TIME_FORMAT "\n", GST_TIME_ARGS(ts));.
 const TIME_FORMAT = "u:%02u:%02u.%09u"
 
 // ClockID: datatype to hold the handle to an outstanding sync or async clock
@@ -241,12 +241,12 @@ type ClockOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - oldResolution previous resolution.
-	//    - newResolution: new resolution.
+	//   - oldResolution previous resolution.
+	//   - newResolution: new resolution.
 	//
 	// The function returns the following values:
 	//
-	//    - clockTime: new resolution.
+	//   - clockTime: new resolution.
 	//
 	ChangeResolution func(oldResolution, newResolution ClockTime) ClockTime
 	// InternalTime gets the current internal time of the given clock. The time
@@ -254,8 +254,8 @@ type ClockOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - clockTime: internal time of the clock. Or GST_CLOCK_TIME_NONE when
-	//      given invalid input.
+	//   - clockTime: internal time of the clock. Or GST_CLOCK_TIME_NONE when
+	//     given invalid input.
 	//
 	InternalTime func() ClockTime
 	// Resolution gets the accuracy of the clock. The accuracy of the clock is
@@ -263,14 +263,14 @@ type ClockOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - clockTime: resolution of the clock in units of ClockTime.
+	//   - clockTime: resolution of the clock in units of ClockTime.
 	//
 	Resolution func() ClockTime
 	// Unschedule: unblock a blocking or async wait operation.
 	//
 	// The function takes the following parameters:
 	//
-	//    - entry to unschedule.
+	//   - entry to unschedule.
 	//
 	Unschedule func(entry *ClockEntry)
 	// Wait: perform a blocking wait on the given ClockEntry and return the
@@ -278,26 +278,26 @@ type ClockOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - entry to wait on.
+	//   - entry to wait on.
 	//
 	// The function returns the following values:
 	//
-	//    - jitter (optional): pointer that will contain the jitter.
-	//    - clockReturn: result of the blocking wait. T_CLOCK_EARLY will be
-	//      returned if the current clock time is past the time of id, T_CLOCK_OK
-	//      if id was scheduled in time. T_CLOCK_UNSCHEDULED if id was
-	//      unscheduled with gst_clock_id_unschedule().
+	//   - jitter (optional): pointer that will contain the jitter.
+	//   - clockReturn: result of the blocking wait. T_CLOCK_EARLY will
+	//     be returned if the current clock time is past the time of id,
+	//     T_CLOCK_OK if id was scheduled in time. T_CLOCK_UNSCHEDULED if id was
+	//     unscheduled with gst_clock_id_unschedule().
 	//
 	Wait func(entry *ClockEntry) (ClockTimeDiff, ClockReturn)
 	// WaitAsync: perform an asynchronous wait on the given ClockEntry.
 	//
 	// The function takes the following parameters:
 	//
-	//    - entry to wait on.
+	//   - entry to wait on.
 	//
 	// The function returns the following values:
 	//
-	//    - clockReturn: result of the non blocking wait.
+	//   - clockReturn: result of the non blocking wait.
 	//
 	WaitAsync func(entry *ClockEntry) ClockReturn
 }
@@ -318,26 +318,26 @@ func defaultClockOverrides(v *Clock) ClockOverrides {
 // abstract base class or, more conveniently, by subclassing SystemClock.
 //
 // The Clock returns a monotonically increasing time with the method
-// gst_clock_get_time(). Its accuracy and base time depend on the specific clock
-// implementation but time is always expressed in nanoseconds. Since the
-// baseline of the clock is undefined, the clock time returned is not meaningful
-// in itself, what matters are the deltas between two clock times. The time
-// returned by a clock is called the absolute time.
+// gst_clock_get_time(). Its accuracy and base time depend on the specific
+// clock implementation but time is always expressed in nanoseconds.
+// Since the baseline of the clock is undefined, the clock time returned is not
+// meaningful in itself, what matters are the deltas between two clock times.
+// The time returned by a clock is called the absolute time.
 //
 // The pipeline uses the clock to calculate the running time. Usually all
-// renderers synchronize to the global clock using the buffer timestamps, the
-// T_EVENT_SEGMENT events and the element's base time, see Pipeline.
+// renderers synchronize to the global clock using the buffer timestamps,
+// the T_EVENT_SEGMENT events and the element's base time, see Pipeline.
 //
 // A clock implementation can support periodic and single shot clock
 // notifications both synchronous and asynchronous.
 //
-// One first needs to create a ClockID for the periodic or single shot
-// notification using gst_clock_new_single_shot_id() or
+// One first needs to create a ClockID for the periodic or single
+// shot notification using gst_clock_new_single_shot_id() or
 // gst_clock_new_periodic_id().
 //
 // To perform a blocking wait for the specific time of the ClockID use
-// gst_clock_id_wait(). To receive a callback when the specific time is reached
-// in the clock use gst_clock_id_wait_async(). Both these calls can be
+// gst_clock_id_wait(). To receive a callback when the specific time is
+// reached in the clock use gst_clock_id_wait_async(). Both these calls can be
 // interrupted with the gst_clock_id_unschedule() call. If the blocking wait is
 // unscheduled a return value of T_CLOCK_UNSCHEDULED is returned.
 //
@@ -352,13 +352,13 @@ func defaultClockOverrides(v *Clock) ClockOverrides {
 // operation, a new ClockID should be created and the old unscheduled one should
 // be destroyed with gst_clock_id_unref().
 //
-// It is possible to perform a blocking wait on the same ClockID from multiple
-// threads. However, registering the same ClockID for multiple async
+// It is possible to perform a blocking wait on the same ClockID from
+// multiple threads. However, registering the same ClockID for multiple async
 // notifications is not possible, the callback will only be called for the
 // thread registering the entry last.
 //
-// None of the wait operations unref the ClockID, the owner is responsible for
-// unreffing the ids itself. This holds for both periodic and single shot
+// None of the wait operations unref the ClockID, the owner is responsible
+// for unreffing the ids itself. This holds for both periodic and single shot
 // notifications. The reason being that the owner of the ClockID has to keep a
 // handle to the ClockID to unblock the wait on FLUSHING events or state changes
 // and if the entry would be unreffed automatically, the handle might become
@@ -369,10 +369,10 @@ func defaultClockOverrides(v *Clock) ClockOverrides {
 // running. Some clocks however do not progress when the element that provided
 // the clock is not PLAYING.
 //
-// When a clock has the T_CLOCK_FLAG_CAN_SET_MASTER flag set, it can be slaved
-// to another Clock with gst_clock_set_master(). The clock will then
-// automatically be synchronized to this master clock by repeatedly sampling the
-// master clock and the slave clock and recalibrating the slave clock with
+// When a clock has the T_CLOCK_FLAG_CAN_SET_MASTER flag set, it can be
+// slaved to another Clock with gst_clock_set_master(). The clock will then
+// automatically be synchronized to this master clock by repeatedly sampling
+// the master clock and the slave clock and recalibrating the slave clock with
 // gst_clock_set_calibration(). This feature is mostly useful for plugins that
 // have an internal clock but must operate with another clock selected by the
 // Pipeline. They can track the offset and rate difference of their internal
@@ -382,8 +382,8 @@ func defaultClockOverrides(v *Clock) ClockOverrides {
 // The master/slave synchronisation can be tuned with the Clock:timeout,
 // Clock:window-size and Clock:window-threshold properties. The Clock:timeout
 // property defines the interval to sample the master clock and run the
-// calibration functions. Clock:window-size defines the number of samples to use
-// when calibrating and Clock:window-threshold defines the minimum number of
+// calibration functions. Clock:window-size defines the number of samples to
+// use when calibrating and Clock:window-threshold defines the minimum number of
 // samples before the calibration is performed.
 type Clock struct {
 	_ [0]func() // equal guard
@@ -492,14 +492,14 @@ func (clock *Clock) ConnectSynced(f func(synced bool)) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - slave: time on the slave.
-//    - master: time on the master.
+//   - slave: time on the slave.
+//   - master: time on the master.
 //
 // The function returns the following values:
 //
-//    - rSquared: pointer to hold the result.
-//    - ok: TRUE if enough observations were added to run the regression
-//      algorithm.
+//   - rSquared: pointer to hold the result.
+//   - ok: TRUE if enough observations were added to run the regression
+//     algorithm.
 //
 func (clock *Clock) AddObservation(slave, master ClockTime) (float64, bool) {
 	var _arg0 *C.GstClock    // out
@@ -509,12 +509,8 @@ func (clock *Clock) AddObservation(slave, master ClockTime) (float64, bool) {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(slave)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(master)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(slave)
+	_arg2 = C.GstClockTime(master)
 
 	_cret = C.gst_clock_add_observation(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(clock)
@@ -541,18 +537,18 @@ func (clock *Clock) AddObservation(slave, master ClockTime) (float64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - slave: time on the slave.
-//    - master: time on the master.
+//   - slave: time on the slave.
+//   - master: time on the master.
 //
 // The function returns the following values:
 //
-//    - rSquared: pointer to hold the result.
-//    - internal (optional): location to store the internal time.
-//    - external (optional): location to store the external time.
-//    - rateNum (optional): location to store the rate numerator.
-//    - rateDenom (optional): location to store the rate denominator.
-//    - ok: TRUE if enough observations were added to run the regression
-//      algorithm.
+//   - rSquared: pointer to hold the result.
+//   - internal (optional): location to store the internal time.
+//   - external (optional): location to store the external time.
+//   - rateNum (optional): location to store the rate numerator.
+//   - rateDenom (optional): location to store the rate denominator.
+//   - ok: TRUE if enough observations were added to run the regression
+//     algorithm.
 //
 func (clock *Clock) AddObservationUnapplied(slave, master ClockTime) (rSquared float64, internal, external, rateNum, rateDenom ClockTime, ok bool) {
 	var _arg0 *C.GstClock    // out
@@ -566,12 +562,8 @@ func (clock *Clock) AddObservationUnapplied(slave, master ClockTime) (rSquared f
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(slave)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(master)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(slave)
+	_arg2 = C.GstClockTime(master)
 
 	_cret = C.gst_clock_add_observation_unapplied(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 	runtime.KeepAlive(clock)
@@ -586,18 +578,10 @@ func (clock *Clock) AddObservationUnapplied(slave, master ClockTime) (rSquared f
 	var _ok bool             // out
 
 	_rSquared = float64(_arg3)
-	_internal = uint64(_arg4)
-	type _ = ClockTime
-	type _ = uint64
-	_external = uint64(_arg5)
-	type _ = ClockTime
-	type _ = uint64
-	_rateNum = uint64(_arg6)
-	type _ = ClockTime
-	type _ = uint64
-	_rateDenom = uint64(_arg7)
-	type _ = ClockTime
-	type _ = uint64
+	_internal = ClockTime(_arg4)
+	_external = ClockTime(_arg5)
+	_rateNum = ClockTime(_arg6)
+	_rateDenom = ClockTime(_arg7)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -605,8 +589,8 @@ func (clock *Clock) AddObservationUnapplied(slave, master ClockTime) (rSquared f
 	return _rSquared, _internal, _external, _rateNum, _rateDenom, _ok
 }
 
-// AdjustUnlocked converts the given internal clock time to the external time,
-// adjusting for the rate and reference time set with
+// AdjustUnlocked converts the given internal clock time to the
+// external time, adjusting for the rate and reference time set with
 // gst_clock_set_calibration() and making sure that the returned time is
 // increasing. This function should be called with the clock's OBJECT_LOCK held
 // and is mainly used by clock subclasses.
@@ -615,11 +599,11 @@ func (clock *Clock) AddObservationUnapplied(slave, master ClockTime) (rSquared f
 //
 // The function takes the following parameters:
 //
-//    - internal: clock time.
+//   - internal: clock time.
 //
 // The function returns the following values:
 //
-//    - clockTime: converted time of the clock.
+//   - clockTime: converted time of the clock.
 //
 func (clock *Clock) AdjustUnlocked(internal ClockTime) ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -627,9 +611,7 @@ func (clock *Clock) AdjustUnlocked(internal ClockTime) ClockTime {
 	var _cret C.GstClockTime // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(internal)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(internal)
 
 	_cret = C.gst_clock_adjust_unlocked(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -637,15 +619,13 @@ func (clock *Clock) AdjustUnlocked(internal ClockTime) ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
 
-// AdjustWithCalibration converts the given internal_target clock time to the
-// external time, using the passed calibration parameters. This function
+// AdjustWithCalibration converts the given internal_target clock time to
+// the external time, using the passed calibration parameters. This function
 // performs the same calculation as gst_clock_adjust_unlocked() when called
 // using the current calibration parameters, but doesn't ensure a monotonically
 // increasing result as gst_clock_adjust_unlocked() does.
@@ -654,15 +634,15 @@ func (clock *Clock) AdjustUnlocked(internal ClockTime) ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - internalTarget: clock time.
-//    - cinternal: reference internal time.
-//    - cexternal: reference external time.
-//    - cnum: numerator of the rate of the clock relative to its internal time.
-//    - cdenom: denominator of the rate of the clock.
+//   - internalTarget: clock time.
+//   - cinternal: reference internal time.
+//   - cexternal: reference external time.
+//   - cnum: numerator of the rate of the clock relative to its internal time.
+//   - cdenom: denominator of the rate of the clock.
 //
 // The function returns the following values:
 //
-//    - clockTime: converted time of the clock.
+//   - clockTime: converted time of the clock.
 //
 func (clock *Clock) AdjustWithCalibration(internalTarget, cinternal, cexternal, cnum, cdenom ClockTime) ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -676,21 +656,11 @@ func (clock *Clock) AdjustWithCalibration(internalTarget, cinternal, cexternal, 
 	if clock != nil {
 		_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
 	}
-	_arg1 = C.guint64(internalTarget)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(cinternal)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(cexternal)
-	type _ = ClockTime
-	type _ = uint64
-	_arg4 = C.guint64(cnum)
-	type _ = ClockTime
-	type _ = uint64
-	_arg5 = C.guint64(cdenom)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(internalTarget)
+	_arg2 = C.GstClockTime(cinternal)
+	_arg3 = C.GstClockTime(cexternal)
+	_arg4 = C.GstClockTime(cnum)
+	_arg5 = C.GstClockTime(cdenom)
 
 	_cret = C.gst_clock_adjust_with_calibration(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(clock)
@@ -702,9 +672,7 @@ func (clock *Clock) AdjustWithCalibration(internalTarget, cinternal, cexternal, 
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -717,10 +685,10 @@ func (clock *Clock) AdjustWithCalibration(internalTarget, cinternal, cexternal, 
 //
 // The function returns the following values:
 //
-//    - internal (optional): location to store the internal time.
-//    - external (optional): location to store the external time.
-//    - rateNum (optional): location to store the rate numerator.
-//    - rateDenom (optional): location to store the rate denominator.
+//   - internal (optional): location to store the internal time.
+//   - external (optional): location to store the external time.
+//   - rateNum (optional): location to store the rate numerator.
+//   - rateDenom (optional): location to store the rate denominator.
 //
 func (clock *Clock) Calibration() (internal, external, rateNum, rateDenom ClockTime) {
 	var _arg0 *C.GstClock    // out
@@ -739,18 +707,10 @@ func (clock *Clock) Calibration() (internal, external, rateNum, rateDenom ClockT
 	var _rateNum ClockTime   // out
 	var _rateDenom ClockTime // out
 
-	_internal = uint64(_arg1)
-	type _ = ClockTime
-	type _ = uint64
-	_external = uint64(_arg2)
-	type _ = ClockTime
-	type _ = uint64
-	_rateNum = uint64(_arg3)
-	type _ = ClockTime
-	type _ = uint64
-	_rateDenom = uint64(_arg4)
-	type _ = ClockTime
-	type _ = uint64
+	_internal = ClockTime(_arg1)
+	_external = ClockTime(_arg2)
+	_rateNum = ClockTime(_arg3)
+	_rateDenom = ClockTime(_arg4)
 
 	return _internal, _external, _rateNum, _rateDenom
 }
@@ -760,8 +720,8 @@ func (clock *Clock) Calibration() (internal, external, rateNum, rateDenom ClockT
 //
 // The function returns the following values:
 //
-//    - clockTime: internal time of the clock. Or GST_CLOCK_TIME_NONE when given
-//      invalid input.
+//   - clockTime: internal time of the clock. Or GST_CLOCK_TIME_NONE when given
+//     invalid input.
 //
 func (clock *Clock) InternalTime() ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -774,9 +734,7 @@ func (clock *Clock) InternalTime() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -786,8 +744,8 @@ func (clock *Clock) InternalTime() ClockTime {
 //
 // The function returns the following values:
 //
-//    - ret (optional): master Clock or NULL when this clock is not slaved to a
-//      master clock.
+//   - ret (optional): master Clock or NULL when this clock is not slaved to a
+//     master clock.
 //
 func (clock *Clock) Master() Clocker {
 	var _arg0 *C.GstClock // out
@@ -825,7 +783,7 @@ func (clock *Clock) Master() Clocker {
 //
 // The function returns the following values:
 //
-//    - clockTime: resolution of the clock in units of ClockTime.
+//   - clockTime: resolution of the clock in units of ClockTime.
 //
 func (clock *Clock) Resolution() ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -838,9 +796,7 @@ func (clock *Clock) Resolution() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -851,8 +807,8 @@ func (clock *Clock) Resolution() ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: time of the clock. Or GST_CLOCK_TIME_NONE when given invalid
-//      input.
+//   - clockTime: time of the clock. Or GST_CLOCK_TIME_NONE when given invalid
+//     input.
 //
 func (clock *Clock) Time() ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -865,9 +821,7 @@ func (clock *Clock) Time() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -876,7 +830,7 @@ func (clock *Clock) Time() ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: interval between samples.
+//   - clockTime: interval between samples.
 //
 func (clock *Clock) Timeout() ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -889,9 +843,7 @@ func (clock *Clock) Timeout() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -901,7 +853,7 @@ func (clock *Clock) Timeout() ClockTime {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the clock is currently synced.
+//   - ok: TRUE if the clock is currently synced.
 //
 func (clock *Clock) IsSynced() bool {
 	var _arg0 *C.GstClock // out
@@ -921,18 +873,18 @@ func (clock *Clock) IsSynced() bool {
 	return _ok
 }
 
-// NewPeriodicID gets an ID from clock to trigger a periodic notification. The
-// periodic notifications will start at time start_time and will then be fired
-// with the given interval.
+// NewPeriodicID gets an ID from clock to trigger a periodic notification.
+// The periodic notifications will start at time start_time and will then be
+// fired with the given interval.
 //
 // The function takes the following parameters:
 //
-//    - startTime: requested start time.
-//    - interval: requested interval.
+//   - startTime: requested start time.
+//   - interval: requested interval.
 //
 // The function returns the following values:
 //
-//    - clockID that can be used to request the time notification.
+//   - clockID that can be used to request the time notification.
 //
 func (clock *Clock) NewPeriodicID(startTime, interval ClockTime) ClockID {
 	var _arg0 *C.GstClock    // out
@@ -941,12 +893,8 @@ func (clock *Clock) NewPeriodicID(startTime, interval ClockTime) ClockID {
 	var _cret C.GstClockID   // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(startTime)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(startTime)
+	_arg2 = C.GstClockTime(interval)
 
 	_cret = C.gst_clock_new_periodic_id(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(clock)
@@ -955,9 +903,7 @@ func (clock *Clock) NewPeriodicID(startTime, interval ClockTime) ClockID {
 
 	var _clockID ClockID // out
 
-	_clockID = (unsafe.Pointer)(unsafe.Pointer(_cret))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_clockID = (ClockID)(unsafe.Pointer(_cret))
 
 	return _clockID
 }
@@ -967,11 +913,11 @@ func (clock *Clock) NewPeriodicID(startTime, interval ClockTime) ClockID {
 //
 // The function takes the following parameters:
 //
-//    - time: requested time.
+//   - time: requested time.
 //
 // The function returns the following values:
 //
-//    - clockID that can be used to request the time notification.
+//   - clockID that can be used to request the time notification.
 //
 func (clock *Clock) NewSingleShotID(time ClockTime) ClockID {
 	var _arg0 *C.GstClock    // out
@@ -979,9 +925,7 @@ func (clock *Clock) NewSingleShotID(time ClockTime) ClockID {
 	var _cret C.GstClockID   // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(time)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(time)
 
 	_cret = C.gst_clock_new_single_shot_id(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -989,9 +933,7 @@ func (clock *Clock) NewSingleShotID(time ClockTime) ClockID {
 
 	var _clockID ClockID // out
 
-	_clockID = (unsafe.Pointer)(unsafe.Pointer(_cret))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_clockID = (ClockID)(unsafe.Pointer(_cret))
 
 	return _clockID
 }
@@ -1001,14 +943,14 @@ func (clock *Clock) NewSingleShotID(time ClockTime) ClockID {
 //
 // The function takes the following parameters:
 //
-//    - id: ClockID.
-//    - startTime: requested start time.
-//    - interval: requested interval.
+//   - id: ClockID.
+//   - startTime: requested start time.
+//   - interval: requested interval.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GstClockID could be reinitialized to the provided time,
-//      else FALSE.
+//   - ok: TRUE if the GstClockID could be reinitialized to the provided time,
+//     else FALSE.
 //
 func (clock *Clock) PeriodicIDReinit(id ClockID, startTime, interval ClockTime) bool {
 	var _arg0 *C.GstClock    // out
@@ -1018,15 +960,9 @@ func (clock *Clock) PeriodicIDReinit(id ClockID, startTime, interval ClockTime) 
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
-	_arg2 = C.guint64(startTime)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(interval)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
+	_arg2 = C.GstClockTime(startTime)
+	_arg3 = C.GstClockTime(interval)
 
 	_cret = C.gst_clock_periodic_id_reinit(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(clock)
@@ -1056,8 +992,8 @@ func (clock *Clock) PeriodicIDReinit(id ClockID, startTime, interval ClockTime) 
 //
 //    C   time = (internal_time - internal) * rate_num / rate_denom + external
 //
-// This formula is implemented in gst_clock_adjust_unlocked(). Of course, it
-// tries to do the integer arithmetic as precisely as possible.
+// This formula is implemented in gst_clock_adjust_unlocked(). Of course,
+// it tries to do the integer arithmetic as precisely as possible.
 //
 // Note that gst_clock_get_time() always returns increasing values so when you
 // move the clock backwards, gst_clock_get_time() will report the previous value
@@ -1065,11 +1001,11 @@ func (clock *Clock) PeriodicIDReinit(id ClockID, startTime, interval ClockTime) 
 //
 // The function takes the following parameters:
 //
-//    - internal: reference internal time.
-//    - external: reference external time.
-//    - rateNum: numerator of the rate of the clock relative to its internal
-//      time.
-//    - rateDenom: denominator of the rate of the clock.
+//   - internal: reference internal time.
+//   - external: reference external time.
+//   - rateNum: numerator of the rate of the clock relative to its internal
+//     time.
+//   - rateDenom: denominator of the rate of the clock.
 //
 func (clock *Clock) SetCalibration(internal, external, rateNum, rateDenom ClockTime) {
 	var _arg0 *C.GstClock    // out
@@ -1079,18 +1015,10 @@ func (clock *Clock) SetCalibration(internal, external, rateNum, rateDenom ClockT
 	var _arg4 C.GstClockTime // out
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(internal)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(external)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(rateNum)
-	type _ = ClockTime
-	type _ = uint64
-	_arg4 = C.guint64(rateDenom)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(internal)
+	_arg2 = C.GstClockTime(external)
+	_arg3 = C.GstClockTime(rateNum)
+	_arg4 = C.GstClockTime(rateDenom)
 
 	C.gst_clock_set_calibration(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(clock)
@@ -1113,13 +1041,13 @@ func (clock *Clock) SetCalibration(internal, external, rateNum, rateDenom ClockT
 //
 // The function takes the following parameters:
 //
-//    - master (optional) Clock.
+//   - master (optional) Clock.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the clock is capable of being slaved to a master clock.
-//      Trying to set a master on a clock without the T_CLOCK_FLAG_CAN_SET_MASTER
-//      flag will make this function return FALSE.
+//   - ok: TRUE if the clock is capable of being slaved to a master clock.
+//     Trying to set a master on a clock without the T_CLOCK_FLAG_CAN_SET_MASTER
+//     flag will make this function return FALSE.
 //
 func (clock *Clock) SetMaster(master Clocker) bool {
 	var _arg0 *C.GstClock // out
@@ -1152,11 +1080,11 @@ func (clock *Clock) SetMaster(master Clocker) bool {
 //
 // The function takes the following parameters:
 //
-//    - resolution to set.
+//   - resolution to set.
 //
 // The function returns the following values:
 //
-//    - clockTime: new resolution of the clock.
+//   - clockTime: new resolution of the clock.
 //
 func (clock *Clock) SetResolution(resolution ClockTime) ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -1164,9 +1092,7 @@ func (clock *Clock) SetResolution(resolution ClockTime) ClockTime {
 	var _cret C.GstClockTime // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(resolution)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(resolution)
 
 	_cret = C.gst_clock_set_resolution(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -1174,9 +1100,7 @@ func (clock *Clock) SetResolution(resolution ClockTime) ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1189,7 +1113,7 @@ func (clock *Clock) SetResolution(resolution ClockTime) ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - synced: if the clock is synced.
+//   - synced: if the clock is synced.
 //
 func (clock *Clock) SetSynced(synced bool) {
 	var _arg0 *C.GstClock // out
@@ -1210,16 +1134,14 @@ func (clock *Clock) SetSynced(synced bool) {
 //
 // The function takes the following parameters:
 //
-//    - timeout: timeout.
+//   - timeout: timeout.
 //
 func (clock *Clock) SetTimeout(timeout ClockTime) {
 	var _arg0 *C.GstClock    // out
 	var _arg1 C.GstClockTime // out
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timeout)
 
 	C.gst_clock_set_timeout(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -1231,13 +1153,13 @@ func (clock *Clock) SetTimeout(timeout ClockTime) {
 //
 // The function takes the following parameters:
 //
-//    - id: ClockID.
-//    - time: requested time.
+//   - id: ClockID.
+//   - time: requested time.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GstClockID could be reinitialized to the provided time,
-//      else FALSE.
+//   - ok: TRUE if the GstClockID could be reinitialized to the provided time,
+//     else FALSE.
 //
 func (clock *Clock) SingleShotIDReinit(id ClockID, time ClockTime) bool {
 	var _arg0 *C.GstClock    // out
@@ -1246,12 +1168,8 @@ func (clock *Clock) SingleShotIDReinit(id ClockID, time ClockTime) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
-	_arg2 = C.guint64(time)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
+	_arg2 = C.GstClockTime(time)
 
 	_cret = C.gst_clock_single_shot_id_reinit(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(clock)
@@ -1267,8 +1185,8 @@ func (clock *Clock) SingleShotIDReinit(id ClockID, time ClockTime) bool {
 	return _ok
 }
 
-// UnadjustUnlocked converts the given external clock time to the internal time
-// of clock, using the rate and reference time set with
+// UnadjustUnlocked converts the given external clock time to the
+// internal time of clock, using the rate and reference time set with
 // gst_clock_set_calibration(). This function should be called with the clock's
 // OBJECT_LOCK held and is mainly used by clock subclasses.
 //
@@ -1276,11 +1194,11 @@ func (clock *Clock) SingleShotIDReinit(id ClockID, time ClockTime) bool {
 //
 // The function takes the following parameters:
 //
-//    - external clock time.
+//   - external clock time.
 //
 // The function returns the following values:
 //
-//    - clockTime: internal time of the clock corresponding to external.
+//   - clockTime: internal time of the clock corresponding to external.
 //
 func (clock *Clock) UnadjustUnlocked(external ClockTime) ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -1288,9 +1206,7 @@ func (clock *Clock) UnadjustUnlocked(external ClockTime) ClockTime {
 	var _cret C.GstClockTime // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(external)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(external)
 
 	_cret = C.gst_clock_unadjust_unlocked(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -1298,15 +1214,13 @@ func (clock *Clock) UnadjustUnlocked(external ClockTime) ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
 
-// UnadjustWithCalibration converts the given external_target clock time to the
-// internal time, using the passed calibration parameters. This function
+// UnadjustWithCalibration converts the given external_target clock time to
+// the internal time, using the passed calibration parameters. This function
 // performs the same calculation as gst_clock_unadjust_unlocked() when called
 // using the current calibration parameters.
 //
@@ -1314,15 +1228,15 @@ func (clock *Clock) UnadjustUnlocked(external ClockTime) ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - externalTarget: clock time.
-//    - cinternal: reference internal time.
-//    - cexternal: reference external time.
-//    - cnum: numerator of the rate of the clock relative to its internal time.
-//    - cdenom: denominator of the rate of the clock.
+//   - externalTarget: clock time.
+//   - cinternal: reference internal time.
+//   - cexternal: reference external time.
+//   - cnum: numerator of the rate of the clock relative to its internal time.
+//   - cdenom: denominator of the rate of the clock.
 //
 // The function returns the following values:
 //
-//    - clockTime: converted time of the clock.
+//   - clockTime: converted time of the clock.
 //
 func (clock *Clock) UnadjustWithCalibration(externalTarget, cinternal, cexternal, cnum, cdenom ClockTime) ClockTime {
 	var _arg0 *C.GstClock    // out
@@ -1336,21 +1250,11 @@ func (clock *Clock) UnadjustWithCalibration(externalTarget, cinternal, cexternal
 	if clock != nil {
 		_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
 	}
-	_arg1 = C.guint64(externalTarget)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(cinternal)
-	type _ = ClockTime
-	type _ = uint64
-	_arg3 = C.guint64(cexternal)
-	type _ = ClockTime
-	type _ = uint64
-	_arg4 = C.guint64(cnum)
-	type _ = ClockTime
-	type _ = uint64
-	_arg5 = C.guint64(cdenom)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(externalTarget)
+	_arg2 = C.GstClockTime(cinternal)
+	_arg3 = C.GstClockTime(cexternal)
+	_arg4 = C.GstClockTime(cnum)
+	_arg5 = C.GstClockTime(cdenom)
 
 	_cret = C.gst_clock_unadjust_with_calibration(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(clock)
@@ -1362,16 +1266,14 @@ func (clock *Clock) UnadjustWithCalibration(externalTarget, cinternal, cexternal
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
 
-// WaitForSync waits until clock is synced for reporting the current time. If
-// timeout is GST_CLOCK_TIME_NONE it will wait forever, otherwise it will time
-// out after timeout nanoseconds.
+// WaitForSync waits until clock is synced for reporting the current time.
+// If timeout is GST_CLOCK_TIME_NONE it will wait forever, otherwise it will
+// time out after timeout nanoseconds.
 //
 // For asynchronous waiting, the Clock::synced signal can be used.
 //
@@ -1380,11 +1282,11 @@ func (clock *Clock) UnadjustWithCalibration(externalTarget, cinternal, cexternal
 //
 // The function takes the following parameters:
 //
-//    - timeout for waiting or GST_CLOCK_TIME_NONE.
+//   - timeout for waiting or GST_CLOCK_TIME_NONE.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if waiting was successful, or FALSE on timeout.
+//   - ok: TRUE if waiting was successful, or FALSE on timeout.
 //
 func (clock *Clock) WaitForSync(timeout ClockTime) bool {
 	var _arg0 *C.GstClock    // out
@@ -1392,9 +1294,7 @@ func (clock *Clock) WaitForSync(timeout ClockTime) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(timeout)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(timeout)
 
 	_cret = C.gst_clock_wait_for_sync(_arg0, _arg1)
 	runtime.KeepAlive(clock)
@@ -1414,12 +1314,12 @@ func (clock *Clock) WaitForSync(timeout ClockTime) bool {
 //
 // The function takes the following parameters:
 //
-//    - oldResolution previous resolution.
-//    - newResolution: new resolution.
+//   - oldResolution previous resolution.
+//   - newResolution: new resolution.
 //
 // The function returns the following values:
 //
-//    - clockTime: new resolution.
+//   - clockTime: new resolution.
 //
 func (clock *Clock) changeResolution(oldResolution, newResolution ClockTime) ClockTime {
 	gclass := (*C.GstClockClass)(coreglib.PeekParentClass(clock))
@@ -1431,12 +1331,8 @@ func (clock *Clock) changeResolution(oldResolution, newResolution ClockTime) Clo
 	var _cret C.GstClockTime // in
 
 	_arg0 = (*C.GstClock)(unsafe.Pointer(coreglib.InternObject(clock).Native()))
-	_arg1 = C.guint64(oldResolution)
-	type _ = ClockTime
-	type _ = uint64
-	_arg2 = C.guint64(newResolution)
-	type _ = ClockTime
-	type _ = uint64
+	_arg1 = C.GstClockTime(oldResolution)
+	_arg2 = C.GstClockTime(newResolution)
 
 	_cret = C._gotk4_gst1_Clock_virtual_change_resolution(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(clock)
@@ -1445,9 +1341,7 @@ func (clock *Clock) changeResolution(oldResolution, newResolution ClockTime) Clo
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1457,8 +1351,8 @@ func (clock *Clock) changeResolution(oldResolution, newResolution ClockTime) Clo
 //
 // The function returns the following values:
 //
-//    - clockTime: internal time of the clock. Or GST_CLOCK_TIME_NONE when given
-//      invalid input.
+//   - clockTime: internal time of the clock. Or GST_CLOCK_TIME_NONE when given
+//     invalid input.
 //
 func (clock *Clock) internalTime() ClockTime {
 	gclass := (*C.GstClockClass)(coreglib.PeekParentClass(clock))
@@ -1474,9 +1368,7 @@ func (clock *Clock) internalTime() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1486,7 +1378,7 @@ func (clock *Clock) internalTime() ClockTime {
 //
 // The function returns the following values:
 //
-//    - clockTime: resolution of the clock in units of ClockTime.
+//   - clockTime: resolution of the clock in units of ClockTime.
 //
 func (clock *Clock) resolution() ClockTime {
 	gclass := (*C.GstClockClass)(coreglib.PeekParentClass(clock))
@@ -1502,9 +1394,7 @@ func (clock *Clock) resolution() ClockTime {
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
@@ -1513,7 +1403,7 @@ func (clock *Clock) resolution() ClockTime {
 //
 // The function takes the following parameters:
 //
-//    - entry to unschedule.
+//   - entry to unschedule.
 //
 func (clock *Clock) unschedule(entry *ClockEntry) {
 	gclass := (*C.GstClockClass)(coreglib.PeekParentClass(clock))
@@ -1534,15 +1424,15 @@ func (clock *Clock) unschedule(entry *ClockEntry) {
 //
 // The function takes the following parameters:
 //
-//    - entry to wait on.
+//   - entry to wait on.
 //
 // The function returns the following values:
 //
-//    - jitter (optional): pointer that will contain the jitter.
-//    - clockReturn: result of the blocking wait. T_CLOCK_EARLY will be returned
-//      if the current clock time is past the time of id, T_CLOCK_OK if id was
-//      scheduled in time. T_CLOCK_UNSCHEDULED if id was unscheduled with
-//      gst_clock_id_unschedule().
+//   - jitter (optional): pointer that will contain the jitter.
+//   - clockReturn: result of the blocking wait. T_CLOCK_EARLY will be returned
+//     if the current clock time is past the time of id, T_CLOCK_OK if id
+//     was scheduled in time. T_CLOCK_UNSCHEDULED if id was unscheduled with
+//     gst_clock_id_unschedule().
 //
 func (clock *Clock) wait(entry *ClockEntry) (ClockTimeDiff, ClockReturn) {
 	gclass := (*C.GstClockClass)(coreglib.PeekParentClass(clock))
@@ -1563,9 +1453,7 @@ func (clock *Clock) wait(entry *ClockEntry) (ClockTimeDiff, ClockReturn) {
 	var _jitter ClockTimeDiff    // out
 	var _clockReturn ClockReturn // out
 
-	_jitter = int64(_arg2)
-	type _ = ClockTimeDiff
-	type _ = int64
+	_jitter = ClockTimeDiff(_arg2)
 	_clockReturn = ClockReturn(_cret)
 
 	return _jitter, _clockReturn
@@ -1575,11 +1463,11 @@ func (clock *Clock) wait(entry *ClockEntry) (ClockTimeDiff, ClockReturn) {
 //
 // The function takes the following parameters:
 //
-//    - entry to wait on.
+//   - entry to wait on.
 //
 // The function returns the following values:
 //
-//    - clockReturn: result of the non blocking wait.
+//   - clockReturn: result of the non blocking wait.
 //
 func (clock *Clock) waitAsync(entry *ClockEntry) ClockReturn {
 	gclass := (*C.GstClockClass)(coreglib.PeekParentClass(clock))
@@ -1608,12 +1496,12 @@ func (clock *Clock) waitAsync(entry *ClockEntry) ClockReturn {
 //
 // The function takes the following parameters:
 //
-//    - id1 (optional): ClockID.
-//    - id2 (optional) to compare with.
+//   - id1 (optional): ClockID.
+//   - id2 (optional) to compare with.
 //
 // The function returns the following values:
 //
-//    - gint: negative value if a < b; zero if a = b; positive value if a > b.
+//   - gint: negative value if a < b; zero if a = b; positive value if a > b.
 //
 func ClockIDCompareFunc(id1, id2 unsafe.Pointer) int {
 	var _arg1 C.gconstpointer // out
@@ -1638,47 +1526,41 @@ func ClockIDCompareFunc(id1, id2 unsafe.Pointer) int {
 //
 // The function takes the following parameters:
 //
-//    - id to query.
+//   - id to query.
 //
 // The function returns the following values:
 //
-//    - clockTime: time of the given clock id.
+//   - clockTime: time of the given clock id.
 //
 func ClockIDGetTime(id ClockID) ClockTime {
 	var _arg1 C.GstClockID   // out
 	var _cret C.GstClockTime // in
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 
 	_cret = C.gst_clock_id_get_time(_arg1)
 	runtime.KeepAlive(id)
 
 	var _clockTime ClockTime // out
 
-	_clockTime = uint64(_cret)
-	type _ = ClockTime
-	type _ = uint64
+	_clockTime = ClockTime(_cret)
 
 	return _clockTime
 }
 
-// ClockIDUnschedule cancels an outstanding request with id. This can either be
-// an outstanding async notification or a pending sync notification. After this
-// call, id cannot be used anymore to receive sync or async notifications, you
-// need to create a new ClockID.
+// ClockIDUnschedule cancels an outstanding request with id. This can either
+// be an outstanding async notification or a pending sync notification. After
+// this call, id cannot be used anymore to receive sync or async notifications,
+// you need to create a new ClockID.
 //
 // The function takes the following parameters:
 //
-//    - id to unschedule.
+//   - id to unschedule.
 //
 func ClockIDUnschedule(id ClockID) {
 	var _arg1 C.GstClockID // out
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 
 	C.gst_clock_id_unschedule(_arg1)
 	runtime.KeepAlive(id)
@@ -1688,33 +1570,31 @@ func ClockIDUnschedule(id ClockID) {
 // gst_clock_new_single_shot_id() or gst_clock_new_periodic_id() and should not
 // have been unscheduled with a call to gst_clock_id_unschedule().
 //
-// If the jitter argument is not NULL and this function returns T_CLOCK_OK or
-// T_CLOCK_EARLY, it will contain the difference against the clock and the time
-// of id when this method was called. Positive values indicate how late id was
-// relative to the clock (in which case this function will return
+// If the jitter argument is not NULL and this function returns T_CLOCK_OK
+// or T_CLOCK_EARLY, it will contain the difference against the clock and
+// the time of id when this method was called. Positive values indicate how
+// late id was relative to the clock (in which case this function will return
 // T_CLOCK_EARLY). Negative values indicate how much time was spent waiting on
 // the clock before this function returned.
 //
 // The function takes the following parameters:
 //
-//    - id to wait on.
+//   - id to wait on.
 //
 // The function returns the following values:
 //
-//    - jitter (optional): pointer that will contain the jitter, can be NULL.
-//    - clockReturn: result of the blocking wait. T_CLOCK_EARLY will be returned
-//      if the current clock time is past the time of id, T_CLOCK_OK if id was
-//      scheduled in time. T_CLOCK_UNSCHEDULED if id was unscheduled with
-//      gst_clock_id_unschedule().
+//   - jitter (optional): pointer that will contain the jitter, can be NULL.
+//   - clockReturn: result of the blocking wait. T_CLOCK_EARLY will be returned
+//     if the current clock time is past the time of id, T_CLOCK_OK if id
+//     was scheduled in time. T_CLOCK_UNSCHEDULED if id was unscheduled with
+//     gst_clock_id_unschedule().
 //
 func ClockIDWait(id ClockID) (ClockTimeDiff, ClockReturn) {
 	var _arg1 C.GstClockID       // out
 	var _arg2 C.GstClockTimeDiff // in
 	var _cret C.GstClockReturn   // in
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 
 	_cret = C.gst_clock_id_wait(_arg1, &_arg2)
 	runtime.KeepAlive(id)
@@ -1722,17 +1602,15 @@ func ClockIDWait(id ClockID) (ClockTimeDiff, ClockReturn) {
 	var _jitter ClockTimeDiff    // out
 	var _clockReturn ClockReturn // out
 
-	_jitter = int64(_arg2)
-	type _ = ClockTimeDiff
-	type _ = int64
+	_jitter = ClockTimeDiff(_arg2)
 	_clockReturn = ClockReturn(_cret)
 
 	return _jitter, _clockReturn
 }
 
-// ClockIDWaitAsync registers a callback on the given ClockID id with the given
-// function and user_data. When passing a ClockID with an invalid time to this
-// function, the callback will be called immediately with a time set to
+// ClockIDWaitAsync registers a callback on the given ClockID id with the
+// given function and user_data. When passing a ClockID with an invalid time
+// to this function, the callback will be called immediately with a time set to
 // GST_CLOCK_TIME_NONE. The callback will be called when the time of id has been
 // reached.
 //
@@ -1741,12 +1619,12 @@ func ClockIDWait(id ClockID) (ClockTimeDiff, ClockReturn) {
 //
 // The function takes the following parameters:
 //
-//    - id to wait on.
-//    - fn: callback function.
+//   - id to wait on.
+//   - fn: callback function.
 //
 // The function returns the following values:
 //
-//    - clockReturn: result of the non blocking wait.
+//   - clockReturn: result of the non blocking wait.
 //
 func ClockIDWaitAsync(id ClockID, fn ClockCallback) ClockReturn {
 	var _arg1 C.GstClockID       // out
@@ -1755,9 +1633,7 @@ func ClockIDWaitAsync(id ClockID, fn ClockCallback) ClockReturn {
 	var _arg4 C.GDestroyNotify
 	var _cret C.GstClockReturn // in
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(id))
-	type _ = ClockID
-	type _ = unsafe.Pointer
+	_arg1 = (C.GstClockID)(unsafe.Pointer(id))
 	_arg2 = (*[0]byte)(C._gotk4_gst1_ClockCallback)
 	_arg3 = C.gpointer(gbox.Assign(fn))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -1795,8 +1671,8 @@ func (c *ClockClass) ParentClass() *ObjectClass {
 }
 
 // ClockEntry: all pending timeouts or periodic notifies are converted into an
-// entry. Note that GstClockEntry should be treated as an opaque structure. It
-// must not be extended or allocated using a custom allocator.
+// entry. Note that GstClockEntry should be treated as an opaque structure.
+// It must not be extended or allocated using a custom allocator.
 //
 // An instance of this type is always passed by reference.
 type ClockEntry struct {

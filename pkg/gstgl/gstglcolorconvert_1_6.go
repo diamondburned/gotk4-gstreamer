@@ -20,14 +20,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context to use for transforming caps.
-//    - direction: PadDirection.
-//    - caps to transform.
-//    - filter: set of filter Caps.
+//   - context to use for transforming caps.
+//   - direction: PadDirection.
+//   - caps to transform.
+//   - filter: set of filter Caps.
 //
 // The function returns the following values:
 //
-//    - ret: converted Caps.
+//   - ret: converted Caps.
 //
 func GLColorConvertTransformCaps(context GLContexter, direction gst.PadDirection, caps, filter *gst.Caps) *gst.Caps {
 	var _arg1 *C.GstGLContext   // out

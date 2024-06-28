@@ -22,12 +22,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - message: GSocketControlMessage to attach to buffer.
+//   - buffer: Buffer.
+//   - message: GSocketControlMessage to attach to buffer.
 //
 // The function returns the following values:
 //
-//    - netControlMessageMeta connected to buffer.
+//   - netControlMessageMeta connected to buffer.
 //
 func BufferAddNetControlMessageMeta(buffer *gst.Buffer, message gio.SocketControlMessager) *NetControlMessageMeta {
 	var _arg1 *C.GstBuffer                // out
@@ -62,10 +62,10 @@ func NetControlMessageMetaApiGetType() coreglib.Type {
 	return _gType
 }
 
-// NetControlMessageMeta can be used to store control messages (ancillary data)
-// which was received with or is to be sent alongside the buffer data. When used
-// with socket sinks and sources which understand this meta it allows sending
-// and receiving ancillary data such as unix credentials (See
+// NetControlMessageMeta can be used to store control messages (ancillary
+// data) which was received with or is to be sent alongside the buffer data.
+// When used with socket sinks and sources which understand this meta it
+// allows sending and receiving ancillary data such as unix credentials (See
 // CredentialsMessage) and Unix file descriptions (See FDMessage).
 //
 // An instance of this type is always passed by reference.

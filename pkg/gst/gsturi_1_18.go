@@ -18,10 +18,10 @@ import "C"
 // except that the userinfo and fragment components of the URI will not be
 // unescaped while parsing.
 //
-// Use this when you need to extract a username and password from the userinfo
-// such as https://user:passwordexample.com since either may contain a
-// URI-escaped ':' character. gst_uri_from_string() will unescape the entire
-// userinfo component, which will make it impossible to know which ':'
+// Use this when you need to extract a username and password from the
+// userinfo such as https://user:passwordexample.com since either may contain
+// a URI-escaped ':' character. gst_uri_from_string() will unescape the
+// entire userinfo component, which will make it impossible to know which ':'
 // delineates the username and password.
 //
 // The same applies to the fragment component of the URI, such as
@@ -29,11 +29,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - uri: URI string to parse.
+//   - uri: URI string to parse.
 //
 // The function returns the following values:
 //
-//    - ret (optional): new Uri object, or NULL.
+//   - ret (optional): new Uri object, or NULL.
 //
 func URIFromStringEscaped(uri string) *URI {
 	var _arg1 *C.gchar  // out

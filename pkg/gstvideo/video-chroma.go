@@ -115,20 +115,20 @@ const (
 	VideoChromaSiteUnknown VideoChromaSite = 0b0
 	// VideoChromaSiteNone: no cositing.
 	VideoChromaSiteNone VideoChromaSite = 0b1
-	// VideoChromaSiteHCosited: chroma is horizontally cosited.
-	VideoChromaSiteHCosited VideoChromaSite = 0b10
-	// VideoChromaSiteVCosited: chroma is vertically cosited.
-	VideoChromaSiteVCosited VideoChromaSite = 0b100
-	// VideoChromaSiteAltLine: choma samples are sited on alternate lines.
-	VideoChromaSiteAltLine VideoChromaSite = 0b1000
-	// VideoChromaSiteCosited: chroma samples cosited with luma samples.
-	VideoChromaSiteCosited VideoChromaSite = 0b110
 	// VideoChromaSiteJPEG: jpeg style cositing, also for mpeg1 and mjpeg.
 	VideoChromaSiteJPEG VideoChromaSite = 0b1
-	// VideoChromaSiteMpeg2: mpeg2 style cositing.
-	VideoChromaSiteMpeg2 VideoChromaSite = 0b10
 	// VideoChromaSiteDv: DV style cositing.
 	VideoChromaSiteDv VideoChromaSite = 0b1110
+	// VideoChromaSiteHCosited: chroma is horizontally cosited.
+	VideoChromaSiteHCosited VideoChromaSite = 0b10
+	// VideoChromaSiteMpeg2: mpeg2 style cositing.
+	VideoChromaSiteMpeg2 VideoChromaSite = 0b10
+	// VideoChromaSiteVCosited: chroma is vertically cosited.
+	VideoChromaSiteVCosited VideoChromaSite = 0b100
+	// VideoChromaSiteCosited: chroma samples cosited with luma samples.
+	VideoChromaSiteCosited VideoChromaSite = 0b110
+	// VideoChromaSiteAltLine: choma samples are sited on alternate lines.
+	VideoChromaSiteAltLine VideoChromaSite = 0b1000
 )
 
 func marshalVideoChromaSite(p uintptr) (interface{}, error) {
@@ -153,16 +153,16 @@ func (v VideoChromaSite) String() string {
 			builder.WriteString("Unknown|")
 		case VideoChromaSiteNone:
 			builder.WriteString("None|")
+		case VideoChromaSiteDv:
+			builder.WriteString("Dv|")
 		case VideoChromaSiteHCosited:
 			builder.WriteString("HCosited|")
 		case VideoChromaSiteVCosited:
 			builder.WriteString("VCosited|")
-		case VideoChromaSiteAltLine:
-			builder.WriteString("AltLine|")
 		case VideoChromaSiteCosited:
 			builder.WriteString("Cosited|")
-		case VideoChromaSiteDv:
-			builder.WriteString("Dv|")
+		case VideoChromaSiteAltLine:
+			builder.WriteString("AltLine|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoChromaSite(0b%b)|", bit))
 		}
@@ -184,12 +184,12 @@ func (v VideoChromaSite) Has(other VideoChromaSite) bool {
 //
 // The function takes the following parameters:
 //
-//    - s: chromasite string.
+//   - s: chromasite string.
 //
 // The function returns the following values:
 //
-//    - videoChromaSite or GST_VIDEO_CHROMA_SITE_UNKNOWN when s does not contain
-//      a valid chroma description.
+//   - videoChromaSite or GST_VIDEO_CHROMA_SITE_UNKNOWN when s does not contain
+//     a valid chroma description.
 //
 func VideoChromaFromString(s string) VideoChromaSite {
 	var _arg1 *C.gchar             // out
@@ -214,11 +214,11 @@ func VideoChromaFromString(s string) VideoChromaSite {
 //
 // The function takes the following parameters:
 //
-//    - site: VideoChromaSite.
+//   - site: VideoChromaSite.
 //
 // The function returns the following values:
 //
-//    - utf8: string describing site.
+//   - utf8: string describing site.
 //
 func VideoChromaToString(site VideoChromaSite) string {
 	var _arg1 C.GstVideoChromaSite // out

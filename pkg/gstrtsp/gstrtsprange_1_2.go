@@ -24,13 +24,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - range: RTSPTimeRange.
+//   - range: RTSPTimeRange.
 //
 // The function returns the following values:
 //
-//    - min: result minimum ClockTime.
-//    - max: result maximum ClockTime.
-//    - ok: TRUE on success.
+//   - min: result minimum ClockTime.
+//   - max: result maximum ClockTime.
+//   - ok: TRUE on success.
 //
 func RTSPRangeGetTimes(_range *RTSPTimeRange) (min, max gst.ClockTime, ok bool) {
 	var _arg1 *C.GstRTSPTimeRange // out
@@ -47,12 +47,8 @@ func RTSPRangeGetTimes(_range *RTSPTimeRange) (min, max gst.ClockTime, ok bool) 
 	var _max gst.ClockTime // out
 	var _ok bool           // out
 
-	_min = uint64(_arg2)
-	type _ = gst.ClockTime
-	type _ = uint64
-	_max = uint64(_arg3)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_min = gst.ClockTime(_arg2)
+	_max = gst.ClockTime(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}

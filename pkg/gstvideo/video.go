@@ -20,26 +20,26 @@ import "C"
 
 type VideoConvertSampleCallback func(sample *gst.Sample, err error)
 
-// VideoCalculateDisplayRatio: given the Pixel Aspect Ratio and size of an input
-// video frame, and the pixel aspect ratio of the intended display device,
+// VideoCalculateDisplayRatio: given the Pixel Aspect Ratio and size of an
+// input video frame, and the pixel aspect ratio of the intended display device,
 // calculates the actual display ratio the video will be rendered with.
 //
 // The function takes the following parameters:
 //
-//    - videoWidth: width of the video frame in pixels.
-//    - videoHeight: height of the video frame in pixels.
-//    - videoParN: numerator of the pixel aspect ratio of the input video.
-//    - videoParD: denominator of the pixel aspect ratio of the input video.
-//    - displayParN: numerator of the pixel aspect ratio of the display device.
-//    - displayParD: denominator of the pixel aspect ratio of the display device.
+//   - videoWidth: width of the video frame in pixels.
+//   - videoHeight: height of the video frame in pixels.
+//   - videoParN: numerator of the pixel aspect ratio of the input video.
+//   - videoParD: denominator of the pixel aspect ratio of the input video.
+//   - displayParN: numerator of the pixel aspect ratio of the display device.
+//   - displayParD: denominator of the pixel aspect ratio of the display device.
 //
 // The function returns the following values:
 //
-//    - darN: numerator of the calculated display_ratio.
-//    - darD: denominator of the calculated display_ratio.
-//    - ok: boolean indicating success and a calculated Display Ratio in the
-//      dar_n and dar_d parameters. The return value is FALSE in the case of
-//      integer overflow or other error.
+//   - darN: numerator of the calculated display_ratio.
+//   - darD: denominator of the calculated display_ratio.
+//   - ok: boolean indicating success and a calculated Display Ratio in the
+//     dar_n and dar_d parameters. The return value is FALSE in the case of
+//     integer overflow or other error.
 //
 func VideoCalculateDisplayRatio(videoWidth, videoHeight, videoParN, videoParD, displayParN, displayParD uint) (darN, darD uint, ok bool) {
 	var _arg1 C.guint    // in
@@ -91,14 +91,14 @@ func VideoCalculateDisplayRatio(videoWidth, videoHeight, videoParN, videoParD, d
 //
 // The function takes the following parameters:
 //
-//    - sample: Sample.
-//    - toCaps to convert to.
-//    - timeout: maximum amount of time allowed for the processing.
+//   - sample: Sample.
+//   - toCaps to convert to.
+//   - timeout: maximum amount of time allowed for the processing.
 //
 // The function returns the following values:
 //
-//    - ret: converted Sample, or NULL if an error happened (in which case err
-//      will point to the #GError).
+//   - ret: converted Sample, or NULL if an error happened (in which case err
+//     will point to the #GError).
 //
 func VideoConvertSample(sample *gst.Sample, toCaps *gst.Caps, timeout gst.ClockTime) (*gst.Sample, error) {
 	var _arg1 *C.GstSample   // out
@@ -109,9 +109,7 @@ func VideoConvertSample(sample *gst.Sample, toCaps *gst.Caps, timeout gst.ClockT
 
 	_arg1 = (*C.GstSample)(gextras.StructNative(unsafe.Pointer(sample)))
 	_arg2 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(toCaps)))
-	_arg3 = C.guint64(timeout)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg3 = C.GstClockTime(timeout)
 
 	_cret = C.gst_video_convert_sample(_arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(sample)
@@ -146,8 +144,8 @@ func VideoConvertSample(sample *gst.Sample, toCaps *gst.Caps, timeout gst.ClockT
 //
 // callback will be called after conversion, when an error occurred or if
 // conversion didn't finish after timeout. callback will always be called from
-// the thread default GMainContext, see g_main_context_get_thread_default(). If
-// GLib before 2.22 is used, this will always be the global default main
+// the thread default GMainContext, see g_main_context_get_thread_default().
+// If GLib before 2.22 is used, this will always be the global default main
 // context.
 //
 // destroy_notify will be called after the callback was called and user_data is
@@ -155,11 +153,11 @@ func VideoConvertSample(sample *gst.Sample, toCaps *gst.Caps, timeout gst.ClockT
 //
 // The function takes the following parameters:
 //
-//    - sample: Sample.
-//    - toCaps to convert to.
-//    - timeout: maximum amount of time allowed for the processing.
-//    - callback: GstVideoConvertSampleCallback that will be called after
-//      conversion.
+//   - sample: Sample.
+//   - toCaps to convert to.
+//   - timeout: maximum amount of time allowed for the processing.
+//   - callback: GstVideoConvertSampleCallback that will be called after
+//     conversion.
 //
 func VideoConvertSampleAsync(sample *gst.Sample, toCaps *gst.Caps, timeout gst.ClockTime, callback VideoConvertSampleCallback) {
 	var _arg1 *C.GstSample                    // out
@@ -171,9 +169,7 @@ func VideoConvertSampleAsync(sample *gst.Sample, toCaps *gst.Caps, timeout gst.C
 
 	_arg1 = (*C.GstSample)(gextras.StructNative(unsafe.Pointer(sample)))
 	_arg2 = (*C.GstCaps)(gextras.StructNative(unsafe.Pointer(toCaps)))
-	_arg3 = C.guint64(timeout)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg3 = C.GstClockTime(timeout)
 	_arg4 = (*[0]byte)(C._gotk4_gstvideo1_VideoConvertSampleCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 	_arg6 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))

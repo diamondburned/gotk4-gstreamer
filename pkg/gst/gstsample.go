@@ -89,9 +89,9 @@ func NewSample(buffer *Buffer, caps *Caps, segment *Segment, info *Structure) *S
 //
 // The function returns the following values:
 //
-//    - buffer (optional) of sample or NULL when there is no buffer. The buffer
-//      remains valid as long as sample is valid. If you need to hold on to it
-//      for longer than that, take a ref to the buffer with gst_buffer_ref().
+//   - buffer (optional) of sample or NULL when there is no buffer. The buffer
+//     remains valid as long as sample is valid. If you need to hold on to it
+//     for longer than that, take a ref to the buffer with gst_buffer_ref().
 //
 func (sample *Sample) Buffer() *Buffer {
 	var _arg0 *C.GstSample // out
@@ -115,10 +115,10 @@ func (sample *Sample) Buffer() *Buffer {
 //
 // The function returns the following values:
 //
-//    - bufferList (optional): buffer list of sample or NULL when there is no
-//      buffer list. The buffer list remains valid as long as sample is valid. If
-//      you need to hold on to it for longer than that, take a ref to the buffer
-//      list with gst_mini_object_ref ().
+//   - bufferList (optional): buffer list of sample or NULL when there is no
+//     buffer list. The buffer list remains valid as long as sample is valid.
+//     If you need to hold on to it for longer than that, take a ref to the
+//     buffer list with gst_mini_object_ref ().
 //
 func (sample *Sample) BufferList() *BufferList {
 	var _arg0 *C.GstSample     // out
@@ -142,9 +142,9 @@ func (sample *Sample) BufferList() *BufferList {
 //
 // The function returns the following values:
 //
-//    - caps (optional) of sample or NULL when there is no caps. The caps remain
-//      valid as long as sample is valid. If you need to hold on to the caps for
-//      longer than that, take a ref to the caps with gst_caps_ref().
+//   - caps (optional) of sample or NULL when there is no caps. The caps remain
+//     valid as long as sample is valid. If you need to hold on to the caps for
+//     longer than that, take a ref to the caps with gst_caps_ref().
 //
 func (sample *Sample) Caps() *Caps {
 	var _arg0 *C.GstSample // out
@@ -168,8 +168,8 @@ func (sample *Sample) Caps() *Caps {
 //
 // The function returns the following values:
 //
-//    - structure (optional): extra info of sample. The info remains valid as
-//      long as sample is valid.
+//   - structure (optional): extra info of sample. The info remains valid as
+//     long as sample is valid.
 //
 func (sample *Sample) Info() *Structure {
 	var _arg0 *C.GstSample    // out
@@ -193,7 +193,7 @@ func (sample *Sample) Info() *Structure {
 //
 // The function returns the following values:
 //
-//    - segment of sample. The segment remains valid as long as sample is valid.
+//   - segment of sample. The segment remains valid as long as sample is valid.
 //
 func (sample *Sample) Segment() *Segment {
 	var _arg0 *C.GstSample  // out
@@ -215,7 +215,7 @@ func (sample *Sample) Segment() *Segment {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
+//   - buffer: Buffer.
 //
 func (sample *Sample) SetBuffer(buffer *Buffer) {
 	var _arg0 *C.GstSample // out
@@ -234,7 +234,7 @@ func (sample *Sample) SetBuffer(buffer *Buffer) {
 //
 // The function takes the following parameters:
 //
-//    - bufferList: BufferList.
+//   - bufferList: BufferList.
 //
 func (sample *Sample) SetBufferList(bufferList *BufferList) {
 	var _arg0 *C.GstSample     // out
@@ -252,7 +252,7 @@ func (sample *Sample) SetBufferList(bufferList *BufferList) {
 //
 // The function takes the following parameters:
 //
-//    - caps: Caps.
+//   - caps: Caps.
 //
 func (sample *Sample) SetCaps(caps *Caps) {
 	var _arg0 *C.GstSample // out
@@ -271,7 +271,7 @@ func (sample *Sample) SetCaps(caps *Caps) {
 //
 // The function takes the following parameters:
 //
-//    - info: Structure.
+//   - info: Structure.
 //
 // The function returns the following values:
 //
@@ -301,7 +301,7 @@ func (sample *Sample) SetInfo(info *Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - segment: Segment.
+//   - segment: Segment.
 //
 func (sample *Sample) SetSegment(segment *Segment) {
 	var _arg0 *C.GstSample  // out

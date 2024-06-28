@@ -30,13 +30,13 @@ func init() {
 type VideoFrameMapFlags C.guint
 
 const (
-	// VideoFrameMapFlagNoRef: don't take another reference of the buffer and
-	// store it in the GstVideoFrame. This makes sure that the buffer stays
-	// writable while the frame is mapped, but requires that the buffer
-	// reference stays valid until the frame is unmapped again.
-	VideoFrameMapFlagNoRef VideoFrameMapFlags = 0b10000000000000000
 	// VideoFrameMapFlagLast: offset to define more flags.
 	VideoFrameMapFlagLast VideoFrameMapFlags = 0b1000000000000000000000000
+	// VideoFrameMapFlagNoRef: don't take another reference of the buffer
+	// and store it in the GstVideoFrame. This makes sure that the buffer
+	// stays writable while the frame is mapped, but requires that the buffer
+	// reference stays valid until the frame is unmapped again.
+	VideoFrameMapFlagNoRef VideoFrameMapFlags = 0b10000000000000000
 )
 
 func marshalVideoFrameMapFlags(p uintptr) (interface{}, error) {
@@ -57,10 +57,10 @@ func (v VideoFrameMapFlags) String() string {
 		bit := v - next
 
 		switch bit {
-		case VideoFrameMapFlagNoRef:
-			builder.WriteString("NoRef|")
 		case VideoFrameMapFlagLast:
 			builder.WriteString("Last|")
+		case VideoFrameMapFlagNoRef:
+			builder.WriteString("NoRef|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoFrameMapFlags(0b%b)|", bit))
 		}

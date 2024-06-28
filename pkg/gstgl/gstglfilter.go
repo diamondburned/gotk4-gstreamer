@@ -54,8 +54,8 @@ func init() {
 type GLFilterOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - inbuf
-	//    - outbuf
+	//   - inbuf
+	//   - outbuf
 	//
 	// The function returns the following values:
 	//
@@ -64,12 +64,12 @@ type GLFilterOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - input buffer.
-	//    - output buffer.
+	//   - input buffer.
+	//   - output buffer.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether the transformation succeeded.
+	//   - ok: whether the transformation succeeded.
 	//
 	FilterTexture func(input, output *GLMemory) bool
 	// The function returns the following values:
@@ -77,17 +77,17 @@ type GLFilterOverrides struct {
 	InitFbo func() bool
 	// The function takes the following parameters:
 	//
-	//    - incaps
-	//    - outcaps
+	//   - incaps
+	//   - outcaps
 	//
 	// The function returns the following values:
 	//
 	SetCaps func(incaps, outcaps *gst.Caps) bool
 	// The function takes the following parameters:
 	//
-	//    - direction
-	//    - caps
-	//    - filterCaps
+	//   - direction
+	//   - caps
+	//   - filterCaps
 	//
 	// The function returns the following values:
 	//
@@ -173,8 +173,8 @@ func marshalGLFilter(p uintptr) (interface{}, error) {
 	return wrapGLFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// DrawFullscreenQuad: render a fullscreen quad using the current GL state. The
-// only GL state this modifies is the necessary vertex/index buffers and, if
+// DrawFullscreenQuad: render a fullscreen quad using the current GL state.
+// The only GL state this modifies is the necessary vertex/index buffers and, if
 // necessary, a Vertex Array Object for drawing a fullscreen quad. Framebuffer
 // state, any shaders, viewport state, etc must be setup by the caller.
 func (filter *GLFilter) DrawFullscreenQuad() {
@@ -190,12 +190,12 @@ func (filter *GLFilter) DrawFullscreenQuad() {
 //
 // The function takes the following parameters:
 //
-//    - input buffer.
-//    - output buffer.
+//   - input buffer.
+//   - output buffer.
 //
 // The function returns the following values:
 //
-//    - ok: whether the transformation succeeded.
+//   - ok: whether the transformation succeeded.
 //
 func (filter *GLFilter) FilterTexture(input, output *gst.Buffer) bool {
 	var _arg0 *C.GstGLFilter // out
@@ -225,13 +225,13 @@ func (filter *GLFilter) FilterTexture(input, output *gst.Buffer) bool {
 //
 // The function takes the following parameters:
 //
-//    - input texture.
-//    - output texture.
-//    - fn: function to transform input into output. called with data.
+//   - input texture.
+//   - output texture.
+//   - fn: function to transform input into output. called with data.
 //
 // The function returns the following values:
 //
-//    - ok: return value of func.
+//   - ok: return value of func.
 //
 func (filter *GLFilter) RenderToTarget(input, output *GLMemory, fn GLFilterRenderFunc) bool {
 	var _arg0 *C.GstGLFilter          // out
@@ -270,9 +270,9 @@ func (filter *GLFilter) RenderToTarget(input, output *GLMemory, fn GLFilterRende
 //
 // The function takes the following parameters:
 //
-//    - input texture.
-//    - output texture.
-//    - shader to use.
+//   - input texture.
+//   - output texture.
+//   - shader to use.
 //
 func (filter *GLFilter) RenderToTargetWithShader(input, output *GLMemory, shader *GLShader) {
 	var _arg0 *C.GstGLFilter // out
@@ -294,8 +294,8 @@ func (filter *GLFilter) RenderToTargetWithShader(input, output *GLMemory, shader
 
 // The function takes the following parameters:
 //
-//    - inbuf
-//    - outbuf
+//   - inbuf
+//   - outbuf
 //
 // The function returns the following values:
 //
@@ -330,12 +330,12 @@ func (filter *GLFilter) filter(inbuf, outbuf *gst.Buffer) bool {
 //
 // The function takes the following parameters:
 //
-//    - input buffer.
-//    - output buffer.
+//   - input buffer.
+//   - output buffer.
 //
 // The function returns the following values:
 //
-//    - ok: whether the transformation succeeded.
+//   - ok: whether the transformation succeeded.
 //
 func (filter *GLFilter) filterTexture(input, output *GLMemory) bool {
 	gclass := (*C.GstGLFilterClass)(coreglib.PeekParentClass(filter))
@@ -389,8 +389,8 @@ func (filter *GLFilter) initFbo() bool {
 
 // The function takes the following parameters:
 //
-//    - incaps
-//    - outcaps
+//   - incaps
+//   - outcaps
 //
 // The function returns the following values:
 //
@@ -423,9 +423,9 @@ func (filter *GLFilter) setCaps(incaps, outcaps *gst.Caps) bool {
 
 // The function takes the following parameters:
 //
-//    - direction
-//    - caps
-//    - filterCaps
+//   - direction
+//   - caps
+//   - filterCaps
 //
 // The function returns the following values:
 //

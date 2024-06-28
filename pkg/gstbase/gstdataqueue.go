@@ -97,9 +97,9 @@ func marshalDataQueue(p uintptr) (interface{}, error) {
 	return wrapDataQueue(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectEmpty reports that the queue became empty (empty). A queue is empty if
-// the total amount of visible items inside it (num-visible, time, size) is
-// lower than the boundary values which can be set through the GObject
+// ConnectEmpty reports that the queue became empty (empty). A queue is
+// empty if the total amount of visible items inside it (num-visible, time,
+// size) is lower than the boundary values which can be set through the GObject
 // properties.
 func (v *DataQueue) ConnectEmpty(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "empty", false, unsafe.Pointer(C._gotk4_gstbase1_DataQueue_ConnectEmpty), f)

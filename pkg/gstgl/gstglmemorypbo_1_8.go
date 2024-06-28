@@ -16,11 +16,11 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - ok: whether the memory at mem is a GLMemoryPBO.
+//   - ok: whether the memory at mem is a GLMemoryPBO.
 //
 func IsGLMemoryPbo(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out

@@ -53,25 +53,25 @@ func init() {
 // preset sets. A preset is a bunch of property settings, together with meta
 // data and a name. The name of a preset serves as key for subsequent method
 // calls to manipulate single presets. All instances of one type will share the
-// list of presets. The list is created on demand, if presets are not used, the
-// list is not created.
+// list of presets. The list is created on demand, if presets are not used,
+// the list is not created.
 //
 // The interface comes with a default implementation that serves most plugins.
-// Wrapper plugins will override most methods to implement support for the
-// native preset format of those wrapped plugins. One method that is useful to
-// be overridden is gst_preset_get_property_names(). With that one can control
-// which properties are saved and in which order. When implementing support for
-// read-only presets, one should set the vmethods for gst_preset_save_preset()
-// and gst_preset_delete_preset() to NULL. Applications can use
-// gst_preset_is_editable() to check for that.
+// Wrapper plugins will override most methods to implement support for
+// the native preset format of those wrapped plugins. One method that is
+// useful to be overridden is gst_preset_get_property_names(). With that
+// one can control which properties are saved and in which order. When
+// implementing support for read-only presets, one should set the vmethods for
+// gst_preset_save_preset() and gst_preset_delete_preset() to NULL. Applications
+// can use gst_preset_is_editable() to check for that.
 //
 // The default implementation supports presets located in a system directory,
 // application specific directory and in the users home directory. When getting
-// a list of presets individual presets are read and overlaid in 1) system, 2)
-// application and 3) user order. Whenever an earlier entry is newer, the later
-// entries will be updated. Since 1.8 you can also provide extra paths where to
-// find presets through the GST_PRESET_PATH environment variable. Presets found
-// in those paths will be considered as "app presets".
+// a list of presets individual presets are read and overlaid in 1) system,
+// 2) application and 3) user order. Whenever an earlier entry is newer,
+// the later entries will be updated. Since 1.8 you can also provide extra
+// paths where to find presets through the GST_PRESET_PATH environment variable.
+// Presets found in those paths will be considered as "app presets".
 //
 // Preset wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -129,11 +129,11 @@ func marshalPreset(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name to remove.
+//   - name: preset name to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
 //
 func (preset *Preset) DeletePreset(name string) bool {
 	var _arg0 *C.GstPreset // out
@@ -162,14 +162,14 @@ func (preset *Preset) DeletePreset(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name.
-//    - tag: meta data item name.
+//   - name: preset name.
+//   - tag: meta data item name.
 //
 // The function returns the following values:
 //
-//    - value: value.
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name or
-//      no value for the given tag.
+//   - value: value.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name or
+//     no value for the given tag.
 //
 func (preset *Preset) Meta(name, tag string) (string, bool) {
 	var _arg0 *C.GstPreset // out
@@ -205,7 +205,7 @@ func (preset *Preset) Meta(name, tag string) (string, bool) {
 //
 // The function returns the following values:
 //
-//    - utf8s: list with names, use g_strfreev() after usage.
+//   - utf8s: list with names, use g_strfreev() after usage.
 //
 func (preset *Preset) PresetNames() []string {
 	var _arg0 *C.GstPreset // out
@@ -242,8 +242,8 @@ func (preset *Preset) PresetNames() []string {
 //
 // The function returns the following values:
 //
-//    - utf8s: an array of property names which should be freed with g_strfreev()
-//      after use.
+//   - utf8s: an array of property names which should be freed with g_strfreev()
+//     after use.
 //
 func (preset *Preset) PropertyNames() []string {
 	var _arg0 *C.GstPreset // out
@@ -280,7 +280,7 @@ func (preset *Preset) PropertyNames() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if presets are editable or FALSE if they are static.
+//   - ok: TRUE if presets are editable or FALSE if they are static.
 //
 func (preset *Preset) IsEditable() bool {
 	var _arg0 *C.GstPreset // out
@@ -304,11 +304,11 @@ func (preset *Preset) IsEditable() bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name to load.
+//   - name: preset name to load.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
 //
 func (preset *Preset) LoadPreset(name string) bool {
 	var _arg0 *C.GstPreset // out
@@ -337,12 +337,12 @@ func (preset *Preset) LoadPreset(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - oldName: current preset name.
-//    - newName: new preset name.
+//   - oldName: current preset name.
+//   - newName: new preset name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with old_name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with old_name.
 //
 func (preset *Preset) RenamePreset(oldName, newName string) bool {
 	var _arg0 *C.GstPreset // out
@@ -375,11 +375,11 @@ func (preset *Preset) RenamePreset(oldName, newName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name to save.
+//   - name: preset name to save.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE.
+//   - ok: TRUE for success, FALSE.
 //
 func (preset *Preset) SavePreset(name string) bool {
 	var _arg0 *C.GstPreset // out
@@ -409,13 +409,13 @@ func (preset *Preset) SavePreset(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name.
-//    - tag: meta data item name.
-//    - value (optional): new value.
+//   - name: preset name.
+//   - tag: meta data item name.
+//   - value (optional): new value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
 //
 func (preset *Preset) SetMeta(name, tag, value string) bool {
 	var _arg0 *C.GstPreset // out
@@ -453,11 +453,11 @@ func (preset *Preset) SetMeta(name, tag, value string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name to remove.
+//   - name: preset name to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
 //
 func (preset *Preset) deletePreset(name string) bool {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -489,14 +489,14 @@ func (preset *Preset) deletePreset(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name.
-//    - tag: meta data item name.
+//   - name: preset name.
+//   - tag: meta data item name.
 //
 // The function returns the following values:
 //
-//    - value: value.
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name or
-//      no value for the given tag.
+//   - value: value.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name or
+//     no value for the given tag.
 //
 func (preset *Preset) meta(name, tag string) (string, bool) {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -535,7 +535,7 @@ func (preset *Preset) meta(name, tag string) (string, bool) {
 //
 // The function returns the following values:
 //
-//    - utf8s: list with names, use g_strfreev() after usage.
+//   - utf8s: list with names, use g_strfreev() after usage.
 //
 func (preset *Preset) presetNames() []string {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -575,8 +575,8 @@ func (preset *Preset) presetNames() []string {
 //
 // The function returns the following values:
 //
-//    - utf8s: an array of property names which should be freed with g_strfreev()
-//      after use.
+//   - utf8s: an array of property names which should be freed with g_strfreev()
+//     after use.
 //
 func (preset *Preset) propertyNames() []string {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -615,11 +615,11 @@ func (preset *Preset) propertyNames() []string {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name to load.
+//   - name: preset name to load.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
 //
 func (preset *Preset) loadPreset(name string) bool {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -651,12 +651,12 @@ func (preset *Preset) loadPreset(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - oldName: current preset name.
-//    - newName: new preset name.
+//   - oldName: current preset name.
+//   - newName: new preset name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with old_name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with old_name.
 //
 func (preset *Preset) renamePreset(oldName, newName string) bool {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -692,11 +692,11 @@ func (preset *Preset) renamePreset(oldName, newName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name to save.
+//   - name: preset name to save.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE.
+//   - ok: TRUE for success, FALSE.
 //
 func (preset *Preset) savePreset(name string) bool {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -729,13 +729,13 @@ func (preset *Preset) savePreset(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: preset name.
-//    - tag: meta data item name.
-//    - value (optional): new value.
+//   - name: preset name.
+//   - tag: meta data item name.
+//   - value (optional): new value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
+//   - ok: TRUE for success, FALSE if e.g. there is no preset with that name.
 //
 func (preset *Preset) setMeta(name, tag, value string) bool {
 	gclass := (*C.GstPresetInterface)(coreglib.PeekParentClass(preset))
@@ -777,7 +777,7 @@ func (preset *Preset) setMeta(name, tag, value string) bool {
 //
 // The function returns the following values:
 //
-//    - filename (optional): directory or NULL, don't free or modify the string.
+//   - filename (optional): directory or NULL, don't free or modify the string.
 //
 func PresetGetAppDir() string {
 	var _cret *C.gchar // in
@@ -799,11 +799,11 @@ func PresetGetAppDir() string {
 //
 // The function takes the following parameters:
 //
-//    - appDir: application specific preset dir.
+//   - appDir: application specific preset dir.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE for success, FALSE if the dir already has been set.
+//   - ok: TRUE for success, FALSE if the dir already has been set.
 //
 func PresetSetAppDir(appDir string) bool {
 	var _arg1 *C.gchar   // out

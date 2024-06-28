@@ -32,8 +32,8 @@ func init() {
 }
 
 // StructureFilterMapFunc: function that will be called in
-// gst_structure_filter_and_map_in_place(). The function may modify value, and
-// the value will be removed from the structure if FALSE is returned.
+// gst_structure_filter_and_map_in_place(). The function may modify value,
+// and the value will be removed from the structure if FALSE is returned.
 type StructureFilterMapFunc func(fieldId glib.Quark, value *coreglib.Value) (ok bool)
 
 // StructureForEachFunc: function that will be called in
@@ -73,16 +73,14 @@ type StructureMapFunc func(fieldId glib.Quark, value *coreglib.Value) (ok bool)
 // Strings in structures must be ASCII or UTF-8 encoded. Other encodings are not
 // allowed. Strings may be NULL however.
 //
-//
-// The serialization format
+// # The serialization format
 //
 // GstStructure serialization format serialize the GstStructure name,
-// keys/GType/values in a comma separated list with the structure name as first
-// field without value followed by separated key/value pairs in the form
+// keys/GType/values in a comma separated list with the structure name as
+// first field without value followed by separated key/value pairs in the form
 // key=value, for example:
 //
 //    a-structure, key=value
-//
 //
 // `
 //
@@ -92,7 +90,6 @@ type StructureMapFunc func(fieldId glib.Quark, value *coreglib.Value) (ok bool)
 //
 //    a-struct, field-is-string=(string)true, field-is-boolean=true
 //
-//
 // *Note*: without specifying (string), field-is-string` type would have been
 // inferred as boolean.
 //
@@ -101,19 +98,19 @@ type StructureMapFunc func(fieldId glib.Quark, value *coreglib.Value) (ok bool)
 // abbreviated.
 //
 // To avoid specifying the type, you can give some hints to the "type system".
-// For example to specify a value as a double, you should add a decimal (ie. 1
-// is an int while 1.0 is a double).
+// For example to specify a value as a double, you should add a decimal (ie.
+// 1 is an int while 1.0 is a double).
 //
-// *Note*: when a structure is serialized with #gst_structure_to_string, all
-// values are explicitly typed.
+// *Note*: when a structure is serialized with #gst_structure_to_string,
+// all values are explicitly typed.
 //
 // Some types have special delimiters:
 //
-// - GstValueArray (GST_TYPE_ARRAY) are inside curly brackets ({ and }). For
-// example a-structure, array={1, 2, 3}
+// - GstValueArray (GST_TYPE_ARRAY) are inside curly brackets ({ and }).
+// For example a-structure, array={1, 2, 3}
 //
-// - Ranges are inside brackets ([ and ]). For example a-structure, range=[1, 6,
-// 2] 1 being the min value, 6 the maximum and 2 the step. To specify a
+// - Ranges are inside brackets ([ and ]). For example a-structure, range=[1,
+// 6, 2] 1 being the min value, 6 the maximum and 2 the step. To specify a
 // T_TYPE_INT64_RANGE you need to explicitly specify it like: a-structure,
 // a-int64-range=(gint64) [1, 5]
 //
@@ -123,25 +120,22 @@ type StructureMapFunc func(fieldId glib.Quark, value *coreglib.Value) (ok bool)
 // Structures are delimited either by a null character \0 or a semicolon ; the
 // latter allowing to store multiple structures in the same string (see Caps).
 //
-// Quotes are used as "default" delimiters and can be used around any types that
-// don't use other delimiters (for example a-struct, i=(int)"1"). They are use
-// to allow adding spaces or special characters (such as delimiters,
+// Quotes are used as "default" delimiters and can be used around any types
+// that don't use other delimiters (for example a-struct, i=(int)"1"). They
+// are use to allow adding spaces or special characters (such as delimiters,
 // semicolumns, etc..) inside strings and you can use backslashes \ to escape
 // characters inside them, for example:
 //
 //    a-struct, special="\"{[(;)]}\" can be used inside quotes"
 //
-//
 // They also allow for nested structure, such as:
 //
 //    a-struct, nested=(GstStructure)"nested-struct, nested=true"
-//
 //
 // Since 1.20, nested structures and caps can be specified using brackets ([ and
 // ]), for example:
 //
 //    a-struct, nested=[nested-struct, nested=true]
-//
 //
 // > *note*: gst_structure_to_string() won't use that syntax for backward >
 // compatibility reason, gst_structure_serialize() has been added for > that
@@ -217,9 +211,7 @@ func NewStructureIDEmpty(quark glib.Quark) *Structure {
 	var _arg1 C.GQuark        // out
 	var _cret *C.GstStructure // in
 
-	_arg1 = C.guint32(quark)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(quark)
 
 	_cret = C.gst_structure_new_id_empty(_arg1)
 	runtime.KeepAlive(quark)
@@ -250,11 +242,11 @@ func (s *Structure) Type() coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - struct2: Structure.
+//   - struct2: Structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if intersection would not be empty.
+//   - ok: TRUE if intersection would not be empty.
 //
 func (struct1 *Structure) CanIntersect(struct2 *Structure) bool {
 	var _arg0 *C.GstStructure // out
@@ -283,7 +275,7 @@ func (struct1 *Structure) CanIntersect(struct2 *Structure) bool {
 //
 // The function returns the following values:
 //
-//    - ret: new Structure.
+//   - ret: new Structure.
 //
 func (structure *Structure) Copy() *Structure {
 	var _arg0 *C.GstStructure // out
@@ -315,7 +307,7 @@ func (structure *Structure) Copy() *Structure {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each field.
+//   - fn: function to call for each field.
 //
 func (structure *Structure) FilterAndMapInPlace(fn StructureFilterMapFunc) {
 	var _arg0 *C.GstStructure             // out
@@ -348,11 +340,11 @@ func (structure *Structure) Fixate() {
 //
 // The function takes the following parameters:
 //
-//    - fieldName: field in structure.
+//   - fieldName: field in structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure field could be fixated.
+//   - ok: TRUE if the structure field could be fixated.
 //
 func (structure *Structure) FixateField(fieldName string) bool {
 	var _arg0 *C.GstStructure // out
@@ -381,12 +373,12 @@ func (structure *Structure) FixateField(fieldName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - fieldName: field in structure.
-//    - target value of the fixation.
+//   - fieldName: field in structure.
+//   - target value of the fixation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure could be fixated.
+//   - ok: TRUE if the structure could be fixated.
 //
 func (structure *Structure) FixateFieldBoolean(fieldName string, target bool) bool {
 	var _arg0 *C.GstStructure // out
@@ -420,12 +412,12 @@ func (structure *Structure) FixateFieldBoolean(fieldName string, target bool) bo
 //
 // The function takes the following parameters:
 //
-//    - fieldName: field in structure.
-//    - target value of the fixation.
+//   - fieldName: field in structure.
+//   - target value of the fixation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure could be fixated.
+//   - ok: TRUE if the structure could be fixated.
 //
 func (structure *Structure) FixateFieldNearestDouble(fieldName string, target float64) bool {
 	var _arg0 *C.GstStructure // out
@@ -458,13 +450,13 @@ func (structure *Structure) FixateFieldNearestDouble(fieldName string, target fl
 //
 // The function takes the following parameters:
 //
-//    - fieldName: field in structure.
-//    - targetNumerator: numerator of the target value of the fixation.
-//    - targetDenominator: denominator of the target value of the fixation.
+//   - fieldName: field in structure.
+//   - targetNumerator: numerator of the target value of the fixation.
+//   - targetDenominator: denominator of the target value of the fixation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure could be fixated.
+//   - ok: TRUE if the structure could be fixated.
 //
 func (structure *Structure) FixateFieldNearestFraction(fieldName string, targetNumerator int, targetDenominator int) bool {
 	var _arg0 *C.GstStructure // out
@@ -499,12 +491,12 @@ func (structure *Structure) FixateFieldNearestFraction(fieldName string, targetN
 //
 // The function takes the following parameters:
 //
-//    - fieldName: field in structure.
-//    - target value of the fixation.
+//   - fieldName: field in structure.
+//   - target value of the fixation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure could be fixated.
+//   - ok: TRUE if the structure could be fixated.
 //
 func (structure *Structure) FixateFieldNearestInt(fieldName string, target int) bool {
 	var _arg0 *C.GstStructure // out
@@ -536,12 +528,12 @@ func (structure *Structure) FixateFieldNearestInt(fieldName string, target int) 
 //
 // The function takes the following parameters:
 //
-//    - fieldName: field in structure.
-//    - target value of the fixation.
+//   - fieldName: field in structure.
+//   - target value of the fixation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure could be fixated.
+//   - ok: TRUE if the structure could be fixated.
 //
 func (structure *Structure) FixateFieldString(fieldName string, target string) bool {
 	var _arg0 *C.GstStructure // out
@@ -575,12 +567,12 @@ func (structure *Structure) FixateFieldString(fieldName string, target string) b
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each field.
+//   - fn: function to call for each field.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the supplied function returns TRUE For each of the fields,
-//      FALSE otherwise.
+//   - ok: TRUE if the supplied function returns TRUE For each of the fields,
+//     FALSE otherwise.
 //
 func (structure *Structure) ForEach(fn StructureForEachFunc) bool {
 	var _arg0 *C.GstStructure           // out
@@ -612,14 +604,14 @@ func (structure *Structure) ForEach(fn StructureForEachFunc) bool {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a #gboolean to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a boolean, this function
-//      returns FALSE.
+//   - value: pointer to a #gboolean to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain a boolean, this function
+//     returns FALSE.
 //
 func (structure *Structure) Boolean(fieldname string) (value bool, ok bool) {
 	var _arg0 *C.GstStructure // out
@@ -654,14 +646,14 @@ func (structure *Structure) Boolean(fieldname string) (value bool, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a ClockTime to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a ClockTime, this
-//      function returns FALSE.
+//   - value: pointer to a ClockTime to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field
+//     with fieldname or the existing field did not contain a ClockTime,
+//     this function returns FALSE.
 //
 func (structure *Structure) ClockTime(fieldname string) (ClockTime, bool) {
 	var _arg0 *C.GstStructure // out
@@ -680,9 +672,7 @@ func (structure *Structure) ClockTime(fieldname string) (ClockTime, bool) {
 	var _value ClockTime // out
 	var _ok bool         // out
 
-	_value = uint64(_arg2)
-	type _ = ClockTime
-	type _ = uint64
+	_value = ClockTime(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -701,14 +691,14 @@ func (structure *Structure) ClockTime(fieldname string) (ClockTime, bool) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a DateTime to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a data, this function
-//      returns FALSE.
+//   - value: pointer to a DateTime to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain a data, this function
+//     returns FALSE.
 //
 func (structure *Structure) DateTime(fieldname string) (*DateTime, bool) {
 	var _arg0 *C.GstStructure // out
@@ -747,14 +737,14 @@ func (structure *Structure) DateTime(fieldname string) (*DateTime, bool) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a gdouble to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a double, this function
-//      returns FALSE.
+//   - value: pointer to a gdouble to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain a double, this function
+//     returns FALSE.
 //
 func (structure *Structure) Double(fieldname string) (float64, bool) {
 	var _arg0 *C.GstStructure // out
@@ -781,21 +771,21 @@ func (structure *Structure) Double(fieldname string) (float64, bool) {
 	return _value, _ok
 }
 
-// Enum sets the int pointed to by value corresponding to the value of the given
-// field. Caller is responsible for making sure the field exists, has the
+// Enum sets the int pointed to by value corresponding to the value of the
+// given field. Caller is responsible for making sure the field exists, has the
 // correct type and that the enumtype is correct.
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
-//    - enumtype: enum type of a field.
+//   - fieldname: name of a field.
+//   - enumtype: enum type of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to an int to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain an enum of the given
-//      type, this function returns FALSE.
+//   - value: pointer to an int to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain an enum of the given
+//     type, this function returns FALSE.
 //
 func (structure *Structure) Enum(fieldname string, enumtype coreglib.Type) (int, bool) {
 	var _arg0 *C.GstStructure // out
@@ -830,11 +820,11 @@ func (structure *Structure) Enum(fieldname string, enumtype coreglib.Type) (int,
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of the field.
+//   - fieldname: name of the field.
 //
 // The function returns the following values:
 //
-//    - gType of the field.
+//   - gType of the field.
 //
 func (structure *Structure) FieldType(fieldname string) coreglib.Type {
 	var _arg0 *C.GstStructure // out
@@ -856,20 +846,64 @@ func (structure *Structure) FieldType(fieldname string) coreglib.Type {
 	return _gType
 }
 
+// Flags sets the unsigned int pointed to by value corresponding to the value
+// of the given field. Caller is responsible for making sure the field exists,
+// has the correct type and that the flagstype is correct.
+//
+// The function takes the following parameters:
+//
+//   - fieldname: name of a field.
+//   - flagsType flags type of a field.
+//
+// The function returns the following values:
+//
+//   - value: pointer to an unsigned int to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain flags or did not contain
+//     flags of the given type, this function returns FALSE.
+//
+func (structure *Structure) Flags(fieldname string, flagsType coreglib.Type) (uint, bool) {
+	var _arg0 *C.GstStructure // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.GType         // out
+	var _arg3 C.guint         // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(structure)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fieldname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GType(flagsType)
+
+	_cret = C.gst_structure_get_flags(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(structure)
+	runtime.KeepAlive(fieldname)
+	runtime.KeepAlive(flagsType)
+
+	var _value uint // out
+	var _ok bool    // out
+
+	_value = uint(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
 // Flagset: read the GstFlagSet flags and mask out of the structure into the
 // provided pointers.
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - valueFlags (optional): pointer to a guint for the flags field.
-//    - valueMask (optional): pointer to a guint for the mask field.
-//    - ok: TRUE if the values could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a GstFlagSet, this
-//      function returns FALSE.
+//   - valueFlags (optional): pointer to a guint for the flags field.
+//   - valueMask (optional): pointer to a guint for the mask field.
+//   - ok: TRUE if the values could be set correctly. If there was no field
+//     with fieldname or the existing field did not contain a GstFlagSet,
+//     this function returns FALSE.
 //
 func (structure *Structure) Flagset(fieldname string) (valueFlags uint, valueMask uint, ok bool) {
 	var _arg0 *C.GstStructure // out
@@ -905,15 +939,15 @@ func (structure *Structure) Flagset(fieldname string) (valueFlags uint, valueMas
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - valueNumerator: pointer to an int to set.
-//    - valueDenominator: pointer to an int to set.
-//    - ok: TRUE if the values could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a GstFraction, this
-//      function returns FALSE.
+//   - valueNumerator: pointer to an int to set.
+//   - valueDenominator: pointer to an int to set.
+//   - ok: TRUE if the values could be set correctly. If there was no field
+//     with fieldname or the existing field did not contain a GstFraction,
+//     this function returns FALSE.
 //
 func (structure *Structure) Fraction(fieldname string) (valueNumerator int, valueDenominator int, ok bool) {
 	var _arg0 *C.GstStructure // out
@@ -949,14 +983,14 @@ func (structure *Structure) Fraction(fieldname string) (valueNumerator int, valu
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to an int to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain an int, this function
-//      returns FALSE.
+//   - value: pointer to an int to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain an int, this function
+//     returns FALSE.
 //
 func (structure *Structure) Int(fieldname string) (int, bool) {
 	var _arg0 *C.GstStructure // out
@@ -989,14 +1023,14 @@ func (structure *Structure) Int(fieldname string) (int, bool) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a #gint64 to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a #gint64, this function
-//      returns FALSE.
+//   - value: pointer to a #gint64 to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain a #gint64, this function
+//     returns FALSE.
 //
 func (structure *Structure) Int64(fieldname string) (int64, bool) {
 	var _arg0 *C.GstStructure // out
@@ -1027,7 +1061,7 @@ func (structure *Structure) Int64(fieldname string) (int64, bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the structure.
+//   - utf8: name of the structure.
 //
 func (structure *Structure) Name() string {
 	var _arg0 *C.GstStructure // out
@@ -1049,7 +1083,7 @@ func (structure *Structure) Name() string {
 //
 // The function returns the following values:
 //
-//    - quark representing the name of the structure.
+//   - quark representing the name of the structure.
 //
 func (structure *Structure) NameID() glib.Quark {
 	var _arg0 *C.GstStructure // out
@@ -1062,9 +1096,7 @@ func (structure *Structure) NameID() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -1078,12 +1110,12 @@ func (structure *Structure) NameID() glib.Quark {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): pointer to the string or NULL when the field did not
-//      exist or did not contain a string.
+//   - utf8 (optional): pointer to the string or NULL when the field did not
+//     exist or did not contain a string.
 //
 func (structure *Structure) String(fieldname string) string {
 	var _arg0 *C.GstStructure // out
@@ -1113,14 +1145,14 @@ func (structure *Structure) String(fieldname string) string {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a uint to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a uint, this function
-//      returns FALSE.
+//   - value: pointer to a uint to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain a uint, this function
+//     returns FALSE.
 //
 func (structure *Structure) Uint(fieldname string) (uint, bool) {
 	var _arg0 *C.GstStructure // out
@@ -1153,14 +1185,14 @@ func (structure *Structure) Uint(fieldname string) (uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - value: pointer to a #guint64 to set.
-//    - ok: TRUE if the value could be set correctly. If there was no field with
-//      fieldname or the existing field did not contain a #guint64, this function
-//      returns FALSE.
+//   - value: pointer to a #guint64 to set.
+//   - ok: TRUE if the value could be set correctly. If there was no field with
+//     fieldname or the existing field did not contain a #guint64, this function
+//     returns FALSE.
 //
 func (structure *Structure) Uint64(fieldname string) (uint64, bool) {
 	var _arg0 *C.GstStructure // out
@@ -1191,11 +1223,11 @@ func (structure *Structure) Uint64(fieldname string) (uint64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of the field to get.
+//   - fieldname: name of the field to get.
 //
 // The function returns the following values:
 //
-//    - value (optional) corresponding to the field with the given name.
+//   - value (optional) corresponding to the field with the given name.
 //
 func (structure *Structure) Value(fieldname string) *coreglib.Value {
 	var _arg0 *C.GstStructure // out
@@ -1223,11 +1255,11 @@ func (structure *Structure) Value(fieldname string) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
+//   - fieldname: name of a field.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure contains a field with the given name.
+//   - ok: TRUE if the structure contains a field with the given name.
 //
 func (structure *Structure) HasField(fieldname string) bool {
 	var _arg0 *C.GstStructure // out
@@ -1256,12 +1288,12 @@ func (structure *Structure) HasField(fieldname string) bool {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of a field.
-//    - typ: type of a value.
+//   - fieldname: name of a field.
+//   - typ: type of a value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure contains a field with the given name and type.
+//   - ok: TRUE if the structure contains a field with the given name and type.
 //
 func (structure *Structure) HasFieldTyped(fieldname string, typ coreglib.Type) bool {
 	var _arg0 *C.GstStructure // out
@@ -1292,11 +1324,11 @@ func (structure *Structure) HasFieldTyped(fieldname string, typ coreglib.Type) b
 //
 // The function takes the following parameters:
 //
-//    - name: structure name to check for.
+//   - name: structure name to check for.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if name matches the name of the structure.
+//   - ok: TRUE if name matches the name of the structure.
 //
 func (structure *Structure) HasName(name string) bool {
 	var _arg0 *C.GstStructure // out
@@ -1324,12 +1356,12 @@ func (structure *Structure) HasName(name string) bool {
 //
 // The function takes the following parameters:
 //
-//    - field of the field to get.
+//   - field of the field to get.
 //
 // The function returns the following values:
 //
-//    - value (optional) corresponding to the field with the given name
-//      identifier.
+//   - value (optional) corresponding to the field with the given name
+//     identifier.
 //
 func (structure *Structure) IDGetValue(field glib.Quark) *coreglib.Value {
 	var _arg0 *C.GstStructure // out
@@ -1337,9 +1369,7 @@ func (structure *Structure) IDGetValue(field glib.Quark) *coreglib.Value {
 	var _cret *C.GValue       // in
 
 	_arg0 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(structure)))
-	_arg1 = C.guint32(field)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(field)
 
 	_cret = C.gst_structure_id_get_value(_arg0, _arg1)
 	runtime.KeepAlive(structure)
@@ -1358,11 +1388,11 @@ func (structure *Structure) IDGetValue(field glib.Quark) *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - field of the field name.
+//   - field of the field name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure contains a field with the given name.
+//   - ok: TRUE if the structure contains a field with the given name.
 //
 func (structure *Structure) IDHasField(field glib.Quark) bool {
 	var _arg0 *C.GstStructure // out
@@ -1370,9 +1400,7 @@ func (structure *Structure) IDHasField(field glib.Quark) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(structure)))
-	_arg1 = C.guint32(field)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(field)
 
 	_cret = C.gst_structure_id_has_field(_arg0, _arg1)
 	runtime.KeepAlive(structure)
@@ -1392,12 +1420,12 @@ func (structure *Structure) IDHasField(field glib.Quark) bool {
 //
 // The function takes the following parameters:
 //
-//    - field of the field name.
-//    - typ: type of a value.
+//   - field of the field name.
+//   - typ: type of a value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the structure contains a field with the given name and type.
+//   - ok: TRUE if the structure contains a field with the given name and type.
 //
 func (structure *Structure) IDHasFieldTyped(field glib.Quark, typ coreglib.Type) bool {
 	var _arg0 *C.GstStructure // out
@@ -1406,9 +1434,7 @@ func (structure *Structure) IDHasFieldTyped(field glib.Quark, typ coreglib.Type)
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(structure)))
-	_arg1 = C.guint32(field)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(field)
 	_arg2 = C.GType(typ)
 
 	_cret = C.gst_structure_id_has_field_typed(_arg0, _arg1, _arg2)
@@ -1431,8 +1457,8 @@ func (structure *Structure) IDHasFieldTyped(field glib.Quark, typ coreglib.Type)
 //
 // The function takes the following parameters:
 //
-//    - field representing a field.
-//    - value: new value of the field.
+//   - field representing a field.
+//   - value: new value of the field.
 //
 func (structure *Structure) IDSetValue(field glib.Quark, value *coreglib.Value) {
 	var _arg0 *C.GstStructure // out
@@ -1440,9 +1466,7 @@ func (structure *Structure) IDSetValue(field glib.Quark, value *coreglib.Value) 
 	var _arg2 *C.GValue       // out
 
 	_arg0 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(structure)))
-	_arg1 = C.guint32(field)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(field)
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gst_structure_id_set_value(_arg0, _arg1, _arg2)
@@ -1457,8 +1481,8 @@ func (structure *Structure) IDSetValue(field glib.Quark, value *coreglib.Value) 
 //
 // The function takes the following parameters:
 //
-//    - field representing a field.
-//    - value: new value of the field.
+//   - field representing a field.
+//   - value: new value of the field.
 //
 func (structure *Structure) IDTakeValue(field glib.Quark, value *coreglib.Value) {
 	var _arg0 *C.GstStructure // out
@@ -1466,9 +1490,7 @@ func (structure *Structure) IDTakeValue(field glib.Quark, value *coreglib.Value)
 	var _arg2 *C.GValue       // out
 
 	_arg0 = (*C.GstStructure)(gextras.StructNative(unsafe.Pointer(structure)))
-	_arg1 = C.guint32(field)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(field)
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gst_structure_id_take_value(_arg0, _arg1, _arg2)
@@ -1481,11 +1503,11 @@ func (structure *Structure) IDTakeValue(field glib.Quark, value *coreglib.Value)
 //
 // The function takes the following parameters:
 //
-//    - struct2: Structure.
+//   - struct2: Structure.
 //
 // The function returns the following values:
 //
-//    - structure (optional): intersection of struct1 and struct2.
+//   - structure (optional): intersection of struct1 and struct2.
 //
 func (struct1 *Structure) Intersect(struct2 *Structure) *Structure {
 	var _arg0 *C.GstStructure // out
@@ -1518,11 +1540,11 @@ func (struct1 *Structure) Intersect(struct2 *Structure) *Structure {
 //
 // The function takes the following parameters:
 //
-//    - structure2: Structure.
+//   - structure2: Structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two structures have the same name and field.
+//   - ok: TRUE if the two structures have the same name and field.
 //
 func (structure1 *Structure) IsEqual(structure2 *Structure) bool {
 	var _arg0 *C.GstStructure // out
@@ -1551,11 +1573,11 @@ func (structure1 *Structure) IsEqual(structure2 *Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - superset: potentially greater Structure.
+//   - superset: potentially greater Structure.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if subset is a subset of superset.
+//   - ok: TRUE if subset is a subset of superset.
 //
 func (subset *Structure) IsSubset(superset *Structure) bool {
 	var _arg0 *C.GstStructure // out
@@ -1584,12 +1606,12 @@ func (subset *Structure) IsSubset(superset *Structure) bool {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each field.
+//   - fn: function to call for each field.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the supplied function returns TRUE For each of the fields,
-//      FALSE otherwise.
+//   - ok: TRUE if the supplied function returns TRUE For each of the fields,
+//     FALSE otherwise.
 //
 func (structure *Structure) MapInPlace(fn StructureMapFunc) bool {
 	var _arg0 *C.GstStructure       // out
@@ -1619,7 +1641,7 @@ func (structure *Structure) MapInPlace(fn StructureMapFunc) bool {
 //
 // The function returns the following values:
 //
-//    - gint: number of fields in the structure.
+//   - gint: number of fields in the structure.
 //
 func (structure *Structure) NFields() int {
 	var _arg0 *C.GstStructure // out
@@ -1642,11 +1664,11 @@ func (structure *Structure) NFields() int {
 //
 // The function takes the following parameters:
 //
-//    - index to get the name of.
+//   - index to get the name of.
 //
 // The function returns the following values:
 //
-//    - utf8: name of the given field number.
+//   - utf8: name of the given field number.
 //
 func (structure *Structure) NthFieldName(index uint) string {
 	var _arg0 *C.GstStructure // out
@@ -1682,7 +1704,7 @@ func (structure *Structure) RemoveAllFields() {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of the field to remove.
+//   - fieldname: name of the field to remove.
 //
 func (structure *Structure) RemoveField(fieldname string) {
 	var _arg0 *C.GstStructure // out
@@ -1699,8 +1721,8 @@ func (structure *Structure) RemoveField(fieldname string) {
 
 // Serialize converts structure to a human-readable string representation.
 //
-// This version of the caps serialization function introduces support for nested
-// structures and caps but the resulting strings won't be parsable with
+// This version of the caps serialization function introduces support for
+// nested structures and caps but the resulting strings won't be parsable with
 // GStreamer prior to 1.20 unless T_SERIALIZE_FLAG_BACKWARD_COMPAT is passed as
 // flag.
 //
@@ -1708,11 +1730,11 @@ func (structure *Structure) RemoveField(fieldname string) {
 //
 // The function takes the following parameters:
 //
-//    - flags to use to serialize structure.
+//   - flags to use to serialize structure.
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to string allocated by g_malloc(). g_free() after usage.
+//   - utf8: pointer to string allocated by g_malloc(). g_free() after usage.
 //
 func (structure *Structure) Serialize(flags SerializeFlags) string {
 	var _arg0 *C.GstStructure     // out
@@ -1740,7 +1762,7 @@ func (structure *Structure) Serialize(flags SerializeFlags) string {
 //
 // The function takes the following parameters:
 //
-//    - name: new name of the structure.
+//   - name: new name of the structure.
 //
 func (structure *Structure) SetName(name string) {
 	var _arg0 *C.GstStructure // out
@@ -1762,11 +1784,11 @@ func (structure *Structure) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - refcount: pointer to the parent's refcount.
+//   - refcount: pointer to the parent's refcount.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the parent refcount could be set.
+//   - ok: TRUE if the parent refcount could be set.
 //
 func (structure *Structure) SetParentRefcount(refcount *int) bool {
 	var _arg0 *C.GstStructure // out
@@ -1795,8 +1817,8 @@ func (structure *Structure) SetParentRefcount(refcount *int) bool {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of the field to set.
-//    - value: new value of the field.
+//   - fieldname: name of the field to set.
+//   - value: new value of the field.
 //
 func (structure *Structure) SetValue(fieldname string, value *coreglib.Value) {
 	var _arg0 *C.GstStructure // out
@@ -1820,8 +1842,8 @@ func (structure *Structure) SetValue(fieldname string, value *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - fieldname: name of the field to set.
-//    - value: new value of the field.
+//   - fieldname: name of the field to set.
+//   - value: new value of the field.
 //
 func (structure *Structure) TakeValue(fieldname string, value *coreglib.Value) {
 	var _arg0 *C.GstStructure // out
@@ -1842,8 +1864,8 @@ func (structure *Structure) TakeValue(fieldname string, value *coreglib.Value) {
 // ToString converts structure to a human-readable string representation.
 //
 // For debugging purposes its easier to do something like this: |[<!--
-// language="C" --> GST_LOG ("structure is %" GST_PTR_FORMAT, structure); ]|
-// This prints the structure in human readable form.
+// language="C" --> GST_LOG ("structure is %" GST_PTR_FORMAT, structure);
+// ]| This prints the structure in human readable form.
 //
 // This function will lead to unexpected results when there are nested Caps /
 // Structure deeper than one level, you should user gst_structure_serialize()
@@ -1853,7 +1875,7 @@ func (structure *Structure) TakeValue(fieldname string, value *coreglib.Value) {
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to string allocated by g_malloc(). g_free() after usage.
+//   - utf8: pointer to string allocated by g_malloc(). g_free() after usage.
 //
 func (structure *Structure) ToString() string {
 	var _arg0 *C.GstStructure // out

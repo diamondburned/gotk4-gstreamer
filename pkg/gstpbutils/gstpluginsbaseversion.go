@@ -16,11 +16,11 @@ const PLUGINS_BASE_VERSION_MAJOR = 1
 
 // PLUGINS_BASE_VERSION_MICRO: micro version of GStreamer's gst-plugins-base
 // libraries at compile time.
-const PLUGINS_BASE_VERSION_MICRO = 3
+const PLUGINS_BASE_VERSION_MICRO = 8
 
 // PLUGINS_BASE_VERSION_MINOR: minor version of GStreamer's gst-plugins-base
 // libraries at compile time.
-const PLUGINS_BASE_VERSION_MINOR = 20
+const PLUGINS_BASE_VERSION_MINOR = 22
 
 // PLUGINS_BASE_VERSION_NANO: nano version of GStreamer's gst-plugins-base
 // libraries at compile time. Actual releases have 0, GIT versions have 1,
@@ -32,10 +32,10 @@ const PLUGINS_BASE_VERSION_NANO = 0
 //
 // The function returns the following values:
 //
-//    - major: pointer to a guint to store the major version number, or NULL.
-//    - minor: pointer to a guint to store the minor version number, or NULL.
-//    - micro: pointer to a guint to store the micro version number, or NULL.
-//    - nano: pointer to a guint to store the nano version number, or NULL.
+//   - major: pointer to a guint to store the major version number, or NULL.
+//   - minor: pointer to a guint to store the minor version number, or NULL.
+//   - micro: pointer to a guint to store the micro version number, or NULL.
+//   - nano: pointer to a guint to store the nano version number, or NULL.
 //
 func PluginsBaseVersion() (major, minor, micro, nano uint) {
 	var _arg1 C.guint // in
@@ -64,7 +64,7 @@ func PluginsBaseVersion() (major, minor, micro, nano uint) {
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string describing this version of gst-plugins-base.
+//   - utf8: newly allocated string describing this version of gst-plugins-base.
 //
 func PluginsBaseVersionString() string {
 	var _cret *C.gchar // in

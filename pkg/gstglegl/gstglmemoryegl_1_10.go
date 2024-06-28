@@ -16,11 +16,11 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - mem to test.
+//   - mem to test.
 //
 // The function returns the following values:
 //
-//    - ok: whether mem is a GLMemoryEGL.
+//   - ok: whether mem is a GLMemoryEGL.
 //
 func IsGLMemoryEgl(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -40,8 +40,8 @@ func IsGLMemoryEgl(mem *gst.Memory) bool {
 	return _ok
 }
 
-// GLMemoryEGLInitOnce initializes the GL Memory allocator. It is safe to call
-// this function multiple times. This must be called before any other
+// GLMemoryEGLInitOnce initializes the GL Memory allocator. It is safe to
+// call this function multiple times. This must be called before any other
 // GstGLMemoryEGL operation.
 func GLMemoryEGLInitOnce() {
 	C.gst_gl_memory_egl_init_once()

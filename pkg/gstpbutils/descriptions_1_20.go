@@ -46,14 +46,17 @@ const (
 	// PbutilsCapsDescriptionFlagImage caps describe an image format, or a
 	// container format that can store image.
 	PbutilsCapsDescriptionFlagImage PbUtilsCapsDescriptionFlags = 0b1000
-	// PbutilsCapsDescriptionFlagSubtitle caps describe an subtitle format, or a
-	// container format that can store subtitles.
+	// PbutilsCapsDescriptionFlagSubtitle caps describe an subtitle format,
+	// or a container format that can store subtitles.
 	PbutilsCapsDescriptionFlagSubtitle PbUtilsCapsDescriptionFlags = 0b10000
 	// PbutilsCapsDescriptionFlagTag: container format is a tags container.
 	PbutilsCapsDescriptionFlagTag PbUtilsCapsDescriptionFlags = 0b100000
 	// PbutilsCapsDescriptionFlagGeneric: container format can store any kind of
 	// stream type.
 	PbutilsCapsDescriptionFlagGeneric PbUtilsCapsDescriptionFlags = 0b1000000
+	// PbutilsCapsDescriptionFlagMetadata caps describe a metadata format,
+	// or a container format that can store metadata.
+	PbutilsCapsDescriptionFlagMetadata PbUtilsCapsDescriptionFlags = 0b10000000
 )
 
 func marshalPbUtilsCapsDescriptionFlags(p uintptr) (interface{}, error) {
@@ -67,7 +70,7 @@ func (p PbUtilsCapsDescriptionFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(230)
+	builder.Grow(256)
 
 	for p != 0 {
 		next := p & (p - 1)
@@ -88,6 +91,8 @@ func (p PbUtilsCapsDescriptionFlags) String() string {
 			builder.WriteString("Tag|")
 		case PbutilsCapsDescriptionFlagGeneric:
 			builder.WriteString("Generic|")
+		case PbutilsCapsDescriptionFlagMetadata:
+			builder.WriteString("Metadata|")
 		default:
 			builder.WriteString(fmt.Sprintf("PbUtilsCapsDescriptionFlags(0b%b)|", bit))
 		}
@@ -108,12 +113,12 @@ func (p PbUtilsCapsDescriptionFlags) Has(other PbUtilsCapsDescriptionFlags) bool
 //
 // The function takes the following parameters:
 //
-//    - caps: (fixed) Caps for which flags are requested.
+//   - caps: (fixed) Caps for which flags are requested.
 //
 // The function returns the following values:
 //
-//    - pbUtilsCapsDescriptionFlags that describe caps, or no flags if the caps
-//      are unknown.
+//   - pbUtilsCapsDescriptionFlags that describe caps, or no flags if the caps
+//     are unknown.
 //
 func PbUtilsGetCapsDescriptionFlags(caps *gst.Caps) PbUtilsCapsDescriptionFlags {
 	var _arg1 *C.GstCaps                       // out
@@ -136,12 +141,12 @@ func PbUtilsGetCapsDescriptionFlags(caps *gst.Caps) PbUtilsCapsDescriptionFlags 
 //
 // The function takes the following parameters:
 //
-//    - caps: (fixed) Caps for which a file extension is needed.
+//   - caps: (fixed) Caps for which a file extension is needed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly-allocated file extension string, or NULL on error.
-//      Free string with g_free() when not needed any longer.
+//   - utf8 (optional): newly-allocated file extension string, or NULL on error.
+//     Free string with g_free() when not needed any longer.
 //
 func PbUtilsGetFileExtensionFromCaps(caps *gst.Caps) string {
 	var _arg1 *C.GstCaps // out

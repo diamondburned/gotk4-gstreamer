@@ -29,8 +29,8 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - plugin to register dyn_type for.
-//    - typ to register dynamically.
+//   - plugin to register dyn_type for.
+//   - typ to register dynamically.
 //
 // The function returns the following values:
 //
@@ -63,8 +63,7 @@ func DynamicTypeRegister(plugin *Plugin, typ coreglib.Type) bool {
 // registering the type in a plugin init function. Once that is done, the type
 // is stored in the registry, and ready as soon as the registry is loaded.
 //
-// Registering a type for dynamic loading
-//
+// # Registering a type for dynamic loading
 //
 //    static gboolean
 //    plugin_init (GstPlugin * plugin)

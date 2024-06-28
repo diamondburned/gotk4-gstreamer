@@ -15,12 +15,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - mode: mode.
+//   - mode: mode.
 //
 // The function returns the following values:
 //
-//    - videoInterlaceMode of mode or T_VIDEO_INTERLACE_MODE_PROGRESSIVE when
-//      mode is not a valid string representation for a VideoInterlaceMode.
+//   - videoInterlaceMode of mode or T_VIDEO_INTERLACE_MODE_PROGRESSIVE when
+//     mode is not a valid string representation for a VideoInterlaceMode.
 //
 func VideoInterlaceModeFromString(mode string) VideoInterlaceMode {
 	var _arg1 *C.gchar                // out
@@ -43,11 +43,11 @@ func VideoInterlaceModeFromString(mode string) VideoInterlaceMode {
 //
 // The function takes the following parameters:
 //
-//    - mode: VideoInterlaceMode.
+//   - mode: VideoInterlaceMode.
 //
 // The function returns the following values:
 //
-//    - utf8: mode as a string or NULL if mode in invalid.
+//   - utf8: mode as a string.
 //
 func VideoInterlaceModeToString(mode VideoInterlaceMode) string {
 	var _arg1 C.GstVideoInterlaceMode // out

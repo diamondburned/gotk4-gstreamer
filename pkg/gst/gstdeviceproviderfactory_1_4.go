@@ -31,16 +31,16 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - plugin (optional) to register the device provider with, or NULL for a
-//      static device provider.
-//    - name of device providers of this type.
-//    - rank of device provider (higher rank means more importance when
-//      autoplugging).
-//    - typ: GType of device provider to register.
+//   - plugin (optional) to register the device provider with, or NULL for a
+//     static device provider.
+//   - name of device providers of this type.
+//   - rank of device provider (higher rank means more importance when
+//     autoplugging).
+//   - typ: GType of device provider to register.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the registering succeeded, FALSE on error.
+//   - ok: TRUE, if the registering succeeded, FALSE on error.
 //
 func DeviceProviderRegister(plugin *Plugin, name string, rank uint, typ coreglib.Type) bool {
 	var _arg1 *C.GstPlugin // out
@@ -72,8 +72,8 @@ func DeviceProviderRegister(plugin *Plugin, name string, rank uint, typ coreglib
 	return _ok
 }
 
-// DeviceProviderFactory is used to create instances of device providers. A
-// GstDeviceProviderfactory can be added to a Plugin as it is also a
+// DeviceProviderFactory is used to create instances of device providers.
+// A GstDeviceProviderfactory can be added to a Plugin as it is also a
 // PluginFeature.
 //
 // Use the gst_device_provider_factory_find() and
@@ -110,8 +110,8 @@ func marshalDeviceProviderFactory(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - deviceProvider (optional) or NULL if the device provider couldn't be
-//      created.
+//   - deviceProvider (optional) or NULL if the device provider couldn't be
+//     created.
 //
 func (factory *DeviceProviderFactory) Get() DeviceProviderer {
 	var _arg0 *C.GstDeviceProviderFactory // out
@@ -150,7 +150,7 @@ func (factory *DeviceProviderFactory) Get() DeviceProviderer {
 //
 // The function returns the following values:
 //
-//    - gType for device providers managed by this factory.
+//   - gType for device providers managed by this factory.
 //
 func (factory *DeviceProviderFactory) DeviceProviderType() coreglib.Type {
 	var _arg0 *C.GstDeviceProviderFactory // out
@@ -172,12 +172,12 @@ func (factory *DeviceProviderFactory) DeviceProviderType() coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - key: key.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): metadata with key on factory or NULL when there was no
-//      metadata with the given key.
+//   - utf8 (optional): metadata with key on factory or NULL when there was no
+//     metadata with the given key.
 //
 func (factory *DeviceProviderFactory) Metadata(key string) string {
 	var _arg0 *C.GstDeviceProviderFactory // out
@@ -205,8 +205,8 @@ func (factory *DeviceProviderFactory) Metadata(key string) string {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): a NULL-terminated array of key strings, or NULL when
-//      there is no metadata. Free with g_strfreev() when no longer needed.
+//   - utf8s (optional): a NULL-terminated array of key strings, or NULL when
+//     there is no metadata. Free with g_strfreev() when no longer needed.
 //
 func (factory *DeviceProviderFactory) MetadataKeys() []string {
 	var _arg0 *C.GstDeviceProviderFactory // out
@@ -244,12 +244,12 @@ func (factory *DeviceProviderFactory) MetadataKeys() []string {
 //
 // The function takes the following parameters:
 //
-//    - classes (optional): "/" separate list of classes to match, only match if
-//      all classes are matched.
+//   - classes (optional): "/" separate list of classes to match, only match if
+//     all classes are matched.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if factory matches or if classes is NULL.
+//   - ok: TRUE if factory matches or if classes is NULL.
 //
 func (factory *DeviceProviderFactory) HasClasses(classes string) bool {
 	var _arg0 *C.GstDeviceProviderFactory // out
@@ -279,12 +279,12 @@ func (factory *DeviceProviderFactory) HasClasses(classes string) bool {
 //
 // The function takes the following parameters:
 //
-//    - classes (optional): NULL terminated array of classes to match, only match
-//      if all classes are matched.
+//   - classes (optional): NULL terminated array of classes to match, only match
+//     if all classes are matched.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if factory matches.
+//   - ok: TRUE if factory matches.
 //
 func (factory *DeviceProviderFactory) HasClassesv(classes []string) bool {
 	var _arg0 *C.GstDeviceProviderFactory // out
@@ -325,11 +325,11 @@ func (factory *DeviceProviderFactory) HasClassesv(classes []string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name of factory to find.
+//   - name of factory to find.
 //
 // The function returns the following values:
 //
-//    - deviceProviderFactory (optional) if found, NULL otherwise.
+//   - deviceProviderFactory (optional) if found, NULL otherwise.
 //
 func DeviceProviderFactoryFind(name string) *DeviceProviderFactory {
 	var _arg1 *C.gchar                    // out
@@ -355,11 +355,11 @@ func DeviceProviderFactoryFind(name string) *DeviceProviderFactory {
 //
 // The function takes the following parameters:
 //
-//    - factoryname: named factory to instantiate.
+//   - factoryname: named factory to instantiate.
 //
 // The function returns the following values:
 //
-//    - deviceProvider (optional) or NULL if unable to create device provider.
+//   - deviceProvider (optional) or NULL if unable to create device provider.
 //
 func DeviceProviderFactoryGetByName(factoryname string) DeviceProviderer {
 	var _arg1 *C.gchar             // out
@@ -393,18 +393,18 @@ func DeviceProviderFactoryGetByName(factoryname string) DeviceProviderer {
 	return _deviceProvider
 }
 
-// DeviceProviderFactoryListGetDeviceProviders: get a list of factories with a
-// rank greater or equal to minrank. The list of factories is returned by
+// DeviceProviderFactoryListGetDeviceProviders: get a list of factories with
+// a rank greater or equal to minrank. The list of factories is returned by
 // decreasing rank.
 //
 // The function takes the following parameters:
 //
-//    - minrank: minimum rank.
+//   - minrank: minimum rank.
 //
 // The function returns the following values:
 //
-//    - list: a #GList of DeviceProviderFactory device providers. Use
-//      gst_plugin_feature_list_free() after usage.
+//   - list: a #GList of DeviceProviderFactory device providers. Use
+//     gst_plugin_feature_list_free() after usage.
 //
 func DeviceProviderFactoryListGetDeviceProviders(minrank Rank) []*DeviceProviderFactory {
 	var _arg1 C.GstRank // out

@@ -44,8 +44,8 @@ func init() {
 type GLBaseFilterOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - incaps
-	//    - outcaps
+	//   - incaps
+	//   - outcaps
 	//
 	// The function returns the following values:
 	//
@@ -127,7 +127,7 @@ func marshalGLBaseFilter(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - ok: whether an OpenGL context could be retrieved or created successfully.
+//   - ok: whether an OpenGL context could be retrieved or created successfully.
 //
 func (filter *GLBaseFilter) FindGLContext() bool {
 	var _arg0 *C.GstGLBaseFilter // out
@@ -149,7 +149,7 @@ func (filter *GLBaseFilter) FindGLContext() bool {
 
 // The function returns the following values:
 //
-//    - glContext (optional) found by filter.
+//   - glContext (optional) found by filter.
 //
 func (filter *GLBaseFilter) GLContext() GLContexter {
 	var _arg0 *C.GstGLBaseFilter // out
@@ -184,8 +184,8 @@ func (filter *GLBaseFilter) GLContext() GLContexter {
 
 // The function takes the following parameters:
 //
-//    - incaps
-//    - outcaps
+//   - incaps
+//   - outcaps
 //
 // The function returns the following values:
 //

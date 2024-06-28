@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - typ: GType.
+//   - typ: GType.
 //
 // The function returns the following values:
 //
-//    - flags (optional): what PluginAPIFlags the plugin was marked with.
-//    - ok: TRUE if type is plugin API or FALSE otherwise.
+//   - flags (optional): what PluginAPIFlags the plugin was marked with.
+//   - ok: TRUE if type is plugin API or FALSE otherwise.
 //
 func TypeIsPluginApi(typ coreglib.Type) (PluginAPIFlags, bool) {
 	var _arg1 C.GType             // out
@@ -50,8 +50,8 @@ func TypeIsPluginApi(typ coreglib.Type) (PluginAPIFlags, bool) {
 // class_init of elements that expose new types (i.e. enums, flags or internal
 // GObjects) via properties, signals or pad templates.
 //
-// Types exposed by plugins are not automatically added to the documentation as
-// they might originate from another library and should in that case be
+// Types exposed by plugins are not automatically added to the documentation
+// as they might originate from another library and should in that case be
 // documented via that library instead.
 //
 // By marking a type as plugin API it will be included in the documentation of
@@ -59,8 +59,8 @@ func TypeIsPluginApi(typ coreglib.Type) (PluginAPIFlags, bool) {
 //
 // The function takes the following parameters:
 //
-//    - typ: GType.
-//    - flags: set of PluginAPIFlags to further inform cache generation.
+//   - typ: GType.
+//   - flags: set of PluginAPIFlags to further inform cache generation.
 //
 func TypeMarkAsPluginApi(typ coreglib.Type, flags PluginAPIFlags) {
 	var _arg1 C.GType             // out

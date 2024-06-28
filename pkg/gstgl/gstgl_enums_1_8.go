@@ -25,8 +25,8 @@ func init() {
 	})
 }
 
-// GLTextureTarget: openGL texture target that an OpenGL texture can be bound
-// to. The gst_gl_value_set_texture_target_from_mask(),
+// GLTextureTarget: openGL texture target that an OpenGL texture can
+// be bound to. The gst_gl_value_set_texture_target_from_mask(),
 // gst_gl_value_get_texture_target_mask(), and gst_gl_value_set_texture_target()
 // functions can be used for handling texture targets with #GValue's when e.g.
 // dealing with Caps.

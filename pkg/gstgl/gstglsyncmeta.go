@@ -91,7 +91,7 @@ func (g *GLSyncMeta) Data() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 func (syncMeta *GLSyncMeta) SetSyncPoint(context GLContexter) {
 	var _arg0 *C.GstGLSyncMeta // out
@@ -110,7 +110,7 @@ func (syncMeta *GLSyncMeta) SetSyncPoint(context GLContexter) {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 func (syncMeta *GLSyncMeta) Wait(context GLContexter) {
 	var _arg0 *C.GstGLSyncMeta // out
@@ -130,7 +130,7 @@ func (syncMeta *GLSyncMeta) Wait(context GLContexter) {
 //
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 func (syncMeta *GLSyncMeta) WaitCpu(context GLContexter) {
 	var _arg0 *C.GstGLSyncMeta // out

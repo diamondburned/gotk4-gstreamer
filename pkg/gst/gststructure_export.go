@@ -29,9 +29,7 @@ func _gotk4_gst1_StructureFilterMapFunc(arg1 C.GQuark, arg2 *C.GValue, arg3 C.gp
 	var _fieldId glib.Quark    // out
 	var _value *coreglib.Value // out
 
-	_fieldId = uint32(arg1)
-	type _ = glib.Quark
-	type _ = uint32
+	_fieldId = glib.Quark(arg1)
 	_value = coreglib.ValueFromNative(unsafe.Pointer(arg2))
 
 	ok := fn(_fieldId, _value)
@@ -59,9 +57,7 @@ func _gotk4_gst1_StructureForEachFunc(arg1 C.GQuark, arg2 *C.GValue, arg3 C.gpoi
 	var _fieldId glib.Quark    // out
 	var _value *coreglib.Value // out
 
-	_fieldId = uint32(arg1)
-	type _ = glib.Quark
-	type _ = uint32
+	_fieldId = glib.Quark(arg1)
 	_value = coreglib.ValueFromNative(unsafe.Pointer(arg2))
 
 	ok := fn(_fieldId, _value)
@@ -89,9 +85,7 @@ func _gotk4_gst1_StructureMapFunc(arg1 C.GQuark, arg2 *C.GValue, arg3 C.gpointer
 	var _fieldId glib.Quark    // out
 	var _value *coreglib.Value // out
 
-	_fieldId = uint32(arg1)
-	type _ = glib.Quark
-	type _ = uint32
+	_fieldId = glib.Quark(arg1)
 	_value = coreglib.ValueFromNative(unsafe.Pointer(arg2))
 
 	ok := fn(_fieldId, _value)

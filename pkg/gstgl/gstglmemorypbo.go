@@ -106,8 +106,8 @@ func marshalGLMemoryPBO(p uintptr) (interface{}, error) {
 	return &GLMemoryPBO{&glMemoryPBO{(*C.GstGLMemoryPBO)(b)}}, nil
 }
 
-// CopyIntoTexture copies gl_mem into the texture specified by tex_id. The
-// format of tex_id is specified by tex_format, width and height.
+// CopyIntoTexture copies gl_mem into the texture specified by tex_id.
+// The format of tex_id is specified by tex_format, width and height.
 //
 // If respecify is TRUE, then the copy is performed in terms of the texture
 // data. This is useful for splitting RGBA textures into RG or R textures or
@@ -122,17 +122,17 @@ func marshalGLMemoryPBO(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - texId: destination texture id.
-//    - target: destination GLTextureTarget.
-//    - texFormat: destination GLFormat.
-//    - width of tex_id.
-//    - height of tex_id.
-//    - stride of the backing texture data.
-//    - respecify: whether to copy the data or copy per texel.
+//   - texId: destination texture id.
+//   - target: destination GLTextureTarget.
+//   - texFormat: destination GLFormat.
+//   - width of tex_id.
+//   - height of tex_id.
+//   - stride of the backing texture data.
+//   - respecify: whether to copy the data or copy per texel.
 //
 // The function returns the following values:
 //
-//    - ok: whether the copy succeeded.
+//   - ok: whether the copy succeeded.
 //
 func (glMem *GLMemoryPBO) CopyIntoTexture(texId uint, target GLTextureTarget, texFormat GLFormat, width int, height int, stride int, respecify bool) bool {
 	var _arg0 *C.GstGLMemoryPBO    // out

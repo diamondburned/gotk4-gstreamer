@@ -21,20 +21,20 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer to clip.
-//    - segment: segment in GST_FORMAT_TIME or GST_FORMAT_DEFAULT to which the
-//      buffer should be clipped.
-//    - rate: sample rate.
-//    - bpf: size of one audio frame in bytes. This is the size of one sample *
-//      number of channels.
+//   - buffer to clip.
+//   - segment: segment in GST_FORMAT_TIME or GST_FORMAT_DEFAULT to which the
+//     buffer should be clipped.
+//   - rate: sample rate.
+//   - bpf: size of one audio frame in bytes. This is the size of one sample *
+//     number of channels.
 //
 // The function returns the following values:
 //
-//    - ret: NULL if the buffer is completely outside the configured segment,
-//      otherwise the clipped buffer is returned.
+//   - ret (optional): NULL if the buffer is completely outside the configured
+//     segment, otherwise the clipped buffer is returned.
 //
-//      If the buffer has no timestamp, it is assumed to be inside the segment
-//      and is not clipped.
+//     If the buffer has no timestamp, it is assumed to be inside the segment
+//     and is not clipped.
 //
 func AudioBufferClip(buffer *gst.Buffer, segment *gst.Segment, rate, bpf int) *gst.Buffer {
 	var _arg1 *C.GstBuffer  // out
@@ -57,13 +57,15 @@ func AudioBufferClip(buffer *gst.Buffer, segment *gst.Segment, rate, bpf int) *g
 
 	var _ret *gst.Buffer // out
 
-	_ret = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_ret = (*gst.Buffer)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_ret)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _ret
 }

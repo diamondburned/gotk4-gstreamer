@@ -105,8 +105,8 @@ func marshalVideoOrientation(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - center: return location for the result.
-//    - ok: TRUE in case the element supports centering.
+//   - center: return location for the result.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) Hcenter() (int, bool) {
 	var _arg0 *C.GstVideoOrientation // out
@@ -134,8 +134,8 @@ func (videoOrientation *VideoOrientation) Hcenter() (int, bool) {
 //
 // The function returns the following values:
 //
-//    - flip: return location for the result.
-//    - ok: TRUE in case the element supports flipping.
+//   - flip: return location for the result.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) Hflip() (flip, ok bool) {
 	var _arg0 *C.GstVideoOrientation // out
@@ -164,8 +164,8 @@ func (videoOrientation *VideoOrientation) Hflip() (flip, ok bool) {
 //
 // The function returns the following values:
 //
-//    - center: return location for the result.
-//    - ok: TRUE in case the element supports centering.
+//   - center: return location for the result.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) Vcenter() (int, bool) {
 	var _arg0 *C.GstVideoOrientation // out
@@ -193,8 +193,8 @@ func (videoOrientation *VideoOrientation) Vcenter() (int, bool) {
 //
 // The function returns the following values:
 //
-//    - flip: return location for the result.
-//    - ok: TRUE in case the element supports flipping.
+//   - flip: return location for the result.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) Vflip() (flip, ok bool) {
 	var _arg0 *C.GstVideoOrientation // out
@@ -223,11 +223,11 @@ func (videoOrientation *VideoOrientation) Vflip() (flip, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - center: centering offset.
+//   - center: centering offset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports centering.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) SetHcenter(center int) bool {
 	var _arg0 *C.GstVideoOrientation // out
@@ -255,11 +255,11 @@ func (videoOrientation *VideoOrientation) SetHcenter(center int) bool {
 //
 // The function takes the following parameters:
 //
-//    - flip: use flipping.
+//   - flip: use flipping.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports flipping.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) SetHflip(flip bool) bool {
 	var _arg0 *C.GstVideoOrientation // out
@@ -288,11 +288,11 @@ func (videoOrientation *VideoOrientation) SetHflip(flip bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - center: centering offset.
+//   - center: centering offset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports centering.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) SetVcenter(center int) bool {
 	var _arg0 *C.GstVideoOrientation // out
@@ -320,11 +320,11 @@ func (videoOrientation *VideoOrientation) SetVcenter(center int) bool {
 //
 // The function takes the following parameters:
 //
-//    - flip: use flipping.
+//   - flip: use flipping.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports flipping.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) SetVflip(flip bool) bool {
 	var _arg0 *C.GstVideoOrientation // out
@@ -353,8 +353,8 @@ func (videoOrientation *VideoOrientation) SetVflip(flip bool) bool {
 //
 // The function returns the following values:
 //
-//    - center: return location for the result.
-//    - ok: TRUE in case the element supports centering.
+//   - center: return location for the result.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) hcenter() (int, bool) {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -385,8 +385,8 @@ func (videoOrientation *VideoOrientation) hcenter() (int, bool) {
 //
 // The function returns the following values:
 //
-//    - flip: return location for the result.
-//    - ok: TRUE in case the element supports flipping.
+//   - flip: return location for the result.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) hflip() (flip, ok bool) {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -418,8 +418,8 @@ func (videoOrientation *VideoOrientation) hflip() (flip, ok bool) {
 //
 // The function returns the following values:
 //
-//    - center: return location for the result.
-//    - ok: TRUE in case the element supports centering.
+//   - center: return location for the result.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) vcenter() (int, bool) {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -450,8 +450,8 @@ func (videoOrientation *VideoOrientation) vcenter() (int, bool) {
 //
 // The function returns the following values:
 //
-//    - flip: return location for the result.
-//    - ok: TRUE in case the element supports flipping.
+//   - flip: return location for the result.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) vflip() (flip, ok bool) {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -483,11 +483,11 @@ func (videoOrientation *VideoOrientation) vflip() (flip, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - center: centering offset.
+//   - center: centering offset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports centering.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) setHcenter(center int) bool {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -518,11 +518,11 @@ func (videoOrientation *VideoOrientation) setHcenter(center int) bool {
 //
 // The function takes the following parameters:
 //
-//    - flip: use flipping.
+//   - flip: use flipping.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports flipping.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) setHflip(flip bool) bool {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -554,11 +554,11 @@ func (videoOrientation *VideoOrientation) setHflip(flip bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - center: centering offset.
+//   - center: centering offset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports centering.
+//   - ok: TRUE in case the element supports centering.
 //
 func (videoOrientation *VideoOrientation) setVcenter(center int) bool {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))
@@ -589,11 +589,11 @@ func (videoOrientation *VideoOrientation) setVcenter(center int) bool {
 //
 // The function takes the following parameters:
 //
-//    - flip: use flipping.
+//   - flip: use flipping.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE in case the element supports flipping.
+//   - ok: TRUE in case the element supports flipping.
 //
 func (videoOrientation *VideoOrientation) setVflip(flip bool) bool {
 	gclass := (*C.GstVideoOrientationInterface)(coreglib.PeekParentClass(videoOrientation))

@@ -18,7 +18,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - audioFormats: array of AudioFormat.
+//   - audioFormats: array of AudioFormat.
 //
 func AudioFormatsRaw() []AudioFormat {
 	var _cret *C.GstAudioFormat // in
@@ -40,12 +40,12 @@ func AudioFormatsRaw() []AudioFormat {
 //
 // The function takes the following parameters:
 //
-//    - formats (optional): array of raw AudioFormat, or NULL.
-//    - layout of audio samples.
+//   - formats (optional): array of raw AudioFormat, or NULL.
+//   - layout of audio samples.
 //
 // The function returns the following values:
 //
-//    - caps: audio GstCaps.
+//   - caps: audio GstCaps.
 //
 func AudioMakeRawCaps(formats []AudioFormat, layout AudioLayout) *gst.Caps {
 	var _arg1 *C.GstAudioFormat // out

@@ -41,24 +41,23 @@ func defaultRTPBaseAudioPayloadOverrides(v *RTPBaseAudioPayload) RTPBaseAudioPay
 //
 // This class derives from GstRTPBasePayload. It can be used for payloading
 // audio codecs. It will only work with constant bitrate codecs. It supports
-// both frame based and sample based codecs. It takes care of packing up the
-// audio data into RTP packets and filling up the headers accordingly. The
-// payloading is done based on the maximum MTU (mtu) and the maximum time per
-// packet (max-ptime). The general idea is to divide large data buffers into
+// both frame based and sample based codecs. It takes care of packing up
+// the audio data into RTP packets and filling up the headers accordingly.
+// The payloading is done based on the maximum MTU (mtu) and the maximum time
+// per packet (max-ptime). The general idea is to divide large data buffers into
 // smaller RTP packets. The RTP packet size is the minimum of either the MTU,
-// max-ptime (if set) or available data. The RTP packet size is always larger or
-// equal to min-ptime (if set). If min-ptime is not set, any residual data is
+// max-ptime (if set) or available data. The RTP packet size is always larger
+// or equal to min-ptime (if set). If min-ptime is not set, any residual data is
 // sent in a last RTP packet. In the case of frame based codecs, the resulting
 // RTP packets always contain full frames.
 //
+// # Usage
 //
-// Usage
-//
-// To use this base class, your child element needs to call either
-// gst_rtp_base_audio_payload_set_frame_based() or
-// gst_rtp_base_audio_payload_set_sample_based(). This is usually done in the
-// element's _init() function. Then, the child element must call either
-// gst_rtp_base_audio_payload_set_frame_options(),
+// To use this base class, your child element needs to call
+// either gst_rtp_base_audio_payload_set_frame_based() or
+// gst_rtp_base_audio_payload_set_sample_based(). This is usually
+// done in the element's _init() function. Then, the child element
+// must call either gst_rtp_base_audio_payload_set_frame_options(),
 // gst_rtp_base_audio_payload_set_sample_options() or
 // gst_rtp_base_audio_payload_set_samplebits_options. Since
 // GstRTPBaseAudioPayload derives from GstRTPBasePayload, the child element must
@@ -117,12 +116,12 @@ func marshalRTPBaseAudioPayload(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - payloadLen: length of payload.
-//    - timestamp: ClockTime.
+//   - payloadLen: length of payload.
+//   - timestamp: ClockTime.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (baseaudiopayload *RTPBaseAudioPayload) Flush(payloadLen uint, timestamp gst.ClockTime) gst.FlowReturn {
 	var _arg0 *C.GstRTPBaseAudioPayload // out
@@ -132,9 +131,7 @@ func (baseaudiopayload *RTPBaseAudioPayload) Flush(payloadLen uint, timestamp gs
 
 	_arg0 = (*C.GstRTPBaseAudioPayload)(unsafe.Pointer(coreglib.InternObject(baseaudiopayload).Native()))
 	_arg1 = C.guint(payloadLen)
-	_arg2 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg2 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_rtp_base_audio_payload_flush(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(baseaudiopayload)
@@ -152,7 +149,7 @@ func (baseaudiopayload *RTPBaseAudioPayload) Flush(payloadLen uint, timestamp gs
 //
 // The function returns the following values:
 //
-//    - adapter: Adapter.
+//   - adapter: Adapter.
 //
 func (rtpbaseaudiopayload *RTPBaseAudioPayload) Adapter() *gstbase.Adapter {
 	var _arg0 *C.GstRTPBaseAudioPayload // out
@@ -181,12 +178,12 @@ func (rtpbaseaudiopayload *RTPBaseAudioPayload) Adapter() *gstbase.Adapter {
 //
 // The function takes the following parameters:
 //
-//    - data to set as payload.
-//    - timestamp: ClockTime.
+//   - data to set as payload.
+//   - timestamp: ClockTime.
 //
 // The function returns the following values:
 //
-//    - flowReturn: FlowReturn.
+//   - flowReturn: FlowReturn.
 //
 func (baseaudiopayload *RTPBaseAudioPayload) Push(data []byte, timestamp gst.ClockTime) gst.FlowReturn {
 	var _arg0 *C.GstRTPBaseAudioPayload // out
@@ -200,9 +197,7 @@ func (baseaudiopayload *RTPBaseAudioPayload) Push(data []byte, timestamp gst.Clo
 	if len(data) > 0 {
 		_arg1 = (*C.guint8)(unsafe.Pointer(&data[0]))
 	}
-	_arg3 = C.guint64(timestamp)
-	type _ = gst.ClockTime
-	type _ = uint64
+	_arg3 = C.GstClockTime(timestamp)
 
 	_cret = C.gst_rtp_base_audio_payload_push(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(baseaudiopayload)
@@ -231,8 +226,8 @@ func (rtpbaseaudiopayload *RTPBaseAudioPayload) SetFrameBased() {
 //
 // The function takes the following parameters:
 //
-//    - frameDuration: duraction of an audio frame in milliseconds.
-//    - frameSize: size of an audio frame in bytes.
+//   - frameDuration: duraction of an audio frame in milliseconds.
+//   - frameSize: size of an audio frame in bytes.
 //
 func (rtpbaseaudiopayload *RTPBaseAudioPayload) SetFrameOptions(frameDuration, frameSize int) {
 	var _arg0 *C.GstRTPBaseAudioPayload // out
@@ -264,7 +259,7 @@ func (rtpbaseaudiopayload *RTPBaseAudioPayload) SetSampleBased() {
 //
 // The function takes the following parameters:
 //
-//    - sampleSize: size per sample in bytes.
+//   - sampleSize: size per sample in bytes.
 //
 func (rtpbaseaudiopayload *RTPBaseAudioPayload) SetSampleOptions(sampleSize int) {
 	var _arg0 *C.GstRTPBaseAudioPayload // out
@@ -282,7 +277,7 @@ func (rtpbaseaudiopayload *RTPBaseAudioPayload) SetSampleOptions(sampleSize int)
 //
 // The function takes the following parameters:
 //
-//    - sampleSize: size per sample in bits.
+//   - sampleSize: size per sample in bits.
 //
 func (rtpbaseaudiopayload *RTPBaseAudioPayload) SetSamplebitsOptions(sampleSize int) {
 	var _arg0 *C.GstRTPBaseAudioPayload // out

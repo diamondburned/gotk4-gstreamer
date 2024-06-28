@@ -52,12 +52,12 @@ func init() {
 type AudioAggregatorOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - pad
-	//    - inbuf
-	//    - inOffset
-	//    - outbuf
-	//    - outOffset
-	//    - numFrames
+	//   - pad
+	//   - inbuf
+	//   - inOffset
+	//   - outbuf
+	//   - outOffset
+	//   - numFrames
 	//
 	// The function returns the following values:
 	//
@@ -76,16 +76,16 @@ func defaultAudioAggregatorOverrides(v *AudioAggregator) AudioAggregatorOverride
 	}
 }
 
-// AudioAggregator subclasses must use (a subclass of) AudioAggregatorPad for
-// both their source and sink pads,
+// AudioAggregator subclasses must use (a subclass of)
+// AudioAggregatorPad for both their source and sink pads,
 // gst_element_class_add_static_pad_template_with_gtype() is a convenient
 // helper.
 //
-// AudioAggregator can perform conversion on the data arriving on its sink pads,
-// based on the format expected downstream: in order to enable that behaviour,
-// the GType of the sink pads must either be a (subclass of)
-// AudioAggregatorConvertPad to use the default AudioConverter implementation,
-// or a subclass of AudioAggregatorPad implementing
+// AudioAggregator can perform conversion on the data arriving on its
+// sink pads, based on the format expected downstream: in order to enable
+// that behaviour, the GType of the sink pads must either be a (subclass
+// of) AudioAggregatorConvertPad to use the default AudioConverter
+// implementation, or a subclass of AudioAggregatorPad implementing
 // AudioAggregatorPadClass.convert_buffer.
 //
 // To allow for the output caps to change, the mechanism is the same as above,
@@ -93,9 +93,9 @@ func defaultAudioAggregatorOverrides(v *AudioAggregator) AudioAggregatorOverride
 //
 // See AudioMixer for an example.
 //
-// When conversion is enabled, AudioAggregator will accept any type of raw audio
-// caps and perform conversion on the data arriving on its sink pads, with
-// whatever downstream expects as the target format.
+// When conversion is enabled, AudioAggregator will accept any type of raw
+// audio caps and perform conversion on the data arriving on its sink pads,
+// with whatever downstream expects as the target format.
 //
 // In case downstream caps are not fully fixated, it will use the first
 // configured sink pad to finish fixating its source pad caps.
@@ -198,8 +198,8 @@ func BaseAudioAggregator(obj AudioAggregatorrer) *AudioAggregator {
 
 // The function takes the following parameters:
 //
-//    - pad
-//    - caps
+//   - pad
+//   - caps
 //
 func (aagg *AudioAggregator) SetSinkCaps(pad *AudioAggregatorPad, caps *gst.Caps) {
 	var _arg0 *C.GstAudioAggregator    // out
@@ -218,12 +218,12 @@ func (aagg *AudioAggregator) SetSinkCaps(pad *AudioAggregatorPad, caps *gst.Caps
 
 // The function takes the following parameters:
 //
-//    - pad
-//    - inbuf
-//    - inOffset
-//    - outbuf
-//    - outOffset
-//    - numFrames
+//   - pad
+//   - inbuf
+//   - inOffset
+//   - outbuf
+//   - outOffset
+//   - numFrames
 //
 // The function returns the following values:
 //
@@ -359,9 +359,9 @@ func marshalAudioAggregatorConvertPad(p uintptr) (interface{}, error) {
 type AudioAggregatorPadOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - inInfo
-	//    - outInfo
-	//    - buffer
+	//   - inInfo
+	//   - outInfo
+	//   - buffer
 	//
 	// The function returns the following values:
 	//
@@ -433,9 +433,9 @@ func marshalAudioAggregatorPad(p uintptr) (interface{}, error) {
 
 // The function takes the following parameters:
 //
-//    - inInfo
-//    - outInfo
-//    - buffer
+//   - inInfo
+//   - outInfo
+//   - buffer
 //
 // The function returns the following values:
 //

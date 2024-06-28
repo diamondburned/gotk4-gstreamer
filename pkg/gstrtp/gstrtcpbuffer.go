@@ -263,17 +263,17 @@ func (r RTCPType) String() string {
 }
 
 // RtcpNtpToUnix converts an NTP time to UNIX nanoseconds. ntptime can typically
-// be the NTP time of an SR RTCP message and contains, in the upper 32 bits, the
-// number of seconds since 1900 and, in the lower 32 bits, the fractional
+// be the NTP time of an SR RTCP message and contains, in the upper 32 bits,
+// the number of seconds since 1900 and, in the lower 32 bits, the fractional
 // seconds. The resulting value will be the number of nanoseconds since 1970.
 //
 // The function takes the following parameters:
 //
-//    - ntptime: NTP timestamp.
+//   - ntptime: NTP timestamp.
 //
 // The function returns the following values:
 //
-//    - guint64: UNIX time for ntptime in nanoseconds.
+//   - guint64: UNIX time for ntptime in nanoseconds.
 //
 func RtcpNtpToUnix(ntptime uint64) uint64 {
 	var _arg1 C.guint64 // out
@@ -296,12 +296,12 @@ func RtcpNtpToUnix(ntptime uint64) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - name: SDES name.
+//   - name: SDES name.
 //
 // The function returns the following values:
 //
-//    - rtcpsdesType for name or T_RTCP_SDES_PRIV when name is a private sdes
-//      item.
+//   - rtcpsdesType for name or T_RTCP_SDES_PRIV when name is a private sdes
+//     item.
 //
 func RtcpSdesNameToType(name string) RTCPSDESType {
 	var _arg1 *C.gchar          // out
@@ -325,11 +325,11 @@ func RtcpSdesNameToType(name string) RTCPSDESType {
 //
 // The function takes the following parameters:
 //
-//    - typ: RTCPSDESType.
+//   - typ: RTCPSDESType.
 //
 // The function returns the following values:
 //
-//    - utf8: string equivalent of type.
+//   - utf8: string equivalent of type.
 //
 func RtcpSdesTypeToName(typ RTCPSDESType) string {
 	var _arg1 C.GstRTCPSDESType // out
@@ -347,19 +347,19 @@ func RtcpSdesTypeToName(typ RTCPSDESType) string {
 	return _utf8
 }
 
-// RtcpUnixToNtp converts a UNIX timestamp in nanoseconds to an NTP time. The
-// caller should pass a value with nanoseconds since 1970. The NTP time will, in
-// the upper 32 bits, contain the number of seconds since 1900 and, in the lower
-// 32 bits, the fractional seconds. The resulting value can be used as an
-// ntptime for constructing SR RTCP packets.
+// RtcpUnixToNtp converts a UNIX timestamp in nanoseconds to an NTP time.
+// The caller should pass a value with nanoseconds since 1970. The NTP time
+// will, in the upper 32 bits, contain the number of seconds since 1900 and,
+// in the lower 32 bits, the fractional seconds. The resulting value can be used
+// as an ntptime for constructing SR RTCP packets.
 //
 // The function takes the following parameters:
 //
-//    - unixtime: UNIX timestamp in nanoseconds.
+//   - unixtime: UNIX timestamp in nanoseconds.
 //
 // The function returns the following values:
 //
-//    - guint64: NTP time for unixtime.
+//   - guint64: NTP time for unixtime.
 //
 func RtcpUnixToNtp(unixtime uint64) uint64 {
 	var _arg1 C.guint64 // out
@@ -379,13 +379,13 @@ func RtcpUnixToNtp(unixtime uint64) uint64 {
 
 // RTCPBuffer: note: The API in this module is not yet declared stable.
 //
-// The GstRTPCBuffer helper functions makes it easy to parse and create regular
-// Buffer objects that contain compound RTCP packets. These buffers are
+// The GstRTPCBuffer helper functions makes it easy to parse and create
+// regular Buffer objects that contain compound RTCP packets. These buffers are
 // typically of 'application/x-rtcp' Caps.
 //
 // An RTCP buffer consists of 1 or more RTCPPacket structures that you can
-// retrieve with gst_rtcp_buffer_get_first_packet(). RTCPPacket acts as a
-// pointer into the RTCP buffer; you can move to the next packet with
+// retrieve with gst_rtcp_buffer_get_first_packet(). RTCPPacket acts as
+// a pointer into the RTCP buffer; you can move to the next packet with
 // gst_rtcp_packet_move_to_next().
 //
 // An instance of this type is always passed by reference.
@@ -417,13 +417,13 @@ func (r *RTCPBuffer) Map() *gst.MapInfo {
 //
 // The function takes the following parameters:
 //
-//    - typ of the new packet.
-//    - packet: pointer to new packet.
+//   - typ of the new packet.
+//   - packet: pointer to new packet.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the packet could be created. This function returns FALSE if
-//      the max mtu is exceeded for the buffer.
+//   - ok: TRUE if the packet could be created. This function returns FALSE if
+//     the max mtu is exceeded for the buffer.
 //
 func (rtcp *RTCPBuffer) AddPacket(typ RTCPType, packet *RTCPPacket) bool {
 	var _arg0 *C.GstRTCPBuffer // out
@@ -454,11 +454,11 @@ func (rtcp *RTCPBuffer) AddPacket(typ RTCPType, packet *RTCPPacket) bool {
 //
 // The function takes the following parameters:
 //
-//    - packet: RTCPPacket.
+//   - packet: RTCPPacket.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the packet existed in rtcp.
+//   - ok: TRUE if the packet existed in rtcp.
 //
 func (rtcp *RTCPBuffer) FirstPacket(packet *RTCPPacket) bool {
 	var _arg0 *C.GstRTCPBuffer // out
@@ -485,7 +485,7 @@ func (rtcp *RTCPBuffer) FirstPacket(packet *RTCPPacket) bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of RTCP packets in rtcp.
+//   - guint: number of RTCP packets in rtcp.
 //
 func (rtcp *RTCPBuffer) PacketCount() uint {
 	var _arg0 *C.GstRTCPBuffer // out
@@ -530,14 +530,14 @@ func (rtcp *RTCPBuffer) Unmap() bool {
 	return _ok
 }
 
-// RTCPBufferMap: open buffer for reading or writing, depending on flags. The
-// resulting RTCP buffer state is stored in rtcp.
+// RTCPBufferMap: open buffer for reading or writing, depending on flags.
+// The resulting RTCP buffer state is stored in rtcp.
 //
 // The function takes the following parameters:
 //
-//    - buffer with an RTCP packet.
-//    - flags for the mapping.
-//    - rtcp: resulting RTCPBuffer.
+//   - buffer with an RTCP packet.
+//   - flags for the mapping.
+//   - rtcp: resulting RTCPBuffer.
 //
 // The function returns the following values:
 //
@@ -570,11 +570,11 @@ func RTCPBufferMap(buffer *gst.Buffer, flags gst.MapFlags, rtcp *RTCPBuffer) boo
 //
 // The function takes the following parameters:
 //
-//    - mtu: maximum mtu size.
+//   - mtu: maximum mtu size.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer.
+//   - buffer: newly allocated buffer.
 //
 func NewRTCPBuffer(mtu uint) *gst.Buffer {
 	var _arg1 C.guint      // out
@@ -604,11 +604,11 @@ func NewRTCPBuffer(mtu uint) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - data for the new buffer.
+//   - data for the new buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer with a copy of data and of size len.
+//   - buffer: newly allocated buffer with a copy of data and of size len.
 //
 func NewRTCPBufferCopyData(data []byte) *gst.Buffer {
 	var _arg1 C.gconstpointer // out
@@ -642,11 +642,11 @@ func NewRTCPBufferCopyData(data []byte) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - data for the new buffer.
+//   - data for the new buffer.
 //
 // The function returns the following values:
 //
-//    - buffer: newly allocated buffer with data and of size len.
+//   - buffer: newly allocated buffer with data and of size len.
 //
 func NewRTCPBufferTakeData(data []byte) *gst.Buffer {
 	var _arg1 C.gpointer // out
@@ -679,11 +679,11 @@ func NewRTCPBufferTakeData(data []byte) *gst.Buffer {
 //
 // The function takes the following parameters:
 //
-//    - buffer to validate.
+//   - buffer to validate.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if buffer is a valid RTCP packet.
+//   - ok: TRUE if buffer is a valid RTCP packet.
 //
 func RTCPBufferValidate(buffer *gst.Buffer) bool {
 	var _arg1 *C.GstBuffer // out
@@ -709,11 +709,11 @@ func RTCPBufferValidate(buffer *gst.Buffer) bool {
 //
 // The function takes the following parameters:
 //
-//    - data to validate.
+//   - data to validate.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the data points to a valid RTCP packet.
+//   - ok: TRUE if the data points to a valid RTCP packet.
 //
 func RTCPBufferValidateData(data []byte) bool {
 	var _arg1 *C.guint8 // out
@@ -737,8 +737,8 @@ func RTCPBufferValidateData(data []byte) bool {
 	return _ok
 }
 
-// RTCPPacket: data structure that points to a packet at offset in buffer. The
-// size of the structure is made public to allow stack allocations.
+// RTCPPacket: data structure that points to a packet at offset in buffer.
+// The size of the structure is made public to allow stack allocations.
 //
 // An instance of this type is always passed by reference.
 type RTCPPacket struct {
@@ -772,17 +772,17 @@ func (r *RTCPPacket) SetOffset(offset uint) {
 	*valptr = C.guint(offset)
 }
 
-// AddProfileSpecificExt: add profile-specific extension data to packet. If
-// packet already contains profile-specific extension data will be appended to
-// the existing extension.
+// AddProfileSpecificExt: add profile-specific extension data to packet.
+// If packet already contains profile-specific extension data will be appended
+// to the existing extension.
 //
 // The function takes the following parameters:
 //
-//    - data: profile-specific data.
+//   - data: profile-specific data.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the profile specific extension data was added.
+//   - ok: TRUE if the profile specific extension data was added.
 //
 func (packet *RTCPPacket) AddProfileSpecificExt(data []byte) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -813,19 +813,19 @@ func (packet *RTCPPacket) AddProfileSpecificExt(data []byte) bool {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: data source being reported.
-//    - fractionlost: fraction lost since last SR/RR.
-//    - packetslost: cumululative number of packets lost.
-//    - exthighestseq: extended last sequence number received.
-//    - jitter: interarrival jitter.
-//    - lsr: last SR packet from this source.
-//    - dlsr: delay since last SR packet.
+//   - ssrc: data source being reported.
+//   - fractionlost: fraction lost since last SR/RR.
+//   - packetslost: cumululative number of packets lost.
+//   - exthighestseq: extended last sequence number received.
+//   - jitter: interarrival jitter.
+//   - lsr: last SR packet from this source.
+//   - dlsr: delay since last SR packet.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the packet was created. This function can return FALSE if the
-//      max MTU is exceeded or the number of report blocks is greater than
-//      T_RTCP_MAX_RB_COUNT.
+//   - ok: TRUE if the packet was created. This function can return FALSE if
+//     the max MTU is exceeded or the number of report blocks is greater than
+//     T_RTCP_MAX_RB_COUNT.
 //
 func (packet *RTCPPacket) AddRb(ssrc uint32, fractionlost byte, packetslost int32, exthighestseq uint32, jitter uint32, lsr uint32, dlsr uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -871,7 +871,7 @@ func (packet *RTCPPacket) AddRb(ssrc uint32, fractionlost byte, packetslost int3
 //
 // The function returns the following values:
 //
-//    - guint8: pointer to the data.
+//   - guint8: pointer to the data.
 //
 func (packet *RTCPPacket) AppGetData() *byte {
 	var _arg0 *C.GstRTCPPacket // out
@@ -894,7 +894,7 @@ func (packet *RTCPPacket) AppGetData() *byte {
 //
 // The function returns the following values:
 //
-//    - guint16: length of data in 32-bit words.
+//   - guint16: length of data in 32-bit words.
 //
 func (packet *RTCPPacket) AppGetDataLength() uint16 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -916,7 +916,7 @@ func (packet *RTCPPacket) AppGetDataLength() uint16 {
 //
 // The function returns the following values:
 //
-//    - utf8: 4-byte name field, not zero-terminated.
+//   - utf8: 4-byte name field, not zero-terminated.
 //
 func (packet *RTCPPacket) AppGetName() string {
 	var _arg0 *C.GstRTCPPacket // out
@@ -938,7 +938,7 @@ func (packet *RTCPPacket) AppGetName() string {
 //
 // The function returns the following values:
 //
-//    - guint32: SSRC/CSRC.
+//   - guint32: SSRC/CSRC.
 //
 func (packet *RTCPPacket) AppGetSsrc() uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -960,7 +960,7 @@ func (packet *RTCPPacket) AppGetSsrc() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint8: subtype.
+//   - guint8: subtype.
 //
 func (packet *RTCPPacket) AppGetSubtype() byte {
 	var _arg0 *C.GstRTCPPacket // out
@@ -983,11 +983,11 @@ func (packet *RTCPPacket) AppGetSubtype() byte {
 //
 // The function takes the following parameters:
 //
-//    - wordlen: length of the data in 32-bit words.
+//   - wordlen: length of the data in 32-bit words.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was enough space in the packet to add this much data.
+//   - ok: TRUE if there was enough space in the packet to add this much data.
 //
 func (packet *RTCPPacket) AppSetDataLength(wordlen uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1014,7 +1014,7 @@ func (packet *RTCPPacket) AppSetDataLength(wordlen uint16) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: 4-byte ASCII name.
+//   - name: 4-byte ASCII name.
 //
 func (packet *RTCPPacket) AppSetName(name string) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1033,7 +1033,7 @@ func (packet *RTCPPacket) AppSetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC/CSRC of the packet.
+//   - ssrc: SSRC/CSRC of the packet.
 //
 func (packet *RTCPPacket) AppSetSsrc(ssrc uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1051,7 +1051,7 @@ func (packet *RTCPPacket) AppSetSsrc(ssrc uint32) {
 //
 // The function takes the following parameters:
 //
-//    - subtype of the packet.
+//   - subtype of the packet.
 //
 func (packet *RTCPPacket) AppSetSubtype(subtype byte) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1069,13 +1069,13 @@ func (packet *RTCPPacket) AppSetSubtype(subtype byte) {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC to add.
+//   - ssrc: SSRC to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the ssrc was added. This function can return FALSE if the max
-//      MTU is exceeded or the number of sources blocks is greater than
-//      T_RTCP_MAX_BYE_SSRC_COUNT.
+//   - ok: TRUE if the ssrc was added. This function can return FALSE if the
+//     max MTU is exceeded or the number of sources blocks is greater than
+//     T_RTCP_MAX_BYE_SSRC_COUNT.
 //
 func (packet *RTCPPacket) ByeAddSsrc(ssrc uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1102,13 +1102,13 @@ func (packet *RTCPPacket) ByeAddSsrc(ssrc uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: array of SSRCs to add.
+//   - ssrc: array of SSRCs to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the all the SSRCs were added. This function can return FALSE
-//      if the max MTU is exceeded or the number of sources blocks is greater
-//      than T_RTCP_MAX_BYE_SSRC_COUNT.
+//   - ok: TRUE if the all the SSRCs were added. This function can return FALSE
+//     if the max MTU is exceeded or the number of sources blocks is greater
+//     than T_RTCP_MAX_BYE_SSRC_COUNT.
 //
 func (packet *RTCPPacket) ByeAddSsrcs(ssrc []uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1139,11 +1139,11 @@ func (packet *RTCPPacket) ByeAddSsrcs(ssrc []uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - nth SSRC to get.
+//   - nth SSRC to get.
 //
 // The function returns the following values:
 //
-//    - guint32: nth SSRC of packet.
+//   - guint32: nth SSRC of packet.
 //
 func (packet *RTCPPacket) ByeGetNthSsrc(nth uint) uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1168,8 +1168,9 @@ func (packet *RTCPPacket) ByeGetNthSsrc(nth uint) uint32 {
 //
 // The function returns the following values:
 //
-//    - utf8: reason for the BYE packet or NULL if the packet did not contain a
-//      reason string. The string must be freed with g_free() after usage.
+//   - utf8 (optional): reason for the BYE packet or NULL if the packet did not
+//     contain a reason string. The string must be freed with g_free() after
+//     usage.
 //
 func (packet *RTCPPacket) ByeGetReason() string {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1182,8 +1183,10 @@ func (packet *RTCPPacket) ByeGetReason() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -1192,8 +1195,8 @@ func (packet *RTCPPacket) ByeGetReason() string {
 //
 // The function returns the following values:
 //
-//    - guint8: length of the reason string or 0 when there is no reason string
-//      present.
+//   - guint8: length of the reason string or 0 when there is no reason string
+//     present.
 //
 func (packet *RTCPPacket) ByeGetReasonLen() byte {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1215,7 +1218,7 @@ func (packet *RTCPPacket) ByeGetReasonLen() byte {
 //
 // The function returns the following values:
 //
-//    - guint: number of SSRC fields in packet.
+//   - guint: number of SSRC fields in packet.
 //
 func (packet *RTCPPacket) ByeGetSsrcCount() uint {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1237,11 +1240,11 @@ func (packet *RTCPPacket) ByeGetSsrcCount() uint {
 //
 // The function takes the following parameters:
 //
-//    - reason string.
+//   - reason string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the string could be set.
+//   - ok: TRUE if the string could be set.
 //
 func (packet *RTCPPacket) ByeSetReason(reason string) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1270,8 +1273,8 @@ func (packet *RTCPPacket) ByeSetReason(reason string) bool {
 //
 // The function returns the following values:
 //
-//    - data: result profile-specific data.
-//    - ok: TRUE if there was valid data.
+//   - data: result profile-specific data.
+//   - ok: TRUE if there was valid data.
 //
 func (packet *RTCPPacket) CopyProfileSpecificExt() ([]byte, bool) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1302,7 +1305,7 @@ func (packet *RTCPPacket) CopyProfileSpecificExt() ([]byte, bool) {
 //
 // The function returns the following values:
 //
-//    - guint8: pointer to the FCI.
+//   - guint8: pointer to the FCI.
 //
 func (packet *RTCPPacket) FbGetFci() *byte {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1325,7 +1328,7 @@ func (packet *RTCPPacket) FbGetFci() *byte {
 //
 // The function returns the following values:
 //
-//    - guint16: length of the FCI in 32-bit words.
+//   - guint16: length of the FCI in 32-bit words.
 //
 func (packet *RTCPPacket) FbGetFciLength() uint16 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1347,7 +1350,7 @@ func (packet *RTCPPacket) FbGetFciLength() uint16 {
 //
 // The function returns the following values:
 //
-//    - guint32: media SSRC.
+//   - guint32: media SSRC.
 //
 func (packet *RTCPPacket) FbGetMediaSsrc() uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1369,7 +1372,7 @@ func (packet *RTCPPacket) FbGetMediaSsrc() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint32: sender SSRC.
+//   - guint32: sender SSRC.
 //
 func (packet *RTCPPacket) FbGetSenderSsrc() uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1391,7 +1394,7 @@ func (packet *RTCPPacket) FbGetSenderSsrc() uint32 {
 //
 // The function returns the following values:
 //
-//    - rtcpfbType: feedback message type.
+//   - rtcpfbType: feedback message type.
 //
 func (packet *RTCPPacket) FbGetType() RTCPFBType {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1414,11 +1417,11 @@ func (packet *RTCPPacket) FbGetType() RTCPFBType {
 //
 // The function takes the following parameters:
 //
-//    - wordlen: length of the FCI in 32-bit words.
+//   - wordlen: length of the FCI in 32-bit words.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was enough space in the packet to add this much FCI.
+//   - ok: TRUE if there was enough space in the packet to add this much FCI.
 //
 func (packet *RTCPPacket) FbSetFciLength(wordlen uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1445,7 +1448,7 @@ func (packet *RTCPPacket) FbSetFciLength(wordlen uint16) bool {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: media SSRC.
+//   - ssrc: media SSRC.
 //
 func (packet *RTCPPacket) FbSetMediaSsrc(ssrc uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1463,7 +1466,7 @@ func (packet *RTCPPacket) FbSetMediaSsrc(ssrc uint32) {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: sender SSRC.
+//   - ssrc: sender SSRC.
 //
 func (packet *RTCPPacket) FbSetSenderSsrc(ssrc uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1481,7 +1484,7 @@ func (packet *RTCPPacket) FbSetSenderSsrc(ssrc uint32) {
 //
 // The function takes the following parameters:
 //
-//    - typ to set.
+//   - typ to set.
 //
 func (packet *RTCPPacket) FbSetType(typ RTCPFBType) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1499,8 +1502,8 @@ func (packet *RTCPPacket) FbSetType(typ RTCPFBType) {
 //
 // The function returns the following values:
 //
-//    - guint8: count field in packet or -1 if packet does not point to a valid
-//      packet.
+//   - guint8: count field in packet or -1 if packet does not point to a valid
+//     packet.
 //
 func (packet *RTCPPacket) Count() byte {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1523,7 +1526,7 @@ func (packet *RTCPPacket) Count() byte {
 //
 // The function returns the following values:
 //
-//    - guint16: length field of packet.
+//   - guint16: length field of packet.
 //
 func (packet *RTCPPacket) Length() uint16 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1545,7 +1548,7 @@ func (packet *RTCPPacket) Length() uint16 {
 //
 // The function returns the following values:
 //
-//    - ok: if the packet has the padding bit set.
+//   - ok: if the packet has the padding bit set.
 //
 func (packet *RTCPPacket) Padding() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1567,8 +1570,8 @@ func (packet *RTCPPacket) Padding() bool {
 
 // The function returns the following values:
 //
-//    - data: result profile-specific data.
-//    - ok: TRUE if there was valid data.
+//   - data: result profile-specific data.
+//   - ok: TRUE if there was valid data.
 //
 func (packet *RTCPPacket) ProfileSpecificExt() ([]byte, bool) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1595,8 +1598,8 @@ func (packet *RTCPPacket) ProfileSpecificExt() ([]byte, bool) {
 
 // The function returns the following values:
 //
-//    - guint16: number of 32-bit words containing profile-specific extension
-//      data from packet.
+//   - guint16: number of 32-bit words containing profile-specific extension
+//     data from packet.
 //
 func (packet *RTCPPacket) ProfileSpecificExtLength() uint16 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1619,17 +1622,17 @@ func (packet *RTCPPacket) ProfileSpecificExtLength() uint16 {
 //
 // The function takes the following parameters:
 //
-//    - nth report block in packet.
+//   - nth report block in packet.
 //
 // The function returns the following values:
 //
-//    - ssrc: result for data source being reported.
-//    - fractionlost: result for fraction lost since last SR/RR.
-//    - packetslost: result for the cumululative number of packets lost.
-//    - exthighestseq: result for the extended last sequence number received.
-//    - jitter: result for the interarrival jitter.
-//    - lsr: result for the last SR packet from this source.
-//    - dlsr: result for the delay since last SR packet.
+//   - ssrc: result for data source being reported.
+//   - fractionlost: result for fraction lost since last SR/RR.
+//   - packetslost: result for the cumululative number of packets lost.
+//   - exthighestseq: result for the extended last sequence number received.
+//   - jitter: result for the interarrival jitter.
+//   - lsr: result for the last SR packet from this source.
+//   - dlsr: result for the delay since last SR packet.
 //
 func (packet *RTCPPacket) Rb(nth uint) (ssrc uint32, fractionlost byte, packetslost int32, exthighestseq uint32, jitter uint32, lsr uint32, dlsr uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1672,7 +1675,7 @@ func (packet *RTCPPacket) Rb(nth uint) (ssrc uint32, fractionlost byte, packetsl
 //
 // The function returns the following values:
 //
-//    - guint: number of report blocks in packet.
+//   - guint: number of report blocks in packet.
 //
 func (packet *RTCPPacket) RbCount() uint {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1694,8 +1697,8 @@ func (packet *RTCPPacket) RbCount() uint {
 //
 // The function returns the following values:
 //
-//    - rtcpType: packet type or GST_RTCP_TYPE_INVALID when packet is not
-//      pointing to a valid packet.
+//   - rtcpType: packet type or GST_RTCP_TYPE_INVALID when packet is not
+//     pointing to a valid packet.
 //
 func (packet *RTCPPacket) Type() RTCPType {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1718,8 +1721,8 @@ func (packet *RTCPPacket) Type() RTCPType {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if packet is pointing to a valid packet after calling this
-//      function.
+//   - ok: TRUE if packet is pointing to a valid packet after calling this
+//     function.
 //
 func (packet *RTCPPacket) MoveToNext() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1744,8 +1747,8 @@ func (packet *RTCPPacket) MoveToNext() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if packet is pointing to a valid packet after calling this
-//      function.
+//   - ok: TRUE if packet is pointing to a valid packet after calling this
+//     function.
 //
 func (packet *RTCPPacket) Remove() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1769,7 +1772,7 @@ func (packet *RTCPPacket) Remove() bool {
 //
 // The function returns the following values:
 //
-//    - guint32: ssrc.
+//   - guint32: ssrc.
 //
 func (packet *RTCPPacket) RrGetSsrc() uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1791,7 +1794,7 @@ func (packet *RTCPPacket) RrGetSsrc() uint32 {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC to set.
+//   - ssrc: SSRC to set.
 //
 func (packet *RTCPPacket) RrSetSsrc(ssrc uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1809,12 +1812,12 @@ func (packet *RTCPPacket) RrSetSsrc(ssrc uint32) {
 //
 // The function takes the following parameters:
 //
-//    - typ of the SDES entry.
-//    - data: data.
+//   - typ of the SDES entry.
+//   - data: data.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the item could be added, FALSE if the MTU has been reached.
+//   - ok: TRUE if the item could be added, FALSE if the MTU has been reached.
 //
 func (packet *RTCPPacket) SdesAddEntry(typ RTCPSDESType, data []byte) bool {
 	var _arg0 *C.GstRTCPPacket  // out
@@ -1848,12 +1851,12 @@ func (packet *RTCPPacket) SdesAddEntry(typ RTCPSDESType, data []byte) bool {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC of the new item to add.
+//   - ssrc: SSRC of the new item to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the item could be added, FALSE if the maximum amount of items
-//      has been exceeded for the SDES packet or the MTU has been reached.
+//   - ok: TRUE if the item could be added, FALSE if the maximum amount of items
+//     has been exceeded for the SDES packet or the MTU has been reached.
 //
 func (packet *RTCPPacket) SdesAddItem(ssrc uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1881,12 +1884,12 @@ func (packet *RTCPPacket) SdesAddItem(ssrc uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - typ: result of the entry type.
+//   - typ: result of the entry type.
 //
 // The function returns the following values:
 //
-//    - data: result entry data.
-//    - ok: TRUE if there was valid data.
+//   - data: result entry data.
+//   - ok: TRUE if there was valid data.
 //
 func (packet *RTCPPacket) SdesCopyEntry(typ *RTCPSDESType) ([]byte, bool) {
 	var _arg0 *C.GstRTCPPacket   // out
@@ -1919,7 +1922,7 @@ func (packet *RTCPPacket) SdesCopyEntry(typ *RTCPSDESType) ([]byte, bool) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a first entry.
+//   - ok: TRUE if there was a first entry.
 //
 func (packet *RTCPPacket) SdesFirstEntry() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1943,7 +1946,7 @@ func (packet *RTCPPacket) SdesFirstEntry() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a first item.
+//   - ok: TRUE if there was a first item.
 //
 func (packet *RTCPPacket) SdesFirstItem() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -1967,18 +1970,18 @@ func (packet *RTCPPacket) SdesFirstItem() bool {
 // NULL) will contain the type of the entry. data (when not NULL) will point to
 // len bytes.
 //
-// When type refers to a text item, data will point to a UTF8 string. Note that
-// this UTF8 string is NOT null-terminated. Use
+// When type refers to a text item, data will point to a UTF8
+// string. Note that this UTF8 string is NOT null-terminated. Use
 // gst_rtcp_packet_sdes_copy_entry() to get a null-terminated copy of the entry.
 //
 // The function takes the following parameters:
 //
-//    - typ: result of the entry type.
+//   - typ: result of the entry type.
 //
 // The function returns the following values:
 //
-//    - data: result entry data.
-//    - ok: TRUE if there was valid data.
+//   - data: result entry data.
+//   - ok: TRUE if there was valid data.
 //
 func (packet *RTCPPacket) SdesGetEntry(typ *RTCPSDESType) ([]byte, bool) {
 	var _arg0 *C.GstRTCPPacket   // out
@@ -2010,7 +2013,7 @@ func (packet *RTCPPacket) SdesGetEntry(typ *RTCPSDESType) ([]byte, bool) {
 //
 // The function returns the following values:
 //
-//    - guint: number of items in packet.
+//   - guint: number of items in packet.
 //
 func (packet *RTCPPacket) SdesGetItemCount() uint {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2032,7 +2035,7 @@ func (packet *RTCPPacket) SdesGetItemCount() uint {
 //
 // The function returns the following values:
 //
-//    - guint32: SSRC of the current item.
+//   - guint32: SSRC of the current item.
 //
 func (packet *RTCPPacket) SdesGetSsrc() uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2054,7 +2057,7 @@ func (packet *RTCPPacket) SdesGetSsrc() uint32 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a next entry.
+//   - ok: TRUE if there was a next entry.
 //
 func (packet *RTCPPacket) SdesNextEntry() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2078,7 +2081,7 @@ func (packet *RTCPPacket) SdesNextEntry() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a next item.
+//   - ok: TRUE if there was a next item.
 //
 func (packet *RTCPPacket) SdesNextItem() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2104,14 +2107,14 @@ func (packet *RTCPPacket) SdesNextItem() bool {
 //
 // The function takes the following parameters:
 //
-//    - nth report block to set.
-//    - ssrc: data source being reported.
-//    - fractionlost: fraction lost since last SR/RR.
-//    - packetslost: cumululative number of packets lost.
-//    - exthighestseq: extended last sequence number received.
-//    - jitter: interarrival jitter.
-//    - lsr: last SR packet from this source.
-//    - dlsr: delay since last SR packet.
+//   - nth report block to set.
+//   - ssrc: data source being reported.
+//   - fractionlost: fraction lost since last SR/RR.
+//   - packetslost: cumululative number of packets lost.
+//   - exthighestseq: extended last sequence number received.
+//   - jitter: interarrival jitter.
+//   - lsr: last SR packet from this source.
+//   - dlsr: delay since last SR packet.
 //
 func (packet *RTCPPacket) SetRb(nth uint, ssrc uint32, fractionlost byte, packetslost int32, exthighestseq uint32, jitter uint32, lsr uint32, dlsr uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2150,11 +2153,11 @@ func (packet *RTCPPacket) SetRb(nth uint, ssrc uint32, fractionlost byte, packet
 //
 // The function returns the following values:
 //
-//    - ssrc: result SSRC.
-//    - ntptime: result NTP time.
-//    - rtptime: result RTP time.
-//    - packetCount: result packet count.
-//    - octetCount: result octet count.
+//   - ssrc: result SSRC.
+//   - ntptime: result NTP time.
+//   - rtptime: result RTP time.
+//   - packetCount: result packet count.
+//   - octetCount: result octet count.
 //
 func (packet *RTCPPacket) SrGetSenderInfo() (ssrc uint32, ntptime uint64, rtptime uint32, packetCount uint32, octetCount uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2188,11 +2191,11 @@ func (packet *RTCPPacket) SrGetSenderInfo() (ssrc uint32, ntptime uint64, rtptim
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC.
-//    - ntptime: NTP time.
-//    - rtptime: RTP time.
-//    - packetCount: packet count.
-//    - octetCount: octet count.
+//   - ssrc: SSRC.
+//   - ntptime: NTP time.
+//   - rtptime: RTP time.
+//   - packetCount: packet count.
+//   - octetCount: octet count.
 //
 func (packet *RTCPPacket) SrSetSenderInfo(ssrc uint32, ntptime uint64, rtptime uint32, packetCount uint32, octetCount uint32) {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2222,7 +2225,7 @@ func (packet *RTCPPacket) SrSetSenderInfo(ssrc uint32, ntptime uint64, rtptime u
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a first extended report block.
+//   - ok: TRUE if there was a first extended report block.
 //
 func (packet *RTCPPacket) XRFirstRb() bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2244,8 +2247,8 @@ func (packet *RTCPPacket) XRFirstRb() bool {
 
 // The function returns the following values:
 //
-//    - guint16: number of 32-bit words containing type-specific block data from
-//      packet.
+//   - guint16: number of 32-bit words containing type-specific block data from
+//     packet.
 //
 func (packet *RTCPPacket) XRGetBlockLength() uint16 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2267,7 +2270,7 @@ func (packet *RTCPPacket) XRGetBlockLength() uint16 {
 //
 // The function returns the following values:
 //
-//    - rtcpxrType: extended report block type.
+//   - rtcpxrType: extended report block type.
 //
 func (packet *RTCPPacket) XRGetBlockType() RTCPXRType {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2289,14 +2292,14 @@ func (packet *RTCPPacket) XRGetBlockType() RTCPXRType {
 //
 // The function takes the following parameters:
 //
-//    - nth: index of sub-block to retrieve.
-//    - ssrc: SSRC of the receiver.
-//    - lastRr: last receiver reference timestamp of ssrc.
-//    - delay since last_rr.
+//   - nth: index of sub-block to retrieve.
+//   - ssrc: SSRC of the receiver.
+//   - lastRr: last receiver reference timestamp of ssrc.
+//   - delay since last_rr.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetDlrrBlock(nth uint, ssrc *uint32, lastRr *uint32, delay *uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2333,12 +2336,12 @@ func (packet *RTCPPacket) XRGetDlrrBlock(nth uint, ssrc *uint32, lastRr *uint32,
 //
 // The function takes the following parameters:
 //
-//    - seq: sequence to retrieve the time.
-//    - receiptTime: packet receipt time of seq.
+//   - seq: sequence to retrieve the time.
+//   - receiptTime: packet receipt time of seq.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block returns the receipt time correctly.
+//   - ok: TRUE if the report block returns the receipt time correctly.
 //
 func (packet *RTCPPacket) XRGetPrtBySeq(seq uint16, receiptTime *uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2368,15 +2371,15 @@ func (packet *RTCPPacket) XRGetPrtBySeq(seq uint16, receiptTime *uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC of the RTP data packet source being reported upon by this
-//      report block.
-//    - thinning: amount of thinning performed on the sequence number space.
-//    - beginSeq: first sequence number that this block reports on.
-//    - endSeq: last sequence number that this block reports on plus one.
+//   - ssrc: SSRC of the RTP data packet source being reported upon by this
+//     report block.
+//   - thinning: amount of thinning performed on the sequence number space.
+//   - beginSeq: first sequence number that this block reports on.
+//   - endSeq: last sequence number that this block reports on plus one.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetPrtInfo(ssrc *uint32, thinning *byte, beginSeq *uint16, endSeq *uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2413,16 +2416,16 @@ func (packet *RTCPPacket) XRGetPrtInfo(ssrc *uint32, thinning *byte, beginSeq *u
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC of the RTP data packet source being reported upon by this
-//      report block.
-//    - thinning: amount of thinning performed on the sequence number space.
-//    - beginSeq: first sequence number that this block reports on.
-//    - endSeq: last sequence number that this block reports on plus one.
-//    - chunkCount: number of chunks calculated by block length.
+//   - ssrc: SSRC of the RTP data packet source being reported upon by this
+//     report block.
+//   - thinning: amount of thinning performed on the sequence number space.
+//   - beginSeq: first sequence number that this block reports on.
+//   - endSeq: last sequence number that this block reports on plus one.
+//   - chunkCount: number of chunks calculated by block length.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetRLEInfo(ssrc *uint32, thinning *byte, beginSeq *uint16, endSeq *uint16, chunkCount *uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2461,12 +2464,12 @@ func (packet *RTCPPacket) XRGetRLEInfo(ssrc *uint32, thinning *byte, beginSeq *u
 //
 // The function takes the following parameters:
 //
-//    - nth: index of chunk to retrieve.
-//    - chunk: nth chunk.
+//   - nth: index of chunk to retrieve.
+//   - chunk: nth chunk.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block returns chunk correctly.
+//   - ok: TRUE if the report block returns chunk correctly.
 //
 func (packet *RTCPPacket) XRGetRLENthChunk(nth uint, chunk *uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2494,11 +2497,11 @@ func (packet *RTCPPacket) XRGetRLENthChunk(nth uint, chunk *uint16) bool {
 
 // The function takes the following parameters:
 //
-//    - timestamp: NTP timestamp.
+//   - timestamp: NTP timestamp.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block returns the reference time correctly.
+//   - ok: TRUE if the report block returns the reference time correctly.
 //
 func (packet *RTCPPacket) XRGetRrt(timestamp *uint64) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2525,7 +2528,7 @@ func (packet *RTCPPacket) XRGetRrt(timestamp *uint64) bool {
 //
 // The function returns the following values:
 //
-//    - guint32: ssrc.
+//   - guint32: ssrc.
 //
 func (packet *RTCPPacket) XRGetSsrc() uint32 {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2548,13 +2551,13 @@ func (packet *RTCPPacket) XRGetSsrc() uint32 {
 //
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC of the source.
-//    - beginSeq: first sequence number that this block reports on.
-//    - endSeq: last sequence number that this block reports on plus one.
+//   - ssrc: SSRC of the source.
+//   - beginSeq: first sequence number that this block reports on.
+//   - endSeq: last sequence number that this block reports on plus one.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetSummaryInfo(ssrc *uint32, beginSeq *uint16, endSeq *uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2589,15 +2592,15 @@ func (packet *RTCPPacket) XRGetSummaryInfo(ssrc *uint32, beginSeq *uint16, endSe
 //
 // The function takes the following parameters:
 //
-//    - minJitter: minimum relative transit time between two sequences.
-//    - maxJitter: maximum relative transit time between two sequences.
-//    - meanJitter: mean relative transit time between two sequences.
-//    - devJitter: standard deviation of the relative transit time between two
-//      sequences.
+//   - minJitter: minimum relative transit time between two sequences.
+//   - maxJitter: maximum relative transit time between two sequences.
+//   - meanJitter: mean relative transit time between two sequences.
+//   - devJitter: standard deviation of the relative transit time between two
+//     sequences.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetSummaryJitter(minJitter *uint32, maxJitter *uint32, meanJitter *uint32, devJitter *uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2634,12 +2637,12 @@ func (packet *RTCPPacket) XRGetSummaryJitter(minJitter *uint32, maxJitter *uint3
 //
 // The function takes the following parameters:
 //
-//    - lostPackets: number of lost packets between begin_seq and end_seq.
-//    - dupPackets: number of duplicate packets between begin_seq and end_seq.
+//   - lostPackets: number of lost packets between begin_seq and end_seq.
+//   - dupPackets: number of duplicate packets between begin_seq and end_seq.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetSummaryPkt(lostPackets *uint32, dupPackets *uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2667,14 +2670,14 @@ func (packet *RTCPPacket) XRGetSummaryPkt(lostPackets *uint32, dupPackets *uint3
 
 // The function takes the following parameters:
 //
-//    - burstDensity: fraction of RTP data packets within burst periods.
-//    - gapDensity: fraction of RTP data packets within inter-burst gaps.
-//    - burstDuration: mean duration(ms) of the burst periods.
-//    - gapDuration: mean duration(ms) of the gap periods.
+//   - burstDensity: fraction of RTP data packets within burst periods.
+//   - gapDensity: fraction of RTP data packets within inter-burst gaps.
+//   - burstDuration: mean duration(ms) of the burst periods.
+//   - gapDuration: mean duration(ms) of the gap periods.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipBurstMetrics(burstDensity *byte, gapDensity *byte, burstDuration *uint16, gapDuration *uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2708,12 +2711,12 @@ func (packet *RTCPPacket) XRGetVoipBurstMetrics(burstDensity *byte, gapDensity *
 
 // The function takes the following parameters:
 //
-//    - gmin: gap threshold.
-//    - rxConfig: receiver configuration byte.
+//   - gmin: gap threshold.
+//   - rxConfig: receiver configuration byte.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipConfigurationParams(gmin *byte, rxConfig *byte) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2741,13 +2744,13 @@ func (packet *RTCPPacket) XRGetVoipConfigurationParams(gmin *byte, rxConfig *byt
 
 // The function takes the following parameters:
 //
-//    - roundtripDelay: most recently calculated round trip time between RTP
-//      interfaces(ms).
-//    - endSystemDelay: most recently estimated end system delay(ms).
+//   - roundtripDelay: most recently calculated round trip time between RTP
+//     interfaces(ms).
+//   - endSystemDelay: most recently estimated end system delay(ms).
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipDelayMetrics(roundtripDelay *uint16, endSystemDelay *uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2775,13 +2778,13 @@ func (packet *RTCPPacket) XRGetVoipDelayMetrics(roundtripDelay *uint16, endSyste
 
 // The function takes the following parameters:
 //
-//    - jbNominal: current nominal jitter buffer delay(ms).
-//    - jbMaximum: current maximum jitter buffer delay(ms).
-//    - jbAbsMax: absolute maximum delay(ms).
+//   - jbNominal: current nominal jitter buffer delay(ms).
+//   - jbMaximum: current maximum jitter buffer delay(ms).
+//   - jbAbsMax: absolute maximum delay(ms).
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipJitterBufferParams(jbNominal *uint16, jbMaximum *uint16, jbAbsMax *uint16) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2812,11 +2815,11 @@ func (packet *RTCPPacket) XRGetVoipJitterBufferParams(jbNominal *uint16, jbMaxim
 
 // The function takes the following parameters:
 //
-//    - ssrc: SSRC of source.
+//   - ssrc: SSRC of source.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipMetricsSsrc(ssrc *uint32) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2841,13 +2844,13 @@ func (packet *RTCPPacket) XRGetVoipMetricsSsrc(ssrc *uint32) bool {
 
 // The function takes the following parameters:
 //
-//    - lossRate: fraction of RTP data packets from the source lost.
-//    - discardRate: fraction of RTP data packets from the source that have been
-//      discarded.
+//   - lossRate: fraction of RTP data packets from the source lost.
+//   - discardRate: fraction of RTP data packets from the source that have been
+//     discarded.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipPacketMetrics(lossRate *byte, discardRate *byte) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2875,15 +2878,15 @@ func (packet *RTCPPacket) XRGetVoipPacketMetrics(lossRate *byte, discardRate *by
 
 // The function takes the following parameters:
 //
-//    - rFactor: r factor is a voice quality metric describing the segment of the
-//      call.
-//    - extRFactor: external R factor is a voice quality metric.
-//    - mosLq: estimated mean opinion score for listening quality.
-//    - mosCq: estimated mean opinion score for conversational quality.
+//   - rFactor: r factor is a voice quality metric describing the segment of the
+//     call.
+//   - extRFactor: external R factor is a voice quality metric.
+//   - mosLq: estimated mean opinion score for listening quality.
+//   - mosCq: estimated mean opinion score for conversational quality.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipQualityMetrics(rFactor *byte, extRFactor *byte, mosLq *byte, mosCq *byte) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2917,15 +2920,15 @@ func (packet *RTCPPacket) XRGetVoipQualityMetrics(rFactor *byte, extRFactor *byt
 
 // The function takes the following parameters:
 //
-//    - signalLevel: ratio of the signal level to a 0 dBm reference.
-//    - noiseLevel: ratio of the silent period background noise level to a 0 dBm
-//      reference.
-//    - rerl: residual echo return loss value.
-//    - gmin: gap threshold.
+//   - signalLevel: ratio of the signal level to a 0 dBm reference.
+//   - noiseLevel: ratio of the silent period background noise level to a 0 dBm
+//     reference.
+//   - rerl: residual echo return loss value.
+//   - gmin: gap threshold.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the report block is correctly parsed.
+//   - ok: TRUE if the report block is correctly parsed.
 //
 func (packet *RTCPPacket) XRGetVoipSignalMetrics(signalLevel *byte, noiseLevel *byte, rerl *byte, gmin *byte) bool {
 	var _arg0 *C.GstRTCPPacket // out
@@ -2961,7 +2964,7 @@ func (packet *RTCPPacket) XRGetVoipSignalMetrics(signalLevel *byte, noiseLevel *
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there was a next extended report block.
+//   - ok: TRUE if there was a next extended report block.
 //
 func (packet *RTCPPacket) XRNextRb() bool {
 	var _arg0 *C.GstRTCPPacket // out

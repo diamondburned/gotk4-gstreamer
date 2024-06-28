@@ -50,9 +50,9 @@ const AUDIO_RESAMPLER_OPT_MAX_PHASE_ERROR = "GstAudioResampler.max-phase-error"
 // filter. 0 is the default and selects the taps automatically.
 const AUDIO_RESAMPLER_OPT_N_TAPS = "GstAudioResampler.n-taps"
 
-// AUDIO_RESAMPLER_OPT_STOP_ATTENUATION: g_TYPE_DOUBLE, stopband attenuation in
-// decibels. The attenuation after the stopband for the kaiser window. 85 dB is
-// the default.
+// AUDIO_RESAMPLER_OPT_STOP_ATTENUATION: g_TYPE_DOUBLE, stopband attenuation
+// in decibels. The attenuation after the stopband for the kaiser window.
+// 85 dB is the default.
 const AUDIO_RESAMPLER_OPT_STOP_ATTENUATION = "GstAudioResampler.stop-attenutation"
 
 // AUDIO_RESAMPLER_OPT_TRANSITION_BANDWIDTH: g_TYPE_DOUBLE, transition

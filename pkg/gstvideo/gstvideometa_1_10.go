@@ -20,13 +20,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - tc: VideoTimeCode.
+//   - buffer: Buffer.
+//   - tc: VideoTimeCode.
 //
 // The function returns the following values:
 //
-//    - videoTimeCodeMeta (optional) on buffer, or (since 1.16) NULL if the
-//      timecode was invalid.
+//   - videoTimeCodeMeta (optional) on buffer, or (since 1.16) NULL if the
+//     timecode was invalid.
 //
 func BufferAddVideoTimeCodeMeta(buffer *gst.Buffer, tc *VideoTimeCode) *VideoTimeCodeMeta {
 	var _arg1 *C.GstBuffer            // out
@@ -54,21 +54,21 @@ func BufferAddVideoTimeCodeMeta(buffer *gst.Buffer, tc *VideoTimeCode) *VideoTim
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - fpsN: framerate numerator.
-//    - fpsD: framerate denominator.
-//    - latestDailyJam for the latest daily jam.
-//    - flags: VideoTimeCodeFlags.
-//    - hours since the daily jam.
-//    - minutes since the daily jam.
-//    - seconds since the daily jam.
-//    - frames since the daily jam.
-//    - fieldCount fields since the daily jam.
+//   - buffer: Buffer.
+//   - fpsN: framerate numerator.
+//   - fpsD: framerate denominator.
+//   - latestDailyJam for the latest daily jam.
+//   - flags: VideoTimeCodeFlags.
+//   - hours since the daily jam.
+//   - minutes since the daily jam.
+//   - seconds since the daily jam.
+//   - frames since the daily jam.
+//   - fieldCount fields since the daily jam.
 //
 // The function returns the following values:
 //
-//    - videoTimeCodeMeta on buffer, or (since 1.16) NULL if the timecode was
-//      invalid.
+//   - videoTimeCodeMeta (optional) on buffer, or (since 1.16) NULL if the
+//     timecode was invalid.
 //
 func BufferAddVideoTimeCodeMetaFull(buffer *gst.Buffer, fpsN, fpsD uint, latestDailyJam *glib.DateTime, flags VideoTimeCodeFlags, hours, minutes, seconds, frames, fieldCount uint) *VideoTimeCodeMeta {
 	var _arg1 *C.GstBuffer            // out
@@ -108,7 +108,9 @@ func BufferAddVideoTimeCodeMetaFull(buffer *gst.Buffer, fpsN, fpsD uint, latestD
 
 	var _videoTimeCodeMeta *VideoTimeCodeMeta // out
 
-	_videoTimeCodeMeta = (*VideoTimeCodeMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_videoTimeCodeMeta = (*VideoTimeCodeMeta)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _videoTimeCodeMeta
 }

@@ -166,6 +166,10 @@ func (m MemoryFlags) Has(other MemoryFlags) bool {
 // MapInfo: structure containing the result of a map operation such as
 // gst_memory_map(). It contains the data and size.
 //
+// MapInfo cannot be used with g_auto() because it is ambiguous whether it
+// needs to be unmapped using gst_buffer_unmap() or gst_memory_unmap(). Instead,
+// BufferMapInfo and MemoryMapInfo can be used in that case.
+//
 // An instance of this type is always passed by reference.
 type MapInfo struct {
 	*mapInfo
@@ -176,8 +180,8 @@ type mapInfo struct {
 	native *C.GstMapInfo
 }
 
-// Memory is a lightweight refcounted object that wraps a region of memory. They
-// are typically used to manage the data of a Buffer.
+// Memory is a lightweight refcounted object that wraps a region of memory.
+// They are typically used to manage the data of a Buffer.
 //
 // A GstMemory object has an allocated region of memory of maxsize. The maximum
 // size does not change during the lifetime of the memory object. The memory
@@ -328,13 +332,12 @@ func (m *Memory) SetSize(size uint) {
 //
 // The function takes the following parameters:
 //
-//    - offset to copy from.
-//    - size to copy, or -1 to copy to the end of the memory region.
+//   - offset to copy from.
+//   - size to copy, or -1 to copy to the end of the memory region.
 //
 // The function returns the following values:
 //
-//    - memory: new Memory.
-//
+//   - memory (optional): new copy of mem if the copy succeeded, NULL otherwise.
 func (mem *Memory) Copy(offset int, size int) *Memory {
 	var _arg0 *C.GstMemory // out
 	var _arg1 C.gssize     // out
@@ -352,13 +355,15 @@ func (mem *Memory) Copy(offset int, size int) *Memory {
 
 	var _memory *Memory // out
 
-	_memory = (*Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_memory)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_memory = (*Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_memory)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _memory
 }
@@ -367,10 +372,9 @@ func (mem *Memory) Copy(offset int, size int) *Memory {
 //
 // The function returns the following values:
 //
-//    - offset (optional): pointer to offset.
-//    - maxsize (optional): pointer to maxsize.
-//    - gsize: current size of mem.
-//
+//   - offset (optional): pointer to offset.
+//   - maxsize (optional): pointer to maxsize.
+//   - gsize: current size of mem.
 func (mem *Memory) Sizes() (offset uint, maxsize uint, gsize uint) {
 	var _arg0 *C.GstMemory // out
 	var _arg1 C.gsize      // in
@@ -401,13 +405,12 @@ func (mem *Memory) Sizes() (offset uint, maxsize uint, gsize uint) {
 //
 // The function takes the following parameters:
 //
-//    - mem2: Memory.
+//   - mem2: Memory.
 //
 // The function returns the following values:
 //
-//    - offset: pointer to a result offset.
-//    - ok: TRUE if the memory is contiguous and of a common parent.
-//
+//   - offset: pointer to a result offset.
+//   - ok: TRUE if the memory is contiguous and of a common parent.
 func (mem1 *Memory) IsSpan(mem2 *Memory) (uint, bool) {
 	var _arg0 *C.GstMemory // out
 	var _arg1 *C.GstMemory // out
@@ -436,12 +439,11 @@ func (mem1 *Memory) IsSpan(mem2 *Memory) (uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - memType: memory type.
+//   - memType: memory type.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if mem was allocated from an allocator for mem_type.
-//
+//   - ok: TRUE if mem was allocated from an allocator for mem_type.
 func (mem *Memory) IsType(memType string) bool {
 	var _arg0 *C.GstMemory // out
 	var _arg1 *C.gchar     // out
@@ -473,14 +475,13 @@ func (mem *Memory) IsType(memType string) bool {
 //
 // The function takes the following parameters:
 //
-//    - flags: mapping flags.
+//   - flags: mapping flags.
 //
 // The function returns the following values:
 //
-//    - info: pointer for info.
-//    - memory (optional) object mapped with flags or NULL when a mapping is not
-//      possible.
-//
+//   - info: pointer for info.
+//   - memory (optional) object mapped with flags or NULL when a mapping is not
+//     possible.
 func (mem *Memory) MakeMapped(flags MapFlags) (*MapInfo, *Memory) {
 	var _arg0 *C.GstMemory  // out
 	var _arg1 C.GstMapInfo  // in
@@ -529,13 +530,12 @@ func (mem *Memory) MakeMapped(flags MapFlags) (*MapInfo, *Memory) {
 //
 // The function takes the following parameters:
 //
-//    - flags: mapping flags.
+//   - flags: mapping flags.
 //
 // The function returns the following values:
 //
-//    - info: pointer for info.
-//    - ok: TRUE if the map operation was successful.
-//
+//   - info: pointer for info.
+//   - ok: TRUE if the map operation was successful.
 func (mem *Memory) Map(flags MapFlags) (*MapInfo, bool) {
 	var _arg0 *C.GstMemory  // out
 	var _arg1 C.GstMapInfo  // in
@@ -568,9 +568,8 @@ func (mem *Memory) Map(flags MapFlags) (*MapInfo, bool) {
 //
 // The function takes the following parameters:
 //
-//    - offset: new offset.
-//    - size: new size.
-//
+//   - offset: new offset.
+//   - size: new size.
 func (mem *Memory) Resize(offset int, size uint) {
 	var _arg0 *C.GstMemory // out
 	var _arg1 C.gssize     // out
@@ -586,20 +585,19 @@ func (mem *Memory) Resize(offset int, size uint) {
 	runtime.KeepAlive(size)
 }
 
-// Share: return a shared copy of size bytes from mem starting from offset. No
-// memory copy is performed and the memory region is simply shared. The result
-// is guaranteed to be non-writable. size can be set to -1 to return a shared
-// copy from offset to the end of the memory region.
+// Share: return a shared copy of size bytes from mem starting from offset.
+// No memory copy is performed and the memory region is simply shared.
+// The result is guaranteed to be non-writable. size can be set to -1 to return
+// a shared copy from offset to the end of the memory region.
 //
 // The function takes the following parameters:
 //
-//    - offset to share from.
-//    - size to share, or -1 to share to the end of the memory region.
+//   - offset to share from.
+//   - size to share, or -1 to share to the end of the memory region.
 //
 // The function returns the following values:
 //
-//    - memory: new Memory.
-//
+//   - memory: new Memory.
 func (mem *Memory) Share(offset int, size int) *Memory {
 	var _arg0 *C.GstMemory // out
 	var _arg1 C.gssize     // out
@@ -632,8 +630,7 @@ func (mem *Memory) Share(offset int, size int) *Memory {
 //
 // The function takes the following parameters:
 //
-//    - info: MapInfo.
-//
+//   - info: MapInfo.
 func (mem *Memory) Unmap(info *MapInfo) {
 	var _arg0 *C.GstMemory  // out
 	var _arg1 *C.GstMapInfo // out

@@ -34,8 +34,8 @@ func init() {
 // FlowCombiner works by using the last FlowReturn for all Pad it has in its
 // list and computes the combined return value and provides it to the caller.
 //
-// To add a new pad to the FlowCombiner use gst_flow_combiner_add_pad(). The new
-// Pad is stored with a default value of GST_FLOW_OK.
+// To add a new pad to the FlowCombiner use gst_flow_combiner_add_pad().
+// The new Pad is stored with a default value of GST_FLOW_OK.
 //
 // In case you want a Pad to be removed, use gst_flow_combiner_remove_pad().
 //
@@ -95,7 +95,7 @@ func NewFlowCombiner() *FlowCombiner {
 //
 // The function takes the following parameters:
 //
-//    - pad that is being added.
+//   - pad that is being added.
 //
 func (combiner *FlowCombiner) AddPad(pad *gst.Pad) {
 	var _arg0 *C.GstFlowCombiner // out
@@ -124,7 +124,7 @@ func (combiner *FlowCombiner) Clear() {
 //
 // The function takes the following parameters:
 //
-//    - pad to remove.
+//   - pad to remove.
 //
 func (combiner *FlowCombiner) RemovePad(pad *gst.Pad) {
 	var _arg0 *C.GstFlowCombiner // out
@@ -151,18 +151,18 @@ func (combiner *FlowCombiner) Reset() {
 
 // UpdateFlow computes the combined flow return for the pads in it.
 //
-// The FlowReturn parameter should be the last flow return update for a pad in
-// this FlowCombiner. It will use this value to be able to shortcut some
+// The FlowReturn parameter should be the last flow return update for a pad
+// in this FlowCombiner. It will use this value to be able to shortcut some
 // combinations and avoid looking over all pads again. e.g. The last combined
 // return is the same as the latest obtained FlowReturn.
 //
 // The function takes the following parameters:
 //
-//    - fret: latest FlowReturn received for a pad in this FlowCombiner.
+//   - fret: latest FlowReturn received for a pad in this FlowCombiner.
 //
 // The function returns the following values:
 //
-//    - flowReturn: combined FlowReturn.
+//   - flowReturn: combined FlowReturn.
 //
 func (combiner *FlowCombiner) UpdateFlow(fret gst.FlowReturn) gst.FlowReturn {
 	var _arg0 *C.GstFlowCombiner // out
@@ -186,19 +186,19 @@ func (combiner *FlowCombiner) UpdateFlow(fret gst.FlowReturn) gst.FlowReturn {
 // UpdatePadFlow sets the provided pad's last flow return to provided value and
 // computes the combined flow return for the pads in it.
 //
-// The FlowReturn parameter should be the last flow return update for a pad in
-// this FlowCombiner. It will use this value to be able to shortcut some
+// The FlowReturn parameter should be the last flow return update for a pad
+// in this FlowCombiner. It will use this value to be able to shortcut some
 // combinations and avoid looking over all pads again. e.g. The last combined
 // return is the same as the latest obtained FlowReturn.
 //
 // The function takes the following parameters:
 //
-//    - pad whose FlowReturn to update.
-//    - fret: latest FlowReturn received for a pad in this FlowCombiner.
+//   - pad whose FlowReturn to update.
+//   - fret: latest FlowReturn received for a pad in this FlowCombiner.
 //
 // The function returns the following values:
 //
-//    - flowReturn: combined FlowReturn.
+//   - flowReturn: combined FlowReturn.
 //
 func (combiner *FlowCombiner) UpdatePadFlow(pad *gst.Pad, fret gst.FlowReturn) gst.FlowReturn {
 	var _arg0 *C.GstFlowCombiner // out

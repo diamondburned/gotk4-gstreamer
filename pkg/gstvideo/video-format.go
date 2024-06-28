@@ -50,7 +50,7 @@ const VIDEO_COMP_Y = 0
 // subsampling factor of the height - number of planes - native endianness
 // preferred - pixel stride - poffset - prefer non-complex formats - prefer YUV
 // formats over RGB ones - prefer I420 over YV12 - format name.
-const VIDEO_FORMATS_ALL = "{ ABGR64_BE, BGRA64_BE, AYUV64, ARGB64_BE, ARGB64, RGBA64_BE, ABGR64_LE, BGRA64_LE, ARGB64_LE, RGBA64_LE, GBRA_12BE, GBRA_12LE, Y412_BE, Y412_LE, A444_10BE, GBRA_10BE, A444_10LE, GBRA_10LE, A422_10BE, A422_10LE, A420_10BE, A420_10LE, Y410, RGB10A2_LE, BGR10A2_LE, GBRA, ABGR, VUYA, BGRA, AYUV, ARGB, RGBA, A420, AV12, Y444_16BE, Y444_16LE, v216, P016_BE, P016_LE, Y444_12BE, GBR_12BE, Y444_12LE, GBR_12LE, I422_12BE, I422_12LE, Y212_BE, Y212_LE, I420_12BE, I420_12LE, P012_BE, P012_LE, Y444_10BE, GBR_10BE, Y444_10LE, GBR_10LE, r210, I422_10BE, I422_10LE, NV16_10LE32, Y210, v210, UYVP, I420_10BE, I420_10LE, P010_10BE, P010_10LE, NV12_10LE32, NV12_10LE40, Y444, RGBP, GBR, BGRP, NV24, xBGR, BGRx, xRGB, RGBx, BGR, IYU2, v308, RGB, Y42B, NV61, NV16, VYUY, UYVY, YVYU, YUY2, I420, YV12, NV21, NV12, NV12_64Z32, NV12_4L4, NV12_32L32, Y41B, IYU1, YVU9, YUV9, RGB16, BGR16, RGB15, BGR15, RGB8P, GRAY16_BE, GRAY16_LE, GRAY10_LE32, GRAY8 }"
+const VIDEO_FORMATS_ALL = "{ ABGR64_BE, BGRA64_BE, AYUV64, ARGB64_BE, ARGB64, RGBA64_BE, ABGR64_LE, BGRA64_LE, ARGB64_LE, RGBA64_LE, GBRA_12BE, GBRA_12LE, Y412_BE, Y412_LE, A444_10BE, GBRA_10BE, A444_10LE, GBRA_10LE, A422_10BE, A422_10LE, A420_10BE, A420_10LE, Y410, RGB10A2_LE, BGR10A2_LE, GBRA, ABGR, VUYA, BGRA, AYUV, ARGB, RGBA, A420, AV12, Y444_16BE, Y444_16LE, v216, P016_BE, P016_LE, Y444_12BE, GBR_12BE, Y444_12LE, GBR_12LE, I422_12BE, I422_12LE, Y212_BE, Y212_LE, I420_12BE, I420_12LE, P012_BE, P012_LE, Y444_10BE, GBR_10BE, Y444_10LE, GBR_10LE, r210, I422_10BE, I422_10LE, NV16_10LE32, Y210, v210, UYVP, I420_10BE, I420_10LE, P010_10BE, P010_10LE, NV12_10LE32, NV12_10LE40, NV12_10BE_8L128, Y444, RGBP, GBR, BGRP, NV24, xBGR, BGRx, xRGB, RGBx, BGR, IYU2, v308, RGB, Y42B, NV61, NV16, VYUY, UYVY, YVYU, YUY2, I420, YV12, NV21, NV12, NV12_8L128, NV12_64Z32, NV12_4L4, NV12_32L32, NV12_16L32S, Y41B, IYU1, YVU9, YUV9, RGB16, BGR16, RGB15, BGR15, RGB8P, GRAY16_BE, GRAY16_LE, GRAY10_LE32, GRAY8 }"
 const VIDEO_FPS_RANGE = "(fraction) [ 0, max ]"
 const VIDEO_MAX_COMPONENTS = 4
 const VIDEO_MAX_PLANES = 4
@@ -66,8 +66,8 @@ type VideoFormat C.gint
 const (
 	// VideoFormatUnknown: unknown or unset video format id.
 	VideoFormatUnknown VideoFormat = iota
-	// VideoFormatEncoded: encoded video format. Only ever use that in caps for
-	// special video formats in combination with non-system memory
+	// VideoFormatEncoded: encoded video format. Only ever use that in
+	// caps for special video formats in combination with non-system memory
 	// GstCapsFeatures where it does not make sense to specify a real video
 	// format.
 	VideoFormatEncoded
@@ -259,11 +259,11 @@ const (
 	// VideoFormatVuya: packed 4:4:4 YUV with alpha channel (V0-U0-Y0-A0...)
 	// (Since: 1.16).
 	VideoFormatVuya
-	// VideoFormatBGR10A2LE: packed 4:4:4 RGB with alpha channel(B-G-R-A), 10
-	// bits for R/G/B channel and MSB 2 bits for alpha channel (Since: 1.16).
+	// VideoFormatBGR10A2LE: packed 4:4:4 RGB with alpha channel(B-G-R-A),
+	// 10 bits for R/G/B channel and MSB 2 bits for alpha channel (Since: 1.16).
 	VideoFormatBGR10A2LE
-	// VideoFormatRGB10A2LE: packed 4:4:4 RGB with alpha channel(R-G-B-A), 10
-	// bits for R/G/B channel and MSB 2 bits for alpha channel (Since: 1.18).
+	// VideoFormatRGB10A2LE: packed 4:4:4 RGB with alpha channel(R-G-B-A),
+	// 10 bits for R/G/B channel and MSB 2 bits for alpha channel (Since: 1.18).
 	VideoFormatRGB10A2LE
 	// VideoFormatY44416Be: planar 4:4:4 YUV, 16 bits per channel (Since: 1.18).
 	VideoFormatY44416Be
@@ -328,6 +328,13 @@ const (
 	// VideoFormatAbgr64Be: reverse RGB with alpha channel first, 16 bits (big
 	// endian) per channel.
 	VideoFormatAbgr64Be
+	// VideoFormatNv1216L32S: NV12 with 16x32 Y tiles and 16x16 UV tiles.
+	VideoFormatNv1216L32S
+	// VideoFormatNv128L128: NV12 with 8x128 tiles in linear order.
+	VideoFormatNv128L128
+	// VideoFormatNv1210Be8L128: NV12 10bit big endian with 8x128 tiles in
+	// linear order.
+	VideoFormatNv1210Be8L128
 )
 
 func marshalVideoFormat(p uintptr) (interface{}, error) {
@@ -557,6 +564,12 @@ func (v VideoFormat) String() string {
 		return "Abgr64LE"
 	case VideoFormatAbgr64Be:
 		return "Abgr64Be"
+	case VideoFormatNv1216L32S:
+		return "Nv1216L32S"
+	case VideoFormatNv128L128:
+		return "Nv128L128"
+	case VideoFormatNv1210Be8L128:
+		return "Nv1210Be8L128"
 	default:
 		return fmt.Sprintf("VideoFormat(%d)", v)
 	}
@@ -568,11 +581,11 @@ func (v VideoFormat) String() string {
 //
 // The function takes the following parameters:
 //
-//    - fourcc: FOURCC value representing raw YUV video.
+//   - fourcc: FOURCC value representing raw YUV video.
 //
 // The function returns the following values:
 //
-//    - videoFormat describing the FOURCC value.
+//   - videoFormat describing the FOURCC value.
 //
 func VideoFormatFromFourcc(fourcc uint32) VideoFormat {
 	var _arg1 C.guint32        // out
@@ -594,19 +607,19 @@ func VideoFormatFromFourcc(fourcc uint32) VideoFormat {
 //
 // The function takes the following parameters:
 //
-//    - depth: amount of bits used for a pixel.
-//    - bpp: amount of bits used to store a pixel. This value is bigger than
-//      depth.
-//    - endianness of the masks, LITTLE_ENDIAN or BIG_ENDIAN.
-//    - redMask: red mask.
-//    - greenMask: green mask.
-//    - blueMask: blue mask.
-//    - alphaMask: alpha mask, or 0 if no alpha mask.
+//   - depth: amount of bits used for a pixel.
+//   - bpp: amount of bits used to store a pixel. This value is bigger than
+//     depth.
+//   - endianness of the masks, LITTLE_ENDIAN or BIG_ENDIAN.
+//   - redMask: red mask.
+//   - greenMask: green mask.
+//   - blueMask: blue mask.
+//   - alphaMask: alpha mask, or 0 if no alpha mask.
 //
 // The function returns the following values:
 //
-//    - videoFormat or GST_VIDEO_FORMAT_UNKNOWN when the parameters to not
-//      specify a known format.
+//   - videoFormat or GST_VIDEO_FORMAT_UNKNOWN when the parameters to not
+//     specify a known format.
 //
 func VideoFormatFromMasks(depth, bpp, endianness int, redMask, greenMask, blueMask, alphaMask uint) VideoFormat {
 	var _arg1 C.gint           // out
@@ -646,12 +659,12 @@ func VideoFormatFromMasks(depth, bpp, endianness int, redMask, greenMask, blueMa
 //
 // The function takes the following parameters:
 //
-//    - format string.
+//   - format string.
 //
 // The function returns the following values:
 //
-//    - videoFormat for format or GST_VIDEO_FORMAT_UNKNOWN when the string is not
-//      a known format.
+//   - videoFormat for format or GST_VIDEO_FORMAT_UNKNOWN when the string is not
+//     a known format.
 //
 func VideoFormatFromString(format string) VideoFormat {
 	var _arg1 *C.gchar         // out
@@ -674,11 +687,11 @@ func VideoFormatFromString(format string) VideoFormat {
 //
 // The function takes the following parameters:
 //
-//    - format: VideoFormat.
+//   - format: VideoFormat.
 //
 // The function returns the following values:
 //
-//    - videoFormatInfo for format.
+//   - videoFormatInfo for format.
 //
 func VideoFormatGetInfo(format VideoFormat) *VideoFormatInfo {
 	var _arg1 C.GstVideoFormat      // out
@@ -702,11 +715,11 @@ func VideoFormatGetInfo(format VideoFormat) *VideoFormatInfo {
 //
 // The function takes the following parameters:
 //
-//    - format video format.
+//   - format video format.
 //
 // The function returns the following values:
 //
-//    - guint32: FOURCC corresponding to format.
+//   - guint32: FOURCC corresponding to format.
 //
 func VideoFormatToFourcc(format VideoFormat) uint32 {
 	var _arg1 C.GstVideoFormat // out
@@ -729,11 +742,11 @@ func VideoFormatToFourcc(format VideoFormat) uint32 {
 //
 // The function takes the following parameters:
 //
-//    - format video format.
+//   - format video format.
 //
 // The function returns the following values:
 //
-//    - utf8: name corresponding to format.
+//   - utf8: name corresponding to format.
 //
 func VideoFormatToString(format VideoFormat) string {
 	var _arg1 C.GstVideoFormat // out
@@ -758,29 +771,32 @@ const (
 	// VideoFormatFlagYuv: video format is YUV, components are numbered 0=Y,
 	// 1=U, 2=V.
 	VideoFormatFlagYuv VideoFormatFlags = 0b1
-	// VideoFormatFlagRGB: video format is RGB, components are numbered 0=R,
-	// 1=G, 2=B.
-	VideoFormatFlagRGB VideoFormatFlags = 0b10
-	// VideoFormatFlagGray: video is gray, there is one gray component with
-	// index 0.
-	VideoFormatFlagGray VideoFormatFlags = 0b100
-	// VideoFormatFlagAlpha: video format has an alpha components with the
-	// number 3.
-	VideoFormatFlagAlpha VideoFormatFlags = 0b1000
-	// VideoFormatFlagLE: video format has data stored in little endianness.
-	VideoFormatFlagLE VideoFormatFlags = 0b10000
-	// VideoFormatFlagPalette: video format has a palette. The palette is stored
-	// in the second plane and indexes are stored in the first plane.
-	VideoFormatFlagPalette VideoFormatFlags = 0b100000
-	// VideoFormatFlagComplex: video format has a complex layout that can't be
-	// described with the usual information in the VideoFormatInfo.
-	VideoFormatFlagComplex VideoFormatFlags = 0b1000000
 	// VideoFormatFlagUnpack: this format can be used in a VideoFormatUnpack and
 	// VideoFormatPack function.
 	VideoFormatFlagUnpack VideoFormatFlags = 0b10000000
+	// VideoFormatFlagLE: video format has data stored in little endianness.
+	VideoFormatFlagLE VideoFormatFlags = 0b10000
+	// VideoFormatFlagRGB: video format is RGB, components are numbered 0=R,
+	// 1=G, 2=B.
+	VideoFormatFlagRGB VideoFormatFlags = 0b10
 	// VideoFormatFlagTiled: format is tiled, there is tiling information in the
 	// last plane.
 	VideoFormatFlagTiled VideoFormatFlags = 0b100000000
+	// VideoFormatFlagPalette: video format has a palette. The palette is stored
+	// in the second plane and indexes are stored in the first plane.
+	VideoFormatFlagPalette VideoFormatFlags = 0b100000
+	// VideoFormatFlagGray: video is gray, there is one gray component with
+	// index 0.
+	VideoFormatFlagGray VideoFormatFlags = 0b100
+	// VideoFormatFlagSubtiles: tile size varies per plane according to the
+	// subsampling.
+	VideoFormatFlagSubtiles VideoFormatFlags = 0b1000000000
+	// VideoFormatFlagComplex: video format has a complex layout that can't be
+	// described with the usual information in the VideoFormatInfo.
+	VideoFormatFlagComplex VideoFormatFlags = 0b1000000
+	// VideoFormatFlagAlpha: video format has an alpha components with the
+	// number 3.
+	VideoFormatFlagAlpha VideoFormatFlags = 0b1000
 )
 
 func marshalVideoFormatFlags(p uintptr) (interface{}, error) {
@@ -794,7 +810,7 @@ func (v VideoFormatFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(185)
+	builder.Grow(209)
 
 	for v != 0 {
 		next := v & (v - 1)
@@ -803,22 +819,24 @@ func (v VideoFormatFlags) String() string {
 		switch bit {
 		case VideoFormatFlagYuv:
 			builder.WriteString("Yuv|")
-		case VideoFormatFlagRGB:
-			builder.WriteString("RGB|")
-		case VideoFormatFlagGray:
-			builder.WriteString("Gray|")
-		case VideoFormatFlagAlpha:
-			builder.WriteString("Alpha|")
-		case VideoFormatFlagLE:
-			builder.WriteString("LE|")
-		case VideoFormatFlagPalette:
-			builder.WriteString("Palette|")
-		case VideoFormatFlagComplex:
-			builder.WriteString("Complex|")
 		case VideoFormatFlagUnpack:
 			builder.WriteString("Unpack|")
+		case VideoFormatFlagLE:
+			builder.WriteString("LE|")
+		case VideoFormatFlagRGB:
+			builder.WriteString("RGB|")
 		case VideoFormatFlagTiled:
 			builder.WriteString("Tiled|")
+		case VideoFormatFlagPalette:
+			builder.WriteString("Palette|")
+		case VideoFormatFlagGray:
+			builder.WriteString("Gray|")
+		case VideoFormatFlagSubtiles:
+			builder.WriteString("Subtiles|")
+		case VideoFormatFlagComplex:
+			builder.WriteString("Complex|")
+		case VideoFormatFlagAlpha:
+			builder.WriteString("Alpha|")
 		default:
 			builder.WriteString(fmt.Sprintf("VideoFormatFlags(0b%b)|", bit))
 		}
@@ -840,14 +858,14 @@ type VideoPackFlags C.guint
 const (
 	// VideoPackFlagNone: no flag.
 	VideoPackFlagNone VideoPackFlags = 0b0
-	// VideoPackFlagTruncateRange: when the source has a smaller depth than the
-	// target format, set the least significant bits of the target to 0. This is
-	// likely slightly faster but less accurate. When this flag is not
+	// VideoPackFlagTruncateRange: when the source has a smaller depth than
+	// the target format, set the least significant bits of the target to 0.
+	// This is likely slightly faster but less accurate. When this flag is not
 	// specified, the most significant bits of the source are duplicated in the
 	// least significant bits of the destination.
 	VideoPackFlagTruncateRange VideoPackFlags = 0b1
-	// VideoPackFlagInterlaced: source is interlaced. The unpacked format will
-	// be interlaced as well with each line containing information from
+	// VideoPackFlagInterlaced: source is interlaced. The unpacked format
+	// will be interlaced as well with each line containing information from
 	// alternating fields. (Since: 1.2).
 	VideoPackFlagInterlaced VideoPackFlags = 0b10
 )
@@ -909,11 +927,11 @@ type videoFormatInfo struct {
 //
 // The function takes the following parameters:
 //
-//    - plane number.
+//   - plane number.
 //
 // The function returns the following values:
 //
-//    - components: array used to store component numbers.
+//   - components: array used to store component numbers.
 //
 func (info *VideoFormatInfo) Component(plane uint) int {
 	var _arg0 *C.GstVideoFormatInfo // out
@@ -932,4 +950,39 @@ func (info *VideoFormatInfo) Component(plane uint) int {
 	_components = int(_arg2)
 
 	return _components
+}
+
+// ExtrapolateStride: extrapolate plane stride from the first stride of an
+// image. This helper is useful to support legacy API were only one stride is
+// supported.
+//
+// The function takes the following parameters:
+//
+//   - plane number.
+//   - stride: fist plane stride.
+//
+// The function returns the following values:
+//
+//   - gint: extrapolated stride for plane.
+//
+func (finfo *VideoFormatInfo) ExtrapolateStride(plane int, stride int) int {
+	var _arg0 *C.GstVideoFormatInfo // out
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // out
+	var _cret C.gint                // in
+
+	_arg0 = (*C.GstVideoFormatInfo)(gextras.StructNative(unsafe.Pointer(finfo)))
+	_arg1 = C.gint(plane)
+	_arg2 = C.gint(stride)
+
+	_cret = C.gst_video_format_info_extrapolate_stride(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(finfo)
+	runtime.KeepAlive(plane)
+	runtime.KeepAlive(stride)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }

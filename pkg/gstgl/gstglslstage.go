@@ -78,12 +78,12 @@ func marshalGLSLStage(p uintptr) (interface{}, error) {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - typ: GL enum shader stage type.
+//   - context: GLContext.
+//   - typ: GL enum shader stage type.
 //
 // The function returns the following values:
 //
-//    - glslStage: new GLSLStage of the specified type.
+//   - glslStage: new GLSLStage of the specified type.
 //
 func NewGLSLStage(context GLContexter, typ uint) *GLSLStage {
 	var _arg1 *C.GstGLContext // out
@@ -106,11 +106,11 @@ func NewGLSLStage(context GLContexter, typ uint) *GLSLStage {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glslStage: new GLSLStage with the default fragment shader.
+//   - glslStage: new GLSLStage with the default fragment shader.
 //
 func NewGLSLStageDefaultFragment(context GLContexter) *GLSLStage {
 	var _arg1 *C.GstGLContext // out
@@ -130,11 +130,11 @@ func NewGLSLStageDefaultFragment(context GLContexter) *GLSLStage {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
+//   - context: GLContext.
 //
 // The function returns the following values:
 //
-//    - glslStage: new GLSLStage with the default vertex shader.
+//   - glslStage: new GLSLStage with the default vertex shader.
 //
 func NewGLSLStageDefaultVertex(context GLContexter) *GLSLStage {
 	var _arg1 *C.GstGLContext // out
@@ -154,15 +154,15 @@ func NewGLSLStageDefaultVertex(context GLContexter) *GLSLStage {
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - typ: GL enum shader stage type.
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
-//    - str: shader string.
+//   - context: GLContext.
+//   - typ: GL enum shader stage type.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
+//   - str: shader string.
 //
 // The function returns the following values:
 //
-//    - glslStage: new GLSLStage of the specified type.
+//   - glslStage: new GLSLStage of the specified type.
 //
 func NewGLSLStageWithString(context GLContexter, typ uint, version GLSLVersion, profile GLSLProfile, str string) *GLSLStage {
 	var _arg1 *C.GstGLContext  // out
@@ -195,15 +195,15 @@ func NewGLSLStageWithString(context GLContexter, typ uint, version GLSLVersion, 
 
 // The function takes the following parameters:
 //
-//    - context: GLContext.
-//    - typ: GL enum shader stage type.
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
-//    - str: an array of strings concatted together to produce a shader.
+//   - context: GLContext.
+//   - typ: GL enum shader stage type.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
+//   - str: an array of strings concatted together to produce a shader.
 //
 // The function returns the following values:
 //
-//    - glslStage: new GLSLStage of the specified type.
+//   - glslStage: new GLSLStage of the specified type.
 //
 func NewGLSLStageWithStrings(context GLContexter, typ uint, version GLSLVersion, profile GLSLProfile, str []string) *GLSLStage {
 	var _arg1 *C.GstGLContext  // out
@@ -263,7 +263,7 @@ func (stage *GLSLStage) Compile() error {
 
 // The function returns the following values:
 //
-//    - guint: GL handle for this shader stage.
+//   - guint: GL handle for this shader stage.
 //
 func (stage *GLSLStage) Handle() uint {
 	var _arg0 *C.GstGLSLStage // out
@@ -283,7 +283,7 @@ func (stage *GLSLStage) Handle() uint {
 
 // The function returns the following values:
 //
-//    - glslProfile: GLSL profile for the current shader stage.
+//   - glslProfile: GLSL profile for the current shader stage.
 //
 func (stage *GLSLStage) Profile() GLSLProfile {
 	var _arg0 *C.GstGLSLStage  // out
@@ -303,7 +303,7 @@ func (stage *GLSLStage) Profile() GLSLProfile {
 
 // The function returns the following values:
 //
-//    - guint: GL shader type for this shader stage.
+//   - guint: GL shader type for this shader stage.
 //
 func (stage *GLSLStage) ShaderType() uint {
 	var _arg0 *C.GstGLSLStage // out
@@ -323,7 +323,7 @@ func (stage *GLSLStage) ShaderType() uint {
 
 // The function returns the following values:
 //
-//    - glslVersion: GLSL version for the current shader stage.
+//   - glslVersion: GLSL version for the current shader stage.
 //
 func (stage *GLSLStage) Version() GLSLVersion {
 	var _arg0 *C.GstGLSLStage  // out
@@ -345,9 +345,9 @@ func (stage *GLSLStage) Version() GLSLVersion {
 //
 // The function takes the following parameters:
 //
-//    - version: GLSLVersion.
-//    - profile: GLSLProfile.
-//    - str: GLSL shader string.
+//   - version: GLSLVersion.
+//   - profile: GLSLProfile.
+//   - str: GLSL shader string.
 //
 // The function returns the following values:
 //

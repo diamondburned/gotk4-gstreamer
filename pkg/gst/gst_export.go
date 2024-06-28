@@ -309,8 +309,10 @@ func _gotk4_gst1_BufferPoolClass_acquire_buffer(arg0 *C.GstBufferPool, arg1 **C.
 	var _ *Buffer
 	var _ FlowReturn
 
-	*arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buffer)), nil)
+	if buffer != nil {
+		*arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buffer)), nil)
+	}
 	cret = C.GstFlowReturn(flowReturn)
 
 	return cret
@@ -335,8 +337,10 @@ func _gotk4_gst1_BufferPoolClass_alloc_buffer(arg0 *C.GstBufferPool, arg1 **C.Gs
 	var _ *Buffer
 	var _ FlowReturn
 
-	*arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buffer)), nil)
+	if buffer != nil {
+		*arg1 = (*C.GstBuffer)(gextras.StructNative(unsafe.Pointer(buffer)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buffer)), nil)
+	}
 	cret = C.GstFlowReturn(flowReturn)
 
 	return cret
@@ -552,20 +556,14 @@ func _gotk4_gst1_ClockClass_change_resolution(arg0 *C.GstClock, arg1 C.GstClockT
 	var _oldResolution ClockTime // out
 	var _newResolution ClockTime // out
 
-	_oldResolution = uint64(arg1)
-	type _ = ClockTime
-	type _ = uint64
-	_newResolution = uint64(arg2)
-	type _ = ClockTime
-	type _ = uint64
+	_oldResolution = ClockTime(arg1)
+	_newResolution = ClockTime(arg2)
 
 	clockTime := overrides.ChangeResolution(_oldResolution, _newResolution)
 
 	var _ ClockTime
 
-	cret = C.guint64(clockTime)
-	type _ = ClockTime
-	type _ = uint64
+	cret = C.GstClockTime(clockTime)
 
 	return cret
 }
@@ -582,9 +580,7 @@ func _gotk4_gst1_ClockClass_get_internal_time(arg0 *C.GstClock) (cret C.GstClock
 
 	var _ ClockTime
 
-	cret = C.guint64(clockTime)
-	type _ = ClockTime
-	type _ = uint64
+	cret = C.GstClockTime(clockTime)
 
 	return cret
 }
@@ -601,9 +597,7 @@ func _gotk4_gst1_ClockClass_get_resolution(arg0 *C.GstClock) (cret C.GstClockTim
 
 	var _ ClockTime
 
-	cret = C.guint64(clockTime)
-	type _ = ClockTime
-	type _ = uint64
+	cret = C.GstClockTime(clockTime)
 
 	return cret
 }
@@ -640,9 +634,7 @@ func _gotk4_gst1_ClockClass_wait(arg0 *C.GstClock, arg1 *C.GstClockEntry, arg2 *
 	var _ ClockTimeDiff
 	var _ ClockReturn
 
-	*arg2 = C.gint64(jitter)
-	type _ = ClockTimeDiff
-	type _ = int64
+	*arg2 = C.GstClockTimeDiff(jitter)
 	cret = C.GstClockReturn(clockReturn)
 
 	return cret
@@ -681,12 +673,8 @@ func _gotk4_gst1_ControlBindingClass_get_g_value_array(arg0 *C.GstControlBinding
 	var _interval ClockTime      // out
 	var _values []coreglib.Value // out
 
-	_timestamp = uint64(arg1)
-	type _ = ClockTime
-	type _ = uint64
-	_interval = uint64(arg2)
-	type _ = ClockTime
-	type _ = uint64
+	_timestamp = ClockTime(arg1)
+	_interval = ClockTime(arg2)
 	{
 		src := unsafe.Slice((*C.GValue)(arg4), arg3)
 		_values = make([]coreglib.Value, arg3)
@@ -716,9 +704,7 @@ func _gotk4_gst1_ControlBindingClass_get_value(arg0 *C.GstControlBinding, arg1 C
 
 	var _timestamp ClockTime // out
 
-	_timestamp = uint64(arg1)
-	type _ = ClockTime
-	type _ = uint64
+	_timestamp = ClockTime(arg1)
 
 	value := overrides.Value(_timestamp)
 
@@ -760,12 +746,8 @@ func _gotk4_gst1_ControlBindingClass_sync_values(arg0 *C.GstControlBinding, arg1
 		}
 		_object = rv
 	}
-	_timestamp = uint64(arg2)
-	type _ = ClockTime
-	type _ = uint64
-	_lastSync = uint64(arg3)
-	type _ = ClockTime
-	type _ = uint64
+	_timestamp = ClockTime(arg2)
+	_lastSync = ClockTime(arg3)
 
 	ok := overrides.SyncValues(_object, _timestamp, _lastSync)
 
@@ -959,9 +941,7 @@ func _gotk4_gst1_ElementClass_get_state(arg0 *C.GstElement, arg1 *C.GstState, ar
 
 	var _timeout ClockTime // out
 
-	_timeout = uint64(arg3)
-	type _ = ClockTime
-	type _ = uint64
+	_timeout = ClockTime(arg3)
 
 	state, pending, stateChangeReturn := overrides.State(_timeout)
 

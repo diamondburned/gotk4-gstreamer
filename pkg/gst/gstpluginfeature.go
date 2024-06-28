@@ -33,8 +33,8 @@ func init() {
 // similar rank-picking mechanisms, such as e.g. gst_element_make_from_uri())
 // will choose this element over an alternative one with the same function.
 //
-// These constants serve as a rough guidance for defining the rank of a
-// PluginFeature. Any value is valid, including values bigger than
+// These constants serve as a rough guidance for defining the rank of
+// a PluginFeature. Any value is valid, including values bigger than
 // GST_RANK_PRIMARY.
 type Rank C.gint
 
@@ -124,14 +124,14 @@ func BasePluginFeature(obj PluginFeaturer) *PluginFeature {
 //
 // The function takes the following parameters:
 //
-//    - minMajor: minimum required major version.
-//    - minMinor: minimum required minor version.
-//    - minMicro: minimum required micro version.
+//   - minMajor: minimum required major version.
+//   - minMinor: minimum required minor version.
+//   - minMicro: minimum required micro version.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the plugin feature has at least the required version,
-//      otherwise FALSE.
+//   - ok: TRUE if the plugin feature has at least the required version,
+//     otherwise FALSE.
 //
 func (feature *PluginFeature) CheckVersion(minMajor, minMinor, minMicro uint) bool {
 	var _arg0 *C.GstPluginFeature // out
@@ -164,8 +164,8 @@ func (feature *PluginFeature) CheckVersion(minMajor, minMinor, minMicro uint) bo
 //
 // The function returns the following values:
 //
-//    - plugin (optional) that provides this feature, or NULL. Unref with
-//      gst_object_unref() when no longer needed.
+//   - plugin (optional) that provides this feature, or NULL. Unref with
+//     gst_object_unref() when no longer needed.
 //
 func (feature *PluginFeature) Plugin() *Plugin {
 	var _arg0 *C.GstPluginFeature // out
@@ -189,8 +189,8 @@ func (feature *PluginFeature) Plugin() *Plugin {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the plugin that provides this feature, or NULL
-//      if the feature is not associated with a plugin.
+//   - utf8 (optional): name of the plugin that provides this feature, or NULL
+//     if the feature is not associated with a plugin.
 //
 func (feature *PluginFeature) PluginName() string {
 	var _arg0 *C.GstPluginFeature // out
@@ -214,7 +214,7 @@ func (feature *PluginFeature) PluginName() string {
 //
 // The function returns the following values:
 //
-//    - guint: rank of the feature.
+//   - guint: rank of the feature.
 //
 func (feature *PluginFeature) Rank() uint {
 	var _arg0 *C.GstPluginFeature // out
@@ -246,8 +246,8 @@ func (feature *PluginFeature) Rank() uint {
 //
 // The function returns the following values:
 //
-//    - pluginFeature (optional): reference to the loaded feature, or NULL on
-//      error.
+//   - pluginFeature (optional): reference to the loaded feature, or NULL on
+//     error.
 //
 func (feature *PluginFeature) Load() PluginFeaturer {
 	var _arg0 *C.GstPluginFeature // out
@@ -285,7 +285,7 @@ func (feature *PluginFeature) Load() PluginFeaturer {
 //
 // The function takes the following parameters:
 //
-//    - rank value - higher number means more priority rank.
+//   - rank value - higher number means more priority rank.
 //
 func (feature *PluginFeature) SetRank(rank uint) {
 	var _arg0 *C.GstPluginFeature // out
@@ -304,11 +304,11 @@ func (feature *PluginFeature) SetRank(rank uint) {
 //
 // The function takes the following parameters:
 //
-//    - list: list of PluginFeature.
+//   - list: list of PluginFeature.
 //
 // The function returns the following values:
 //
-//    - ret: copy of list, with each feature's reference count incremented.
+//   - ret: copy of list, with each feature's reference count incremented.
 //
 func PluginFeatureListCopy(list []PluginFeaturer) []PluginFeaturer {
 	var _arg1 *C.GList // out
@@ -358,7 +358,7 @@ func PluginFeatureListCopy(list []PluginFeaturer) []PluginFeaturer {
 //
 // The function takes the following parameters:
 //
-//    - list of plugin features.
+//   - list of plugin features.
 //
 func PluginFeatureListDebug(list []PluginFeaturer) {
 	var _arg1 *C.GList // out
@@ -380,15 +380,15 @@ func PluginFeatureListDebug(list []PluginFeaturer) {
 //
 // The function takes the following parameters:
 //
-//    - p1 (optional): PluginFeature.
-//    - p2 (optional): PluginFeature.
+//   - p1 (optional): PluginFeature.
+//   - p2 (optional): PluginFeature.
 //
 // The function returns the following values:
 //
-//    - gint: negative value if the rank of p1 > the rank of p2 or the ranks are
-//      equal but the name of p1 comes before the name of p2; zero if the rank
-//      and names are equal; positive value if the rank of p1 < the rank of p2 or
-//      the ranks are equal but the name of p2 comes before the name of p1.
+//   - gint: negative value if the rank of p1 > the rank of p2 or the ranks are
+//     equal but the name of p1 comes before the name of p2; zero if the rank
+//     and names are equal; positive value if the rank of p1 < the rank of p2 or
+//     the ranks are equal but the name of p2 comes before the name of p1.
 //
 func PluginFeatureRankCompareFunc(p1, p2 unsafe.Pointer) int {
 	var _arg1 C.gconstpointer // out

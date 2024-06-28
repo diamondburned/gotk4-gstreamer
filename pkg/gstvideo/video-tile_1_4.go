@@ -17,16 +17,16 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - mode: VideoTileMode.
-//    - x coordinate.
-//    - y coordinate.
-//    - xTiles: number of horizintal tiles.
-//    - yTiles: number of vertical tiles.
+//   - mode: VideoTileMode.
+//   - x coordinate.
+//   - y coordinate.
+//   - xTiles: number of horizintal tiles.
+//   - yTiles: number of vertical tiles.
 //
 // The function returns the following values:
 //
-//    - guint: index of the tile at x and y in the tiled image of x_tiles by
-//      y_tiles.
+//   - guint: index of the tile at x and y in the tiled image of x_tiles by
+//     y_tiles.
 //
 func VideoTileGetIndex(mode VideoTileMode, x, y, xTiles, yTiles int) uint {
 	var _arg1 C.GstVideoTileMode // out

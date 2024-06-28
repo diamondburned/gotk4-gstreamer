@@ -47,22 +47,22 @@ func defaultRegistryOverrides(v *Registry) RegistryOverrides {
 // them. Each Plugin is matched 1-1 with a file on disk, and may or may not be
 // loaded at a given time.
 //
-// The primary source, at all times, of plugin information is each plugin file
-// itself. Thus, if an application wants information about a particular plugin,
-// or wants to search for a feature that satisfies given criteria, the primary
-// means of doing so is to load every plugin and look at the resulting
-// information that is gathered in the default registry. Clearly, this is a time
-// consuming process, so we cache information in the registry file. The format
-// and location of the cache file is internal to gstreamer.
+// The primary source, at all times, of plugin information is each plugin
+// file itself. Thus, if an application wants information about a particular
+// plugin, or wants to search for a feature that satisfies given criteria,
+// the primary means of doing so is to load every plugin and look at the
+// resulting information that is gathered in the default registry. Clearly, this
+// is a time consuming process, so we cache information in the registry file.
+// The format and location of the cache file is internal to gstreamer.
 //
 // On startup, plugins are searched for in the plugin search path. The following
 // locations are checked in this order:
 //
 // * location from --gst-plugin-path commandline option. * the GST_PLUGIN_PATH
-// environment variable. * the GST_PLUGIN_SYSTEM_PATH environment variable. *
-// default locations (if GST_PLUGIN_SYSTEM_PATH is not set). Those default
-// locations are: $XDG_DATA_HOME/gstreamer-$GST_API_VERSION/plugins/ and
-// $prefix/libs/gstreamer-$GST_API_VERSION/. $XDG_DATA_HOME
+// environment variable. * the GST_PLUGIN_SYSTEM_PATH environment variable.
+// * default locations (if GST_PLUGIN_SYSTEM_PATH is not set). Those default
+// locations are: $XDG_DATA_HOME/gstreamer-$GST_API_VERSION/plugins/
+// and $prefix/libs/gstreamer-$GST_API_VERSION/. $XDG_DATA_HOME
 // (http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
 // defaults to $HOME/.local/share.
 //
@@ -75,13 +75,13 @@ func defaultRegistryOverrides(v *Registry) RegistryOverrides {
 // For each plugin that is found in the plugin search path, there could be 3
 // possibilities for cached information:
 //
-//    * the cache may not contain information about a given file.
-//    * the cache may have stale information.
-//    * the cache may have current information.
+//   - the cache may not contain information about a given file.
+//   - the cache may have stale information.
+//   - the cache may have current information.
 //
-// In the first two cases, the plugin is loaded and the cache updated. In
-// addition to these cases, the cache may have entries for plugins that are not
-// relevant to the current process. These are marked as not available to the
+// In the first two cases, the plugin is loaded and the cache updated.
+// In addition to these cases, the cache may have entries for plugins that are
+// not relevant to the current process. These are marked as not available to the
 // current process. If the cache is updated for whatever reason, it is marked
 // dirty.
 //
@@ -155,13 +155,13 @@ func (registry *Registry) ConnectPluginAdded(f func(plugin *Plugin)) coreglib.Si
 //
 // The function takes the following parameters:
 //
-//    - feature to add.
+//   - feature to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) AddFeature(feature PluginFeaturer) bool {
 	var _arg0 *C.GstRegistry      // out
@@ -192,13 +192,13 @@ func (registry *Registry) AddFeature(feature PluginFeaturer) bool {
 //
 // The function takes the following parameters:
 //
-//    - plugin to add.
+//   - plugin to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) AddPlugin(plugin *Plugin) bool {
 	var _arg0 *C.GstRegistry // out
@@ -226,15 +226,15 @@ func (registry *Registry) AddPlugin(plugin *Plugin) bool {
 //
 // The function takes the following parameters:
 //
-//    - featureName: name of the feature (e.g. "oggdemux").
-//    - minMajor: minimum major version number.
-//    - minMinor: minimum minor version number.
-//    - minMicro: minimum micro version number.
+//   - featureName: name of the feature (e.g. "oggdemux").
+//   - minMajor: minimum major version number.
+//   - minMinor: minimum minor version number.
+//   - minMicro: minimum micro version number.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the feature could be found and the version is the same as the
-//      required version or newer, and FALSE otherwise.
+//   - ok: TRUE if the feature could be found and the version is the same as the
+//     required version or newer, and FALSE otherwise.
 //
 func (registry *Registry) CheckFeatureVersion(featureName string, minMajor, minMinor, minMicro uint) bool {
 	var _arg0 *C.GstRegistry // out
@@ -268,19 +268,19 @@ func (registry *Registry) CheckFeatureVersion(featureName string, minMajor, minM
 }
 
 // FeatureFilter runs a filter against all features of the plugins in the
-// registry and returns a GList with the results. If the first flag is set, only
-// the first match is returned (as a list with a single object).
+// registry and returns a GList with the results. If the first flag is set,
+// only the first match is returned (as a list with a single object).
 //
 // The function takes the following parameters:
 //
-//    - filter to use.
-//    - first: only return first match.
+//   - filter to use.
+//   - first: only return first match.
 //
 // The function returns the following values:
 //
-//    - list of PluginFeature. Use gst_plugin_feature_list_free() after usage.
+//   - list of PluginFeature. Use gst_plugin_feature_list_free() after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) FeatureFilter(filter PluginFeatureFilter, first bool) []PluginFeaturer {
 	var _arg0 *C.GstRegistry           // out
@@ -336,15 +336,15 @@ func (registry *Registry) FeatureFilter(filter PluginFeatureFilter, first bool) 
 //
 // The function takes the following parameters:
 //
-//    - name: pluginfeature name to find.
-//    - typ: pluginfeature type to find.
+//   - name: pluginfeature name to find.
+//   - typ: pluginfeature type to find.
 //
 // The function returns the following values:
 //
-//    - pluginFeature (optional): pluginfeature with the given name and type or
-//      NULL if the plugin was not found. gst_object_unref() after usage.
+//   - pluginFeature (optional): pluginfeature with the given name and type or
+//     NULL if the plugin was not found. gst_object_unref() after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) FindFeature(name string, typ coreglib.Type) PluginFeaturer {
 	var _arg0 *C.GstRegistry      // out
@@ -389,14 +389,14 @@ func (registry *Registry) FindFeature(name string, typ coreglib.Type) PluginFeat
 //
 // The function takes the following parameters:
 //
-//    - name: plugin name to find.
+//   - name: plugin name to find.
 //
 // The function returns the following values:
 //
-//    - plugin (optional) with the given name or NULL if the plugin was not
-//      found. gst_object_unref() after usage.
+//   - plugin (optional) with the given name or NULL if the plugin was not
+//     found. gst_object_unref() after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) FindPlugin(name string) *Plugin {
 	var _arg0 *C.GstRegistry // out
@@ -424,14 +424,14 @@ func (registry *Registry) FindPlugin(name string) *Plugin {
 //
 // The function takes the following parameters:
 //
-//    - typ: #GType.
+//   - typ: #GType.
 //
 // The function returns the following values:
 //
-//    - list of PluginFeature of type. Use gst_plugin_feature_list_free() after
-//      use
+//   - list of PluginFeature of type. Use gst_plugin_feature_list_free() after
+//     use
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) FeatureList(typ coreglib.Type) []PluginFeaturer {
 	var _arg0 *C.GstRegistry // out
@@ -479,11 +479,11 @@ func (registry *Registry) FeatureList(typ coreglib.Type) []PluginFeaturer {
 //
 // The function takes the following parameters:
 //
-//    - name: plugin name.
+//   - name: plugin name.
 //
 // The function returns the following values:
 //
-//    - list of PluginFeature. Use gst_plugin_feature_list_free() after usage.
+//   - list of PluginFeature. Use gst_plugin_feature_list_free() after usage.
 //
 func (registry *Registry) FeatureListByPlugin(name string) []PluginFeaturer {
 	var _arg0 *C.GstRegistry // out
@@ -532,7 +532,7 @@ func (registry *Registry) FeatureListByPlugin(name string) []PluginFeaturer {
 //
 // The function returns the following values:
 //
-//    - guint32: feature list cookie.
+//   - guint32: feature list cookie.
 //
 func (registry *Registry) FeatureListCookie() uint32 {
 	var _arg0 *C.GstRegistry // out
@@ -550,14 +550,14 @@ func (registry *Registry) FeatureListCookie() uint32 {
 	return _guint32
 }
 
-// PluginList: get a copy of all plugins registered in the given registry. The
-// refcount of each element in the list in incremented.
+// PluginList: get a copy of all plugins registered in the given registry.
+// The refcount of each element in the list in incremented.
 //
 // The function returns the following values:
 //
-//    - list of Plugin. Use gst_plugin_list_free() after usage.
+//   - list of Plugin. Use gst_plugin_list_free() after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) PluginList() []*Plugin {
 	var _arg0 *C.GstRegistry // out
@@ -581,17 +581,17 @@ func (registry *Registry) PluginList() []*Plugin {
 	return _list
 }
 
-// Lookup: look up a plugin in the given registry with the given filename. If
-// found, plugin is reffed.
+// Lookup: look up a plugin in the given registry with the given filename.
+// If found, plugin is reffed.
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to look up.
+//   - filename: name of the file to look up.
 //
 // The function returns the following values:
 //
-//    - plugin (optional) if found, or NULL if not. gst_object_unref() after
-//      usage.
+//   - plugin (optional) if found, or NULL if not. gst_object_unref() after
+//     usage.
 //
 func (registry *Registry) Lookup(filename string) *Plugin {
 	var _arg0 *C.GstRegistry // out
@@ -619,14 +619,14 @@ func (registry *Registry) Lookup(filename string) *Plugin {
 //
 // The function takes the following parameters:
 //
-//    - name: PluginFeature name.
+//   - name: PluginFeature name.
 //
 // The function returns the following values:
 //
-//    - pluginFeature (optional) with its refcount incremented, use
-//      gst_object_unref() after usage.
+//   - pluginFeature (optional) with its refcount incremented, use
+//     gst_object_unref() after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) LookupFeature(name string) PluginFeaturer {
 	var _arg0 *C.GstRegistry      // out
@@ -663,21 +663,21 @@ func (registry *Registry) LookupFeature(name string) PluginFeaturer {
 	return _pluginFeature
 }
 
-// PluginFilter runs a filter against all plugins in the registry and returns a
-// #GList with the results. If the first flag is set, only the first match is
-// returned (as a list with a single object). Every plugin is reffed; use
-// gst_plugin_list_free() after use, which will unref again.
+// PluginFilter runs a filter against all plugins in the registry and returns
+// a #GList with the results. If the first flag is set, only the first match
+// is returned (as a list with a single object). Every plugin is reffed;
+// use gst_plugin_list_free() after use, which will unref again.
 //
 // The function takes the following parameters:
 //
-//    - filter to use.
-//    - first: only return first match.
+//   - filter to use.
+//   - first: only return first match.
 //
 // The function returns the following values:
 //
-//    - list of Plugin. Use gst_plugin_list_free() after usage.
+//   - list of Plugin. Use gst_plugin_list_free() after usage.
 //
-//      MT safe.
+//     MT safe.
 //
 func (registry *Registry) PluginFilter(filter PluginFilter, first bool) []*Plugin {
 	var _arg0 *C.GstRegistry    // out
@@ -718,7 +718,7 @@ func (registry *Registry) PluginFilter(filter PluginFilter, first bool) []*Plugi
 //
 // The function takes the following parameters:
 //
-//    - feature to remove.
+//   - feature to remove.
 //
 func (registry *Registry) RemoveFeature(feature PluginFeaturer) {
 	var _arg0 *C.GstRegistry      // out
@@ -738,7 +738,7 @@ func (registry *Registry) RemoveFeature(feature PluginFeaturer) {
 //
 // The function takes the following parameters:
 //
-//    - plugin to remove.
+//   - plugin to remove.
 //
 func (registry *Registry) RemovePlugin(plugin *Plugin) {
 	var _arg0 *C.GstRegistry // out
@@ -757,11 +757,11 @@ func (registry *Registry) RemovePlugin(plugin *Plugin) {
 //
 // The function takes the following parameters:
 //
-//    - path to scan.
+//   - path to scan.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if registry changed.
+//   - ok: TRUE if registry changed.
 //
 func (registry *Registry) ScanPath(path string) bool {
 	var _arg0 *C.GstRegistry // out
@@ -785,13 +785,13 @@ func (registry *Registry) ScanPath(path string) bool {
 	return _ok
 }
 
-// RegistryGet retrieves the singleton plugin registry. The caller does not own
-// a reference on the registry, as it is alive as long as GStreamer is
+// RegistryGet retrieves the singleton plugin registry. The caller does not
+// own a reference on the registry, as it is alive as long as GStreamer is
 // initialized.
 //
 // The function returns the following values:
 //
-//    - registry: Registry.
+//   - registry: Registry.
 //
 func RegistryGet() *Registry {
 	var _cret *C.GstRegistry // in

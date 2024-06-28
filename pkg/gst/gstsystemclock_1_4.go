@@ -23,7 +23,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - newClock (optional): Clock.
+//   - newClock (optional): Clock.
 //
 func SystemClockSetDefault(newClock Clocker) {
 	var _arg1 *C.GstClock // out

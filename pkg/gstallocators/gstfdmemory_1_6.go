@@ -88,11 +88,11 @@ func (f FdMemoryFlags) Has(other FdMemoryFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - gint: fd of mem or -1 when there is no fd on mem.
+//   - gint: fd of mem or -1 when there is no fd on mem.
 //
 func FdMemoryGetFd(mem *gst.Memory) int {
 	var _arg1 *C.GstMemory // out
@@ -114,12 +114,12 @@ func FdMemoryGetFd(mem *gst.Memory) int {
 //
 // The function takes the following parameters:
 //
-//    - mem: Memory.
+//   - mem: Memory.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE when mem has an fd that can be retrieved with
-//      gst_fd_memory_get_fd().
+//   - ok: TRUE when mem has an fd that can be retrieved with
+//     gst_fd_memory_get_fd().
 //
 func IsFdMemory(mem *gst.Memory) bool {
 	var _arg1 *C.GstMemory // out
@@ -193,8 +193,8 @@ func marshalFdAllocator(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - fdAllocator: new fd allocator, or NULL if the allocator isn't available.
-//      Use gst_object_unref() to release the allocator after usage.
+//   - fdAllocator: new fd allocator. Use gst_object_unref() to release the
+//     allocator after usage.
 //
 func NewFdAllocator() *FdAllocator {
 	var _cret *C.GstAllocator // in
@@ -212,17 +212,17 @@ func NewFdAllocator() *FdAllocator {
 //
 // The function takes the following parameters:
 //
-//    - allocator to be used for this memory.
-//    - fd: file descriptor.
-//    - size: memory size.
-//    - flags: extra FdMemoryFlags.
+//   - allocator to be used for this memory.
+//   - fd: file descriptor.
+//   - size: memory size.
+//   - flags: extra FdMemoryFlags.
 //
 // The function returns the following values:
 //
-//    - memory: gstMemory based on allocator. When the buffer will be released
-//      the allocator will close the fd unless the GST_FD_MEMORY_FLAG_DONT_CLOSE
-//      flag is specified. The memory is only mmapped on gst_buffer_map()
-//      request.
+//   - memory (optional): gstMemory based on allocator. When the buffer
+//     will be released the allocator will close the fd unless the
+//     GST_FD_MEMORY_FLAG_DONT_CLOSE flag is specified. The memory is only
+//     mmapped on gst_buffer_map() request.
 //
 func FdAllocatorAlloc(allocator gst.Allocatorrer, fd int, size uint, flags FdMemoryFlags) *gst.Memory {
 	var _arg1 *C.GstAllocator    // out
@@ -244,13 +244,15 @@ func FdAllocatorAlloc(allocator gst.Allocatorrer, fd int, size uint, flags FdMem
 
 	var _memory *gst.Memory // out
 
-	_memory = (*gst.Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_memory)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_memory = (*gst.Memory)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_memory)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _memory
 }

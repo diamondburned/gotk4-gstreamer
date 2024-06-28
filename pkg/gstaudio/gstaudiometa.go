@@ -68,14 +68,14 @@ func AudioMetaApiGetType() coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - fromPosition: channel positions of the source.
-//    - toPosition: channel positions of the destination.
-//    - matrix coefficients.
+//   - buffer: Buffer.
+//   - fromPosition: channel positions of the source.
+//   - toPosition: channel positions of the destination.
+//   - matrix coefficients.
 //
 // The function returns the following values:
 //
-//    - audioDownmixMeta on buffer.
+//   - audioDownmixMeta on buffer.
 //
 func BufferAddAudioDownmixMeta(buffer *gst.Buffer, fromPosition, toPosition []AudioChannelPosition, matrix **float32) *AudioDownmixMeta {
 	var _arg1 *C.GstBuffer               // out
@@ -115,12 +115,12 @@ func BufferAddAudioDownmixMeta(buffer *gst.Buffer, fromPosition, toPosition []Au
 //
 // The function takes the following parameters:
 //
-//    - buffer: Buffer.
-//    - toPosition: channel positions of the destination.
+//   - buffer: Buffer.
+//   - toPosition: channel positions of the destination.
 //
 // The function returns the following values:
 //
-//    - audioDownmixMeta on buffer.
+//   - audioDownmixMeta on buffer.
 //
 func BufferGetAudioDownmixMetaForChannels(buffer *gst.Buffer, toPosition []AudioChannelPosition) *AudioDownmixMeta {
 	var _arg1 *C.GstBuffer               // out

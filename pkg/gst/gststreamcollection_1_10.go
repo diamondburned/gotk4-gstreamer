@@ -92,11 +92,11 @@ func marshalStreamCollection(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - upstreamId (optional): stream id of the parent stream.
+//   - upstreamId (optional): stream id of the parent stream.
 //
 // The function returns the following values:
 //
-//    - streamCollection: new StreamCollection.
+//   - streamCollection: new StreamCollection.
 //
 func NewStreamCollection(upstreamId string) *StreamCollection {
 	var _arg1 *C.gchar               // out
@@ -121,11 +121,11 @@ func NewStreamCollection(upstreamId string) *StreamCollection {
 //
 // The function takes the following parameters:
 //
-//    - stream to add.
+//   - stream to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream was properly added, else FALSE.
+//   - ok: TRUE if the stream was properly added, else FALSE.
 //
 func (collection *StreamCollection) AddStream(stream *Stream) bool {
 	var _arg0 *C.GstStreamCollection // out
@@ -153,7 +153,7 @@ func (collection *StreamCollection) AddStream(stream *Stream) bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of streams that collection contains.
+//   - guint: number of streams that collection contains.
 //
 func (collection *StreamCollection) Size() uint {
 	var _arg0 *C.GstStreamCollection // out
@@ -177,11 +177,11 @@ func (collection *StreamCollection) Size() uint {
 //
 // The function takes the following parameters:
 //
-//    - index: index of the stream to retrieve.
+//   - index: index of the stream to retrieve.
 //
 // The function returns the following values:
 //
-//    - stream (optional): Stream.
+//   - stream (optional): Stream.
 //
 func (collection *StreamCollection) Stream(index uint) *Stream {
 	var _arg0 *C.GstStreamCollection // out
@@ -208,7 +208,7 @@ func (collection *StreamCollection) Stream(index uint) *Stream {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): upstream id.
+//   - utf8 (optional): upstream id.
 //
 func (collection *StreamCollection) UpstreamID() string {
 	var _arg0 *C.GstStreamCollection // out

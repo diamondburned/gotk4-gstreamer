@@ -35,14 +35,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - matrix: VideoColorMatrix.
+//   - matrix: VideoColorMatrix.
 //
 // The function returns the following values:
 //
-//    - Kr: result red channel coefficient.
-//    - Kb: result blue channel coefficient.
-//    - ok: TRUE if matrix was a YUV color format and Kr and Kb contain valid
-//      values.
+//   - Kr: result red channel coefficient.
+//   - Kb: result blue channel coefficient.
+//   - ok: TRUE if matrix was a YUV color format and Kr and Kb contain valid
+//     values.
 //
 func VideoColorMatrixGetKrKb(matrix VideoColorMatrix) (Kr, Kb float64, ok bool) {
 	var _arg1 C.GstVideoColorMatrix // out
@@ -73,11 +73,11 @@ func VideoColorMatrixGetKrKb(matrix VideoColorMatrix) (Kr, Kb float64, ok bool) 
 //
 // The function takes the following parameters:
 //
-//    - primaries: VideoColorPrimaries.
+//   - primaries: VideoColorPrimaries.
 //
 // The function returns the following values:
 //
-//    - videoColorPrimariesInfo for primaries.
+//   - videoColorPrimariesInfo for primaries.
 //
 func VideoColorPrimariesGetInfo(primaries VideoColorPrimaries) *VideoColorPrimariesInfo {
 	var _arg1 C.GstVideoColorPrimaries      // out
@@ -100,8 +100,8 @@ func VideoColorPrimariesGetInfo(primaries VideoColorPrimaries) *VideoColorPrimar
 //
 // The function takes the following parameters:
 //
-//    - fn: VideoTransferFunction.
-//    - val: value.
+//   - fn: VideoTransferFunction.
+//   - val: value.
 //
 // The function returns the following values:
 //
@@ -129,8 +129,8 @@ func VideoColorTransferDecode(fn VideoTransferFunction, val float64) float64 {
 //
 // The function takes the following parameters:
 //
-//    - fn: VideoTransferFunction.
-//    - val: value.
+//   - fn: VideoTransferFunction.
+//   - val: value.
 //
 // The function returns the following values:
 //
@@ -153,8 +153,8 @@ func VideoColorTransferEncode(fn VideoTransferFunction, val float64) float64 {
 	return _gdouble
 }
 
-// VideoColorPrimariesInfo: structure describing the chromaticity coordinates of
-// an RGB system. These values can be used to construct a matrix to transform
+// VideoColorPrimariesInfo: structure describing the chromaticity coordinates
+// of an RGB system. These values can be used to construct a matrix to transform
 // RGB to and from the XYZ colorspace.
 //
 // An instance of this type is always passed by reference.

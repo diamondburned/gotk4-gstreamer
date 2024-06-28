@@ -19,12 +19,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - header: opusHead header.
-//    - comments (optional): comment header or NULL.
+//   - header: opusHead header.
+//   - comments (optional): comment header or NULL.
 //
 // The function returns the following values:
 //
-//    - caps: Caps.
+//   - caps (optional): Caps.
 //
 func CodecUtilsOpusCreateCapsFromHeader(header, comments *gst.Buffer) *gst.Caps {
 	var _arg1 *C.GstBuffer // out
@@ -42,13 +42,15 @@ func CodecUtilsOpusCreateCapsFromHeader(header, comments *gst.Buffer) *gst.Caps 
 
 	var _caps *gst.Caps // out
 
-	_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_caps)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
+	if _cret != nil {
+		_caps = (*gst.Caps)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_caps)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
+	}
 
 	return _caps
 }
@@ -58,17 +60,17 @@ func CodecUtilsOpusCreateCapsFromHeader(header, comments *gst.Buffer) *gst.Caps 
 //
 // The function takes the following parameters:
 //
-//    - caps to parse the data from.
+//   - caps to parse the data from.
 //
 // The function returns the following values:
 //
-//    - rate (optional): sample rate.
-//    - channels (optional): number of channels.
-//    - channelMappingFamily (optional): channel mapping family.
-//    - streamCount (optional): number of independent streams.
-//    - coupledCount (optional): number of stereo streams.
-//    - channelMapping (optional): mapping between the streams.
-//    - ok: TRUE if parsing was successful, FALSE otherwise.
+//   - rate (optional): sample rate.
+//   - channels (optional): number of channels.
+//   - channelMappingFamily (optional): channel mapping family.
+//   - streamCount (optional): number of independent streams.
+//   - coupledCount (optional): number of stereo streams.
+//   - channelMapping (optional): mapping between the streams.
+//   - ok: TRUE if parsing was successful, FALSE otherwise.
 //
 func CodecUtilsOpusParseCaps(caps *gst.Caps) (rate uint32, channels, channelMappingFamily, streamCount, coupledCount byte, channelMapping [256]byte, ok bool) {
 	var _arg1 *C.GstCaps    // out
@@ -110,19 +112,19 @@ func CodecUtilsOpusParseCaps(caps *gst.Caps) (rate uint32, channels, channelMapp
 //
 // The function takes the following parameters:
 //
-//    - header: opusHead Buffer.
+//   - header: opusHead Buffer.
 //
 // The function returns the following values:
 //
-//    - rate (optional): sample rate.
-//    - channels (optional): number of channels.
-//    - channelMappingFamily (optional): channel mapping family.
-//    - streamCount (optional): number of independent streams.
-//    - coupledCount (optional): number of stereo streams.
-//    - channelMapping (optional): mapping between the streams.
-//    - preSkip (optional): pre-skip in 48kHz samples or 0.
-//    - outputGain (optional): output gain or 0.
-//    - ok: TRUE if parsing was successful, FALSE otherwise.
+//   - rate (optional): sample rate.
+//   - channels (optional): number of channels.
+//   - channelMappingFamily (optional): channel mapping family.
+//   - streamCount (optional): number of independent streams.
+//   - coupledCount (optional): number of stereo streams.
+//   - channelMapping (optional): mapping between the streams.
+//   - preSkip (optional): pre-skip in 48kHz samples or 0.
+//   - outputGain (optional): output gain or 0.
+//   - ok: TRUE if parsing was successful, FALSE otherwise.
 //
 func CodecUtilsOpusParseHeader(header *gst.Buffer) (rate uint32, channels, channelMappingFamily, streamCount, coupledCount byte, channelMapping [256]byte, preSkip uint16, outputGain int16, ok bool) {
 	var _arg1 *C.GstBuffer  // out

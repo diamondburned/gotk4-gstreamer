@@ -74,13 +74,13 @@ func (a AudioBaseSrcSlaveMethod) String() string {
 
 // AudioBaseSrcOverrides contains methods that are overridable.
 type AudioBaseSrcOverrides struct {
-	// CreateRingbuffer: create and return the AudioRingBuffer for src. This
-	// function will call the ::create_ringbuffer vmethod and will set src as
-	// the parent of the returned buffer (see gst_object_set_parent()).
+	// CreateRingbuffer: create and return the AudioRingBuffer for src.
+	// This function will call the ::create_ringbuffer vmethod and will set src
+	// as the parent of the returned buffer (see gst_object_set_parent()).
 	//
 	// The function returns the following values:
 	//
-	//    - audioRingBuffer: new ringbuffer of src.
+	//   - audioRingBuffer (optional): new ringbuffer of src.
 	//
 	CreateRingbuffer func() AudioRingBufferer
 }
@@ -151,7 +151,7 @@ func marshalAudioBaseSrc(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - audioRingBuffer: new ringbuffer of src.
+//   - audioRingBuffer (optional): new ringbuffer of src.
 //
 func (src *AudioBaseSrc) CreateRingbuffer() AudioRingBufferer {
 	var _arg0 *C.GstAudioBaseSrc    // out
@@ -164,22 +164,21 @@ func (src *AudioBaseSrc) CreateRingbuffer() AudioRingBufferer {
 
 	var _audioRingBuffer AudioRingBufferer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstaudio.AudioRingBufferer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AudioRingBufferer)
-			return ok
-		})
-		rv, ok := casted.(AudioRingBufferer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(AudioRingBufferer)
+				return ok
+			})
+			rv, ok := casted.(AudioRingBufferer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			}
+			_audioRingBuffer = rv
 		}
-		_audioRingBuffer = rv
 	}
 
 	return _audioRingBuffer
@@ -190,7 +189,7 @@ func (src *AudioBaseSrc) CreateRingbuffer() AudioRingBufferer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if src will provide a clock.
+//   - ok: TRUE if src will provide a clock.
 //
 func (src *AudioBaseSrc) ProvideClock() bool {
 	var _arg0 *C.GstAudioBaseSrc // out
@@ -214,7 +213,7 @@ func (src *AudioBaseSrc) ProvideClock() bool {
 //
 // The function returns the following values:
 //
-//    - audioBaseSrcSlaveMethod: current slave method used by src.
+//   - audioBaseSrcSlaveMethod: current slave method used by src.
 //
 func (src *AudioBaseSrc) SlaveMethod() AudioBaseSrcSlaveMethod {
 	var _arg0 *C.GstAudioBaseSrc           // out
@@ -239,7 +238,7 @@ func (src *AudioBaseSrc) SlaveMethod() AudioBaseSrcSlaveMethod {
 //
 // The function takes the following parameters:
 //
-//    - provide: new state.
+//   - provide: new state.
 //
 func (src *AudioBaseSrc) SetProvideClock(provide bool) {
 	var _arg0 *C.GstAudioBaseSrc // out
@@ -259,7 +258,7 @@ func (src *AudioBaseSrc) SetProvideClock(provide bool) {
 //
 // The function takes the following parameters:
 //
-//    - method: new slave method.
+//   - method: new slave method.
 //
 func (src *AudioBaseSrc) SetSlaveMethod(method AudioBaseSrcSlaveMethod) {
 	var _arg0 *C.GstAudioBaseSrc           // out
@@ -279,7 +278,7 @@ func (src *AudioBaseSrc) SetSlaveMethod(method AudioBaseSrcSlaveMethod) {
 //
 // The function returns the following values:
 //
-//    - audioRingBuffer: new ringbuffer of src.
+//   - audioRingBuffer (optional): new ringbuffer of src.
 //
 func (src *AudioBaseSrc) createRingbuffer() AudioRingBufferer {
 	gclass := (*C.GstAudioBaseSrcClass)(coreglib.PeekParentClass(src))
@@ -295,22 +294,21 @@ func (src *AudioBaseSrc) createRingbuffer() AudioRingBufferer {
 
 	var _audioRingBuffer AudioRingBufferer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gstaudio.AudioRingBufferer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AudioRingBufferer)
-			return ok
-		})
-		rv, ok := casted.(AudioRingBufferer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(AudioRingBufferer)
+				return ok
+			})
+			rv, ok := casted.(AudioRingBufferer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gstaudio.AudioRingBufferer")
+			}
+			_audioRingBuffer = rv
 		}
-		_audioRingBuffer = rv
 	}
 
 	return _audioRingBuffer
